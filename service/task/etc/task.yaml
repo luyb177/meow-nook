@@ -1,0 +1,14 @@
+Name: task.rpc
+ListenOn: 0.0.0.0:9003
+
+Log:
+  Level: info
+  Encoding: json
+
+DataSource:
+  Host: 127.0.0.1
+  Port: 5432
+  User: postgres
+  Password: postgres
+  DBName: meow_nook
+  SSLMode: disable

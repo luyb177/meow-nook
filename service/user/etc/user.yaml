@@ -1,0 +1,22 @@
+Name: user.rpc
+ListenOn: 0.0.0.0:9001
+
+Log:
+  Level: info
+  Encoding: json
+
+DataSource:
+  Host: 127.0.0.1
+  Port: 5432
+  User: postgres
+  Password: postgres
+  DBName: meow_nook
+  SSLMode: disable
+
+Redis:
+  Host: 127.0.0.1:6379
+  DB: 0
+
+JWT:
+  AccessSecret: "meow-nook-secret-change-in-production"
+  AccessExpire: 86400

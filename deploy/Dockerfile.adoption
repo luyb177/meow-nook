@@ -1,0 +1,14 @@
+FROM golang:1.24-alpine AS builder
+WORKDIR /app
+COPY go.mod go.sum ./
+RUN go mod download
+COPY . .
+RUN CGO_ENABLED=0 GOOS=linux go build -o /app/bin/adoption ./service/adoption/adoption.go
+
+FROM alpine:3.20
+RUN apk add --no-cache tzdata ca-certificates
+WORKDIR /app
+COPY --from=builder /app/bin/adoption .
+COPY service/adoption/etc/adoption.yaml ./etc/
+EXPOSE 9004
+CMD ["./adoption", "-f", "etc/adoption.yaml"]
