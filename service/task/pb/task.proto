@@ -1,0 +1,204 @@
+syntax = "proto3";
+
+package task;
+
+option go_package = "github.com/luyb177/meow-nook/service/task/pb/task";
+
+// ──────────────────────────────────────────────
+// Enums
+// ──────────────────────────────────────────────
+
+enum Urgency {
+  URGENCY_UNKNOWN = 0;
+  LOW             = 1;   // 一般 (黄色)
+  URGENT          = 2;   // 紧急 (橙色)
+  CRITICAL        = 3;   // 高危 (红色)
+}
+
+enum Difficulty {
+  DIFFICULTY_UNKNOWN = 0;
+  EASY               = 1;
+  NORMAL             = 2;
+  HARD               = 3;
+  EXPERT             = 4;
+}
+
+enum TaskStatus {
+  TASK_STATUS_UNKNOWN = 0;
+  PENDING             = 1;   // 待处理
+  IN_PROGRESS         = 2;   // 进行中
+  COMPLETED           = 3;   // 已完成
+  FAILED              = 4;   // 已失败
+  CANCELLED           = 5;   // 已取消
+}
+
+enum TaskType {
+  TASK_TYPE_UNKNOWN = 0;
+  FEEDING           = 1;   // 喂食
+  NEUTER            = 2;   // 绝育
+  VACCINE           = 3;   // 疫苗
+  RESCUE            = 4;   // 救助
+  MEDICAL           = 5;   // 医疗
+  FOLLOW_UP         = 6;   // 回访
+  OTHER             = 7;
+}
+
+// ──────────────────────────────────────────────
+// Core models
+// ──────────────────────────────────────────────
+
+message TaskInfo {
+  int64       id              = 1;
+  int64       cat_id          = 2;
+  string      cat_name        = 3;
+  string      title           = 4;
+  string      description     = 5;
+  TaskType    task_type       = 6;
+  Urgency     urgency         = 7;
+  Difficulty  difficulty      = 8;
+  TaskStatus  status          = 9;
+  int32       points_reward   = 10;
+  int32       max_assignees   = 11;
+  int32       current_assignees = 12;
+  int64       deadline        = 13;
+  int64       created_by      = 14;
+  int64       created_at      = 15;
+  int64       updated_at      = 16;
+  string      location        = 17;
+  double      lat             = 18;
+  double      lng             = 19;
+}
+
+message TaskLog {
+  int64  id          = 1;
+  int64  task_id     = 2;
+  int64  operator_id = 3;
+  string operator    = 4;
+  string action      = 5;
+  string remark      = 6;
+  int64  created_at  = 7;
+}
+
+message TaskAssignee {
+  int64  user_id    = 1;
+  string username   = 2;
+  string status     = 3;   // active / abandoned / completed
+  int64  assigned_at = 4;
+}
+
+// ──────────────────────────────────────────────
+// Task CRUD
+// ──────────────────────────────────────────────
+
+message CreateTaskReq {
+  int64       cat_id        = 1;
+  string      title         = 2;
+  string      description   = 3;
+  TaskType    task_type     = 4;
+  Urgency     urgency       = 5;
+  Difficulty  difficulty    = 6;
+  int32       points_reward = 7;
+  int32       max_assignees = 8;
+  int64       deadline      = 9;
+  int64       created_by    = 10;
+  string      location      = 11;
+  double      lat           = 12;
+  double      lng           = 13;
+}
+
+message CreateTaskResp {
+  int64 task_id = 1;
+}
+
+message GetTaskReq {
+  int64 task_id = 1;
+}
+
+message GetTaskResp {
+  TaskInfo           task      = 1;
+  repeated TaskLog   logs      = 2;
+  repeated TaskAssignee assignees = 3;
+}
+
+message UpdateTaskReq {
+  int64       task_id       = 1;
+  string      title         = 2;
+  string      description   = 3;
+  Urgency     urgency       = 4;
+  Difficulty  difficulty    = 5;
+  TaskStatus  status        = 6;
+  int64       deadline      = 7;
+  int64       operator_id   = 8;
+  string      remark        = 9;
+}
+
+message UpdateTaskResp {}
+
+message ListTasksReq {
+  int64       cat_id        = 1;
+  TaskType    task_type     = 2;
+  Urgency     urgency       = 3;
+  TaskStatus  status        = 4;
+  int64       assigned_to   = 5;   // filter by assignee user_id
+  double      near_lat      = 6;
+  double      near_lng      = 7;
+  double      radius_km     = 8;   // 0 = no geo filter
+  int32       page          = 9;
+  int32       size          = 10;
+}
+
+message ListTasksResp {
+  repeated TaskInfo tasks = 1;
+  int64             total = 2;
+}
+
+// ──────────────────────────────────────────────
+// Claim / abandon / complete
+// ──────────────────────────────────────────────
+
+message ClaimTaskReq {
+  int64 task_id = 1;
+  int64 user_id = 2;
+}
+
+message ClaimTaskResp {}
+
+message AbandonTaskReq {
+  int64  task_id = 1;
+  int64  user_id = 2;
+  string reason  = 3;
+}
+
+message AbandonTaskResp {}
+
+message CompleteTaskReq {
+  int64  task_id = 1;
+  int64  user_id = 2;
+  string proof   = 3;   // URL to photo/video
+}
+
+message CompleteTaskResp {}
+
+message ExtendDeadlineReq {
+  int64 task_id    = 1;
+  int64 user_id    = 2;
+  int64 new_deadline = 3;
+}
+
+message ExtendDeadlineResp {}
+
+// ──────────────────────────────────────────────
+// Service definition
+// ──────────────────────────────────────────────
+
+service TaskService {
+  rpc CreateTask(CreateTaskReq)         returns (CreateTaskResp);
+  rpc GetTask(GetTaskReq)               returns (GetTaskResp);
+  rpc UpdateTask(UpdateTaskReq)         returns (UpdateTaskResp);
+  rpc ListTasks(ListTasksReq)           returns (ListTasksResp);
+
+  rpc ClaimTask(ClaimTaskReq)           returns (ClaimTaskResp);
+  rpc AbandonTask(AbandonTaskReq)       returns (AbandonTaskResp);
+  rpc CompleteTask(CompleteTaskReq)     returns (CompleteTaskResp);
+  rpc ExtendDeadline(ExtendDeadlineReq) returns (ExtendDeadlineResp);
+}

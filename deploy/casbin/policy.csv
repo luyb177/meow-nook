@@ -1,0 +1,65 @@
+# Role inheritance
+g, admin, volunteer
+g, volunteer, user
+
+# ──────────────────────────────────────────────
+# user role: basic read + profile management
+# ──────────────────────────────────────────────
+p, user, /api/v1/user/info,         GET
+p, user, /api/v1/user/info,         PUT
+p, user, /api/v1/user/password,     PUT
+p, user, /api/v1/user/points,       GET
+p, user, /api/v1/user/points/logs,  GET
+p, user, /api/v1/user/notifications, GET
+p, user, /api/v1/user/notifications, PUT
+p, user, /api/v1/user/feedback,     POST
+
+p, user, /api/v1/cats,              GET
+p, user, /api/v1/cats/:id,          GET
+p, user, /api/v1/cats/:id/rescue,   GET
+p, user, /api/v1/cats/:id/health,   GET
+p, user, /api/v1/cats/stats,        GET
+p, user, /api/v1/cats/heatmap,      GET
+
+p, user, /api/v1/tasks,             GET
+p, user, /api/v1/tasks/:id,         GET
+p, user, /api/v1/tasks/:id/claim,   POST
+p, user, /api/v1/tasks/:id/abandon, POST
+p, user, /api/v1/tasks/:id/complete,POST
+p, user, /api/v1/tasks/:id/extend,  POST
+
+p, user, /api/v1/adoption,          GET
+p, user, /api/v1/adoption/apply,    POST
+p, user, /api/v1/adoption/:id,      GET
+p, user, /api/v1/adoption/:id/followup, POST
+
+p, user, /api/v1/posts,             GET
+p, user, /api/v1/posts/:id,         GET
+p, user, /api/v1/posts,             POST
+p, user, /api/v1/posts/:id/like,    POST
+p, user, /api/v1/posts/:id/unlike,  POST
+p, user, /api/v1/posts/:id/favorite, POST
+p, user, /api/v1/posts/:id/unfavorite, POST
+p, user, /api/v1/posts/:id/comments, GET
+p, user, /api/v1/posts/:id/comments, POST
+p, user, /api/v1/posts/:id/report,  POST
+
+# ──────────────────────────────────────────────
+# volunteer role inherits user and adds write ops
+# ──────────────────────────────────────────────
+p, volunteer, /api/v1/cats,               POST
+p, volunteer, /api/v1/cats/:id,           PUT
+p, volunteer, /api/v1/cats/:id/rescue,    POST
+p, volunteer, /api/v1/cats/:id/health,    POST
+p, volunteer, /api/v1/tasks,              POST
+p, volunteer, /api/v1/tasks/:id,          PUT
+
+# ──────────────────────────────────────────────
+# admin role inherits volunteer and adds deletion
+# ──────────────────────────────────────────────
+p, admin, /api/v1/cats/:id,               DELETE
+p, admin, /api/v1/tasks/:id,              DELETE
+p, admin, /api/v1/posts/:id,              DELETE
+p, admin, /api/v1/posts/:id/comments/:cid, DELETE
+p, admin, /api/v1/adoption/:id/review,    POST
+p, admin, /api/v1/admin/*,                *

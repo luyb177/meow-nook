@@ -1,0 +1,122 @@
+syntax = "proto3";
+
+package adoption;
+
+option go_package = "github.com/luyb177/meow-nook/service/adoption/pb/adoption";
+
+// ──────────────────────────────────────────────
+// Enums
+// ──────────────────────────────────────────────
+
+enum ApplicationStatus {
+  APP_STATUS_UNKNOWN = 0;
+  PENDING_REVIEW     = 1;   // 待审核
+  APPROVED           = 2;   // 审核通过
+  REJECTED           = 3;   // 审核未通过
+  COMPLETED          = 4;   // 领养完成
+  WITHDRAWN          = 5;   // 已撤回
+}
+
+// ──────────────────────────────────────────────
+// Core models
+// ──────────────────────────────────────────────
+
+message AdoptionApplication {
+  int64             id              = 1;
+  int64             cat_id          = 2;
+  string            cat_name        = 3;
+  int64             applicant_id    = 4;
+  string            applicant_name  = 5;
+  ApplicationStatus status          = 6;
+  string            reject_reason   = 7;
+  int32             required_points = 8;
+  int64             applied_at      = 9;
+  int64             updated_at      = 10;
+}
+
+message FollowUpRecord {
+  int64  id             = 1;
+  int64  application_id = 2;
+  int64  applicant_id   = 3;
+  string stage          = 4;   // 1周 / 1个月 / 3个月 / 6个月
+  string content        = 5;
+  repeated string photos = 6;
+  int64  submitted_at   = 7;
+}
+
+// ──────────────────────────────────────────────
+// RPCs
+// ──────────────────────────────────────────────
+
+message ApplyAdoptionReq {
+  int64 cat_id       = 1;
+  int64 applicant_id = 2;
+  string note        = 3;
+}
+
+message ApplyAdoptionResp {
+  int64 application_id = 1;
+}
+
+message ReviewApplicationReq {
+  int64  application_id = 1;
+  int64  reviewer_id    = 2;
+  bool   approved       = 3;
+  string reject_reason  = 4;
+}
+
+message ReviewApplicationResp {}
+
+message GetApplicationReq {
+  int64 application_id = 1;
+}
+
+message GetApplicationResp {
+  AdoptionApplication application = 1;
+}
+
+message ListApplicationsReq {
+  int64             applicant_id = 1;   // 0 = all
+  int64             cat_id       = 2;   // 0 = all
+  ApplicationStatus status       = 3;
+  int32             page         = 4;
+  int32             size         = 5;
+}
+
+message ListApplicationsResp {
+  repeated AdoptionApplication applications = 1;
+  int64                         total       = 2;
+}
+
+message SubmitFollowUpReq {
+  int64  application_id = 1;
+  int64  applicant_id   = 2;
+  string stage          = 3;
+  string content        = 4;
+  repeated string photos = 5;
+}
+
+message SubmitFollowUpResp {
+  int64 record_id = 1;
+}
+
+message ListFollowUpsReq {
+  int64 application_id = 1;
+}
+
+message ListFollowUpsResp {
+  repeated FollowUpRecord records = 1;
+}
+
+// ──────────────────────────────────────────────
+// Service definition
+// ──────────────────────────────────────────────
+
+service AdoptionService {
+  rpc ApplyAdoption(ApplyAdoptionReq)         returns (ApplyAdoptionResp);
+  rpc ReviewApplication(ReviewApplicationReq) returns (ReviewApplicationResp);
+  rpc GetApplication(GetApplicationReq)       returns (GetApplicationResp);
+  rpc ListApplications(ListApplicationsReq)   returns (ListApplicationsResp);
+  rpc SubmitFollowUp(SubmitFollowUpReq)       returns (SubmitFollowUpResp);
+  rpc ListFollowUps(ListFollowUpsReq)         returns (ListFollowUpsResp);
+}

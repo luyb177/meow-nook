@@ -1,0 +1,16 @@
+ARG SERVICE=gateway
+FROM golang:1.24-alpine AS builder
+WORKDIR /app
+COPY go.mod go.sum ./
+RUN go mod download
+COPY . .
+RUN CGO_ENABLED=0 GOOS=linux go build -o /app/bin/gateway ./service/gateway/gateway.go
+
+FROM alpine:3.20
+RUN apk add --no-cache tzdata ca-certificates
+WORKDIR /app
+COPY --from=builder /app/bin/gateway .
+COPY service/gateway/etc/gateway.yaml ./etc/
+COPY deploy/casbin/ ./casbin/
+EXPOSE 8080
+CMD ["./gateway", "-f", "etc/gateway.yaml"]
