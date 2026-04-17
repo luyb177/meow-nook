@@ -50,4 +50,7 @@ temp/
 
 # config
 *.yaml
+!*.example.yaml
+!example.yaml
 */etc/*.yaml
+!*/etc/*.example.yaml

@@ -41,5 +41,10 @@ protoc-gen-go.exe v1.36.11
 
 进入对应的服务目录，更换具体的proto文件路径和proto_path路径，其中third_party目前没有引入，位置暂定
 ```bash
-goctl rpc protoc pb/user.proto --proto_path=. --proto_path=..\..\third_party --go_out=. --go-grpc_out=. --zrpc_out=. --client=true
+goctl rpc protoc pb/user/v1/user.proto --proto_path=. --proto_path=..\..\third_party --go_out=. --go-grpc_out=. --zrpc_out=. --client=true  
+```
+
+对 import 进行排序的命令 可以直接在根目录里执行
+```bash
+gci.exe write -s standard -s "prefix(github.com/luyb177/meow-nook)" -s default   --skip-generated .
 ```
