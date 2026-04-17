@@ -1,0 +1,3106 @@
+{
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "schemes": [
+    "https"
+  ],
+  "swagger": "2.0",
+  "info": {
+    "title": "meow-nook API gateway",
+    "version": "1.0"
+  },
+  "basePath": "/",
+  "paths": {
+    "/api/v1/adoption": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "领养模块"
+        ],
+        "summary": "ListAdoptions",
+        "operationId": "adoptionListAdoptions",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "status",
+            "in": "query",
+            "allowEmptyValue": true
+          },
+          {
+            "type": "integer",
+            "default": 1,
+            "example": 1,
+            "name": "page",
+            "in": "query",
+            "allowEmptyValue": true
+          },
+          {
+            "type": "integer",
+            "default": 20,
+            "example": 20,
+            "name": "pageSize",
+            "in": "query",
+            "allowEmptyValue": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "applications": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "catId",
+                      "catName",
+                      "applicantId",
+                      "applicantName",
+                      "status",
+                      "rejectReason",
+                      "requiredPoints",
+                      "appliedAt",
+                      "updatedAt"
+                    ],
+                    "properties": {
+                      "applicantId": {
+                        "type": "integer"
+                      },
+                      "applicantName": {
+                        "type": "string"
+                      },
+                      "appliedAt": {
+                        "type": "integer"
+                      },
+                      "catId": {
+                        "type": "integer"
+                      },
+                      "catName": {
+                        "type": "string"
+                      },
+                      "id": {
+                        "type": "integer"
+                      },
+                      "rejectReason": {
+                        "type": "string"
+                      },
+                      "requiredPoints": {
+                        "type": "integer"
+                      },
+                      "status": {
+                        "type": "integer"
+                      },
+                      "updatedAt": {
+                        "type": "integer"
+                      }
+                    }
+                  }
+                },
+                "total": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/adoption/apply": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "领养模块"
+        ],
+        "summary": "ApplyAdoption",
+        "operationId": "adoptionApplyAdoption",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "catId"
+              ],
+              "properties": {
+                "catId": {
+                  "type": "integer"
+                },
+                "note": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "applicationId": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/adoption/{id}": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "领养模块"
+        ],
+        "summary": "GetAdoption",
+        "operationId": "adoptionGetAdoption",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "applicantId": {
+                  "type": "integer"
+                },
+                "applicantName": {
+                  "type": "string"
+                },
+                "appliedAt": {
+                  "type": "integer"
+                },
+                "catId": {
+                  "type": "integer"
+                },
+                "catName": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "integer"
+                },
+                "rejectReason": {
+                  "type": "string"
+                },
+                "requiredPoints": {
+                  "type": "integer"
+                },
+                "status": {
+                  "type": "integer"
+                },
+                "updatedAt": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/adoption/{id}/followup": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "领养模块"
+        ],
+        "summary": "ListFollowUps",
+        "operationId": "adoptionListFollowUps",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "id",
+                  "applicationId",
+                  "applicantId",
+                  "stage",
+                  "content",
+                  "photos",
+                  "submittedAt"
+                ],
+                "properties": {
+                  "applicantId": {
+                    "type": "integer"
+                  },
+                  "applicationId": {
+                    "type": "integer"
+                  },
+                  "content": {
+                    "type": "string"
+                  },
+                  "id": {
+                    "type": "integer"
+                  },
+                  "photos": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "stage": {
+                    "type": "string"
+                  },
+                  "submittedAt": {
+                    "type": "integer"
+                  }
+                }
+              },
+              "properties": {
+                "applicantId": {
+                  "type": "integer"
+                },
+                "applicationId": {
+                  "type": "integer"
+                },
+                "content": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "integer"
+                },
+                "photos": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "stage": {
+                  "type": "string"
+                },
+                "submittedAt": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "领养模块"
+        ],
+        "summary": "SubmitFollowUp",
+        "operationId": "adoptionSubmitFollowUp",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "stage",
+                "content"
+              ],
+              "properties": {
+                "content": {
+                  "type": "string"
+                },
+                "photos": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "stage": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {}
+          }
+        }
+      }
+    },
+    "/api/v1/adoption/{id}/review": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "领养模块"
+        ],
+        "summary": "ReviewAdoption",
+        "operationId": "adoptionReviewAdoption",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "approved"
+              ],
+              "properties": {
+                "approved": {
+                  "type": "boolean"
+                },
+                "rejectReason": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {}
+          }
+        }
+      }
+    },
+    "/api/v1/auth/login": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "认证模块"
+        ],
+        "summary": "Login",
+        "operationId": "authLogin",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "username",
+                "password"
+              ],
+              "properties": {
+                "password": {
+                  "type": "string"
+                },
+                "username": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "token": {
+                  "type": "string"
+                },
+                "userId": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/register": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "认证模块"
+        ],
+        "summary": "Register",
+        "operationId": "authRegister",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "username",
+                "password",
+                "phone"
+              ],
+              "properties": {
+                "password": {
+                  "type": "string"
+                },
+                "phone": {
+                  "type": "string"
+                },
+                "username": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "token": {
+                  "type": "string"
+                },
+                "userId": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/cats": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "猫咪模块"
+        ],
+        "summary": "ListCats",
+        "operationId": "catsListCats",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "gender",
+            "in": "query",
+            "allowEmptyValue": true
+          },
+          {
+            "type": "integer",
+            "name": "size",
+            "in": "query",
+            "allowEmptyValue": true
+          },
+          {
+            "type": "integer",
+            "name": "ageStage",
+            "in": "query",
+            "allowEmptyValue": true
+          },
+          {
+            "type": "integer",
+            "name": "neuterStatus",
+            "in": "query",
+            "allowEmptyValue": true
+          },
+          {
+            "type": "integer",
+            "name": "adoptionStatus",
+            "in": "query",
+            "allowEmptyValue": true
+          },
+          {
+            "type": "string",
+            "name": "keyword",
+            "in": "query",
+            "allowEmptyValue": true
+          },
+          {
+            "type": "integer",
+            "default": 1,
+            "example": 1,
+            "name": "page",
+            "in": "query",
+            "allowEmptyValue": true
+          },
+          {
+            "type": "integer",
+            "default": 20,
+            "example": 20,
+            "name": "pageSize",
+            "in": "query",
+            "allowEmptyValue": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "cats": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "name",
+                      "gender",
+                      "ageStage",
+                      "size",
+                      "neuterStatus",
+                      "adoptionStatus",
+                      "foundLocation",
+                      "foundLat",
+                      "foundLng",
+                      "description",
+                      "tags",
+                      "photos",
+                      "createdAt",
+                      "updatedAt"
+                    ],
+                    "properties": {
+                      "adoptionStatus": {
+                        "type": "integer"
+                      },
+                      "ageStage": {
+                        "type": "integer"
+                      },
+                      "createdAt": {
+                        "type": "integer"
+                      },
+                      "description": {
+                        "type": "string"
+                      },
+                      "foundLat": {
+                        "type": "number"
+                      },
+                      "foundLng": {
+                        "type": "number"
+                      },
+                      "foundLocation": {
+                        "type": "string"
+                      },
+                      "gender": {
+                        "type": "integer"
+                      },
+                      "id": {
+                        "type": "integer"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "neuterStatus": {
+                        "type": "integer"
+                      },
+                      "photos": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "size": {
+                        "type": "integer"
+                      },
+                      "tags": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "updatedAt": {
+                        "type": "integer"
+                      }
+                    }
+                  }
+                },
+                "total": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "猫咪模块"
+        ],
+        "summary": "CreateCat",
+        "operationId": "catsCreateCat",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "name",
+                "gender",
+                "ageStage",
+                "size",
+                "neuterStatus",
+                "adoptionStatus",
+                "foundLocation",
+                "foundLat",
+                "foundLng"
+              ],
+              "properties": {
+                "adoptionStatus": {
+                  "type": "integer"
+                },
+                "ageStage": {
+                  "type": "integer"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "foundLat": {
+                  "type": "number"
+                },
+                "foundLng": {
+                  "type": "number"
+                },
+                "foundLocation": {
+                  "type": "string"
+                },
+                "gender": {
+                  "type": "integer"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "neuterStatus": {
+                  "type": "integer"
+                },
+                "photos": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "size": {
+                  "type": "integer"
+                },
+                "tags": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "catId": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/cats/heatmap": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "猫咪模块"
+        ],
+        "summary": "GetHeatmap",
+        "operationId": "catsGetHeatmap",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "mapType",
+            "in": "query",
+            "allowEmptyValue": true
+          },
+          {
+            "type": "string",
+            "name": "catStatus",
+            "in": "query",
+            "allowEmptyValue": true
+          },
+          {
+            "type": "integer",
+            "name": "timeFrom",
+            "in": "query",
+            "allowEmptyValue": true
+          },
+          {
+            "type": "integer",
+            "name": "timeTo",
+            "in": "query",
+            "allowEmptyValue": true
+          },
+          {
+            "type": "string",
+            "name": "area",
+            "in": "query",
+            "allowEmptyValue": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "points": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "lat",
+                      "lng",
+                      "weight",
+                      "area"
+                    ],
+                    "properties": {
+                      "area": {
+                        "type": "string"
+                      },
+                      "lat": {
+                        "type": "number"
+                      },
+                      "lng": {
+                        "type": "number"
+                      },
+                      "weight": {
+                        "type": "integer"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/cats/stats": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "猫咪模块"
+        ],
+        "summary": "GetCatStats",
+        "operationId": "catsGetCatStats",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "activeVolunteers": {
+                  "type": "integer"
+                },
+                "adoptedCats": {
+                  "type": "integer"
+                },
+                "neuteredCats": {
+                  "type": "integer"
+                },
+                "totalCats": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/cats/{id}": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "猫咪模块"
+        ],
+        "summary": "GetCat",
+        "operationId": "catsGetCat",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "adoptionStatus": {
+                  "type": "integer"
+                },
+                "ageStage": {
+                  "type": "integer"
+                },
+                "createdAt": {
+                  "type": "integer"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "foundLat": {
+                  "type": "number"
+                },
+                "foundLng": {
+                  "type": "number"
+                },
+                "foundLocation": {
+                  "type": "string"
+                },
+                "gender": {
+                  "type": "integer"
+                },
+                "id": {
+                  "type": "integer"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "neuterStatus": {
+                  "type": "integer"
+                },
+                "photos": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "size": {
+                  "type": "integer"
+                },
+                "tags": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "updatedAt": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "猫咪模块"
+        ],
+        "summary": "UpdateCat",
+        "operationId": "catsUpdateCat",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "adoptionStatus": {
+                  "type": "integer"
+                },
+                "ageStage": {
+                  "type": "integer"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "foundLat": {
+                  "type": "number"
+                },
+                "foundLng": {
+                  "type": "number"
+                },
+                "foundLocation": {
+                  "type": "string"
+                },
+                "gender": {
+                  "type": "integer"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "neuterStatus": {
+                  "type": "integer"
+                },
+                "photos": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "size": {
+                  "type": "integer"
+                },
+                "tags": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {}
+          }
+        }
+      },
+      "delete": {
+        "consumes": [
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "猫咪模块"
+        ],
+        "summary": "DeleteCat",
+        "operationId": "catsDeleteCat",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {}
+          }
+        }
+      }
+    },
+    "/api/v1/cats/{id}/health": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "猫咪模块"
+        ],
+        "summary": "ListHealthRecords",
+        "operationId": "catsListHealthRecords",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "id",
+                  "catId",
+                  "recordType",
+                  "content",
+                  "operator",
+                  "recordDate"
+                ],
+                "properties": {
+                  "catId": {
+                    "type": "integer"
+                  },
+                  "content": {
+                    "type": "string"
+                  },
+                  "id": {
+                    "type": "integer"
+                  },
+                  "operator": {
+                    "type": "string"
+                  },
+                  "recordDate": {
+                    "type": "integer"
+                  },
+                  "recordType": {
+                    "type": "string"
+                  }
+                }
+              },
+              "properties": {
+                "catId": {
+                  "type": "integer"
+                },
+                "content": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "integer"
+                },
+                "operator": {
+                  "type": "string"
+                },
+                "recordDate": {
+                  "type": "integer"
+                },
+                "recordType": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "猫咪模块"
+        ],
+        "summary": "AddHealthRecord",
+        "operationId": "catsAddHealthRecord",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "recordType",
+                "content",
+                "operator",
+                "recordDate"
+              ],
+              "properties": {
+                "content": {
+                  "type": "string"
+                },
+                "operator": {
+                  "type": "string"
+                },
+                "recordDate": {
+                  "type": "integer"
+                },
+                "recordType": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "catId": {
+                  "type": "integer"
+                },
+                "content": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "integer"
+                },
+                "operator": {
+                  "type": "string"
+                },
+                "recordDate": {
+                  "type": "integer"
+                },
+                "recordType": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/cats/{id}/rescue": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "猫咪模块"
+        ],
+        "summary": "ListRescueRecords",
+        "operationId": "catsListRescueRecords",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "id",
+                  "catId",
+                  "rescuerId",
+                  "rescuerName",
+                  "status",
+                  "description",
+                  "rescueTime"
+                ],
+                "properties": {
+                  "catId": {
+                    "type": "integer"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "id": {
+                    "type": "integer"
+                  },
+                  "rescueTime": {
+                    "type": "integer"
+                  },
+                  "rescuerId": {
+                    "type": "integer"
+                  },
+                  "rescuerName": {
+                    "type": "string"
+                  },
+                  "status": {
+                    "type": "string"
+                  }
+                }
+              },
+              "properties": {
+                "catId": {
+                  "type": "integer"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "integer"
+                },
+                "rescueTime": {
+                  "type": "integer"
+                },
+                "rescuerId": {
+                  "type": "integer"
+                },
+                "rescuerName": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "猫咪模块"
+        ],
+        "summary": "AddRescueRecord",
+        "operationId": "catsAddRescueRecord",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "status",
+                "description"
+              ],
+              "properties": {
+                "description": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "catId": {
+                  "type": "integer"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "integer"
+                },
+                "rescueTime": {
+                  "type": "integer"
+                },
+                "rescuerId": {
+                  "type": "integer"
+                },
+                "rescuerName": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/posts": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "动态模块"
+        ],
+        "summary": "ListPosts",
+        "operationId": "postsListPosts",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "catId",
+            "in": "query",
+            "allowEmptyValue": true
+          },
+          {
+            "type": "integer",
+            "name": "authorId",
+            "in": "query",
+            "allowEmptyValue": true
+          },
+          {
+            "type": "integer",
+            "default": 1,
+            "example": 1,
+            "name": "page",
+            "in": "query",
+            "allowEmptyValue": true
+          },
+          {
+            "type": "integer",
+            "default": 20,
+            "example": 20,
+            "name": "pageSize",
+            "in": "query",
+            "allowEmptyValue": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "posts": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "authorId",
+                      "authorName",
+                      "avatar",
+                      "catId",
+                      "catName",
+                      "content",
+                      "images",
+                      "likes",
+                      "comments",
+                      "favorites",
+                      "createdAt"
+                    ],
+                    "properties": {
+                      "authorId": {
+                        "type": "integer"
+                      },
+                      "authorName": {
+                        "type": "string"
+                      },
+                      "avatar": {
+                        "type": "string"
+                      },
+                      "catId": {
+                        "type": "integer"
+                      },
+                      "catName": {
+                        "type": "string"
+                      },
+                      "comments": {
+                        "type": "integer"
+                      },
+                      "content": {
+                        "type": "string"
+                      },
+                      "createdAt": {
+                        "type": "integer"
+                      },
+                      "favorites": {
+                        "type": "integer"
+                      },
+                      "id": {
+                        "type": "integer"
+                      },
+                      "images": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "likes": {
+                        "type": "integer"
+                      }
+                    }
+                  }
+                },
+                "total": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "动态模块"
+        ],
+        "summary": "CreatePost",
+        "operationId": "postsCreatePost",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "catId",
+                "content"
+              ],
+              "properties": {
+                "catId": {
+                  "type": "integer"
+                },
+                "content": {
+                  "type": "string"
+                },
+                "images": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "postId": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/posts/{id}": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "动态模块"
+        ],
+        "summary": "GetPost",
+        "operationId": "postsGetPost",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "authorId": {
+                  "type": "integer"
+                },
+                "authorName": {
+                  "type": "string"
+                },
+                "avatar": {
+                  "type": "string"
+                },
+                "catId": {
+                  "type": "integer"
+                },
+                "catName": {
+                  "type": "string"
+                },
+                "comments": {
+                  "type": "integer"
+                },
+                "content": {
+                  "type": "string"
+                },
+                "createdAt": {
+                  "type": "integer"
+                },
+                "favorites": {
+                  "type": "integer"
+                },
+                "id": {
+                  "type": "integer"
+                },
+                "images": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "likes": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "consumes": [
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "动态模块"
+        ],
+        "summary": "DeletePost",
+        "operationId": "postsDeletePost",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {}
+          }
+        }
+      }
+    },
+    "/api/v1/posts/{id}/comments": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "动态模块"
+        ],
+        "summary": "ListComments",
+        "operationId": "postsListComments",
+        "parameters": [
+          {
+            "type": "integer",
+            "default": 1,
+            "example": 1,
+            "name": "page",
+            "in": "query",
+            "allowEmptyValue": true
+          },
+          {
+            "type": "integer",
+            "default": 20,
+            "example": 20,
+            "name": "pageSize",
+            "in": "query",
+            "allowEmptyValue": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "comments": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "postId",
+                      "authorId",
+                      "authorName",
+                      "avatar",
+                      "content",
+                      "createdAt"
+                    ],
+                    "properties": {
+                      "authorId": {
+                        "type": "integer"
+                      },
+                      "authorName": {
+                        "type": "string"
+                      },
+                      "avatar": {
+                        "type": "string"
+                      },
+                      "content": {
+                        "type": "string"
+                      },
+                      "createdAt": {
+                        "type": "integer"
+                      },
+                      "id": {
+                        "type": "integer"
+                      },
+                      "postId": {
+                        "type": "integer"
+                      }
+                    }
+                  }
+                },
+                "total": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "动态模块"
+        ],
+        "summary": "AddComment",
+        "operationId": "postsAddComment",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "content"
+              ],
+              "properties": {
+                "content": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {}
+          }
+        }
+      }
+    },
+    "/api/v1/posts/{id}/comments/{cid}": {
+      "delete": {
+        "consumes": [
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "动态模块"
+        ],
+        "summary": "DeleteComment",
+        "operationId": "postsDeleteComment",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "type": "integer",
+            "name": "cid",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {}
+          }
+        }
+      }
+    },
+    "/api/v1/posts/{id}/favorite": {
+      "post": {
+        "consumes": [
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "动态模块"
+        ],
+        "summary": "FavoritePost",
+        "operationId": "postsFavoritePost",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {}
+          }
+        }
+      }
+    },
+    "/api/v1/posts/{id}/like": {
+      "post": {
+        "consumes": [
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "动态模块"
+        ],
+        "summary": "LikePost",
+        "operationId": "postsLikePost",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {}
+          }
+        }
+      }
+    },
+    "/api/v1/posts/{id}/report": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "动态模块"
+        ],
+        "summary": "ReportPost",
+        "operationId": "postsReportPost",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "reason"
+              ],
+              "properties": {
+                "reason": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {}
+          }
+        }
+      }
+    },
+    "/api/v1/posts/{id}/unfavorite": {
+      "post": {
+        "consumes": [
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "动态模块"
+        ],
+        "summary": "UnfavoritePost",
+        "operationId": "postsUnfavoritePost",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {}
+          }
+        }
+      }
+    },
+    "/api/v1/posts/{id}/unlike": {
+      "post": {
+        "consumes": [
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "动态模块"
+        ],
+        "summary": "UnlikePost",
+        "operationId": "postsUnlikePost",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {}
+          }
+        }
+      }
+    },
+    "/api/v1/tasks": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "任务模块"
+        ],
+        "summary": "ListTasks",
+        "operationId": "tasksListTasks",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "catId",
+            "in": "query",
+            "allowEmptyValue": true
+          },
+          {
+            "type": "integer",
+            "name": "taskType",
+            "in": "query",
+            "allowEmptyValue": true
+          },
+          {
+            "type": "integer",
+            "name": "urgency",
+            "in": "query",
+            "allowEmptyValue": true
+          },
+          {
+            "type": "integer",
+            "name": "status",
+            "in": "query",
+            "allowEmptyValue": true
+          },
+          {
+            "type": "integer",
+            "name": "assignedTo",
+            "in": "query",
+            "allowEmptyValue": true
+          },
+          {
+            "type": "number",
+            "name": "nearLat",
+            "in": "query",
+            "allowEmptyValue": true
+          },
+          {
+            "type": "number",
+            "name": "nearLng",
+            "in": "query",
+            "allowEmptyValue": true
+          },
+          {
+            "type": "number",
+            "name": "radiusKm",
+            "in": "query",
+            "allowEmptyValue": true
+          },
+          {
+            "type": "integer",
+            "default": 1,
+            "example": 1,
+            "name": "page",
+            "in": "query",
+            "allowEmptyValue": true
+          },
+          {
+            "type": "integer",
+            "default": 20,
+            "example": 20,
+            "name": "pageSize",
+            "in": "query",
+            "allowEmptyValue": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "tasks": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "catId",
+                      "catName",
+                      "title",
+                      "description",
+                      "taskType",
+                      "urgency",
+                      "difficulty",
+                      "status",
+                      "pointsReward",
+                      "maxAssignees",
+                      "currentAssignees",
+                      "deadline",
+                      "createdBy",
+                      "createdAt",
+                      "updatedAt",
+                      "location",
+                      "lat",
+                      "lng"
+                    ],
+                    "properties": {
+                      "catId": {
+                        "type": "integer"
+                      },
+                      "catName": {
+                        "type": "string"
+                      },
+                      "createdAt": {
+                        "type": "integer"
+                      },
+                      "createdBy": {
+                        "type": "integer"
+                      },
+                      "currentAssignees": {
+                        "type": "integer"
+                      },
+                      "deadline": {
+                        "type": "integer"
+                      },
+                      "description": {
+                        "type": "string"
+                      },
+                      "difficulty": {
+                        "type": "integer"
+                      },
+                      "id": {
+                        "type": "integer"
+                      },
+                      "lat": {
+                        "type": "number"
+                      },
+                      "lng": {
+                        "type": "number"
+                      },
+                      "location": {
+                        "type": "string"
+                      },
+                      "maxAssignees": {
+                        "type": "integer"
+                      },
+                      "pointsReward": {
+                        "type": "integer"
+                      },
+                      "status": {
+                        "type": "integer"
+                      },
+                      "taskType": {
+                        "type": "integer"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "updatedAt": {
+                        "type": "integer"
+                      },
+                      "urgency": {
+                        "type": "integer"
+                      }
+                    }
+                  }
+                },
+                "total": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "任务模块"
+        ],
+        "summary": "CreateTask",
+        "operationId": "tasksCreateTask",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "catId",
+                "title",
+                "description",
+                "taskType",
+                "urgency",
+                "difficulty",
+                "pointsReward",
+                "deadline"
+              ],
+              "properties": {
+                "catId": {
+                  "type": "integer"
+                },
+                "deadline": {
+                  "type": "integer"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "difficulty": {
+                  "type": "integer"
+                },
+                "lat": {
+                  "type": "number"
+                },
+                "lng": {
+                  "type": "number"
+                },
+                "location": {
+                  "type": "string"
+                },
+                "maxAssignees": {
+                  "type": "integer",
+                  "default": 1,
+                  "example": 1
+                },
+                "pointsReward": {
+                  "type": "integer"
+                },
+                "taskType": {
+                  "type": "integer"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "urgency": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "taskId": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/tasks/{id}": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "任务模块"
+        ],
+        "summary": "GetTask",
+        "operationId": "tasksGetTask",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "assignees": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "userId",
+                      "username",
+                      "status",
+                      "assignedAt"
+                    ],
+                    "properties": {
+                      "assignedAt": {
+                        "type": "integer"
+                      },
+                      "status": {
+                        "type": "string"
+                      },
+                      "userId": {
+                        "type": "integer"
+                      },
+                      "username": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "logs": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "taskId",
+                      "operatorId",
+                      "operator",
+                      "action",
+                      "remark",
+                      "createdAt"
+                    ],
+                    "properties": {
+                      "action": {
+                        "type": "string"
+                      },
+                      "createdAt": {
+                        "type": "integer"
+                      },
+                      "id": {
+                        "type": "integer"
+                      },
+                      "operator": {
+                        "type": "string"
+                      },
+                      "operatorId": {
+                        "type": "integer"
+                      },
+                      "remark": {
+                        "type": "string"
+                      },
+                      "taskId": {
+                        "type": "integer"
+                      }
+                    }
+                  }
+                },
+                "task": {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "catId",
+                    "catName",
+                    "title",
+                    "description",
+                    "taskType",
+                    "urgency",
+                    "difficulty",
+                    "status",
+                    "pointsReward",
+                    "maxAssignees",
+                    "currentAssignees",
+                    "deadline",
+                    "createdBy",
+                    "createdAt",
+                    "updatedAt",
+                    "location",
+                    "lat",
+                    "lng"
+                  ],
+                  "properties": {
+                    "catId": {
+                      "type": "integer"
+                    },
+                    "catName": {
+                      "type": "string"
+                    },
+                    "createdAt": {
+                      "type": "integer"
+                    },
+                    "createdBy": {
+                      "type": "integer"
+                    },
+                    "currentAssignees": {
+                      "type": "integer"
+                    },
+                    "deadline": {
+                      "type": "integer"
+                    },
+                    "description": {
+                      "type": "string"
+                    },
+                    "difficulty": {
+                      "type": "integer"
+                    },
+                    "id": {
+                      "type": "integer"
+                    },
+                    "lat": {
+                      "type": "number"
+                    },
+                    "lng": {
+                      "type": "number"
+                    },
+                    "location": {
+                      "type": "string"
+                    },
+                    "maxAssignees": {
+                      "type": "integer"
+                    },
+                    "pointsReward": {
+                      "type": "integer"
+                    },
+                    "status": {
+                      "type": "integer"
+                    },
+                    "taskType": {
+                      "type": "integer"
+                    },
+                    "title": {
+                      "type": "string"
+                    },
+                    "updatedAt": {
+                      "type": "integer"
+                    },
+                    "urgency": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "任务模块"
+        ],
+        "summary": "UpdateTask",
+        "operationId": "tasksUpdateTask",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "deadline": {
+                  "type": "integer"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "difficulty": {
+                  "type": "integer"
+                },
+                "remark": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "integer"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "urgency": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {}
+          }
+        }
+      }
+    },
+    "/api/v1/tasks/{id}/abandon": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "任务模块"
+        ],
+        "summary": "AbandonTask",
+        "operationId": "tasksAbandonTask",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "reason": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {}
+          }
+        }
+      }
+    },
+    "/api/v1/tasks/{id}/claim": {
+      "post": {
+        "consumes": [
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "任务模块"
+        ],
+        "summary": "ClaimTask",
+        "operationId": "tasksClaimTask",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {}
+          }
+        }
+      }
+    },
+    "/api/v1/tasks/{id}/complete": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "任务模块"
+        ],
+        "summary": "CompleteTask",
+        "operationId": "tasksCompleteTask",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "proof": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {}
+          }
+        }
+      }
+    },
+    "/api/v1/tasks/{id}/extend": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "任务模块"
+        ],
+        "summary": "ExtendDeadline",
+        "operationId": "tasksExtendDeadline",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "newDeadline"
+              ],
+              "properties": {
+                "newDeadline": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {}
+          }
+        }
+      }
+    },
+    "/api/v1/user/feedback": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "用户模块"
+        ],
+        "summary": "SubmitFeedback",
+        "operationId": "userSubmitFeedback",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "feedbackType",
+                "content",
+                "contact"
+              ],
+              "properties": {
+                "contact": {
+                  "type": "string"
+                },
+                "content": {
+                  "type": "string"
+                },
+                "feedbackType": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "feedbackId": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/user/info": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "用户模块"
+        ],
+        "summary": "GetUserInfo",
+        "operationId": "userGetUserInfo",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "area": {
+                  "type": "string"
+                },
+                "avatar": {
+                  "type": "string"
+                },
+                "createdAt": {
+                  "type": "integer"
+                },
+                "gender": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "integer"
+                },
+                "phone": {
+                  "type": "string"
+                },
+                "points": {
+                  "type": "integer"
+                },
+                "role": {
+                  "type": "string"
+                },
+                "username": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "用户模块"
+        ],
+        "summary": "UpdateUserInfo",
+        "operationId": "userUpdateUserInfo",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "area": {
+                  "type": "string"
+                },
+                "avatar": {
+                  "type": "string"
+                },
+                "gender": {
+                  "type": "string"
+                },
+                "phone": {
+                  "type": "string"
+                },
+                "serviceTypes": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "username": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {}
+          }
+        }
+      }
+    },
+    "/api/v1/user/logout": {
+      "post": {
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "用户模块"
+        ],
+        "summary": "Logout",
+        "operationId": "userLogout",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {}
+          }
+        }
+      }
+    },
+    "/api/v1/user/notifications": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "用户模块"
+        ],
+        "summary": "GetNotificationSettings",
+        "operationId": "userGetNotificationSettings",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "adoptionNotify": {
+                  "type": "boolean"
+                },
+                "messageNotify": {
+                  "type": "boolean"
+                },
+                "pointsNotify": {
+                  "type": "boolean"
+                },
+                "systemNotify": {
+                  "type": "boolean"
+                },
+                "taskNotify": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "用户模块"
+        ],
+        "summary": "UpdateNotificationSettings",
+        "operationId": "userUpdateNotificationSettings",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "taskNotify",
+                "adoptionNotify",
+                "pointsNotify",
+                "systemNotify",
+                "messageNotify"
+              ],
+              "properties": {
+                "adoptionNotify": {
+                  "type": "boolean"
+                },
+                "messageNotify": {
+                  "type": "boolean"
+                },
+                "pointsNotify": {
+                  "type": "boolean"
+                },
+                "systemNotify": {
+                  "type": "boolean"
+                },
+                "taskNotify": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {}
+          }
+        }
+      }
+    },
+    "/api/v1/user/password": {
+      "put": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "用户模块"
+        ],
+        "summary": "ChangePassword",
+        "operationId": "userChangePassword",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "oldPassword",
+                "newPassword"
+              ],
+              "properties": {
+                "newPassword": {
+                  "type": "string"
+                },
+                "oldPassword": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {}
+          }
+        }
+      }
+    },
+    "/api/v1/user/points": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "用户模块"
+        ],
+        "summary": "GetPoints",
+        "operationId": "userGetPoints",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "points": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/user/points/logs": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "用户模块"
+        ],
+        "summary": "ListPointLogs",
+        "operationId": "userListPointLogs",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "logs": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "delta",
+                      "reason",
+                      "taskId",
+                      "balance",
+                      "createdAt"
+                    ],
+                    "properties": {
+                      "balance": {
+                        "type": "integer"
+                      },
+                      "createdAt": {
+                        "type": "integer"
+                      },
+                      "delta": {
+                        "type": "integer"
+                      },
+                      "id": {
+                        "type": "integer"
+                      },
+                      "reason": {
+                        "type": "string"
+                      },
+                      "taskId": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "total": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "x-date": "2026-04-17 17:43:19",
+  "x-description": "This is a goctl generated swagger file.",
+  "x-github": "https://github.com/zeromicro/go-zero",
+  "x-go-zero-doc": "https://go-zero.dev/",
+  "x-goctl-version": "1.10.1"
+}

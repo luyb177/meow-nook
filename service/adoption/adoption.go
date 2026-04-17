@@ -8,13 +8,16 @@ import (
 	"github.com/luyb177/meow-nook/service/adoption/internal/config"
 	"github.com/luyb177/meow-nook/service/adoption/internal/server"
 	"github.com/luyb177/meow-nook/service/adoption/internal/svc"
+	"github.com/luyb177/meow-nook/service/adoption/pb/adoption/v1"
+
 	"github.com/zeromicro/go-zero/core/conf"
+	"github.com/zeromicro/go-zero/core/service"
 	"github.com/zeromicro/go-zero/zrpc"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )
 
-var configFile = flag.String("f", "etc/adoption.yaml", "config file path")
+var configFile = flag.String("f", "etc/adoption.yaml", "the config file")
 
 func main() {
 	flag.Parse()
@@ -33,11 +36,14 @@ func main() {
 	ctx := svc.NewServiceContext(c)
 
 	s := zrpc.MustNewServer(c.RpcServerConf, func(grpcServer *grpc.Server) {
-		server.RegisterAdoptionServer(grpcServer, ctx)
-		reflection.Register(grpcServer)
+		v1.RegisterAdoptionServiceServer(grpcServer, server.NewAdoptionServiceServer(ctx))
+
+		if c.Mode == service.DevMode || c.Mode == service.TestMode {
+			reflection.Register(grpcServer)
+		}
 	})
 	defer s.Stop()
 
-	logger.Info("adoption rpc service starting on " + c.ListenOn)
+	fmt.Printf("Starting rpc server at %s...\n", c.ListenOn)
 	s.Start()
 }

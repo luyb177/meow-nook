@@ -32,7 +32,7 @@ func main() {
 	}
 	defer logger.Sync()
 
-	// Register a unified error handler so that *AppError values are serialised
+	// Register a unified error handler so that *AppError values are serialized
 	// as { "code": N, "msg": "…" } instead of a plain string.
 	httpx.SetErrorHandler(func(err error) (int, interface{}) {
 		if ae, ok := err.(*errorx.AppError); ok {

@@ -65,6 +65,16 @@ goctl rpc protoc pb/cat/v1/cat.proto --proto_path=. --proto_path=..\..\third_par
 goctl rpc protoc pb/adoption/v1/adoption.proto --proto_path=. --proto_path=..\..\third_party --go_out=. --go-grpc_out=. --zrpc_out=. --client=true
 ```
 
+- gateway 服务
+```bash
+goctl api go -api gateway.api -dir . --style go_zero
+```
+
+- 生成 swag 文档
+```bash
+goctl api swagger -api gateway.api -dir ./docs -filename swagger
+```
+
 ### impot 排序
 对 import 进行排序的命令 可以直接在根目录里执行
 ```bash
