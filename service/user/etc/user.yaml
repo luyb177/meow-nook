@@ -19,4 +19,4 @@ Redis:
 
 JWT:
   AccessSecret: "meow-nook-secret-change-in-production"
-  AccessExpire: 86400
+  AccessExpire: 86400 # 1 day in seconds

@@ -34,6 +34,7 @@ Thumbs.db
 
 # Log files
 *.log
+**/logs
 
 # Docker
 .dockerignore
@@ -46,3 +47,7 @@ Thumbs.db
 # Temporary files
 tmp/
 temp/
+
+# config
+*.yaml
+*/etc/*.yaml

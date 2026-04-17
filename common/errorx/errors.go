@@ -5,6 +5,7 @@
 package errorx
 
 import (
+	"errors"
 	"fmt"
 	"net/http"
 )
@@ -18,63 +19,63 @@ const (
 	CodeOK = 0
 
 	// Client-side errors (4xx)
-	CodeBadRequest       = 400
-	CodeUnauthorized     = 401
-	CodeForbidden        = 403
-	CodeNotFound         = 404
-	CodeConflict         = 409
-	CodeUnprocessable    = 422
-	CodeTooManyRequests  = 429
+	CodeBadRequest      = 400
+	CodeUnauthorized    = 401
+	CodeForbidden       = 403
+	CodeNotFound        = 404
+	CodeConflict        = 409
+	CodeUnprocessable   = 422
+	CodeTooManyRequests = 429
 
 	// Server-side errors (5xx)
 	CodeInternalError = 500
 	CodeUnavailable   = 503
 
 	// Business-domain codes (starting at 1000)
-	CodeUserNotFound         = 1001
-	CodeUserAlreadyExists    = 1002
-	CodePasswordWrong        = 1003
-	CodeTokenInvalid         = 1004
-	CodeTokenExpired         = 1005
-	CodeInsufficientPoints   = 1010
-	CodeCatNotFound          = 1020
-	CodeTaskNotFound         = 1030
-	CodeTaskAlreadyClaimed   = 1031
-	CodeTaskFull             = 1032
-	CodeTaskNotOwned         = 1033
-	CodeAdoptionNotFound     = 1040
+	CodeUserNotFound           = 1001
+	CodeUserAlreadyExists      = 1002
+	CodePasswordWrong          = 1003
+	CodeTokenInvalid           = 1004
+	CodeTokenExpired           = 1005
+	CodeInsufficientPoints     = 1010
+	CodeCatNotFound            = 1020
+	CodeTaskNotFound           = 1030
+	CodeTaskAlreadyClaimed     = 1031
+	CodeTaskFull               = 1032
+	CodeTaskNotOwned           = 1033
+	CodeAdoptionNotFound       = 1040
 	CodeAdoptionAlreadyApplied = 1041
-	CodePostNotFound         = 1050
-	CodePermissionDenied     = 1060
+	CodePostNotFound           = 1050
+	CodePermissionDenied       = 1060
 )
 
 // codeToHTTPStatus maps business error codes to HTTP status codes.
 var codeToHTTPStatus = map[int]int{
-	CodeOK:                  http.StatusOK,
-	CodeBadRequest:          http.StatusBadRequest,
-	CodeUnauthorized:        http.StatusUnauthorized,
-	CodeForbidden:           http.StatusForbidden,
-	CodeNotFound:            http.StatusNotFound,
-	CodeConflict:            http.StatusConflict,
-	CodeUnprocessable:       http.StatusUnprocessableEntity,
-	CodeTooManyRequests:     http.StatusTooManyRequests,
-	CodeInternalError:       http.StatusInternalServerError,
-	CodeUnavailable:         http.StatusServiceUnavailable,
-	CodeUserNotFound:        http.StatusNotFound,
-	CodeUserAlreadyExists:   http.StatusConflict,
-	CodePasswordWrong:       http.StatusUnauthorized,
-	CodeTokenInvalid:        http.StatusUnauthorized,
-	CodeTokenExpired:        http.StatusUnauthorized,
-	CodeInsufficientPoints:  http.StatusForbidden,
-	CodeCatNotFound:         http.StatusNotFound,
-	CodeTaskNotFound:        http.StatusNotFound,
-	CodeTaskAlreadyClaimed:  http.StatusConflict,
-	CodeTaskFull:            http.StatusConflict,
-	CodeTaskNotOwned:        http.StatusForbidden,
-	CodeAdoptionNotFound:    http.StatusNotFound,
+	CodeOK:                     http.StatusOK,
+	CodeBadRequest:             http.StatusBadRequest,
+	CodeUnauthorized:           http.StatusUnauthorized,
+	CodeForbidden:              http.StatusForbidden,
+	CodeNotFound:               http.StatusNotFound,
+	CodeConflict:               http.StatusConflict,
+	CodeUnprocessable:          http.StatusUnprocessableEntity,
+	CodeTooManyRequests:        http.StatusTooManyRequests,
+	CodeInternalError:          http.StatusInternalServerError,
+	CodeUnavailable:            http.StatusServiceUnavailable,
+	CodeUserNotFound:           http.StatusNotFound,
+	CodeUserAlreadyExists:      http.StatusConflict,
+	CodePasswordWrong:          http.StatusUnauthorized,
+	CodeTokenInvalid:           http.StatusUnauthorized,
+	CodeTokenExpired:           http.StatusUnauthorized,
+	CodeInsufficientPoints:     http.StatusForbidden,
+	CodeCatNotFound:            http.StatusNotFound,
+	CodeTaskNotFound:           http.StatusNotFound,
+	CodeTaskAlreadyClaimed:     http.StatusConflict,
+	CodeTaskFull:               http.StatusConflict,
+	CodeTaskNotOwned:           http.StatusForbidden,
+	CodeAdoptionNotFound:       http.StatusNotFound,
 	CodeAdoptionAlreadyApplied: http.StatusConflict,
-	CodePostNotFound:        http.StatusNotFound,
-	CodePermissionDenied:    http.StatusForbidden,
+	CodePostNotFound:           http.StatusNotFound,
+	CodePermissionDenied:       http.StatusForbidden,
 }
 
 // ──────────────────────────────────────────────
@@ -130,26 +131,26 @@ func Wrap(code int, msg string, cause error) *AppError {
 // ──────────────────────────────────────────────
 
 var (
-	ErrBadRequest        = New(CodeBadRequest, "请求参数错误")
-	ErrUnauthorized      = New(CodeUnauthorized, "请先登录")
-	ErrForbidden         = New(CodeForbidden, "无权限访问")
-	ErrNotFound          = New(CodeNotFound, "资源不存在")
-	ErrInternalServer    = New(CodeInternalError, "服务器内部错误")
-	ErrTokenInvalid      = New(CodeTokenInvalid, "令牌无效")
-	ErrTokenExpired      = New(CodeTokenExpired, "令牌已过期")
-	ErrUserNotFound      = New(CodeUserNotFound, "用户不存在")
-	ErrUserAlreadyExists = New(CodeUserAlreadyExists, "用户名已存在")
-	ErrPasswordWrong     = New(CodePasswordWrong, "密码错误")
-	ErrInsufficientPoints = New(CodeInsufficientPoints, "积分不足")
-	ErrCatNotFound       = New(CodeCatNotFound, "猫咪档案不存在")
-	ErrTaskNotFound      = New(CodeTaskNotFound, "任务不存在")
-	ErrTaskAlreadyClaimed = New(CodeTaskAlreadyClaimed, "任务已被认领")
-	ErrTaskFull          = New(CodeTaskFull, "任务认领人数已满")
-	ErrTaskNotOwned      = New(CodeTaskNotOwned, "非本人认领的任务")
-	ErrAdoptionNotFound  = New(CodeAdoptionNotFound, "领养申请不存在")
+	ErrBadRequest             = New(CodeBadRequest, "请求参数错误")
+	ErrUnauthorized           = New(CodeUnauthorized, "请先登录")
+	ErrForbidden              = New(CodeForbidden, "无权限访问")
+	ErrNotFound               = New(CodeNotFound, "资源不存在")
+	ErrInternalServer         = New(CodeInternalError, "服务器内部错误")
+	ErrTokenInvalid           = New(CodeTokenInvalid, "令牌无效")
+	ErrTokenExpired           = New(CodeTokenExpired, "令牌已过期")
+	ErrUserNotFound           = New(CodeUserNotFound, "用户不存在")
+	ErrUserAlreadyExists      = New(CodeUserAlreadyExists, "用户名已存在")
+	ErrPasswordWrong          = New(CodePasswordWrong, "密码错误")
+	ErrInsufficientPoints     = New(CodeInsufficientPoints, "积分不足")
+	ErrCatNotFound            = New(CodeCatNotFound, "猫咪档案不存在")
+	ErrTaskNotFound           = New(CodeTaskNotFound, "任务不存在")
+	ErrTaskAlreadyClaimed     = New(CodeTaskAlreadyClaimed, "任务已被认领")
+	ErrTaskFull               = New(CodeTaskFull, "任务认领人数已满")
+	ErrTaskNotOwned           = New(CodeTaskNotOwned, "非本人认领的任务")
+	ErrAdoptionNotFound       = New(CodeAdoptionNotFound, "领养申请不存在")
 	ErrAdoptionAlreadyApplied = New(CodeAdoptionAlreadyApplied, "已申请过该猫咪的领养")
-	ErrPostNotFound      = New(CodePostNotFound, "动态不存在")
-	ErrPermissionDenied  = New(CodePermissionDenied, "没有操作权限")
+	ErrPostNotFound           = New(CodePostNotFound, "动态不存在")
+	ErrPermissionDenied       = New(CodePermissionDenied, "没有操作权限")
 )
 
 // ──────────────────────────────────────────────
@@ -158,15 +159,26 @@ var (
 
 // IsAppError reports whether err is an *AppError.
 func IsAppError(err error) bool {
-	_, ok := err.(*AppError)
-	return ok
+	var e *AppError
+	return errors.As(err, &e)
 }
 
 // CodeOf returns the business code of err if it is an *AppError, or
 // CodeInternalError otherwise.
 func CodeOf(err error) int {
-	if e, ok := err.(*AppError); ok {
+	var e *AppError
+	if errors.As(err, &e) {
 		return e.Code
 	}
 	return CodeInternalError
+}
+
+// MsgOf returns the user-facing message of err if it is an *AppError, or
+// a generic message otherwise.
+func MsgOf(err error) string {
+	var e *AppError
+	if errors.As(err, &e) {
+		return e.Msg
+	}
+	return "服务器内部错误"
 }

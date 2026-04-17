@@ -8,7 +8,11 @@ import (
 
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
+	"gopkg.in/natefinch/lumberjack.v2"
 )
+
+// todo trace 支持
+// todo context 支持
 
 var global *zap.Logger
 
@@ -30,6 +34,10 @@ type Config struct {
 // Init initialises the global logger.  It is safe to call multiple times; each
 // call replaces the previous global logger.
 func Init(cfg Config) error {
+	if global != nil {
+		_ = global.Sync()
+	}
+
 	level := zap.InfoLevel
 	if err := level.UnmarshalText([]byte(cfg.Level)); err != nil {
 		level = zap.InfoLevel
@@ -46,17 +54,13 @@ func Init(cfg Config) error {
 	}
 
 	encCfg := zapcore.EncoderConfig{
-		TimeKey:        "ts",
-		LevelKey:       "level",
-		NameKey:        "logger",
-		CallerKey:      "caller",
-		MessageKey:     "msg",
-		StacktraceKey:  "stacktrace",
-		LineEnding:     zapcore.DefaultLineEnding,
-		EncodeLevel:    zapcore.LowercaseLevelEncoder,
-		EncodeTime:     zapcore.ISO8601TimeEncoder,
-		EncodeDuration: zapcore.SecondsDurationEncoder,
-		EncodeCaller:   zapcore.ShortCallerEncoder,
+		TimeKey:      "ts",
+		LevelKey:     "level",
+		CallerKey:    "caller",
+		MessageKey:   "msg",
+		EncodeLevel:  zapcore.LowercaseLevelEncoder,
+		EncodeTime:   zapcore.ISO8601TimeEncoder,
+		EncodeCaller: zapcore.ShortCallerEncoder,
 	}
 
 	var enc zapcore.Encoder
@@ -66,18 +70,39 @@ func Init(cfg Config) error {
 		enc = zapcore.NewJSONEncoder(encCfg)
 	}
 
-	var sink zapcore.WriteSyncer
-	if outputPath == "stdout" {
-		sink = zapcore.Lock(os.Stdout)
+	var core zapcore.Core
+
+	if cfg.OutputPath == "stdout" {
+		stdoutCore := zapcore.NewCore(
+			enc,
+			zapcore.Lock(os.Stdout),
+			zap.LevelEnablerFunc(func(lvl zapcore.Level) bool {
+				return lvl < zapcore.ErrorLevel && lvl >= level
+			}),
+		)
+
+		stderrCore := zapcore.NewCore(
+			enc,
+			zapcore.Lock(os.Stderr),
+			zap.LevelEnablerFunc(func(lvl zapcore.Level) bool {
+				return lvl >= zapcore.ErrorLevel
+			}),
+		)
+
+		core = zapcore.NewTee(stdoutCore, stderrCore)
+
 	} else {
-		f, err := os.OpenFile(outputPath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0o644)
-		if err != nil {
-			return err
-		}
-		sink = zapcore.Lock(f)
+		fileSink := zapcore.AddSync(&lumberjack.Logger{
+			Filename:   cfg.OutputPath,
+			MaxSize:    100,
+			MaxBackups: 10,
+			MaxAge:     7,
+			Compress:   true,
+		})
+
+		core = zapcore.NewCore(enc, fileSink, zap.NewAtomicLevelAt(level))
 	}
 
-	core := zapcore.NewCore(enc, sink, zap.NewAtomicLevelAt(level))
 	global = zap.New(core, zap.AddCaller(), zap.AddCallerSkip(1))
 	return nil
 }
@@ -125,4 +150,11 @@ func Fatal(msg string, fields ...zap.Field) {
 // Sync flushes buffered log entries.  Call this before process exit.
 func Sync() {
 	_ = global.Sync()
+}
+
+// Sugared returns a sugared logger that provides a more ergonomic, but slightly slower, API.
+// For example, instead of `logger.Info("Failed to fetch URL.", zap.String("url", url), zap.Int("attempt", 3))`,
+// you can write `logger.Sugared().Infow("Failed to fetch URL.", "url", url, "attempt", 3)`.
+func Sugared() *zap.SugaredLogger {
+	return global.Sugar()
 }
