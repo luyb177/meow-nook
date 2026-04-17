@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 
+	"github.com/luyb177/meow-nook/common/logger"
 	"github.com/luyb177/meow-nook/service/user/internal/config"
 	"github.com/luyb177/meow-nook/service/user/internal/server"
 	"github.com/luyb177/meow-nook/service/user/internal/svc"
@@ -23,6 +24,15 @@ func main() {
 
 	var c config.Config
 	conf.MustLoad(*configFile, &c)
+
+	if err := logger.Init(logger.Config{
+		Level:    c.Log.Level,
+		Encoding: c.Log.Encoding,
+	}); err != nil {
+		panic(fmt.Sprintf("failed to init logger: %v", err))
+	}
+	defer logger.Sync()
+
 	ctx := svc.NewServiceContext(c)
 
 	s := zrpc.MustNewServer(c.RpcServerConf, func(grpcServer *grpc.Server) {

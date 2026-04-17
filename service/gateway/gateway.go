@@ -23,7 +23,7 @@ func main() {
 	var c config.Config
 	conf.MustLoad(*configFile, &c)
 
-	// Initialise structured logger.
+	// Initialize structured logger.
 	if err := logger.Init(logger.Config{
 		Level:    c.Log.Level,
 		Encoding: c.Log.Encoding,

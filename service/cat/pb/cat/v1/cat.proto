@@ -1,0 +1,263 @@
+syntax = "proto3";
+
+package cat;
+
+option go_package = "./pb/cat/v1";
+
+// ──────────────────────────────────────────────
+// Enums
+// ──────────────────────────────────────────────
+
+enum Gender {
+  GENDER_UNKNOWN = 0;
+  MALE           = 1;
+  FEMALE         = 2;
+}
+
+enum Size {
+  SIZE_UNKNOWN = 0;
+  LARGE        = 1;
+  MEDIUM       = 2;
+  SMALL        = 3;
+}
+
+enum AgeStage {
+  AGE_UNKNOWN = 0;
+  KITTEN      = 1;   // 幼猫
+  YOUNG       = 2;   // 青年猫
+  ADULT       = 3;   // 成年猫
+  SENIOR      = 4;   // 老年猫
+}
+
+enum NeuterStatus {
+  NEUTER_UNKNOWN  = 0;
+  NEUTERED        = 1;
+  NOT_NEUTERED    = 2;
+}
+
+enum AdoptionStatus {
+  ADOPTION_UNKNOWN    = 0;
+  AVAILABLE           = 1;   // 待领养
+  ADOPTED             = 2;   // 已领养
+  NOT_AVAILABLE       = 3;   // 暂不可领养
+}
+
+// ──────────────────────────────────────────────
+// Core models
+// ──────────────────────────────────────────────
+
+message CatInfo {
+  int64         id              = 1;
+  string        name            = 2;
+  Gender        gender          = 3;
+  AgeStage      age_stage       = 4;
+  Size          size            = 5;
+  NeuterStatus  neuter_status   = 6;
+  AdoptionStatus adoption_status= 7;
+  string        found_location  = 8;
+  double        found_lat       = 9;
+  double        found_lng       = 10;
+  string        description     = 11;
+  repeated string tags          = 12;
+  repeated string photos        = 13;
+  int64         created_at      = 14;
+  int64         updated_at      = 15;
+}
+
+message RescueRecord {
+  int64  id            = 1;
+  int64  cat_id        = 2;
+  int64  rescuer_id    = 3;
+  string rescuer_name  = 4;
+  string status        = 5;   // 救助中 / 已完成 / 已转移
+  string description   = 6;
+  int64  rescue_time   = 7;
+}
+
+message HealthRecord {
+  int64  id           = 1;
+  int64  cat_id       = 2;
+  string record_type  = 3;   // 绝育 / 疫苗 / 体检 / 治疗
+  string content      = 4;
+  string operator     = 5;
+  int64  record_date  = 6;
+}
+
+// ──────────────────────────────────────────────
+// Cat CRUD
+// ──────────────────────────────────────────────
+
+message CreateCatReq {
+  string          name            = 1;
+  Gender          gender          = 2;
+  AgeStage        age_stage       = 3;
+  Size            size            = 4;
+  NeuterStatus    neuter_status   = 5;
+  AdoptionStatus  adoption_status = 6;
+  string          found_location  = 7;
+  double          found_lat       = 8;
+  double          found_lng       = 9;
+  string          description     = 10;
+  repeated string tags            = 11;
+  repeated string photos          = 12;
+}
+
+message CreateCatResp {
+  int64 cat_id = 1;
+}
+
+message GetCatReq {
+  int64 cat_id = 1;
+}
+
+message GetCatResp {
+  CatInfo cat = 1;
+}
+
+message UpdateCatReq {
+  int64           cat_id          = 1;
+  string          name            = 2;
+  Gender          gender          = 3;
+  AgeStage        age_stage       = 4;
+  Size            size            = 5;
+  NeuterStatus    neuter_status   = 6;
+  AdoptionStatus  adoption_status = 7;
+  string          found_location  = 8;
+  double          found_lat       = 9;
+  double          found_lng       = 10;
+  string          description     = 11;
+  repeated string tags            = 12;
+  repeated string photos          = 13;
+}
+
+message UpdateCatResp {}
+
+message DeleteCatReq {
+  int64 cat_id = 1;
+}
+
+message DeleteCatResp {}
+
+message ListCatsReq {
+  Gender          gender          = 1;
+  Size            size            = 2;
+  AgeStage        age_stage       = 3;
+  NeuterStatus    neuter_status   = 4;
+  AdoptionStatus  adoption_status = 5;
+  string          keyword         = 6;
+  int32           page            = 7;
+  int32           size_per_page   = 8;
+}
+
+message ListCatsResp {
+  repeated CatInfo cats  = 1;
+  int64            total = 2;
+}
+
+// ──────────────────────────────────────────────
+// Rescue records
+// ──────────────────────────────────────────────
+
+message AddRescueRecordReq {
+  int64  cat_id      = 1;
+  int64  rescuer_id  = 2;
+  string status      = 3;
+  string description = 4;
+}
+
+message AddRescueRecordResp {
+  int64 record_id = 1;
+}
+
+message ListRescueRecordsReq {
+  int64 cat_id = 1;
+}
+
+message ListRescueRecordsResp {
+  repeated RescueRecord records = 1;
+}
+
+// ──────────────────────────────────────────────
+// Health records
+// ──────────────────────────────────────────────
+
+message AddHealthRecordReq {
+  int64  cat_id       = 1;
+  string record_type  = 2;
+  string content      = 3;
+  string operator     = 4;
+  int64  record_date  = 5;
+}
+
+message AddHealthRecordResp {
+  int64 record_id = 1;
+}
+
+message ListHealthRecordsReq {
+  int64 cat_id = 1;
+}
+
+message ListHealthRecordsResp {
+  repeated HealthRecord records = 1;
+}
+
+// ──────────────────────────────────────────────
+// Stats
+// ──────────────────────────────────────────────
+
+message GetStatsReq {}
+
+message GetStatsResp {
+  int64 total_cats       = 1;
+  int64 neutered_cats    = 2;
+  int64 adopted_cats     = 3;
+  int64 active_volunteers = 4;
+}
+
+// ──────────────────────────────────────────────
+// Heatmap
+// ──────────────────────────────────────────────
+
+message HeatmapPoint {
+  double lat     = 1;
+  double lng     = 2;
+  int32  weight  = 3;   // number of cats / rescue needs etc.
+  string area    = 4;
+}
+
+message GetHeatmapReq {
+  string map_type    = 1;   // stray / rescue / adoption
+  string cat_status  = 2;
+  int64  time_from   = 3;
+  int64  time_to     = 4;
+  string area        = 5;
+}
+
+message GetHeatmapResp {
+  repeated HeatmapPoint points = 1;
+}
+
+// ──────────────────────────────────────────────
+// Service definition
+// ──────────────────────────────────────────────
+
+service CatService {
+  // CRUD
+  rpc CreateCat(CreateCatReq)           returns (CreateCatResp);
+  rpc GetCat(GetCatReq)                 returns (GetCatResp);
+  rpc UpdateCat(UpdateCatReq)           returns (UpdateCatResp);
+  rpc DeleteCat(DeleteCatReq)           returns (DeleteCatResp);
+  rpc ListCats(ListCatsReq)             returns (ListCatsResp);
+
+  // Rescue records
+  rpc AddRescueRecord(AddRescueRecordReq)     returns (AddRescueRecordResp);
+  rpc ListRescueRecords(ListRescueRecordsReq) returns (ListRescueRecordsResp);
+
+  // Health records
+  rpc AddHealthRecord(AddHealthRecordReq)     returns (AddHealthRecordResp);
+  rpc ListHealthRecords(ListHealthRecordsReq) returns (ListHealthRecordsResp);
+
+  // Stats & heatmap
+  rpc GetStats(GetStatsReq)             returns (GetStatsResp);
+  rpc GetHeatmap(GetHeatmapReq)         returns (GetHeatmapResp);
+}
