@@ -1,0 +1,14 @@
+<h2 style="color:#C0392B;">DLQ Alert - {{.ServiceName}}</h2>
+
+<p><b>TaskID:</b> {{.TaskID}}</p>
+<p><b>Retry:</b> {{.Retry}} / {{.MaxRetry}}</p>
+<p><b>Reason:</b> {{.Reason}}</p>
+<p><b>Stage:</b> {{.Stage}}</p>
+<p><b>Error:</b> {{.Error}}</p>
+<p><b>CreatedAt:</b> {{.CreatedAt}}</p>
+<p><b>NextRunAt:</b> {{.NextRunAt}}</p>
+
+<hr/>
+
+<p><b>Data (truncated):</b></p>
+<pre style="white-space:pre-wrap;">{{.Data}}</pre>

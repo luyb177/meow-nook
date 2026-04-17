@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package user;
 
-option go_package = "github.com/luyb177/meow-nook/service/user/pb/user";
+option go_package = "./pb/user/v1";
 
 // ──────────────────────────────────────────────
 // Common structures
