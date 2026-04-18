@@ -28,8 +28,9 @@ const (
 	CodeTooManyRequests = 429
 
 	// Server-side errors (5xx)
-	CodeInternalError = 500
-	CodeUnavailable   = 503
+	CodeInternalError  = 500
+	CodeNotImplemented = 501
+	CodeUnavailable    = 503
 
 	// Business-domain codes (starting at 1000)
 	CodeUserNotFound           = 1001
@@ -51,16 +52,24 @@ const (
 
 // codeToHTTPStatus maps business error codes to HTTP status codes.
 var codeToHTTPStatus = map[int]int{
-	CodeOK:                     http.StatusOK,
-	CodeBadRequest:             http.StatusBadRequest,
-	CodeUnauthorized:           http.StatusUnauthorized,
-	CodeForbidden:              http.StatusForbidden,
-	CodeNotFound:               http.StatusNotFound,
-	CodeConflict:               http.StatusConflict,
-	CodeUnprocessable:          http.StatusUnprocessableEntity,
-	CodeTooManyRequests:        http.StatusTooManyRequests,
-	CodeInternalError:          http.StatusInternalServerError,
-	CodeUnavailable:            http.StatusServiceUnavailable,
+	// Success
+	CodeOK: http.StatusOK,
+
+	// Client-side errors (4xx)
+	CodeBadRequest:      http.StatusBadRequest,
+	CodeUnauthorized:    http.StatusUnauthorized,
+	CodeForbidden:       http.StatusForbidden,
+	CodeNotFound:        http.StatusNotFound,
+	CodeConflict:        http.StatusConflict,
+	CodeUnprocessable:   http.StatusUnprocessableEntity,
+	CodeTooManyRequests: http.StatusTooManyRequests,
+
+	// Server-side errors (5xx)
+	CodeInternalError:  http.StatusInternalServerError,
+	CodeNotImplemented: http.StatusNotImplemented,
+	CodeUnavailable:    http.StatusServiceUnavailable,
+
+	// Business-domain codes (starting at 1000)
 	CodeUserNotFound:           http.StatusNotFound,
 	CodeUserAlreadyExists:      http.StatusConflict,
 	CodePasswordWrong:          http.StatusUnauthorized,
@@ -131,16 +140,35 @@ func Wrap(code int, msg string, cause error) *AppError {
 // ──────────────────────────────────────────────
 
 var (
-	ErrBadRequest             = New(CodeBadRequest, "请求参数错误")
-	ErrUnauthorized           = New(CodeUnauthorized, "请先登录")
-	ErrForbidden              = New(CodeForbidden, "无权限访问")
-	ErrNotFound               = New(CodeNotFound, "资源不存在")
-	ErrInternalServer         = New(CodeInternalError, "服务器内部错误")
-	ErrTokenInvalid           = New(CodeTokenInvalid, "令牌无效")
-	ErrTokenExpired           = New(CodeTokenExpired, "令牌已过期")
-	ErrUserNotFound           = New(CodeUserNotFound, "用户不存在")
-	ErrUserAlreadyExists      = New(CodeUserAlreadyExists, "用户名已存在")
-	ErrPasswordWrong          = New(CodePasswordWrong, "密码错误")
+	// ─────────────────────────────
+	// Common errors
+	// ─────────────────────────────
+
+	ErrBadRequest     = New(CodeBadRequest, "请求参数错误")
+	ErrUnauthorized   = New(CodeUnauthorized, "请先登录")
+	ErrForbidden      = New(CodeForbidden, "无权限访问")
+	ErrNotFound       = New(CodeNotFound, "资源不存在")
+	ErrInternalServer = New(CodeInternalError, "服务器内部错误")
+
+	// ─────────────────────────────
+	// Auth / Token errors
+	// ─────────────────────────────
+
+	ErrTokenInvalid = New(CodeTokenInvalid, "令牌无效")
+	ErrTokenExpired = New(CodeTokenExpired, "令牌已过期")
+
+	// ─────────────────────────────
+	// User errors
+	// ─────────────────────────────
+
+	ErrUserNotFound      = New(CodeUserNotFound, "用户不存在")
+	ErrUserAlreadyExists = New(CodeUserAlreadyExists, "用户已存在")
+	ErrPasswordWrong     = New(CodePasswordWrong, "密码错误")
+
+	// ─────────────────────────────
+	// Resource / Business errors
+	// ─────────────────────────────
+
 	ErrInsufficientPoints     = New(CodeInsufficientPoints, "积分不足")
 	ErrCatNotFound            = New(CodeCatNotFound, "猫咪档案不存在")
 	ErrTaskNotFound           = New(CodeTaskNotFound, "任务不存在")
@@ -150,7 +178,18 @@ var (
 	ErrAdoptionNotFound       = New(CodeAdoptionNotFound, "领养申请不存在")
 	ErrAdoptionAlreadyApplied = New(CodeAdoptionAlreadyApplied, "已申请过该猫咪的领养")
 	ErrPostNotFound           = New(CodePostNotFound, "动态不存在")
-	ErrPermissionDenied       = New(CodePermissionDenied, "没有操作权限")
+
+	// ─────────────────────────────
+	// Permission errors
+	// ─────────────────────────────
+
+	ErrPermissionDenied = New(CodePermissionDenied, "没有操作权限")
+
+	// ─────────────────────────────
+	// Server capability errors
+	// ─────────────────────────────
+
+	ErrNotImplemented = New(CodeNotImplemented, "功能暂未实现")
 )
 
 // ──────────────────────────────────────────────

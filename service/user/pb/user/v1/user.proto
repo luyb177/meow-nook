@@ -21,8 +21,36 @@ message UserInfo {
 }
 
 // ──────────────────────────────────────────────
+// Common Response
+// ──────────────────────────────────────────────
+
+message Response {
+
+}
+
+
+// ──────────────────────────────────────────────
 // Auth RPCs
 // ──────────────────────────────────────────────
+
+enum VerifyChannel {
+  VERIFY_CHANNEL_UNKNOWN = 0;
+  VERIFY_CHANNEL_EMAIL   = 1;
+  VERIFY_CHANNEL_PHONE   = 2;
+}
+
+enum VerifyPurpose {
+  VERIFY_PURPOSE_UNKNOWN = 0;
+  VERIFY_PURPOSE_LOGIN   = 1;
+  VERIFY_PURPOSE_REGISTER = 2;
+  VERIFY_PURPOSE_RESET_PASSWORD = 3;
+}
+
+message SendVerificationCodeReq {
+  string target = 1;
+  VerifyChannel channel = 2;
+  VerifyPurpose purpose = 3;
+}
 
 message RegisterReq {
   string username = 1;
@@ -174,6 +202,7 @@ message SubmitFeedbackResp {
 
 service UserService {
   // Auth
+  rpc SendVerificationCode(SendVerificationCodeReq) returns (Response);
   rpc Register(RegisterReq)             returns (RegisterResp);
   rpc Login(LoginReq)                   returns (LoginResp);
   rpc Logout(LogoutReq)                 returns (LogoutResp);

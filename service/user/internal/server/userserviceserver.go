@@ -24,6 +24,11 @@ func NewUserServiceServer(svcCtx *svc.ServiceContext) *UserServiceServer {
 }
 
 // Auth
+func (s *UserServiceServer) SendVerificationCode(ctx context.Context, in *v1.SendVerificationCodeReq) (*v1.Response, error) {
+	l := logic.NewSendVerificationCodeLogic(ctx, s.svcCtx)
+	return l.SendVerificationCode(in)
+}
+
 func (s *UserServiceServer) Register(ctx context.Context, in *v1.RegisterReq) (*v1.RegisterResp, error) {
 	l := logic.NewRegisterLogic(ctx, s.svcCtx)
 	return l.Register(in)

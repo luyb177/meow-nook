@@ -5,18 +5,19 @@ import "github.com/zeromicro/go-zero/zrpc"
 type Config struct {
 	zrpc.RpcServerConf
 
-	DataSource struct {
-		Host     string
-		Port     int
-		User     string
-		Password string
-		DBName   string
-		SSLMode  string
+	Log struct {
+		Level    string
+		Encoding string
+	}
+
+	Mysql struct {
+		DSN string
 	}
 
 	Redis struct {
-		Host string
-		DB   int
+		Addr     string
+		Password string
+		DB       int
 	}
 
 	JWT struct {
@@ -24,8 +25,10 @@ type Config struct {
 		AccessExpire int64
 	}
 
-	Log struct {
-		Level    string
-		Encoding string
+	Email struct {
+		From     string
+		Password string
+		SMTPHost string
+		SMTPPort int
 	}
 }

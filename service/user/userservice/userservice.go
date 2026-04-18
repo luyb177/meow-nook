@@ -34,6 +34,8 @@ type (
 	PointLog                       = v1.PointLog
 	RegisterReq                    = v1.RegisterReq
 	RegisterResp                   = v1.RegisterResp
+	Response                       = v1.Response
+	SendVerificationCodeReq        = v1.SendVerificationCodeReq
 	SubmitFeedbackReq              = v1.SubmitFeedbackReq
 	SubmitFeedbackResp             = v1.SubmitFeedbackResp
 	UpdateNotificationSettingsReq  = v1.UpdateNotificationSettingsReq
@@ -44,6 +46,7 @@ type (
 
 	UserService interface {
 		// Auth
+		SendVerificationCode(ctx context.Context, in *SendVerificationCodeReq, opts ...grpc.CallOption) (*Response, error)
 		Register(ctx context.Context, in *RegisterReq, opts ...grpc.CallOption) (*RegisterResp, error)
 		Login(ctx context.Context, in *LoginReq, opts ...grpc.CallOption) (*LoginResp, error)
 		Logout(ctx context.Context, in *LogoutReq, opts ...grpc.CallOption) (*LogoutResp, error)
@@ -74,6 +77,11 @@ func NewUserService(cli zrpc.Client) UserService {
 }
 
 // Auth
+func (m *defaultUserService) SendVerificationCode(ctx context.Context, in *SendVerificationCodeReq, opts ...grpc.CallOption) (*Response, error) {
+	client := v1.NewUserServiceClient(m.cli.Conn())
+	return client.SendVerificationCode(ctx, in, opts...)
+}
+
 func (m *defaultUserService) Register(ctx context.Context, in *RegisterReq, opts ...grpc.CallOption) (*RegisterResp, error) {
 	client := v1.NewUserServiceClient(m.cli.Conn())
 	return client.Register(ctx, in, opts...)
