@@ -47,8 +47,9 @@ func AccessLogUnary() grpc.UnaryServerInterceptor {
 			zap.String("peer", remote),
 		}
 
+		// todo 这里可以按照 grpc code 来区分日志级别，目前先统一用 info 级别
 		if err != nil {
-			l.Error("grpc access", append(fields, zap.Error(err))...)
+			l.Info("grpc access", append(fields, zap.Error(err))...)
 		} else {
 			l.Info("grpc access", fields...)
 		}

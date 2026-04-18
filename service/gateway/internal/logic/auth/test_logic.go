@@ -5,8 +5,8 @@ package auth
 
 import (
 	"context"
-	"fmt"
 
+	"github.com/luyb177/meow-nook/common/errorx"
 	grpcmw "github.com/luyb177/meow-nook/common/middleware/grpc"
 	"github.com/luyb177/meow-nook/service/gateway/internal/svc"
 	"github.com/luyb177/meow-nook/service/gateway/internal/types"
@@ -30,12 +30,9 @@ func (l *TestLogic) Test(req *types.TestReq) (resp *types.TestResp, err error) {
 	ctx := grpcmw.InjectRequestID(l.ctx)
 
 	res, err := l.svcCtx.UserRPC.Test(ctx, &userpb.TestReq{})
-
 	if err != nil {
-		return nil, err
+		return nil, errorx.FromGRPC(err)
 	}
-
-	fmt.Println(res)
-
-	return
+	_ = res
+	return &types.TestResp{}, nil
 }

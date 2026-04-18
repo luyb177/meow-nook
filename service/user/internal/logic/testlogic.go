@@ -3,6 +3,7 @@ package logic
 import (
 	"context"
 
+	"github.com/luyb177/meow-nook/common/errorx"
 	"github.com/luyb177/meow-nook/service/user/internal/svc"
 	"github.com/luyb177/meow-nook/service/user/pb/user/v1"
 
@@ -25,7 +26,5 @@ func NewTestLogic(ctx context.Context, svcCtx *svc.ServiceContext) *TestLogic {
 
 // Auth
 func (l *TestLogic) Test(in *v1.TestReq) (*v1.Response, error) {
-	// todo: add your logic here and delete this line
-
-	return &v1.Response{}, nil
+	return nil, errorx.ErrUserNotFound
 }

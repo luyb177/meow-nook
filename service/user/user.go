@@ -43,7 +43,10 @@ func main() {
 	})
 	defer s.Stop()
 
-	s.AddUnaryInterceptors(grpcmw.AccessLogUnary())
+	s.AddUnaryInterceptors(
+		grpcmw.AccessLogUnary(),
+		grpcmw.ErrorUnaryServer(),
+	)
 
 	logger.Info("Starting rpc server...", zap.String("listen_on", c.ListenOn))
 	s.Start()
