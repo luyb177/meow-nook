@@ -20,6 +20,8 @@ proto:
 	protoc --go_out=. --go_opt=module=github.com/luyb177/meow-nook \
 	       --go-grpc_out=. --go-grpc_opt=module=github.com/luyb177/meow-nook \
 	       service/post/pb/post.proto
+	protoc --go_out=. --go_opt=module=github.com/luyb177/meow-nook \
+	       common/pb/errordetail/v1/error_detail.proto
 	@echo "Done."
 
 # ──────────────────────────────────────────────

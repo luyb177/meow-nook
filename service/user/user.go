@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/luyb177/meow-nook/common/grpcx"
 	"github.com/luyb177/meow-nook/common/logger"
 	"github.com/luyb177/meow-nook/common/mail"
 	"github.com/luyb177/meow-nook/common/mq/kafka"
@@ -82,6 +83,7 @@ func main() {
 			reflection.Register(grpcServer)
 		}
 	})
+	rpcServer.AddUnaryInterceptors(grpcx.AppErrorInterceptor)
 
 	var sg service.ServiceGroup
 	sg.Add(rpcServer)

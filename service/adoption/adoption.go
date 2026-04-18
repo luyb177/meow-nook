@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 
+	"github.com/luyb177/meow-nook/common/grpcx"
 	"github.com/luyb177/meow-nook/common/logger"
 	"github.com/luyb177/meow-nook/service/adoption/internal/config"
 	"github.com/luyb177/meow-nook/service/adoption/internal/server"
@@ -42,6 +43,7 @@ func main() {
 			reflection.Register(grpcServer)
 		}
 	})
+	s.AddUnaryInterceptors(grpcx.AppErrorInterceptor)
 	defer s.Stop()
 
 	fmt.Printf("Starting rpc server at %s...\n", c.ListenOn)
