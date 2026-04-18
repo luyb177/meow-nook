@@ -20,3 +20,25 @@ Redis:
 JWT:
   AccessSecret: "meow-nook-secret-change-in-production"
   AccessExpire: 86400 # 1 day in seconds
+
+Email:
+  From: "your-email@example.com"
+  Password: "your-smtp-password"
+  SMTPHost: "smtp.example.com"
+  SMTPPort: 465
+
+Kafka:
+  Brokers:
+    - "127.0.0.1:9092"
+  ServiceName: "user"
+  GroupID: "user-task-workers"
+  DefaultMaxRetry: 3
+  BaseBackoff: 2s
+
+DLQEmail:
+  From: "alert@example.com"
+  Password: "your-smtp-password"
+  SMTPHost: "smtp.example.com"
+  SMTPPort: 465
+  To:
+    - "admin@example.com"

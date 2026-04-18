@@ -4,15 +4,17 @@ import (
 	"github.com/luyb177/meow-nook/common/cache"
 	"github.com/luyb177/meow-nook/common/database"
 	"github.com/luyb177/meow-nook/common/mail"
+	"github.com/luyb177/meow-nook/common/mq/kafka"
 	"github.com/luyb177/meow-nook/service/user/internal/config"
 )
 
 // ServiceContext holds shared dependencies for the user service.
 type ServiceContext struct {
-	Config      config.Config
-	MysqlClient *database.MySQLClient
-	RedisClient *cache.RedisClient
-	Mailer      *mail.Mailer
+	Config        config.Config
+	MysqlClient   *database.MySQLClient
+	RedisClient   *cache.RedisClient
+	Mailer        *mail.Mailer
+	KafkaProducer *kafka.Producer
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
@@ -33,10 +35,19 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		SMTPPort: c.Email.SMTPPort,
 	})
 
+	topics := kafka.BuildTopics(c.Kafka.ServiceName)
+	producer := kafka.NewProducer(kafka.ProducerConfig{
+		Brokers:         c.Kafka.Brokers,
+		Topics:          topics,
+		DefaultMaxRetry: c.Kafka.DefaultMaxRetry,
+		BaseBackoff:     c.Kafka.BaseBackoff,
+	})
+
 	return &ServiceContext{
-		Config:      c,
-		MysqlClient: ms,
-		RedisClient: r,
-		Mailer:      m,
+		Config:        c,
+		MysqlClient:   ms,
+		RedisClient:   r,
+		Mailer:        m,
+		KafkaProducer: producer,
 	}
 }

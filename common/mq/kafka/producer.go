@@ -52,7 +52,8 @@ func (p *Producer) Dispatch(ctx context.Context, task Task, opts ...DispatchOpti
 	}
 
 	env := &Envelope{
-		TaskID:    task.ID(),
+		TaskID:    BuildTaskID(task.Type(), task.Biz()),
+		Type:      task.Type(),
 		Retry:     0,
 		MaxRetry:  maxRetry,
 		CreatedAt: time.Now().Unix(),

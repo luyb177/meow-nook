@@ -28,7 +28,7 @@ type PendingWorker struct {
 	reader   *kafka.Reader
 	producer *Producer
 
-	handlers map[string]TaskHandler // prefix -> handler
+	handlers map[string]TaskHandler // type string -> handler
 
 	ctx    context.Context
 	cancel context.CancelFunc
@@ -93,9 +93,9 @@ func (w *PendingWorker) Start() {
 				continue
 			}
 
-			h := w.findHandler(env.TaskID)
+			h := w.findHandler(env.Type)
 			if h == nil {
-				_ = w.producer.DispatchDLQ(w.ctx, &env, "no_handler", "pending", "no handler for task id prefix")
+				_ = w.producer.DispatchDLQ(w.ctx, &env, "no_handler", "pending", "no handler for task type: "+env.Type)
 				_ = w.reader.CommitMessages(w.ctx, msg)
 				continue
 			}
@@ -130,11 +130,7 @@ func (w *PendingWorker) Stop() {
 	w.cancel()
 }
 
-func (w *PendingWorker) findHandler(taskID string) TaskHandler {
-	for prefix, handler := range w.handlers {
-		if len(taskID) >= len(prefix) && taskID[:len(prefix)] == prefix {
-			return handler
-		}
-	}
-	return nil
+// findHandler looks up a handler by the exact task type string (e.g. "user.send_email").
+func (w *PendingWorker) findHandler(taskType string) TaskHandler {
+	return w.handlers[taskType]
 }
