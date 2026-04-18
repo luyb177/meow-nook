@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"time"
 
 	"github.com/luyb177/meow-nook/common/logger"
 	"github.com/luyb177/meow-nook/common/mail"
@@ -56,7 +57,7 @@ func main() {
 		Brokers:          c.Kafka.Brokers,
 		GroupID:          c.Kafka.GroupID + ".retry",
 		Topic:            topics.Retry,
-		SleepGranularity: 1000000000, // 1s in nanoseconds
+		SleepGranularity: time.Second,
 	}, ctx.KafkaProducer)
 
 	// DLQ watcher – logs DLQ messages and sends SMTP alerts.

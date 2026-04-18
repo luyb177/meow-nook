@@ -33,7 +33,7 @@ Kafka:
   ServiceName: "user"
   GroupID: "user-task-workers"
   DefaultMaxRetry: 3
-  BaseBackoff: 2000000000  # 2s in nanoseconds
+  BaseBackoff: 2s
 
 DLQEmail:
   From: "alert@example.com"
