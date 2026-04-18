@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package errordetail.v1;
+
+option go_package = "github.com/luyb177/meow-nook/common/pb/errordetail/v1;errordetailv1";
+
+// ErrorDetail carries business error information across gRPC service boundaries.
+// It is attached to a gRPC status via WithDetails so that the HTTP gateway
+// can reconstruct the original {code, msg} response without string-parsing.
+message ErrorDetail {
+  // Business error code (mirrors errorx code constants).
+  int32  code  = 1;
+  // User-facing error message.
+  string msg   = 2;
+  // Internal cause for server-side logging only; never exposed to clients.
+  string cause = 3;
+}

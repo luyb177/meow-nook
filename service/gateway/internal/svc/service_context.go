@@ -6,6 +6,8 @@ package svc
 import (
 	"github.com/casbin/casbin/v2"
 	"github.com/luyb177/meow-nook/service/gateway/internal/config"
+	"github.com/luyb177/meow-nook/service/gateway/internal/middleware"
+	"github.com/zeromicro/go-zero/rest"
 	"github.com/zeromicro/go-zero/zrpc"
 	"google.golang.org/grpc"
 )
@@ -14,6 +16,8 @@ import (
 type ServiceContext struct {
 	Config   config.Config
 	Enforcer *casbin.Enforcer
+
+	Auth rest.Middleware
 
 	UserRpc      *zrpc.RpcClientConf
 	CatRpcConn   *grpc.ClientConn
@@ -51,6 +55,7 @@ func NewServiceContext(c config.Config) *ServiceContext {
 	return &ServiceContext{
 		Config:       c,
 		Enforcer:     enforcer,
+		Auth:         middleware.NewAuthMiddleware(c.Auth.AccessSecret).Handle,
 		CatRpcConn:   catConn,
 		TaskRpcConn:  taskConn,
 		AdoptRpcConn: adoptConn,
