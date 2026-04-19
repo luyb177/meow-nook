@@ -56,9 +56,7 @@ func main() {
 
 	sg.Add(rpcServer)
 	sg.Add(workers.Pending)
-	if workers.Scheduler != nil {
-		sg.Add(workers.Scheduler)
-	}
+	sg.Add(workers.Scheduler)
 	sg.Add(workers.DLQ)
 
 	logger.Info("Starting rpc server...", zap.String("listen_on", c.ListenOn))

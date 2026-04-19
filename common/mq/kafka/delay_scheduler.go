@@ -2,6 +2,7 @@ package kafka
 
 import (
 	"context"
+	"errors"
 	"time"
 
 	"github.com/luyb177/meow-nook/common/logger"
@@ -85,11 +86,12 @@ func (s *DelayScheduler) Close() error {
 
 // tick is called once per interval.
 func (s *DelayScheduler) tick() {
-	ctx, cancel := context.WithTimeout(s.ctx, 10*time.Second)
-	defer cancel()
+	// Use a short context for reclaim and claim operations.
+	tickCtx, tickCancel := context.WithTimeout(s.ctx, 5*time.Second)
+	defer tickCancel()
 
 	// Step 1: reclaim tasks whose visibility timeout has elapsed.
-	reclaimed, err := s.queue.ReclaimExpired(ctx)
+	reclaimed, err := s.queue.ReclaimExpired(tickCtx)
 	if err != nil {
 		logger.Error("delay scheduler: reclaim expired error", zap.Error(err))
 	} else if reclaimed > 0 {
@@ -97,7 +99,7 @@ func (s *DelayScheduler) tick() {
 	}
 
 	// Step 2: claim tasks that are due now.
-	taskIDs, err := s.queue.ClaimDue(ctx, s.cfg.ClaimLimit)
+	taskIDs, err := s.queue.ClaimDue(tickCtx, s.cfg.ClaimLimit)
 	if err != nil {
 		logger.Error("delay scheduler: claim due error", zap.Error(err))
 		return
@@ -108,15 +110,29 @@ func (s *DelayScheduler) tick() {
 	}
 
 	// Step 3: publish each claimed task to the pending topic.
+	// Each dispatch uses its own bounded context so a slow Kafka write
+	// cannot stall the entire tick.
 	for _, taskID := range taskIDs {
-		s.dispatch(ctx, taskID)
+		s.dispatch(taskID)
 	}
 }
 
 // dispatch publishes a single task back to the Kafka pending topic.
-func (s *DelayScheduler) dispatch(ctx context.Context, taskID string) {
+func (s *DelayScheduler) dispatch(taskID string) {
+	ctx, cancel := context.WithTimeout(s.ctx, 5*time.Second)
+	defer cancel()
+
 	env, err := s.queue.LoadEnvelope(ctx, taskID)
 	if err != nil {
+		// Terminal errors: the payload is gone or corrupt.  Drop already cleaned up
+		// the processing entry, so just log and move on.
+		if errors.Is(err, ErrEnvelopeMissing) || errors.Is(err, ErrEnvelopeCorrupt) {
+			logger.Error("delay scheduler: dropping unrecoverable task",
+				zap.String("task_id", taskID),
+				zap.Error(err),
+			)
+			return
+		}
 		logger.Error("delay scheduler: load envelope error",
 			zap.String("task_id", taskID),
 			zap.Error(err),

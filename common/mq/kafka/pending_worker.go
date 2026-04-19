@@ -11,6 +11,11 @@ import (
 	"go.uber.org/zap"
 )
 
+const (
+	enqueueTimeout     = 3 * time.Second
+	enqueueRetryBackoff = time.Second
+)
+
 type PendingWorkerConfig struct {
 	Brokers []string
 	GroupID string
@@ -113,22 +118,31 @@ func (w *PendingWorker) Start() {
 
 				delay := ExponentialBackoff(w.cfg.BaseBackoff, env.Retry+1)
 
-				if w.delayQueue != nil {
-					// Schedule via Redis delay queue.
-					if schedErr := w.delayQueue.Enqueue(w.ctx, &env, delay, "handle", err.Error()); schedErr != nil {
-						logger.Error("schedule retry via delay queue failed, not committing to preserve message",
-							zap.String("task_id", env.TaskID),
-							zap.Error(schedErr),
-						)
-						// Conservative: do not commit so the message is re-processed.
-						continue
+				// Schedule via Redis delay queue.  Retry enqueue in-place with backoff
+				// until success or the worker context is cancelled; do NOT fall back to
+				// the Kafka retry topic and do NOT commit before enqueue succeeds.
+				for {
+					enqCtx, enqCancel := context.WithTimeout(w.ctx, enqueueTimeout)
+					schedErr := w.delayQueue.Enqueue(enqCtx, &env, delay, "handle", err.Error())
+					enqCancel()
+
+					if schedErr == nil {
+						break
 					}
-				} else {
-					// Fallback: write to Kafka retry topic.
-					_ = w.producer.DispatchRetry(w.ctx, &env, delay, "handle", err.Error())
+
+					logger.Error("pending worker: enqueue to delay queue failed, retrying",
+						zap.String("task_id", env.TaskID),
+						zap.Error(schedErr),
+					)
+
+					select {
+					case <-w.ctx.Done():
+						return
+					case <-time.After(enqueueRetryBackoff):
+					}
 				}
 
-				// 关键：commit 当前 pending offset，避免卡 partition
+				// Commit the Kafka message only after the retry has been durably scheduled.
 				_ = w.reader.CommitMessages(w.ctx, msg)
 				continue
 			}
