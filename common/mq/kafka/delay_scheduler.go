@@ -125,6 +125,7 @@ func (s *DelayScheduler) dispatch(ctx context.Context, taskID string) {
 		return
 	}
 
+	// Reset NextRunAt so the pending worker does not treat this as a scheduled task.
 	env.NextRunAt = 0
 	if err := s.producer.writeEnvelope(ctx, s.producer.cfg.Topics.Pending, env); err != nil {
 		logger.Error("delay scheduler: publish to pending error",
