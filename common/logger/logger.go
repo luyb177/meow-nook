@@ -299,3 +299,10 @@ func SinceMS(start time.Time) int64 { return time.Since(start).Milliseconds() }
 
 // Optional: if you want to check initialization status.
 func Inited() bool { return inited }
+
+// Sugared returns a sugared logger that provides a more ergonomic, but slightly slower, API.
+// For example, instead of `logger.Info("Failed to fetch URL.", zap.String("url", url), zap.Int("attempt", 3))`,
+// you can write `logger.Sugared().Infow("Failed to fetch URL.", "url", url, "attempt", 3)`.
+func Sugared() *zap.SugaredLogger {
+	return global.Sugar()
+}

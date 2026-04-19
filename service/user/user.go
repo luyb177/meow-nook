@@ -8,6 +8,7 @@ import (
 	"github.com/luyb177/meow-nook/service/user/internal/config"
 	"github.com/luyb177/meow-nook/service/user/internal/server"
 	"github.com/luyb177/meow-nook/service/user/internal/svc"
+	"github.com/luyb177/meow-nook/service/user/internal/worker"
 	"github.com/luyb177/meow-nook/service/user/pb/user/v1"
 	"go.uber.org/zap"
 
@@ -26,6 +27,9 @@ func main() {
 	var c config.Config
 	conf.MustLoad(*configFile, &c)
 	ctx := svc.NewServiceContext(c)
+	if ctx.KafkaProducer != nil {
+		defer ctx.KafkaProducer.Close()
+	}
 
 	err := logger.Init(c.Logger)
 	if err != nil {
@@ -34,20 +38,27 @@ func main() {
 
 	defer logger.Sync()
 
-	s := zrpc.MustNewServer(c.RpcServerConf, func(grpcServer *grpc.Server) {
+	rpcServer := zrpc.MustNewServer(c.RpcServerConf, func(grpcServer *grpc.Server) {
 		v1.RegisterUserServiceServer(grpcServer, server.NewUserServiceServer(ctx))
 
 		if c.Mode == service.DevMode || c.Mode == service.TestMode {
 			reflection.Register(grpcServer)
 		}
 	})
-	defer s.Stop()
 
-	s.AddUnaryInterceptors(
-		grpcmw.AccessLogUnary(),
+	rpcServer.AddUnaryInterceptors(
 		grpcmw.ErrorUnaryServer(),
+		grpcmw.AccessLogUnary(),
 	)
 
+	var sg service.ServiceGroup
+	workers := worker.BuildKafkaWorkers(c, ctx)
+
+	sg.Add(rpcServer)
+	sg.Add(workers.Pending)
+	sg.Add(workers.Retry)
+	sg.Add(workers.DLQ)
+
 	logger.Info("Starting rpc server...", zap.String("listen_on", c.ListenOn))
-	s.Start()
+	sg.Start()
 }

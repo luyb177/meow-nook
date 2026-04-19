@@ -5,6 +5,7 @@ package handler
 
 import (
 	"net/http"
+	"time"
 
 	auth "github.com/luyb177/meow-nook/service/gateway/internal/handler/auth"
 	"github.com/luyb177/meow-nook/service/gateway/internal/svc"
@@ -22,5 +23,6 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			},
 		},
 		rest.WithPrefix("/api/v1/auth"),
+		rest.WithTimeout(60000*time.Millisecond),
 	)
 }

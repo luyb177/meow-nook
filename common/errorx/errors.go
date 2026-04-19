@@ -226,3 +226,7 @@ func MsgOf(err error) string {
 	}
 	return "服务器内部错误"
 }
+
+func WrapInternal(msg string, err error) *AppError {
+	return Wrap(CodeInternalError, msg, err)
+}
