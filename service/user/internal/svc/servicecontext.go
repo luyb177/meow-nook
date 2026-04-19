@@ -33,12 +33,12 @@ func NewServiceContext(c config.Config) *ServiceContext {
 	})
 
 	// Redis is required for the delay queue (delayed retries).
-	if c.Redis.Addr == "" {
-		panic("Redis.Addr must be set: Redis is required for delayed retries")
+	if c.RedisConf.Addr == "" {
+		panic("RedisConf.Addr must be set: RedisConf is required for delayed retries")
 	}
-	rc, err := cache.NewRedisClient(c.Redis.Addr, c.Redis.Password, c.Redis.DB)
+	rc, err := cache.NewRedisClient(c.RedisConf.Addr, c.RedisConf.Password, c.RedisConf.DB)
 	if err != nil {
-		panic(fmt.Sprintf("failed to connect to Redis (%s): %v", c.Redis.Addr, err))
+		panic(fmt.Sprintf("failed to connect to Redis (%s): %v", c.RedisConf.Addr, err))
 	}
 
 	return &ServiceContext{

@@ -14,7 +14,7 @@ type Config struct {
 
 	Kafka KafkaConf
 
-	Redis RedisConf
+	RedisConf RedisConf
 
 	Email struct {
 		From     string
