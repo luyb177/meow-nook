@@ -1,0 +1,23 @@
+# Example configuration for the gateway HTTP service.
+# Copy to gateway.yaml and fill in real values before running.
+
+Name: gateway
+Host: 0.0.0.0
+Port: 8080
+Mode: dev                   # dev | test | pro
+
+Logger:
+  Level: info
+  OutputPath: stdout
+  Service: gateway
+  Env: dev
+  InitialFields:
+    app: meow-nook
+    component: gateway
+
+# The gateway forwards calls to the user RPC service discovered via etcd.
+UserRPC:
+  Etcd:
+    Hosts:
+      - 127.0.0.1:2379
+    Key: user.rpc

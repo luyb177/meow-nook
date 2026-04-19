@@ -1,0 +1,46 @@
+# Example configuration for the user RPC service.
+# Copy to user.yaml and fill in real credentials before running.
+
+Name: user.rpc
+ListenOn: 0.0.0.0:9000
+Mode: dev                   # dev | test | pro
+
+Logger:
+  Level: info
+  OutputPath: stdout
+  Service: user
+  Env: dev
+  InitialFields:
+    app: meow-nook
+    component: user-service
+
+Kafka:
+  Brokers:
+    - 127.0.0.1:9092
+  ServiceName: user.rpc
+  GroupID: user-task-workers
+  DefaultMaxRetry: 3
+  BaseBackoff: 2s
+
+# Redis-backed delay queue for retry scheduling.
+# Leave Addr empty to fall back to the old Kafka retry-topic approach.
+Redis:
+  Addr: 127.0.0.1:6379
+  Password: ""
+  DB: 0
+
+Email:
+  From: your-email@example.com
+  Password: your-email-password
+  SMTPHost: smtp.example.com
+  SMTPPort: 465
+
+DLQEmail:
+  To:
+    - admin@example.com
+
+# go-zero RPC server settings (etcd discovery).
+Etcd:
+  Hosts:
+    - 127.0.0.1:2379
+  Key: user.rpc

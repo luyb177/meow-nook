@@ -1,8 +1,6 @@
 package worker
 
 import (
-	"time"
-
 	"github.com/luyb177/meow-nook/common/mq/kafka"
 	"github.com/luyb177/meow-nook/service/user/internal/config"
 	"github.com/luyb177/meow-nook/service/user/internal/svc"
@@ -10,9 +8,9 @@ import (
 )
 
 type KafkaWorkers struct {
-	Pending *kafka.PendingWorker
-	Retry   *kafka.RetryMover
-	DLQ     *kafka.DLQWatcher
+	Pending   *kafka.PendingWorker
+	Scheduler *kafka.DelayScheduler
+	DLQ       *kafka.DLQWatcher
 }
 
 func BuildKafkaWorkers(c config.Config, svcCtx *svc.ServiceContext) KafkaWorkers {
@@ -25,15 +23,16 @@ func BuildKafkaWorkers(c config.Config, svcCtx *svc.ServiceContext) KafkaWorkers
 		BaseBackoff: c.Kafka.BaseBackoff,
 	}, svcCtx.KafkaProducer)
 
+	// Wire the Redis delay queue if Redis is available.
+	var scheduler *kafka.DelayScheduler
+	if svcCtx.RedisClient != nil {
+		dq := kafka.NewDelayQueue(svcCtx.RedisClient.Client, c.Kafka.ServiceName)
+		pending.SetDelayQueue(dq)
+		scheduler = kafka.NewDelayScheduler(kafka.DelaySchedulerConfig{}, dq, svcCtx.KafkaProducer)
+	}
+
 	reg := handlers.BuildRegistry()
 	kafka.BindPending(pending, reg)
-
-	retry := kafka.NewRetryMover(kafka.RetryMoverConfig{
-		Brokers:          c.Kafka.Brokers,
-		GroupID:          c.Kafka.GroupID + ".retry",
-		Topic:            topics.Retry,
-		SleepGranularity: time.Second,
-	}, svcCtx.KafkaProducer)
 
 	dlqNotifier := kafka.NewEmailDLQNotifier(c.Kafka.ServiceName, svcCtx.Mailer, c.DLQEmail.To)
 
@@ -43,5 +42,5 @@ func BuildKafkaWorkers(c config.Config, svcCtx *svc.ServiceContext) KafkaWorkers
 		Topic:   topics.DLQ,
 	}, dlqNotifier)
 
-	return KafkaWorkers{Pending: pending, Retry: retry, DLQ: dlq}
+	return KafkaWorkers{Pending: pending, Scheduler: scheduler, DLQ: dlq}
 }

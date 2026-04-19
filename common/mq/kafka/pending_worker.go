@@ -24,7 +24,8 @@ type PendingWorker struct {
 	reader   *kafka.Reader
 	producer *Producer
 
-	handlers map[string]TaskHandler // type string -> handler
+	handlers   map[string]TaskHandler // type string -> handler
+	delayQueue *DelayQueue            // optional; if set, retries are scheduled via Redis
 
 	ctx    context.Context
 	cancel context.CancelFunc
@@ -57,6 +58,12 @@ func (w *PendingWorker) Close() error {
 
 func (w *PendingWorker) RegisterHandler(prefix string, h TaskHandler) {
 	w.handlers[prefix] = h
+}
+
+// SetDelayQueue attaches a Redis-backed delay queue so that retries are
+// scheduled there instead of being written back to the Kafka retry topic.
+func (w *PendingWorker) SetDelayQueue(q *DelayQueue) {
+	w.delayQueue = q
 }
 
 func (w *PendingWorker) Start() {
@@ -104,9 +111,22 @@ func (w *PendingWorker) Start() {
 					continue
 				}
 
-				// 写入 retry topic（指数退避）
 				delay := ExponentialBackoff(w.cfg.BaseBackoff, env.Retry+1)
-				_ = w.producer.DispatchRetry(w.ctx, &env, delay, "handle", err.Error())
+
+				if w.delayQueue != nil {
+					// Schedule via Redis delay queue.
+					if schedErr := w.delayQueue.Enqueue(w.ctx, &env, delay, "handle", err.Error()); schedErr != nil {
+						logger.Error("schedule retry via delay queue failed, not committing to preserve message",
+							zap.String("task_id", env.TaskID),
+							zap.Error(schedErr),
+						)
+						// Conservative: do not commit so the message is re-processed.
+						continue
+					}
+				} else {
+					// Fallback: write to Kafka retry topic.
+					_ = w.producer.DispatchRetry(w.ctx, &env, delay, "handle", err.Error())
+				}
 
 				// 关键：commit 当前 pending offset，避免卡 partition
 				_ = w.reader.CommitMessages(w.ctx, msg)
