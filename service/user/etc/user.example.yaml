@@ -22,8 +22,8 @@ Kafka:
   DefaultMaxRetry: 3
   BaseBackoff: 2s
 
-# Redis-backed delay queue for retry scheduling.
-# Leave Addr empty to fall back to the old Kafka retry-topic approach.
+# Redis is required for the delay queue (delayed retries).
+# The service will panic at startup if Addr is empty or the connection fails.
 Redis:
   Addr: 127.0.0.1:6379
   Password: ""

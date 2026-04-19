@@ -7,8 +7,18 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/luyb177/meow-nook/common/logger"
 	"github.com/redis/go-redis/v9"
+	"go.uber.org/zap"
 )
+
+// ErrEnvelopeMissing is returned by LoadEnvelope when the payload hash has no
+// entry for the given task ID (e.g. it was already cleaned up by a previous run).
+var ErrEnvelopeMissing = errors.New("envelope missing from store")
+
+// ErrEnvelopeCorrupt is returned by LoadEnvelope when the stored payload cannot
+// be unmarshalled into an Envelope.
+var ErrEnvelopeCorrupt = errors.New("envelope payload is corrupt")
 
 const (
 	// visibilityTimeout is how long a claimed task stays in processing before
@@ -150,15 +160,42 @@ func (q *DelayQueue) Ack(ctx context.Context, taskID string) error {
 	return err
 }
 
+// Drop removes taskID from both the processing ZSET and the payload hash.
+// It is used to clean up tasks whose envelopes are missing or corrupt.
+func (q *DelayQueue) Drop(ctx context.Context, taskID string) error {
+	pipe := q.rdb.TxPipeline()
+	pipe.ZRem(ctx, q.processingZ, taskID)
+	pipe.HDel(ctx, q.payloadHash, taskID)
+	_, err := pipe.Exec(ctx)
+	return err
+}
+
 // LoadEnvelope reads the envelope JSON for taskID from the payload hash.
+// If the hash has no entry for taskID it calls Drop and returns ErrEnvelopeMissing.
+// If the stored bytes cannot be unmarshalled it calls Drop and returns ErrEnvelopeCorrupt.
 func (q *DelayQueue) LoadEnvelope(ctx context.Context, taskID string) (*Envelope, error) {
 	data, err := q.rdb.HGet(ctx, q.payloadHash, taskID).Bytes()
 	if err != nil {
+		if errors.Is(err, redis.Nil) {
+			if dropErr := q.Drop(ctx, taskID); dropErr != nil {
+				logger.Error("delay queue: drop after missing envelope failed",
+					zap.String("task_id", taskID),
+					zap.Error(dropErr),
+				)
+			}
+			return nil, ErrEnvelopeMissing
+		}
 		return nil, err
 	}
 	var env Envelope
 	if err := json.Unmarshal(data, &env); err != nil {
-		return nil, err
+		if dropErr := q.Drop(ctx, taskID); dropErr != nil {
+			logger.Error("delay queue: drop after corrupt envelope failed",
+				zap.String("task_id", taskID),
+				zap.Error(dropErr),
+			)
+		}
+		return nil, ErrEnvelopeCorrupt
 	}
 	return &env, nil
 }

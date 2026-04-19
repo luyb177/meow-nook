@@ -23,13 +23,9 @@ func BuildKafkaWorkers(c config.Config, svcCtx *svc.ServiceContext) KafkaWorkers
 		BaseBackoff: c.Kafka.BaseBackoff,
 	}, svcCtx.KafkaProducer)
 
-	// Wire the Redis delay queue if Redis is available.
-	var scheduler *kafka.DelayScheduler
-	if svcCtx.RedisClient != nil {
-		dq := kafka.NewDelayQueue(svcCtx.RedisClient.Client, c.Kafka.ServiceName)
-		pending.SetDelayQueue(dq)
-		scheduler = kafka.NewDelayScheduler(kafka.DelaySchedulerConfig{}, dq, svcCtx.KafkaProducer)
-	}
+	dq := kafka.NewDelayQueue(svcCtx.RedisClient.Client, c.Kafka.ServiceName)
+	pending.SetDelayQueue(dq)
+	scheduler := kafka.NewDelayScheduler(kafka.DelaySchedulerConfig{}, dq, svcCtx.KafkaProducer)
 
 	reg := handlers.BuildRegistry()
 	kafka.BindPending(pending, reg)
