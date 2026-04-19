@@ -14,6 +14,8 @@ type Config struct {
 
 	Kafka KafkaConf
 
+	Redis RedisConf
+
 	Email struct {
 		From     string
 		Password string
@@ -34,6 +36,13 @@ type KafkaConf struct {
 	DefaultMaxRetry int
 	// BaseBackoff is the base duration for exponential back-off (e.g. "2s").
 	BaseBackoff time.Duration
+}
+
+// RedisConf holds Redis connection parameters for the delay queue.
+type RedisConf struct {
+	Addr     string
+	Password string
+	DB       int
 }
 
 // DLQEmailConf holds recipient list for DLQ alert emails.
