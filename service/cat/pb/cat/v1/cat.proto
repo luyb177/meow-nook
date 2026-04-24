@@ -1,0 +1,756 @@
+syntax = "proto3";
+
+package cat;
+
+option go_package = "./pb/cat/v1";
+
+import "google/protobuf/timestamp.proto";
+
+service CatService {
+
+    /*
+     * =========================================================
+     * 志愿者侧接口（Volunteer）
+     * =========================================================
+     */
+
+    // ---------- 猫咪档案 ----------
+
+    // 申请创建小猫档案
+    rpc ApplyCreateCat(ApplyCreateCatRequest) returns (ApplyCreateCatResponse);
+
+    // 申请修改猫咪档案信息
+    rpc ApplyUpdateCatInfo(ApplyUpdateCatInfoRequest) returns (ApplyUpdateCatInfoResponse);
+
+    // 查看自己提交的创建申请详情
+    rpc GetMyCreateCatApplyDetail(GetMyCreateCatApplyDetailRequest)
+        returns (GetMyCreateCatApplyDetailResponse);
+
+    // 查看自己提交的修改申请详情
+    rpc GetMyUpdateCatApplyDetail(GetMyUpdateCatApplyDetailRequest)
+        returns (GetMyUpdateCatApplyDetailResponse);
+
+
+    // ---------- 医疗记录 ----------
+
+    // 申请新增医疗记录
+    rpc ApplyAddMedicalRecord(ApplyAddMedicalRecordRequest)
+        returns (ApplyAddMedicalRecordResponse);
+
+
+    // ---------- 救助记录 ----------
+
+    // 申请新增救助记录
+    rpc ApplyAddRescueRecord(ApplyAddRescueRecordRequest)
+        returns (ApplyAddRescueRecordResponse);
+
+
+    // ---------- 猫咪任务 ----------
+
+    // 申请创建任务
+    rpc ApplyCreateCatTask(ApplyCreateCatTaskRequest)
+        returns (ApplyCreateCatTaskResponse);
+
+    // 申请认领任务
+    rpc ClaimCatTask(ClaimCatTaskRequest)
+        returns (ClaimCatTaskResponse);
+
+    // 申请放弃任务
+    rpc AbandonCatTask(AbandonCatTaskRequest)
+        returns (AbandonCatTaskResponse);
+
+    // 上传任务进度（图片/备注）
+    rpc UploadTaskProgress(UploadTaskProgressRequest)
+        returns (UploadTaskProgressResponse);
+
+
+    /*
+     * =========================================================
+     * 管理员侧接口（Admin）
+     * =========================================================
+     */
+
+    // ---------- 创建猫咪档案审核 ----------
+
+    rpc ApproveCreateCat(ApproveCreateCatRequest)
+        returns (ApproveCreateCatResponse);
+
+    rpc RejectCreateCat(RejectCreateCatRequest)
+        returns (RejectCreateCatResponse);
+
+    rpc GetCreateCatApplyDetail(GetCreateCatApplyDetailRequest)
+        returns (GetCreateCatApplyDetailResponse);
+
+    rpc ListCreateCatApply(ListCreateCatApplyRequest)
+        returns (ListCreateCatApplyResponse);
+
+
+    // ---------- 修改猫咪档案审核 ----------
+
+    rpc ApproveUpdateCatInfo(ApproveUpdateCatInfoRequest)
+        returns (ApproveUpdateCatInfoResponse);
+
+    rpc RejectUpdateCatInfo(RejectUpdateCatInfoRequest)
+        returns (RejectUpdateCatInfoResponse);
+
+    rpc GetUpdateCatApplyDetail(GetUpdateCatApplyDetailRequest)
+        returns (GetUpdateCatApplyDetailResponse);
+
+    rpc ListUpdateCatApply(ListUpdateCatApplyRequest)
+        returns (ListUpdateCatApplyResponse);
+
+
+    // ---------- 医疗记录审核 ----------
+
+    rpc ApproveMedicalRecord(ApproveMedicalRecordRequest)
+        returns (ApproveMedicalRecordResponse);
+
+    rpc RejectMedicalRecord(RejectMedicalRecordRequest)
+        returns (RejectMedicalRecordResponse);
+
+
+    // ---------- 任务审核 ----------
+
+    // 管理员审核志愿者任务申请
+    rpc ApproveCreateCatTask(ApproveCreateCatTaskRequest)
+        returns (ApproveCreateCatTaskResponse);
+
+    rpc RejectCreateCatTask(RejectCreateCatTaskRequest)
+        returns (RejectCreateCatTaskResponse);
+
+    rpc GetCreateCatTaskApplyDetail(GetCreateCatTaskApplyDetailRequest)
+        returns (GetCreateCatTaskApplyDetailResponse);
+
+    rpc ListCreateCatTaskApply(ListCreateCatTaskApplyRequest)
+        returns (ListCreateCatTaskApplyResponse);
+
+    // 管理员直接创建正式任务（无需审核）
+    rpc CreateCatTask(CreateCatTaskRequest)
+        returns (CreateCatTaskResponse);
+
+    // 管理员更新任务状态
+    rpc UpdateCatTaskStatus(UpdateCatTaskStatusRequest)
+        returns (UpdateCatTaskStatusResponse);
+
+
+    // ---------- 领养 ----------
+
+    rpc UpdateAdoptionStatus(UpdateAdoptionStatusRequest)
+        returns (UpdateAdoptionStatusResponse);
+
+
+    /*
+     * =========================================================
+     * 公共查询接口（所有人可访问）
+     * =========================================================
+     */
+
+    // 猫咪详情
+    rpc GetCatDetail(GetCatDetailRequest)
+        returns (GetCatDetailResponse);
+
+    // 猫咪列表
+    rpc ListCats(ListCatsRequest)
+        returns (ListCatsResponse);
+
+    // 正式任务列表
+    rpc ListCatTasks(ListCatTasksRequest)
+        returns (ListCatTasksResponse);
+}
+
+/*
+ * =========================================================
+ * 志愿者侧 - 猫咪档案申请
+ * =========================================================
+ */
+
+message ApplyCreateCatRequest {
+    string name = 1;
+    string gender = 2;
+    string body_size = 3;
+    string age_stage = 4;
+    string description = 5;
+
+    string discovery_address = 6;
+    double longitude = 7;
+    double latitude = 8;
+
+    repeated string image_urls = 9;
+
+    uint64 applicant_user_id = 10;
+}
+
+message ApplyCreateCatResponse {
+    uint64 apply_id = 1;
+}
+
+message ApplyUpdateCatInfoRequest {
+    uint64 cat_id = 1;
+
+    string name = 2;
+    string gender = 3;
+    string body_size = 4;
+    string age_stage = 5;
+    string description = 6;
+
+    string discovery_address = 7;
+    double longitude = 8;
+    double latitude = 9;
+
+    repeated string image_urls = 10;
+
+    string change_reason = 11;
+    uint64 applicant_user_id = 12;
+}
+
+message ApplyUpdateCatInfoResponse {
+    uint64 apply_id = 1;
+}
+
+message GetMyCreateCatApplyDetailRequest {
+    uint64 apply_id = 1;
+    uint64 user_id = 2;
+}
+
+message GetMyCreateCatApplyDetailResponse {
+    uint64 apply_id = 1;
+    string status = 2;
+    string reject_reason = 3;
+
+    google.protobuf.Timestamp created_at = 4;
+    google.protobuf.Timestamp updated_at = 5;
+}
+
+message GetMyUpdateCatApplyDetailRequest {
+    uint64 apply_id = 1;
+    uint64 user_id = 2;
+}
+
+message GetMyUpdateCatApplyDetailResponse {
+    uint64 apply_id = 1;
+    string status = 2;
+    string reject_reason = 3;
+
+    google.protobuf.Timestamp created_at = 4;
+    google.protobuf.Timestamp updated_at = 5;
+}
+
+
+/*
+ * =========================================================
+ * 志愿者侧 - 医疗记录
+ * =========================================================
+ */
+
+message ApplyAddMedicalRecordRequest {
+    uint64 cat_id = 1;
+
+    string medical_type = 2; // vaccine/sterilization/check/treatment
+    string content = 3;
+
+    uint64 operator_id = 4;
+}
+
+message ApplyAddMedicalRecordResponse {
+    uint64 record_apply_id = 1;
+}
+
+
+/*
+ * =========================================================
+ * 志愿者侧 - 救助记录
+ * =========================================================
+ */
+
+message ApplyAddRescueRecordRequest {
+    uint64 cat_id = 1;
+
+    google.protobuf.Timestamp rescue_time = 2;
+    string rescuer_name = 3;
+    string rescue_status = 4;
+    string description = 5;
+
+    uint64 operator_id = 6;
+}
+
+message ApplyAddRescueRecordResponse {
+    uint64 rescue_apply_id = 1;
+}
+
+
+/*
+ * =========================================================
+ * 志愿者侧 - 猫咪任务
+ * =========================================================
+ */
+
+message ApplyCreateCatTaskRequest {
+    uint64 cat_id = 1;
+
+    string title = 2;
+    string task_type = 3;
+    string summary = 4;
+    string detail = 5;
+
+    google.protobuf.Timestamp deadline = 6;
+
+    uint64 applicant_user_id = 7;
+}
+
+message ApplyCreateCatTaskResponse {
+    uint64 apply_id = 1;
+}
+
+message ClaimCatTaskRequest {
+    uint64 task_id = 1;
+    uint64 user_id = 2;
+}
+
+message ClaimCatTaskResponse {
+    bool success = 1;
+}
+
+message AbandonCatTaskRequest {
+    uint64 task_id = 1;
+    uint64 user_id = 2;
+    string reason = 3;
+}
+
+message AbandonCatTaskResponse {
+    bool success = 1;
+}
+
+message UploadTaskProgressRequest {
+    uint64 task_id = 1;
+    uint64 user_id = 2;
+
+    string content = 3;
+    repeated string image_urls = 4;
+}
+
+message UploadTaskProgressResponse {
+    bool success = 1;
+}
+
+
+/*
+ * =========================================================
+ * 管理员侧 - 创建猫咪档案审核
+ * =========================================================
+ */
+
+message ApproveCreateCatRequest {
+    uint64 apply_id = 1;
+    uint64 operator_id = 2;
+}
+
+message ApproveCreateCatResponse {
+    uint64 cat_id = 1;
+}
+
+message RejectCreateCatRequest {
+    uint64 apply_id = 1;
+    string reason = 2;
+    uint64 operator_id = 3;
+}
+
+message RejectCreateCatResponse {
+    bool success = 1;
+}
+
+message GetCreateCatApplyDetailRequest {
+    uint64 apply_id = 1;
+}
+
+message GetCreateCatApplyDetailResponse {
+    uint64 apply_id = 1;
+
+    string name = 2;
+    string gender = 3;
+    string body_size = 4;
+    string age_stage = 5;
+    string description = 6;
+
+    string discovery_address = 7;
+    double longitude = 8;
+    double latitude = 9;
+
+    repeated string image_urls = 10;
+
+    uint64 applicant_user_id = 11;
+    string applicant_name = 12;
+
+    string status = 13;
+    string reject_reason = 14;
+
+    google.protobuf.Timestamp created_at = 15;
+    google.protobuf.Timestamp updated_at = 16;
+}
+
+message ListCreateCatApplyRequest {
+    string cursor = 1;
+    int64 page_size = 2;
+//  cursor 携带下面信息： last_id
+//    string status = 3;
+//    string keyword = 4;
+}
+
+message CreateCatApplyItem {
+    uint64 apply_id = 1;
+    string name = 2;
+    string gender = 3;
+    string age_stage = 4;
+
+    uint64 applicant_user_id = 5;
+    string applicant_name = 6;
+
+    string status = 7;
+    google.protobuf.Timestamp created_at = 8;
+}
+
+message ListCreateCatApplyResponse {
+    repeated CreateCatApplyItem list = 1;
+    string next_cursor = 2;
+    bool has_more = 3;
+}
+
+/*
+ * =========================================================
+ * 管理员侧 - 修改猫咪档案审核
+ * =========================================================
+ */
+
+message ApproveUpdateCatInfoRequest {
+    uint64 apply_id = 1;
+    uint64 operator_id = 2;
+}
+
+message ApproveUpdateCatInfoResponse {
+    bool success = 1;
+}
+
+message RejectUpdateCatInfoRequest {
+    uint64 apply_id = 1;
+    string reason = 2;
+    uint64 operator_id = 3;
+}
+
+message RejectUpdateCatInfoResponse {
+    bool success = 1;
+}
+
+message GetUpdateCatApplyDetailRequest {
+    uint64 apply_id = 1;
+}
+
+message GetUpdateCatApplyDetailResponse {
+    uint64 apply_id = 1;
+    uint64 cat_id = 2;
+
+    string name = 3;
+    string gender = 4;
+    string body_size = 5;
+    string age_stage = 6;
+    string description = 7;
+
+    string discovery_address = 8;
+    double longitude = 9;
+    double latitude = 10;
+
+    repeated string image_urls = 11;
+
+    string change_reason = 12;
+
+    uint64 applicant_user_id = 13;
+    string applicant_name = 14;
+
+    string status = 15;
+    string reject_reason = 16;
+
+    google.protobuf.Timestamp created_at = 17;
+    google.protobuf.Timestamp updated_at = 18;
+}
+
+message ListUpdateCatApplyRequest {
+    string cursor = 1;
+    int64 page_size = 2;
+
+//    string status = 3;
+//    uint64 cat_id = 4;
+//    string keyword = 5;
+}
+
+message UpdateCatApplyItem {
+    uint64 apply_id = 1;
+    uint64 cat_id = 2;
+    string cat_name = 3;
+
+    uint64 applicant_user_id = 4;
+    string applicant_name = 5;
+
+    string status = 6;
+    google.protobuf.Timestamp created_at = 7;
+}
+
+message ListUpdateCatApplyResponse {
+    repeated UpdateCatApplyItem list = 2;
+    string next_cursor = 3;
+    bool has_more = 4;
+}
+
+
+/*
+ * =========================================================
+ * 管理员侧 - 医疗记录审核
+ * =========================================================
+ */
+
+message ApproveMedicalRecordRequest {
+    uint64 record_apply_id = 1;
+    uint64 reviewer_id = 2;
+}
+
+message ApproveMedicalRecordResponse {
+    bool success = 1;
+}
+
+message RejectMedicalRecordRequest {
+    uint64 record_apply_id = 1;
+    string reason = 2;
+    uint64 reviewer_id = 3;
+}
+
+message RejectMedicalRecordResponse {
+    bool success = 1;
+}
+
+
+/*
+ * =========================================================
+ * 管理员侧 - 猫咪任务审核
+ * =========================================================
+ */
+
+message ApproveCreateCatTaskRequest {
+    uint64 apply_id = 1;
+
+    string urgency_level = 2;   // high/urgent/normal
+    int32 difficulty_level = 3; // 1-5
+    int32 reward_points = 4;    // 审核时确定奖励积分
+
+    uint64 operator_id = 5;
+}
+
+message ApproveCreateCatTaskResponse {
+    uint64 task_id = 1;
+}
+
+message RejectCreateCatTaskRequest {
+    uint64 apply_id = 1;
+    string reason = 2;
+    uint64 operator_id = 3;
+}
+
+message RejectCreateCatTaskResponse {
+    bool success = 1;
+}
+
+message GetCreateCatTaskApplyDetailRequest {
+    uint64 apply_id = 1;
+}
+
+message GetCreateCatTaskApplyDetailResponse {
+    uint64 apply_id = 1;
+
+    uint64 cat_id = 2;
+    string cat_name = 3;
+
+    string title = 4;
+    string task_type = 5;
+    string summary = 6;
+    string detail = 7;
+
+    google.protobuf.Timestamp deadline = 8;
+
+    uint64 applicant_user_id = 9;
+    string applicant_name = 10;
+
+    string status = 11;
+    string reject_reason = 12;
+
+    string urgency_level = 13;
+    int32 difficulty_level = 14;
+    int32 reward_points = 15;
+
+    google.protobuf.Timestamp created_at = 16;
+    google.protobuf.Timestamp updated_at = 17;
+}
+
+message ListCreateCatTaskApplyRequest {
+    string cursor = 1;
+    int64 page_size = 2;
+
+//    string status = 3;
+//    uint64 cat_id = 4;
+//    string keyword = 5;
+}
+
+message CreateCatTaskApplyItem {
+    uint64 apply_id = 1;
+
+    uint64 cat_id = 2;
+    string cat_name = 3;
+
+    string title = 4;
+    string task_type = 5;
+
+    uint64 applicant_user_id = 6;
+    string applicant_name = 7;
+
+    string status = 8;
+
+    google.protobuf.Timestamp created_at = 9;
+}
+
+message ListCreateCatTaskApplyResponse {
+    repeated CreateCatTaskApplyItem list = 1;
+    string next_cursor = 2;
+    bool has_more = 3;
+}
+
+
+/*
+ * =========================================================
+ * 管理员侧 - 直接创建正式任务
+ * =========================================================
+ */
+
+message CreateCatTaskRequest {
+    uint64 cat_id = 1;
+
+    string title = 2;
+    string task_type = 3;
+
+    string urgency_level = 4;
+    int32 difficulty_level = 5;
+    int32 reward_points = 6;
+
+    string summary = 7;
+    string detail = 8;
+
+    google.protobuf.Timestamp deadline = 9;
+
+    uint64 operator_id = 10;
+}
+
+message CreateCatTaskResponse {
+    uint64 task_id = 1;
+}
+
+message UpdateCatTaskStatusRequest {
+    uint64 task_id = 1;
+
+    string status = 2; // pending/processing/completed/cancelled
+    string remark = 3;
+
+    uint64 operator_id = 4;
+}
+
+message UpdateCatTaskStatusResponse {
+    bool success = 1;
+}
+
+
+/*
+ * =========================================================
+ * 管理员侧 - 领养状态
+ * =========================================================
+ */
+
+message UpdateAdoptionStatusRequest {
+    uint64 cat_id = 1;
+    string adoption_status = 2; // pending/adopted/unavailable
+    uint64 operator_id = 3;
+}
+
+message UpdateAdoptionStatusResponse {
+    bool success = 1;
+}
+
+
+/*
+ * =========================================================
+ * 公共查询接口
+ * =========================================================
+ */
+
+message GetCatDetailRequest {
+    uint64 cat_id = 1;
+}
+
+message GetCatDetailResponse {
+    uint64 cat_id = 1;
+    string cat_code = 2;
+
+    string name = 3;
+    string gender = 4;
+    string body_size = 5;
+    string age_stage = 6;
+
+    string sterilization_status = 7;
+    string adoption_status = 8;
+
+    string avatar = 9;
+    string description = 10;
+
+    string discovery_address = 11;
+    double longitude = 12;
+    double latitude = 13;
+}
+
+message ListCatsRequest {
+    string cursor = 1;
+    int64 page_size = 2;
+}
+
+message CatItem {
+    uint64 cat_id = 1;
+    string name = 2;
+    string gender = 3;
+    string avatar = 4;
+    string age_stage = 5;
+    string adoption_status = 6;
+}
+
+message ListCatsResponse {
+    repeated CatItem list = 1;
+    string next_cursor = 2;
+    bool has_more = 3;
+}
+
+message ListCatTasksRequest {
+    string cursor = 2;
+    int64 page_size = 3;
+
+}
+
+message CatTaskItem {
+    uint64 task_id = 1;
+    string title = 2;
+    string task_type = 3;
+
+    string urgency_level = 4;
+    int32 difficulty_level = 5;
+    int32 reward_points = 6;
+
+    string status = 7;
+
+    google.protobuf.Timestamp deadline = 8;
+    google.protobuf.Timestamp created_at = 9;
+}
+
+message ListCatTasksResponse {
+    repeated CatTaskItem list = 1;
+    string next_cursor = 2;
+    bool has_more = 3;
+}
