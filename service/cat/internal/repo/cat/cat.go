@@ -170,6 +170,7 @@ type CatCreateApply struct {
 	DiscoveryAddress string  `gorm:"type:varchar(255);comment:发现地址" json:"discovery_address"`
 	Longitude        float64 `gorm:"type:decimal(10,6);default:0" json:"longitude"`
 	Latitude         float64 `gorm:"type:decimal(10,6);default:0" json:"latitude"`
+	ImageURLs        string  `gorm:"type:json;comment:图片URLs JSON" json:"image_urls"`
 
 	// 申请人信息（来自 user-service）
 	ApplicantUserID uint64 `gorm:"index;not null;comment:申请人ID" json:"applicant_user_id"`
