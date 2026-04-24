@@ -24,22 +24,19 @@ const (
 type VerifyChannel int32
 
 const (
-	VerifyChannel_VERIFY_CHANNEL_UNKNOWN VerifyChannel = 0
-	VerifyChannel_VERIFY_CHANNEL_EMAIL   VerifyChannel = 1
-	VerifyChannel_VERIFY_CHANNEL_PHONE   VerifyChannel = 2
+	VerifyChannel_VERIFY_CHANNEL_EMAIL VerifyChannel = 0
+	VerifyChannel_VERIFY_CHANNEL_PHONE VerifyChannel = 1
 )
 
 // Enum value maps for VerifyChannel.
 var (
 	VerifyChannel_name = map[int32]string{
-		0: "VERIFY_CHANNEL_UNKNOWN",
-		1: "VERIFY_CHANNEL_EMAIL",
-		2: "VERIFY_CHANNEL_PHONE",
+		0: "VERIFY_CHANNEL_EMAIL",
+		1: "VERIFY_CHANNEL_PHONE",
 	}
 	VerifyChannel_value = map[string]int32{
-		"VERIFY_CHANNEL_UNKNOWN": 0,
-		"VERIFY_CHANNEL_EMAIL":   1,
-		"VERIFY_CHANNEL_PHONE":   2,
+		"VERIFY_CHANNEL_EMAIL": 0,
+		"VERIFY_CHANNEL_PHONE": 1,
 	}
 )
 
@@ -73,25 +70,22 @@ func (VerifyChannel) EnumDescriptor() ([]byte, []int) {
 type VerifyPurpose int32
 
 const (
-	VerifyPurpose_VERIFY_PURPOSE_UNKNOWN        VerifyPurpose = 0
-	VerifyPurpose_VERIFY_PURPOSE_LOGIN          VerifyPurpose = 1
-	VerifyPurpose_VERIFY_PURPOSE_REGISTER       VerifyPurpose = 2
-	VerifyPurpose_VERIFY_PURPOSE_RESET_PASSWORD VerifyPurpose = 3
+	VerifyPurpose_VERIFY_PURPOSE_LOGIN          VerifyPurpose = 0
+	VerifyPurpose_VERIFY_PURPOSE_REGISTER       VerifyPurpose = 1
+	VerifyPurpose_VERIFY_PURPOSE_RESET_PASSWORD VerifyPurpose = 2
 )
 
 // Enum value maps for VerifyPurpose.
 var (
 	VerifyPurpose_name = map[int32]string{
-		0: "VERIFY_PURPOSE_UNKNOWN",
-		1: "VERIFY_PURPOSE_LOGIN",
-		2: "VERIFY_PURPOSE_REGISTER",
-		3: "VERIFY_PURPOSE_RESET_PASSWORD",
+		0: "VERIFY_PURPOSE_LOGIN",
+		1: "VERIFY_PURPOSE_REGISTER",
+		2: "VERIFY_PURPOSE_RESET_PASSWORD",
 	}
 	VerifyPurpose_value = map[string]int32{
-		"VERIFY_PURPOSE_UNKNOWN":        0,
-		"VERIFY_PURPOSE_LOGIN":          1,
-		"VERIFY_PURPOSE_REGISTER":       2,
-		"VERIFY_PURPOSE_RESET_PASSWORD": 3,
+		"VERIFY_PURPOSE_LOGIN":          0,
+		"VERIFY_PURPOSE_REGISTER":       1,
+		"VERIFY_PURPOSE_RESET_PASSWORD": 2,
 	}
 )
 
@@ -316,14 +310,14 @@ func (x *SendVerificationCodeReq) GetChannel() VerifyChannel {
 	if x != nil {
 		return x.Channel
 	}
-	return VerifyChannel_VERIFY_CHANNEL_UNKNOWN
+	return VerifyChannel_VERIFY_CHANNEL_EMAIL
 }
 
 func (x *SendVerificationCodeReq) GetPurpose() VerifyPurpose {
 	if x != nil {
 		return x.Purpose
 	}
-	return VerifyPurpose_VERIFY_PURPOSE_UNKNOWN
+	return VerifyPurpose_VERIFY_PURPOSE_LOGIN
 }
 
 type TestReq struct {
@@ -1836,18 +1830,17 @@ const file_pb_user_v1_user_proto_rawDesc = "" +
 	"\acontact\x18\x04 \x01(\tR\acontact\"5\n" +
 	"\x12SubmitFeedbackResp\x12\x1f\n" +
 	"\vfeedback_id\x18\x01 \x01(\x03R\n" +
-	"feedbackId*_\n" +
-	"\rVerifyChannel\x12\x1a\n" +
-	"\x16VERIFY_CHANNEL_UNKNOWN\x10\x00\x12\x18\n" +
-	"\x14VERIFY_CHANNEL_EMAIL\x10\x01\x12\x18\n" +
-	"\x14VERIFY_CHANNEL_PHONE\x10\x02*\x85\x01\n" +
-	"\rVerifyPurpose\x12\x1a\n" +
-	"\x16VERIFY_PURPOSE_UNKNOWN\x10\x00\x12\x18\n" +
-	"\x14VERIFY_PURPOSE_LOGIN\x10\x01\x12\x1b\n" +
-	"\x17VERIFY_PURPOSE_REGISTER\x10\x02\x12!\n" +
-	"\x1dVERIFY_PURPOSE_RESET_PASSWORD\x10\x0324\n" +
+	"feedbackId*C\n" +
+	"\rVerifyChannel\x12\x18\n" +
+	"\x14VERIFY_CHANNEL_EMAIL\x10\x00\x12\x18\n" +
+	"\x14VERIFY_CHANNEL_PHONE\x10\x01*i\n" +
+	"\rVerifyPurpose\x12\x18\n" +
+	"\x14VERIFY_PURPOSE_LOGIN\x10\x00\x12\x1b\n" +
+	"\x17VERIFY_PURPOSE_REGISTER\x10\x01\x12!\n" +
+	"\x1dVERIFY_PURPOSE_RESET_PASSWORD\x10\x022{\n" +
 	"\vUserService\x12%\n" +
-	"\x04Test\x12\r.user.TestReq\x1a\x0e.user.ResponseB\x0eZ\f./pb/user/v1b\x06proto3"
+	"\x04Test\x12\r.user.TestReq\x1a\x0e.user.Response\x12E\n" +
+	"\x14SendVerificationCode\x12\x1d.user.SendVerificationCodeReq\x1a\x0e.user.ResponseB\x0eZ\f./pb/user/v1b\x06proto3"
 
 var (
 	file_pb_user_v1_user_proto_rawDescOnce sync.Once
@@ -1905,9 +1898,11 @@ var file_pb_user_v1_user_proto_depIdxs = []int32{
 	25, // 4: user.GetNotificationSettingsResp.settings:type_name -> user.NotificationSettings
 	25, // 5: user.UpdateNotificationSettingsReq.settings:type_name -> user.NotificationSettings
 	5,  // 6: user.UserService.Test:input_type -> user.TestReq
-	3,  // 7: user.UserService.Test:output_type -> user.Response
-	7,  // [7:8] is the sub-list for method output_type
-	6,  // [6:7] is the sub-list for method input_type
+	4,  // 7: user.UserService.SendVerificationCode:input_type -> user.SendVerificationCodeReq
+	3,  // 8: user.UserService.Test:output_type -> user.Response
+	3,  // 9: user.UserService.SendVerificationCode:output_type -> user.Response
+	8,  // [8:10] is the sub-list for method output_type
+	6,  // [6:8] is the sub-list for method input_type
 	6,  // [6:6] is the sub-list for extension type_name
 	6,  // [6:6] is the sub-list for extension extendee
 	0,  // [0:6] is the sub-list for field type_name

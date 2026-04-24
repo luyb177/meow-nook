@@ -8,11 +8,23 @@ info (
 )
 
 // ──────────────────────────────────────────────
+// Common types and definitions
+// ──────────────────────────────────────────────
+type (
+	Response  {}
+)
+
+// ──────────────────────────────────────────────
 // Auth (no JWT required)
 // ──────────────────────────────────────────────
 type (
 	TestReq  {}
 	TestResp  {}
+	SendVerificationCodeReq {
+		Target  string `json:"target"` // phone or email
+		Channel int32  `json:"channel"`
+		Purpose int32  `json:"purpose"`
+	}
 // RegisterReq {
 //  Username string `json:"username"`
 //  Password string `json:"password"`
@@ -41,6 +53,9 @@ type (
 service gateway {
 	@handler Test
 	get /test (TestReq) returns (TestResp)
+
+	@handler SendVerificationCode
+	post /send_code (SendVerificationCodeReq) returns (Response)
 // @handler Register
 // post /register (RegisterReq) returns (RegisterResp)
 //

@@ -48,6 +48,7 @@ type (
 	UserService interface {
 		// Auth
 		Test(ctx context.Context, in *TestReq, opts ...grpc.CallOption) (*Response, error)
+		SendVerificationCode(ctx context.Context, in *SendVerificationCodeReq, opts ...grpc.CallOption) (*Response, error)
 	}
 
 	defaultUserService struct {
@@ -65,4 +66,9 @@ func NewUserService(cli zrpc.Client) UserService {
 func (m *defaultUserService) Test(ctx context.Context, in *TestReq, opts ...grpc.CallOption) (*Response, error) {
 	client := v1.NewUserServiceClient(m.cli.Conn())
 	return client.Test(ctx, in, opts...)
+}
+
+func (m *defaultUserService) SendVerificationCode(ctx context.Context, in *SendVerificationCodeReq, opts ...grpc.CallOption) (*Response, error) {
+	client := v1.NewUserServiceClient(m.cli.Conn())
+	return client.SendVerificationCode(ctx, in, opts...)
 }

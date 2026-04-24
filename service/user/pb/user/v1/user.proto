@@ -34,16 +34,14 @@ message Response {
 // ──────────────────────────────────────────────
 
 enum VerifyChannel {
-  VERIFY_CHANNEL_UNKNOWN = 0;
-  VERIFY_CHANNEL_EMAIL   = 1;
-  VERIFY_CHANNEL_PHONE   = 2;
+  VERIFY_CHANNEL_EMAIL   = 0;
+  VERIFY_CHANNEL_PHONE   = 1;
 }
 
 enum VerifyPurpose {
-  VERIFY_PURPOSE_UNKNOWN = 0;
-  VERIFY_PURPOSE_LOGIN   = 1;
-  VERIFY_PURPOSE_REGISTER = 2;
-  VERIFY_PURPOSE_RESET_PASSWORD = 3;
+  VERIFY_PURPOSE_LOGIN   = 0;
+  VERIFY_PURPOSE_REGISTER = 1;
+  VERIFY_PURPOSE_RESET_PASSWORD = 2;
 }
 
 message SendVerificationCodeReq {
@@ -207,7 +205,7 @@ message SubmitFeedbackResp {
 service UserService {
   // Auth
   rpc Test(TestReq)                       returns (Response);
-//  rpc SendVerificationCode(SendVerificationCodeReq) returns (Response);
+  rpc SendVerificationCode(SendVerificationCodeReq) returns (Response);
 //  rpc Register(RegisterReq)             returns (RegisterResp);
 //  rpc Login(LoginReq)                   returns (LoginResp);
 //  rpc Logout(LogoutReq)                 returns (LogoutResp);

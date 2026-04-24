@@ -17,6 +17,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 	server.AddRoutes(
 		[]rest.Route{
 			{
+				Method:  http.MethodPost,
+				Path:    "/send_code",
+				Handler: auth.SendVerificationCodeHandler(serverCtx),
+			},
+			{
 				Method:  http.MethodGet,
 				Path:    "/test",
 				Handler: auth.TestHandler(serverCtx),

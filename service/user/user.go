@@ -10,11 +10,11 @@ import (
 	"github.com/luyb177/meow-nook/service/user/internal/svc"
 	"github.com/luyb177/meow-nook/service/user/internal/worker"
 	"github.com/luyb177/meow-nook/service/user/pb/user/v1"
-	"go.uber.org/zap"
 
 	"github.com/zeromicro/go-zero/core/conf"
 	"github.com/zeromicro/go-zero/core/service"
 	"github.com/zeromicro/go-zero/zrpc"
+	"go.uber.org/zap"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )

@@ -3,6 +3,15 @@
 
 package types
 
+type Response struct {
+}
+
+type SendVerificationCodeReq struct {
+	Target  string `json:"target"` // phone or email
+	Channel int32  `json:"channel"`
+	Purpose int32  `json:"purpose"`
+}
+
 type TestReq struct {
 }
 

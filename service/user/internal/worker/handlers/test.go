@@ -14,7 +14,9 @@ import (
 
 type TestHandlers struct{}
 
-func (h TestHandlers) OnSuccess(ctx context.Context, env *kafka.Envelope) error {
+func NewTestHandler() *TestHandlers { return &TestHandlers{} }
+
+func (h *TestHandlers) OnSuccess(ctx context.Context, env *kafka.Envelope) error {
 	var p task.TestPayload
 	if err := kafka.Decode(env, &p); err != nil {
 		return err
@@ -27,7 +29,7 @@ func (h TestHandlers) OnSuccess(ctx context.Context, env *kafka.Envelope) error 
 	return nil
 }
 
-func (h TestHandlers) OnFail(ctx context.Context, env *kafka.Envelope) error {
+func (h *TestHandlers) OnFail(ctx context.Context, env *kafka.Envelope) error {
 	var p task.TestPayload
 	if err := kafka.Decode(env, &p); err != nil {
 		return err

@@ -27,7 +27,7 @@ func BuildKafkaWorkers(c config.Config, svcCtx *svc.ServiceContext) KafkaWorkers
 	pending.SetDelayQueue(dq)
 	scheduler := kafka.NewDelayScheduler(kafka.DelaySchedulerConfig{}, dq, svcCtx.KafkaProducer)
 
-	reg := handlers.BuildRegistry()
+	reg := handlers.BuildRegistry(svcCtx)
 	kafka.BindPending(pending, reg)
 
 	dlqNotifier := kafka.NewEmailDLQNotifier(c.Kafka.ServiceName, svcCtx.Mailer, c.DLQEmail.To)

@@ -28,3 +28,8 @@ func (s *UserServiceServer) Test(ctx context.Context, in *v1.TestReq) (*v1.Respo
 	l := logic.NewTestLogic(ctx, s.svcCtx)
 	return l.Test(in)
 }
+
+func (s *UserServiceServer) SendVerificationCode(ctx context.Context, in *v1.SendVerificationCodeReq) (*v1.Response, error) {
+	l := logic.NewSendVerificationCodeLogic(ctx, s.svcCtx)
+	return l.SendVerificationCode(in)
+}
