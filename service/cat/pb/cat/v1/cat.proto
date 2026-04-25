@@ -706,6 +706,15 @@ message GetCatDetailResponse {
     string discovery_address = 11;
     double longitude = 12;
     double latitude = 13;
+
+    bool is_vaccinated = 14;
+    bool is_healthy = 15;
+    bool need_medical_intervention = 16;
+
+    repeated string image_urls = 17;
+
+    google.protobuf.Timestamp created_at = 18;
+    google.protobuf.Timestamp updated_at = 19;
 }
 
 message ListCatsRequest {
@@ -720,6 +729,9 @@ message CatItem {
     string avatar = 4;
     string age_stage = 5;
     string adoption_status = 6;
+    string cat_code = 7;
+    string body_size = 8;
+    google.protobuf.Timestamp created_at = 9;
 }
 
 message ListCatsResponse {
@@ -747,6 +759,7 @@ message CatTaskItem {
 
     google.protobuf.Timestamp deadline = 8;
     google.protobuf.Timestamp created_at = 9;
+    uint64 cat_id = 10;
 }
 
 message ListCatTasksResponse {
