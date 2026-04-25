@@ -355,3 +355,20 @@ type CatTaskClaim struct {
 func (CatTaskClaim) TableName() string {
 	return "cat_task_claims"
 }
+
+// CatTaskProgress 任务进度记录表
+type CatTaskProgress struct {
+	ID      uint64 `gorm:"primaryKey;autoIncrement" json:"id"`
+	TaskID  uint64 `gorm:"index;not null;comment:任务ID" json:"task_id"`
+	UserID  uint64 `gorm:"index;not null;comment:提交人ID" json:"user_id"`
+	Content string `gorm:"type:text;comment:进度内容" json:"content"`
+	// JSON array of image URLs
+	ImageURLs string `gorm:"type:json;comment:图片URLs JSON" json:"image_urls"`
+
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
+}
+
+func (CatTaskProgress) TableName() string {
+	return "cat_task_progresses"
+}

@@ -2,7 +2,11 @@ package logic
 
 import (
 	"context"
+	"encoding/json"
 
+	"github.com/luyb177/meow-nook/common/errorx"
+	"github.com/luyb177/meow-nook/common/logger"
+	"github.com/luyb177/meow-nook/service/cat/internal/repo/cat"
 	"github.com/luyb177/meow-nook/service/cat/internal/svc"
 	"github.com/luyb177/meow-nook/service/cat/pb/cat/v1"
 
@@ -25,7 +29,27 @@ func NewUploadTaskProgressLogic(ctx context.Context, svcCtx *svc.ServiceContext)
 
 // 上传任务进度（图片/备注）
 func (l *UploadTaskProgressLogic) UploadTaskProgress(in *v1.UploadTaskProgressRequest) (*v1.UploadTaskProgressResponse, error) {
-	// todo: add your logic here and delete this line
+	if _, err := l.svcCtx.Repo.Cat.GetCatTaskByID(l.ctx, in.TaskId); err != nil {
+		return nil, errorx.ErrTaskNotFound
+	}
 
-	return &v1.UploadTaskProgressResponse{}, nil
+	imageURLsJSON, err := json.Marshal(in.ImageUrls)
+	if err != nil {
+		logger.Error("UploadTaskProgress: marshal image_urls failed")
+		return nil, errorx.WrapInternal("序列化图片URL失败", err)
+	}
+
+	progress := &cat.CatTaskProgress{
+		TaskID:    in.TaskId,
+		UserID:    in.UserId,
+		Content:   in.Content,
+		ImageURLs: string(imageURLsJSON),
+	}
+
+	if err := l.svcCtx.Repo.Cat.CreateCatTaskProgress(l.ctx, progress); err != nil {
+		logger.Error("UploadTaskProgress: create progress failed")
+		return nil, errorx.WrapInternal("上传任务进度失败", err)
+	}
+
+	return &v1.UploadTaskProgressResponse{Success: true}, nil
 }
