@@ -14,75 +14,95 @@ import (
 )
 
 type (
-	AbandonCatTaskRequest               = v1.AbandonCatTaskRequest
-	AbandonCatTaskResponse              = v1.AbandonCatTaskResponse
-	ApplyAddMedicalRecordRequest        = v1.ApplyAddMedicalRecordRequest
-	ApplyAddMedicalRecordResponse       = v1.ApplyAddMedicalRecordResponse
-	ApplyAddRescueRecordRequest         = v1.ApplyAddRescueRecordRequest
-	ApplyAddRescueRecordResponse        = v1.ApplyAddRescueRecordResponse
-	ApplyCreateCatRequest               = v1.ApplyCreateCatRequest
-	ApplyCreateCatResponse              = v1.ApplyCreateCatResponse
-	ApplyCreateCatTaskRequest           = v1.ApplyCreateCatTaskRequest
-	ApplyCreateCatTaskResponse          = v1.ApplyCreateCatTaskResponse
-	ApplyUpdateCatInfoRequest           = v1.ApplyUpdateCatInfoRequest
-	ApplyUpdateCatInfoResponse          = v1.ApplyUpdateCatInfoResponse
-	ApproveCreateCatRequest             = v1.ApproveCreateCatRequest
-	ApproveCreateCatResponse            = v1.ApproveCreateCatResponse
-	ApproveCreateCatTaskRequest         = v1.ApproveCreateCatTaskRequest
-	ApproveCreateCatTaskResponse        = v1.ApproveCreateCatTaskResponse
-	ApproveMedicalRecordRequest         = v1.ApproveMedicalRecordRequest
-	ApproveMedicalRecordResponse        = v1.ApproveMedicalRecordResponse
-	ApproveUpdateCatInfoRequest         = v1.ApproveUpdateCatInfoRequest
-	ApproveUpdateCatInfoResponse        = v1.ApproveUpdateCatInfoResponse
-	CatItem                             = v1.CatItem
-	CatTaskItem                         = v1.CatTaskItem
-	ClaimCatTaskRequest                 = v1.ClaimCatTaskRequest
-	ClaimCatTaskResponse                = v1.ClaimCatTaskResponse
-	CreateCatApplyItem                  = v1.CreateCatApplyItem
-	CreateCatTaskApplyItem              = v1.CreateCatTaskApplyItem
-	CreateCatTaskRequest                = v1.CreateCatTaskRequest
-	CreateCatTaskResponse               = v1.CreateCatTaskResponse
-	GetCatDetailRequest                 = v1.GetCatDetailRequest
-	GetCatDetailResponse                = v1.GetCatDetailResponse
-	GetCreateCatApplyDetailRequest      = v1.GetCreateCatApplyDetailRequest
-	GetCreateCatApplyDetailResponse     = v1.GetCreateCatApplyDetailResponse
-	GetCreateCatTaskApplyDetailRequest  = v1.GetCreateCatTaskApplyDetailRequest
-	GetCreateCatTaskApplyDetailResponse = v1.GetCreateCatTaskApplyDetailResponse
-	GetMyCreateCatApplyDetailRequest    = v1.GetMyCreateCatApplyDetailRequest
-	GetMyCreateCatApplyDetailResponse   = v1.GetMyCreateCatApplyDetailResponse
-	GetMyUpdateCatApplyDetailRequest    = v1.GetMyUpdateCatApplyDetailRequest
-	GetMyUpdateCatApplyDetailResponse   = v1.GetMyUpdateCatApplyDetailResponse
-	GetUpdateCatApplyDetailRequest      = v1.GetUpdateCatApplyDetailRequest
-	GetUpdateCatApplyDetailResponse     = v1.GetUpdateCatApplyDetailResponse
-	ListCatTasksRequest                 = v1.ListCatTasksRequest
-	ListCatTasksResponse                = v1.ListCatTasksResponse
-	ListCatsRequest                     = v1.ListCatsRequest
-	ListCatsResponse                    = v1.ListCatsResponse
-	ListCreateCatApplyRequest           = v1.ListCreateCatApplyRequest
-	ListCreateCatApplyResponse          = v1.ListCreateCatApplyResponse
-	ListCreateCatTaskApplyRequest       = v1.ListCreateCatTaskApplyRequest
-	ListCreateCatTaskApplyResponse      = v1.ListCreateCatTaskApplyResponse
-	ListUpdateCatApplyRequest           = v1.ListUpdateCatApplyRequest
-	ListUpdateCatApplyResponse          = v1.ListUpdateCatApplyResponse
-	RejectCreateCatRequest              = v1.RejectCreateCatRequest
-	RejectCreateCatResponse             = v1.RejectCreateCatResponse
-	RejectCreateCatTaskRequest          = v1.RejectCreateCatTaskRequest
-	RejectCreateCatTaskResponse         = v1.RejectCreateCatTaskResponse
-	RejectMedicalRecordRequest          = v1.RejectMedicalRecordRequest
-	RejectMedicalRecordResponse         = v1.RejectMedicalRecordResponse
-	RejectUpdateCatInfoRequest          = v1.RejectUpdateCatInfoRequest
-	RejectUpdateCatInfoResponse         = v1.RejectUpdateCatInfoResponse
-	UpdateAdoptionStatusRequest         = v1.UpdateAdoptionStatusRequest
-	UpdateAdoptionStatusResponse        = v1.UpdateAdoptionStatusResponse
-	UpdateCatApplyItem                  = v1.UpdateCatApplyItem
-	UpdateCatTaskStatusRequest          = v1.UpdateCatTaskStatusRequest
-	UpdateCatTaskStatusResponse         = v1.UpdateCatTaskStatusResponse
-	UploadTaskProgressRequest           = v1.UploadTaskProgressRequest
-	UploadTaskProgressResponse          = v1.UploadTaskProgressResponse
+	AbandonCatTaskRequest                = v1.AbandonCatTaskRequest
+	AbandonCatTaskResponse               = v1.AbandonCatTaskResponse
+	ApplyAddMedicalRecordRequest         = v1.ApplyAddMedicalRecordRequest
+	ApplyAddMedicalRecordResponse        = v1.ApplyAddMedicalRecordResponse
+	ApplyAddRescueRecordRequest          = v1.ApplyAddRescueRecordRequest
+	ApplyAddRescueRecordResponse         = v1.ApplyAddRescueRecordResponse
+	ApplyCreateCatRequest                = v1.ApplyCreateCatRequest
+	ApplyCreateCatResponse               = v1.ApplyCreateCatResponse
+	ApplyCreateCatTaskRequest            = v1.ApplyCreateCatTaskRequest
+	ApplyCreateCatTaskResponse           = v1.ApplyCreateCatTaskResponse
+	ApplyUpdateCatInfoRequest            = v1.ApplyUpdateCatInfoRequest
+	ApplyUpdateCatInfoResponse           = v1.ApplyUpdateCatInfoResponse
+	ApproveCreateCatRequest              = v1.ApproveCreateCatRequest
+	ApproveCreateCatResponse             = v1.ApproveCreateCatResponse
+	ApproveCreateCatTaskRequest          = v1.ApproveCreateCatTaskRequest
+	ApproveCreateCatTaskResponse         = v1.ApproveCreateCatTaskResponse
+	ApproveMedicalRecordRequest          = v1.ApproveMedicalRecordRequest
+	ApproveMedicalRecordResponse         = v1.ApproveMedicalRecordResponse
+	ApproveUpdateCatInfoRequest          = v1.ApproveUpdateCatInfoRequest
+	ApproveUpdateCatInfoResponse         = v1.ApproveUpdateCatInfoResponse
+	CancelApplyCreateCatRequest          = v1.CancelApplyCreateCatRequest
+	CatItem                              = v1.CatItem
+	CatTaskItem                          = v1.CatTaskItem
+	ClaimCatTaskRequest                  = v1.ClaimCatTaskRequest
+	ClaimCatTaskResponse                 = v1.ClaimCatTaskResponse
+	CreateCatApplyItem                   = v1.CreateCatApplyItem
+	CreateCatTaskApplyItem               = v1.CreateCatTaskApplyItem
+	CreateCatTaskRequest                 = v1.CreateCatTaskRequest
+	CreateCatTaskResponse                = v1.CreateCatTaskResponse
+	DirectCreateCatRequest               = v1.DirectCreateCatRequest
+	DirectCreateCatResponse              = v1.DirectCreateCatResponse
+	GetApplyDetailRequest                = v1.GetApplyDetailRequest
+	GetApplyDetailResponse               = v1.GetApplyDetailResponse
+	GetCatDetailRequest                  = v1.GetCatDetailRequest
+	GetCatDetailResponse                 = v1.GetCatDetailResponse
+	GetCreateCatApplyDetailRequest       = v1.GetCreateCatApplyDetailRequest
+	GetCreateCatApplyDetailResponse      = v1.GetCreateCatApplyDetailResponse
+	GetCreateCatTaskApplyDetailRequest   = v1.GetCreateCatTaskApplyDetailRequest
+	GetCreateCatTaskApplyDetailResponse  = v1.GetCreateCatTaskApplyDetailResponse
+	GetMyCreateCatApplyDetailRequest     = v1.GetMyCreateCatApplyDetailRequest
+	GetMyCreateCatApplyDetailResponse    = v1.GetMyCreateCatApplyDetailResponse
+	GetMyUpdateCatApplyDetailRequest     = v1.GetMyUpdateCatApplyDetailRequest
+	GetMyUpdateCatApplyDetailResponse    = v1.GetMyUpdateCatApplyDetailResponse
+	GetUpdateCatApplyDetailRequest       = v1.GetUpdateCatApplyDetailRequest
+	GetUpdateCatApplyDetailResponse      = v1.GetUpdateCatApplyDetailResponse
+	ImageItem                            = v1.ImageItem
+	ListCatTasksRequest                  = v1.ListCatTasksRequest
+	ListCatTasksResponse                 = v1.ListCatTasksResponse
+	ListCatsRequest                      = v1.ListCatsRequest
+	ListCatsResponse                     = v1.ListCatsResponse
+	ListCreateCatApplyRequest            = v1.ListCreateCatApplyRequest
+	ListCreateCatApplyResponse           = v1.ListCreateCatApplyResponse
+	ListCreateCatTaskApplyRequest        = v1.ListCreateCatTaskApplyRequest
+	ListCreateCatTaskApplyResponse       = v1.ListCreateCatTaskApplyResponse
+	ListMyAppliesRequest                 = v1.ListMyAppliesRequest
+	ListMyAppliesResponse                = v1.ListMyAppliesResponse
+	ListMyAppliesResponse_ApplyItem      = v1.ListMyAppliesResponse_ApplyItem
+	ListPendingAppliesRequest            = v1.ListPendingAppliesRequest
+	ListPendingAppliesResponse           = v1.ListPendingAppliesResponse
+	ListPendingAppliesResponse_ApplyItem = v1.ListPendingAppliesResponse_ApplyItem
+	ListUpdateCatApplyRequest            = v1.ListUpdateCatApplyRequest
+	ListUpdateCatApplyResponse           = v1.ListUpdateCatApplyResponse
+	RejectCreateCatRequest               = v1.RejectCreateCatRequest
+	RejectCreateCatTaskRequest           = v1.RejectCreateCatTaskRequest
+	RejectCreateCatTaskResponse          = v1.RejectCreateCatTaskResponse
+	RejectMedicalRecordRequest           = v1.RejectMedicalRecordRequest
+	RejectMedicalRecordResponse          = v1.RejectMedicalRecordResponse
+	RejectUpdateCatInfoRequest           = v1.RejectUpdateCatInfoRequest
+	RejectUpdateCatInfoResponse          = v1.RejectUpdateCatInfoResponse
+	Response                             = v1.Response
+	UpdateAdoptionStatusRequest          = v1.UpdateAdoptionStatusRequest
+	UpdateAdoptionStatusResponse         = v1.UpdateAdoptionStatusResponse
+	UpdateCatApplyItem                   = v1.UpdateCatApplyItem
+	UpdateCatTaskStatusRequest           = v1.UpdateCatTaskStatusRequest
+	UpdateCatTaskStatusResponse          = v1.UpdateCatTaskStatusResponse
+	UploadTaskProgressRequest            = v1.UploadTaskProgressRequest
+	UploadTaskProgressResponse           = v1.UploadTaskProgressResponse
 
 	CatService interface {
-		// 申请创建小猫档案
+		// 志愿者
 		ApplyCreateCat(ctx context.Context, in *ApplyCreateCatRequest, opts ...grpc.CallOption) (*ApplyCreateCatResponse, error)
+		CancelApplyCreateCat(ctx context.Context, in *CancelApplyCreateCatRequest, opts ...grpc.CallOption) (*Response, error)
+		GetApplyDetail(ctx context.Context, in *GetApplyDetailRequest, opts ...grpc.CallOption) (*GetApplyDetailResponse, error)
+		ListMyApplies(ctx context.Context, in *ListMyAppliesRequest, opts ...grpc.CallOption) (*ListMyAppliesResponse, error)
+		// 管理员
+		ApproveCreateCat(ctx context.Context, in *ApproveCreateCatRequest, opts ...grpc.CallOption) (*ApproveCreateCatResponse, error)
+		RejectCreateCat(ctx context.Context, in *RejectCreateCatRequest, opts ...grpc.CallOption) (*Response, error)
+		DirectCreateCat(ctx context.Context, in *DirectCreateCatRequest, opts ...grpc.CallOption) (*DirectCreateCatResponse, error)
+		ListPendingApplies(ctx context.Context, in *ListPendingAppliesRequest, opts ...grpc.CallOption) (*ListPendingAppliesResponse, error)
 		// 申请修改猫咪档案信息
 		ApplyUpdateCatInfo(ctx context.Context, in *ApplyUpdateCatInfoRequest, opts ...grpc.CallOption) (*ApplyUpdateCatInfoResponse, error)
 		// 查看自己提交的创建申请详情
@@ -101,8 +121,6 @@ type (
 		AbandonCatTask(ctx context.Context, in *AbandonCatTaskRequest, opts ...grpc.CallOption) (*AbandonCatTaskResponse, error)
 		// 上传任务进度（图片/备注）
 		UploadTaskProgress(ctx context.Context, in *UploadTaskProgressRequest, opts ...grpc.CallOption) (*UploadTaskProgressResponse, error)
-		ApproveCreateCat(ctx context.Context, in *ApproveCreateCatRequest, opts ...grpc.CallOption) (*ApproveCreateCatResponse, error)
-		RejectCreateCat(ctx context.Context, in *RejectCreateCatRequest, opts ...grpc.CallOption) (*RejectCreateCatResponse, error)
 		GetCreateCatApplyDetail(ctx context.Context, in *GetCreateCatApplyDetailRequest, opts ...grpc.CallOption) (*GetCreateCatApplyDetailResponse, error)
 		ListCreateCatApply(ctx context.Context, in *ListCreateCatApplyRequest, opts ...grpc.CallOption) (*ListCreateCatApplyResponse, error)
 		ApproveUpdateCatInfo(ctx context.Context, in *ApproveUpdateCatInfoRequest, opts ...grpc.CallOption) (*ApproveUpdateCatInfoResponse, error)
@@ -140,10 +158,46 @@ func NewCatService(cli zrpc.Client) CatService {
 	}
 }
 
-// 申请创建小猫档案
+// 志愿者
 func (m *defaultCatService) ApplyCreateCat(ctx context.Context, in *ApplyCreateCatRequest, opts ...grpc.CallOption) (*ApplyCreateCatResponse, error) {
 	client := v1.NewCatServiceClient(m.cli.Conn())
 	return client.ApplyCreateCat(ctx, in, opts...)
+}
+
+func (m *defaultCatService) CancelApplyCreateCat(ctx context.Context, in *CancelApplyCreateCatRequest, opts ...grpc.CallOption) (*Response, error) {
+	client := v1.NewCatServiceClient(m.cli.Conn())
+	return client.CancelApplyCreateCat(ctx, in, opts...)
+}
+
+func (m *defaultCatService) GetApplyDetail(ctx context.Context, in *GetApplyDetailRequest, opts ...grpc.CallOption) (*GetApplyDetailResponse, error) {
+	client := v1.NewCatServiceClient(m.cli.Conn())
+	return client.GetApplyDetail(ctx, in, opts...)
+}
+
+func (m *defaultCatService) ListMyApplies(ctx context.Context, in *ListMyAppliesRequest, opts ...grpc.CallOption) (*ListMyAppliesResponse, error) {
+	client := v1.NewCatServiceClient(m.cli.Conn())
+	return client.ListMyApplies(ctx, in, opts...)
+}
+
+// 管理员
+func (m *defaultCatService) ApproveCreateCat(ctx context.Context, in *ApproveCreateCatRequest, opts ...grpc.CallOption) (*ApproveCreateCatResponse, error) {
+	client := v1.NewCatServiceClient(m.cli.Conn())
+	return client.ApproveCreateCat(ctx, in, opts...)
+}
+
+func (m *defaultCatService) RejectCreateCat(ctx context.Context, in *RejectCreateCatRequest, opts ...grpc.CallOption) (*Response, error) {
+	client := v1.NewCatServiceClient(m.cli.Conn())
+	return client.RejectCreateCat(ctx, in, opts...)
+}
+
+func (m *defaultCatService) DirectCreateCat(ctx context.Context, in *DirectCreateCatRequest, opts ...grpc.CallOption) (*DirectCreateCatResponse, error) {
+	client := v1.NewCatServiceClient(m.cli.Conn())
+	return client.DirectCreateCat(ctx, in, opts...)
+}
+
+func (m *defaultCatService) ListPendingApplies(ctx context.Context, in *ListPendingAppliesRequest, opts ...grpc.CallOption) (*ListPendingAppliesResponse, error) {
+	client := v1.NewCatServiceClient(m.cli.Conn())
+	return client.ListPendingApplies(ctx, in, opts...)
 }
 
 // 申请修改猫咪档案信息
@@ -198,16 +252,6 @@ func (m *defaultCatService) AbandonCatTask(ctx context.Context, in *AbandonCatTa
 func (m *defaultCatService) UploadTaskProgress(ctx context.Context, in *UploadTaskProgressRequest, opts ...grpc.CallOption) (*UploadTaskProgressResponse, error) {
 	client := v1.NewCatServiceClient(m.cli.Conn())
 	return client.UploadTaskProgress(ctx, in, opts...)
-}
-
-func (m *defaultCatService) ApproveCreateCat(ctx context.Context, in *ApproveCreateCatRequest, opts ...grpc.CallOption) (*ApproveCreateCatResponse, error) {
-	client := v1.NewCatServiceClient(m.cli.Conn())
-	return client.ApproveCreateCat(ctx, in, opts...)
-}
-
-func (m *defaultCatService) RejectCreateCat(ctx context.Context, in *RejectCreateCatRequest, opts ...grpc.CallOption) (*RejectCreateCatResponse, error) {
-	client := v1.NewCatServiceClient(m.cli.Conn())
-	return client.RejectCreateCat(ctx, in, opts...)
 }
 
 func (m *defaultCatService) GetCreateCatApplyDetail(ctx context.Context, in *GetCreateCatApplyDetailRequest, opts ...grpc.CallOption) (*GetCreateCatApplyDetailResponse, error) {

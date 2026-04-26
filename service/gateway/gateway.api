@@ -12,6 +12,12 @@ info (
 // ──────────────────────────────────────────────
 type (
 	Response  {}
+	ImageItem {
+		Url         string `json:"url"`
+		Description string `json:"description"`
+		Sort        int32  `json:"sort"`
+		IsCover     bool   `json:"is_cover"`
+	}
 )
 
 // ──────────────────────────────────────────────
@@ -157,10 +163,188 @@ service gateway {
 // @handler Logout
 // post /logout
 //}
-//
-//// ──────────────────────────────────────────────
-//// Cats
-//// ──────────────────────────────────────────────
+// ──────────────────────────────────────────────
+// Cats
+// ──────────────────────────────────────────────
+// ==================== 志愿者 ====================
+type ApplyCreateCatReq {
+	Name             string      `json:"name"`
+	Gender           string      `json:"gender"`
+	BodySize         string      `json:"body_size"`
+	AgeStage         string      `json:"age_stage"`
+	Description      string      `json:"description"`
+	DiscoveryAddress string      `json:"discovery_address"`
+	Longitude        float64     `json:"longitude"`
+	Latitude         float64     `json:"latitude"`
+	Images           []ImageItem `json:"images"`
+	TagIds           []uint64    `json:"tag_ids"`
+}
+
+type ApplyCreateCatResp {
+	ApplyId   uint64 `json:"apply_id"`
+	CreatedAt string `json:"created_at"`
+}
+
+type CancelApplyCreateCatReq {
+	Id     uint64 `path:"id"`
+	Reason string `json:"reason"`
+}
+
+type GetApplyDetailReq {
+	Id uint64 `path:"id"`
+}
+
+type GetApplyDetailResp {
+	ApplyId          uint64      `json:"apply_id"`
+	CatId            uint64      `json:"cat_id"`
+	Name             string      `json:"name"`
+	Gender           string      `json:"gender"`
+	BodySize         string      `json:"body_size"`
+	AgeStage         string      `json:"age_stage"`
+	Description      string      `json:"description"`
+	DiscoveryAddress string      `json:"discovery_address"`
+	Longitude        float64     `json:"longitude"`
+	Latitude         float64     `json:"latitude"`
+	ApplicantUserId  uint64      `json:"applicant_user_id"`
+	Status           string      `json:"status"`
+	RejectReason     string      `json:"reject_reason"`
+	CancelReason     string      `json:"cancel_reason"`
+	ReviewerId       uint64      `json:"reviewer_id"`
+	Images           []ImageItem `json:"images"`
+	CreatedAt        string      `json:"created_at"`
+	UpdatedAt        string      `json:"updated_at"`
+}
+
+type ListMyAppliesReq {
+	Status   string `form:"status,optional"`
+	Page     int32  `form:"page,default=1"`
+	PageSize int32  `form:"page_size,default=20"`
+}
+
+type ApplyItem {
+	ApplyId   uint64 `json:"apply_id"`
+	Name      string `json:"name"`
+	Status    string `json:"status"`
+	CatId     uint64 `json:"cat_id"`
+	CreatedAt string `json:"created_at"`
+}
+
+type ListMyAppliesResp {
+	List  []ApplyItem `json:"list"`
+	Total int64       `json:"total"`
+}
+
+// ==================== 管理员 ====================
+type ApproveCreateCatReq {
+	Id                      uint64   `path:"id"`
+	CatCode                 string   `json:"cat_code"`
+	Breed                   string   `json:"breed"`
+	Color                   string   `json:"color"`
+	IsVaccinated            bool     `json:"is_vaccinated"`
+	IsHealthy               bool     `json:"is_healthy"`
+	NeedMedicalIntervention bool     `json:"need_medical_intervention"`
+	SterilizationStatus     string   `json:"sterilization_status"`
+	ExtraTagIds             []uint64 `json:"extra_tag_ids"`
+}
+
+type ApproveCreateCatResp {
+	CatId   uint64 `json:"cat_id"`
+	CatCode string `json:"cat_code"`
+	Status  string `json:"status"`
+}
+
+type RejectCreateCatReq {
+	Id     uint64 `path:"id"`
+	Reason string `json:"reason"`
+}
+
+type DirectCreateCatReq {
+	CatCode                 string      `json:"cat_code"`
+	Name                    string      `json:"name"`
+	Breed                   string      `json:"breed"`
+	Color                   string      `json:"color"`
+	Gender                  string      `json:"gender"`
+	BodySize                string      `json:"body_size"`
+	AgeStage                string      `json:"age_stage"`
+	Description             string      `json:"description"`
+	DiscoveryAddress        string      `json:"discovery_address"`
+	Longitude               float64     `json:"longitude"`
+	Latitude                float64     `json:"latitude"`
+	IsVaccinated            bool        `json:"is_vaccinated"`
+	IsHealthy               bool        `json:"is_healthy"`
+	NeedMedicalIntervention bool        `json:"need_medical_intervention"`
+	SterilizationStatus     string      `json:"sterilization_status"`
+	Images                  []ImageItem `json:"images"`
+	TagIds                  []uint64    `json:"tag_ids"`
+}
+
+type DirectCreateCatResp {
+	CatId   uint64 `json:"cat_id"`
+	CatCode string `json:"cat_code"`
+}
+
+type ListPendingAppliesReq {
+	Keyword  string `form:"keyword,optional"`
+	Page     int32  `form:"page,default=1"`
+	PageSize int32  `form:"page_size,default=20"`
+}
+
+type PendingApplyItem {
+	ApplyId          uint64 `json:"apply_id"`
+	Name             string `json:"name"`
+	Gender           string `json:"gender"`
+	AgeStage         string `json:"age_stage"`
+	DiscoveryAddress string `json:"discovery_address"`
+	ApplicantUserId  uint64 `json:"applicant_user_id"`
+	CreatedAt        string `json:"created_at"`
+}
+
+type ListPendingAppliesResp {
+	List  []PendingApplyItem `json:"list"`
+	Total int64              `json:"total"`
+}
+
+// ==================== 路由定义 ====================
+@server (
+	prefix:     /api/v1/cats
+	middleware: Auth
+	tags:       "猫咪模块"
+	group:      cat
+)
+service gateway {
+	@doc "志愿者申请创建猫咪档案"
+	@handler ApplyCreateCat
+	post /applies (ApplyCreateCatReq) returns (ApplyCreateCatResp)
+
+	@doc "志愿者取消申请"
+	@handler CancelApplyCreateCat
+	post /applies/:id/cancel (CancelApplyCreateCatReq) returns (Response)
+
+	@doc "查询申请详情"
+	@handler GetApplyDetail
+	get /applies/:id (GetApplyDetailReq) returns (GetApplyDetailResp)
+
+	@doc "我的申请列表"
+	@handler ListMyApplies
+	get /applies/my (ListMyAppliesReq) returns (ListMyAppliesResp)
+
+	@doc "管理员审核通过"
+	@handler ApproveCreateCat
+	post /applies/:id/approve (ApproveCreateCatReq) returns (ApproveCreateCatResp)
+
+	@doc "管理员驳回申请"
+	@handler RejectCreateCat
+	post /applies/:id/reject (RejectCreateCatReq) returns (Response)
+
+	@doc "管理员直接创建猫咪档案"
+	@handler DirectCreateCat
+	post /direct (DirectCreateCatReq) returns (DirectCreateCatResp)
+
+	@doc "管理员查询待审核列表"
+	@handler ListPendingApplies
+	get /applies/pending (ListPendingAppliesReq) returns (ListPendingAppliesResp)
+}
+
 //type (
 // CatInfo {
 //  Id             int64    `json:"id"`

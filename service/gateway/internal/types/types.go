@@ -3,6 +3,149 @@
 
 package types
 
+type ApplyCreateCatReq struct {
+	Name             string      `json:"name"`
+	Gender           string      `json:"gender"`
+	BodySize         string      `json:"body_size"`
+	AgeStage         string      `json:"age_stage"`
+	Description      string      `json:"description"`
+	DiscoveryAddress string      `json:"discovery_address"`
+	Longitude        float64     `json:"longitude"`
+	Latitude         float64     `json:"latitude"`
+	Images           []ImageItem `json:"images"`
+	TagIds           []uint64    `json:"tag_ids"`
+}
+
+type ApplyCreateCatResp struct {
+	ApplyId   uint64 `json:"apply_id"`
+	CreatedAt string `json:"created_at"`
+}
+
+type ApplyItem struct {
+	ApplyId   uint64 `json:"apply_id"`
+	Name      string `json:"name"`
+	Status    string `json:"status"`
+	CatId     uint64 `json:"cat_id"`
+	CreatedAt string `json:"created_at"`
+}
+
+type ApproveCreateCatReq struct {
+	Id                      uint64   `path:"id"`
+	CatCode                 string   `json:"cat_code"`
+	Breed                   string   `json:"breed"`
+	Color                   string   `json:"color"`
+	IsVaccinated            bool     `json:"is_vaccinated"`
+	IsHealthy               bool     `json:"is_healthy"`
+	NeedMedicalIntervention bool     `json:"need_medical_intervention"`
+	SterilizationStatus     string   `json:"sterilization_status"`
+	ExtraTagIds             []uint64 `json:"extra_tag_ids"`
+}
+
+type ApproveCreateCatResp struct {
+	CatId   uint64 `json:"cat_id"`
+	CatCode string `json:"cat_code"`
+	Status  string `json:"status"`
+}
+
+type CancelApplyCreateCatReq struct {
+	Id     uint64 `path:"id"`
+	Reason string `json:"reason"`
+}
+
+type DirectCreateCatReq struct {
+	CatCode                 string      `json:"cat_code"`
+	Name                    string      `json:"name"`
+	Breed                   string      `json:"breed"`
+	Color                   string      `json:"color"`
+	Gender                  string      `json:"gender"`
+	BodySize                string      `json:"body_size"`
+	AgeStage                string      `json:"age_stage"`
+	Description             string      `json:"description"`
+	DiscoveryAddress        string      `json:"discovery_address"`
+	Longitude               float64     `json:"longitude"`
+	Latitude                float64     `json:"latitude"`
+	IsVaccinated            bool        `json:"is_vaccinated"`
+	IsHealthy               bool        `json:"is_healthy"`
+	NeedMedicalIntervention bool        `json:"need_medical_intervention"`
+	SterilizationStatus     string      `json:"sterilization_status"`
+	Images                  []ImageItem `json:"images"`
+	TagIds                  []uint64    `json:"tag_ids"`
+}
+
+type DirectCreateCatResp struct {
+	CatId   uint64 `json:"cat_id"`
+	CatCode string `json:"cat_code"`
+}
+
+type GetApplyDetailReq struct {
+	Id uint64 `path:"id"`
+}
+
+type GetApplyDetailResp struct {
+	ApplyId          uint64      `json:"apply_id"`
+	CatId            uint64      `json:"cat_id"`
+	Name             string      `json:"name"`
+	Gender           string      `json:"gender"`
+	BodySize         string      `json:"body_size"`
+	AgeStage         string      `json:"age_stage"`
+	Description      string      `json:"description"`
+	DiscoveryAddress string      `json:"discovery_address"`
+	Longitude        float64     `json:"longitude"`
+	Latitude         float64     `json:"latitude"`
+	ApplicantUserId  uint64      `json:"applicant_user_id"`
+	Status           string      `json:"status"`
+	RejectReason     string      `json:"reject_reason"`
+	CancelReason     string      `json:"cancel_reason"`
+	ReviewerId       uint64      `json:"reviewer_id"`
+	Images           []ImageItem `json:"images"`
+	CreatedAt        string      `json:"created_at"`
+	UpdatedAt        string      `json:"updated_at"`
+}
+
+type ImageItem struct {
+	Url         string `json:"url"`
+	Description string `json:"description"`
+	Sort        int32  `json:"sort"`
+	IsCover     bool   `json:"is_cover"`
+}
+
+type ListMyAppliesReq struct {
+	Status   string `form:"status,optional"`
+	Page     int32  `form:"page,default=1"`
+	PageSize int32  `form:"page_size,default=20"`
+}
+
+type ListMyAppliesResp struct {
+	List  []ApplyItem `json:"list"`
+	Total int64       `json:"total"`
+}
+
+type ListPendingAppliesReq struct {
+	Keyword  string `form:"keyword,optional"`
+	Page     int32  `form:"page,default=1"`
+	PageSize int32  `form:"page_size,default=20"`
+}
+
+type ListPendingAppliesResp struct {
+	List  []PendingApplyItem `json:"list"`
+	Total int64              `json:"total"`
+}
+
+type PendingApplyItem struct {
+	ApplyId          uint64 `json:"apply_id"`
+	Name             string `json:"name"`
+	Gender           string `json:"gender"`
+	AgeStage         string `json:"age_stage"`
+	DiscoveryAddress string `json:"discovery_address"`
+	ApplicantUserId  uint64 `json:"applicant_user_id"`
+	CreatedAt        string `json:"created_at"`
+}
+
+type RejectCreateCatReq struct {
+	Id     uint64 `path:"id"`
+	Reason string `json:"reason"`
+}
+
 type Response struct {
 }
 

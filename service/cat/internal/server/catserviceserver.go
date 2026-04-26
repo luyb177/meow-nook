@@ -23,10 +23,46 @@ func NewCatServiceServer(svcCtx *svc.ServiceContext) *CatServiceServer {
 	}
 }
 
-// 申请创建小猫档案
+// 志愿者
 func (s *CatServiceServer) ApplyCreateCat(ctx context.Context, in *v1.ApplyCreateCatRequest) (*v1.ApplyCreateCatResponse, error) {
 	l := logic.NewApplyCreateCatLogic(ctx, s.svcCtx)
 	return l.ApplyCreateCat(in)
+}
+
+func (s *CatServiceServer) CancelApplyCreateCat(ctx context.Context, in *v1.CancelApplyCreateCatRequest) (*v1.Response, error) {
+	l := logic.NewCancelApplyCreateCatLogic(ctx, s.svcCtx)
+	return l.CancelApplyCreateCat(in)
+}
+
+func (s *CatServiceServer) GetApplyDetail(ctx context.Context, in *v1.GetApplyDetailRequest) (*v1.GetApplyDetailResponse, error) {
+	l := logic.NewGetApplyDetailLogic(ctx, s.svcCtx)
+	return l.GetApplyDetail(in)
+}
+
+func (s *CatServiceServer) ListMyApplies(ctx context.Context, in *v1.ListMyAppliesRequest) (*v1.ListMyAppliesResponse, error) {
+	l := logic.NewListMyAppliesLogic(ctx, s.svcCtx)
+	return l.ListMyApplies(in)
+}
+
+// 管理员
+func (s *CatServiceServer) ApproveCreateCat(ctx context.Context, in *v1.ApproveCreateCatRequest) (*v1.ApproveCreateCatResponse, error) {
+	l := logic.NewApproveCreateCatLogic(ctx, s.svcCtx)
+	return l.ApproveCreateCat(in)
+}
+
+func (s *CatServiceServer) RejectCreateCat(ctx context.Context, in *v1.RejectCreateCatRequest) (*v1.Response, error) {
+	l := logic.NewRejectCreateCatLogic(ctx, s.svcCtx)
+	return l.RejectCreateCat(in)
+}
+
+func (s *CatServiceServer) DirectCreateCat(ctx context.Context, in *v1.DirectCreateCatRequest) (*v1.DirectCreateCatResponse, error) {
+	l := logic.NewDirectCreateCatLogic(ctx, s.svcCtx)
+	return l.DirectCreateCat(in)
+}
+
+func (s *CatServiceServer) ListPendingApplies(ctx context.Context, in *v1.ListPendingAppliesRequest) (*v1.ListPendingAppliesResponse, error) {
+	l := logic.NewListPendingAppliesLogic(ctx, s.svcCtx)
+	return l.ListPendingApplies(in)
 }
 
 // 申请修改猫咪档案信息
@@ -81,16 +117,6 @@ func (s *CatServiceServer) AbandonCatTask(ctx context.Context, in *v1.AbandonCat
 func (s *CatServiceServer) UploadTaskProgress(ctx context.Context, in *v1.UploadTaskProgressRequest) (*v1.UploadTaskProgressResponse, error) {
 	l := logic.NewUploadTaskProgressLogic(ctx, s.svcCtx)
 	return l.UploadTaskProgress(in)
-}
-
-func (s *CatServiceServer) ApproveCreateCat(ctx context.Context, in *v1.ApproveCreateCatRequest) (*v1.ApproveCreateCatResponse, error) {
-	l := logic.NewApproveCreateCatLogic(ctx, s.svcCtx)
-	return l.ApproveCreateCat(in)
-}
-
-func (s *CatServiceServer) RejectCreateCat(ctx context.Context, in *v1.RejectCreateCatRequest) (*v1.RejectCreateCatResponse, error) {
-	l := logic.NewRejectCreateCatLogic(ctx, s.svcCtx)
-	return l.RejectCreateCat(in)
 }
 
 func (s *CatServiceServer) GetCreateCatApplyDetail(ctx context.Context, in *v1.GetCreateCatApplyDetailRequest) (*v1.GetCreateCatApplyDetailResponse, error) {

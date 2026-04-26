@@ -403,43 +403,6 @@ func (r *repository) DeleteCat(ctx context.Context, catID uint64, tx ...*gorm.DB
 	return nil
 }
 
-// todo 可能需要一个单独的 tag 服务
-
-type Tag struct {
-	ID       uint64 `gorm:"primaryKey;autoIncrement;comment:主键ID" json:"id"`
-	Name     string `gorm:"type:varchar(64);uniqueIndex;not null;comment:标签名称" json:"name"`
-	Type     string `gorm:"type:varchar(32);index;comment:标签类型" json:"type"`
-	Theme    string `gorm:"type:varchar(32);comment:主题色 success/warning/danger/info" json:"theme"`
-	Priority int32  `gorm:"default:0;comment:优先级，越大越靠前" json:"priority"`
-
-	CreatedAt time.Time             `gorm:"comment:创建时间" json:"created_at"`
-	UpdatedAt time.Time             `gorm:"comment:更新时间" json:"updated_at"`
-	DeletedAt soft_delete.DeletedAt `gorm:"index;softDelete:nano;comment:删除时间" json:"deleted_at,omitempty"`
-}
-
-type TagRelation struct {
-	ID         uint64    `gorm:"primaryKey" json:"id"`
-	TagID      uint64    `gorm:"index;not null" json:"tag_id"`
-	TargetID   uint64    `gorm:"index;not null" json:"target_id"`
-	TargetType string    `gorm:"type:varchar(32);index;not null;comment:cat/post/task/user" json:"target_type"`
-	CreatedAt  time.Time `json:"created_at"`
-}
-
-type CatImage struct {
-	ID          uint64 `gorm:"primaryKey;autoIncrement;comment:主键ID" json:"id"`
-	CatID       uint64 `gorm:"index;not null;comment:猫咪ID" json:"cat_id"`
-	ImageURL    string `gorm:"type:varchar(500);not null;comment:图片URL" json:"image_url"`
-	ImageType   string `gorm:"type:varchar(32);default:'normal';comment:图片类型 avatar/rescue/medical/adoption/post" json:"image_type"`
-	Sort        int32  `gorm:"default:0;comment:排序，越大越靠前" json:"sort"`
-	IsCover     bool   `gorm:"default:false;comment:是否封面图" json:"is_cover"`
-	Description string `gorm:"type:varchar(255);comment:图片说明" json:"description"`
-	UploaderID  uint64 `gorm:"default:0;comment:上传人ID" json:"uploader_id"`
-
-	CreatedAt time.Time             `json:"created_at"`
-	UpdatedAt time.Time             `json:"updated_at"`
-	DeletedAt soft_delete.DeletedAt `gorm:"index;softDelete:nano" json:"deleted_at,omitempty"`
-}
-
 // CatRescueRecord 救助历程表
 type CatRescueRecord struct {
 	ID uint64 `gorm:"primaryKey;autoIncrement" json:"id"`

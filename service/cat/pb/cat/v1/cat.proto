@@ -7,28 +7,27 @@ option go_package = "./pb/cat/v1";
 import "google/protobuf/timestamp.proto";
 
 service CatService {
-
-    /*
-     * =========================================================
-     * 志愿者侧接口（Volunteer）
-     * =========================================================
-     */
-
-    // ---------- 猫咪档案 ----------
-
-    // 申请创建小猫档案
+    // 志愿者
     rpc ApplyCreateCat(ApplyCreateCatRequest) returns (ApplyCreateCatResponse);
+    rpc CancelApplyCreateCat(CancelApplyCreateCatRequest) returns (Response);
+    rpc GetApplyDetail(GetApplyDetailRequest) returns (GetApplyDetailResponse);
+    rpc ListMyApplies(ListMyAppliesRequest) returns (ListMyAppliesResponse);
+
+    // 管理员
+    rpc ApproveCreateCat(ApproveCreateCatRequest) returns (ApproveCreateCatResponse);
+    rpc RejectCreateCat(RejectCreateCatRequest) returns (Response);
+    rpc DirectCreateCat(DirectCreateCatRequest) returns (DirectCreateCatResponse);
+    rpc ListPendingApplies(ListPendingAppliesRequest) returns (ListPendingAppliesResponse);
+
 
     // 申请修改猫咪档案信息
     rpc ApplyUpdateCatInfo(ApplyUpdateCatInfoRequest) returns (ApplyUpdateCatInfoResponse);
 
     // 查看自己提交的创建申请详情
-    rpc GetMyCreateCatApplyDetail(GetMyCreateCatApplyDetailRequest)
-        returns (GetMyCreateCatApplyDetailResponse);
+    rpc GetMyCreateCatApplyDetail(GetMyCreateCatApplyDetailRequest) returns (GetMyCreateCatApplyDetailResponse);
 
     // 查看自己提交的修改申请详情
-    rpc GetMyUpdateCatApplyDetail(GetMyUpdateCatApplyDetailRequest)
-        returns (GetMyUpdateCatApplyDetailResponse);
+    rpc GetMyUpdateCatApplyDetail(GetMyUpdateCatApplyDetailRequest) returns (GetMyUpdateCatApplyDetailResponse);
 
 
     // ---------- 医疗记录 ----------
@@ -71,12 +70,6 @@ service CatService {
      */
 
     // ---------- 创建猫咪档案审核 ----------
-
-    rpc ApproveCreateCat(ApproveCreateCatRequest)
-        returns (ApproveCreateCatResponse);
-
-    rpc RejectCreateCat(RejectCreateCatRequest)
-        returns (RejectCreateCatResponse);
 
     rpc GetCreateCatApplyDetail(GetCreateCatApplyDetailRequest)
         returns (GetCreateCatApplyDetailResponse);
@@ -158,31 +151,197 @@ service CatService {
         returns (ListCatTasksResponse);
 }
 
-/*
- * =========================================================
- * 志愿者侧 - 猫咪档案申请
- * =========================================================
- */
+// ==================== 通用响应 ====================
+
+message Response {}
+
+// ==================== 图片项 ====================
+
+message ImageItem {
+    string url = 1;
+    string description = 2;
+    int32 sort = 3;
+    bool is_cover = 4;
+}
+
+// ==================== 志愿者：申请创建猫咪档案 ====================
 
 message ApplyCreateCatRequest {
+    // 基础信息
     string name = 1;
     string gender = 2;
     string body_size = 3;
     string age_stage = 4;
     string description = 5;
 
+    // 位置信息
     string discovery_address = 6;
     double longitude = 7;
     double latitude = 8;
 
-    repeated string image_urls = 9;
+    // 图片（URL列表，已上传到OSS）
+    repeated ImageItem images = 9;
 
-    uint64 applicant_user_id = 10;
+    // 标签ID列表
+    repeated uint64 tag_ids = 10;
+
+    // 申请人ID（从网关JWT解析传入）
+    uint64 applicant_user_id = 11;
 }
 
 message ApplyCreateCatResponse {
     uint64 apply_id = 1;
+    google.protobuf.Timestamp created_at = 2;
 }
+
+// ==================== 志愿者：取消申请 ====================
+
+message CancelApplyCreateCatRequest {
+    uint64 apply_id = 1;
+    uint64 applicant_user_id = 2;
+    string reason = 3;
+}
+
+// ==================== 管理员：审核通过 ====================
+
+message ApproveCreateCatRequest {
+    uint64 apply_id = 1;
+    uint64 operator_id = 2;
+
+    // 审核时补充的正式档案信息
+    string cat_code = 3;
+    string breed = 4;
+    string color = 5;
+    bool is_vaccinated = 6;
+    bool is_healthy = 7;
+    bool need_medical_intervention = 8;
+    string sterilization_status = 9;
+
+    // 追加标签ID（审核时可以额外补充标签）
+    repeated uint64 extra_tag_ids = 10;
+}
+
+message ApproveCreateCatResponse {
+    uint64 cat_id = 1;
+    string cat_code = 2;
+    string status = 3;
+}
+
+// ==================== 管理员：驳回 ====================
+
+message RejectCreateCatRequest {
+    uint64 apply_id = 1;
+    string reason = 2;
+    uint64 operator_id = 3;
+}
+
+// ==================== 管理员：直接创建猫咪档案 ====================
+
+message DirectCreateCatRequest {
+    string cat_code = 1;
+    string name = 2;
+    string breed = 3;
+    string color = 4;
+    string gender = 5;
+    string body_size = 6;
+    string age_stage = 7;
+    string description = 8;
+
+    string discovery_address = 9;
+    double longitude = 10;
+    double latitude = 11;
+
+    bool is_vaccinated = 12;
+    bool is_healthy = 13;
+    bool need_medical_intervention = 14;
+    string sterilization_status = 15;
+
+    repeated ImageItem images = 16;
+    repeated uint64 tag_ids = 17;
+
+    uint64 operator_id = 18;
+}
+
+message DirectCreateCatResponse {
+    uint64 cat_id = 1;
+    string cat_code = 2;
+}
+
+// ==================== 查询：申请详情 ====================
+
+message GetApplyDetailRequest {
+    uint64 apply_id = 1;
+}
+
+message GetApplyDetailResponse {
+    uint64 apply_id = 1;
+    uint64 cat_id = 2;
+    string name = 3;
+    string gender = 4;
+    string body_size = 5;
+    string age_stage = 6;
+    string description = 7;
+    string discovery_address = 8;
+    double longitude = 9;
+    double latitude = 10;
+    uint64 applicant_user_id = 11;
+    string status = 12;
+    string reject_reason = 13;
+    string cancel_reason = 14;
+    uint64 reviewer_id = 15;
+
+    repeated ImageItem images = 16;
+
+    google.protobuf.Timestamp created_at = 17;
+    google.protobuf.Timestamp updated_at = 18;
+}
+
+// ==================== 查询：我的申请列表 ====================
+
+message ListMyAppliesRequest {
+    uint64 applicant_user_id = 1;
+    string status = 2;
+    int32 page = 3;
+    int32 page_size = 4;
+}
+
+message ListMyAppliesResponse {
+    message ApplyItem {
+        uint64 apply_id = 1;
+        string name = 2;
+        string status = 3;
+        uint64 cat_id = 4;
+        google.protobuf.Timestamp created_at = 5;
+    }
+
+    repeated ApplyItem list = 1;
+    int64 total = 2;
+}
+
+// ==================== 查询：待审核列表 ====================
+
+message ListPendingAppliesRequest {
+    string keyword = 1;
+    int32 page = 2;
+    int32 page_size = 3;
+}
+
+message ListPendingAppliesResponse {
+    message ApplyItem {
+        uint64 apply_id = 1;
+        string name = 2;
+        string gender = 3;
+        string age_stage = 4;
+        string discovery_address = 5;
+        uint64 applicant_user_id = 6;
+        google.protobuf.Timestamp created_at = 7;
+    }
+
+    repeated ApplyItem list = 1;
+    int64 total = 2;
+}
+
+
 
 message ApplyUpdateCatInfoRequest {
     uint64 cat_id = 1;
@@ -338,25 +497,6 @@ message UploadTaskProgressResponse {
  * 管理员侧 - 创建猫咪档案审核
  * =========================================================
  */
-
-message ApproveCreateCatRequest {
-    uint64 apply_id = 1;
-    uint64 operator_id = 2;
-}
-
-message ApproveCreateCatResponse {
-    uint64 cat_id = 1;
-}
-
-message RejectCreateCatRequest {
-    uint64 apply_id = 1;
-    string reason = 2;
-    uint64 operator_id = 3;
-}
-
-message RejectCreateCatResponse {
-    bool success = 1;
-}
 
 message GetCreateCatApplyDetailRequest {
     uint64 apply_id = 1;
