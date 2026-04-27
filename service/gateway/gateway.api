@@ -306,10 +306,10 @@ type ListPendingAppliesResp {
 
 // ==================== 路由定义 ====================
 @server (
-	prefix:     /api/v1/cats
-	middleware: Auth
-	tags:       "猫咪模块"
-	group:      cat
+	prefix: /api/v1/cats
+	//middleware: Auth
+	tags:  "猫咪模块"
+	group: cat
 )
 service gateway {
 	@doc "志愿者申请创建猫咪档案"

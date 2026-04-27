@@ -20,3 +20,7 @@ type Image struct {
 	UpdatedAt time.Time             `json:"updated_at"`
 	DeletedAt soft_delete.DeletedAt `gorm:"index;softDelete:nano" json:"deleted_at,omitempty"`
 }
+
+func (Image) TableName() string {
+	return "images"
+}

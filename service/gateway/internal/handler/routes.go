@@ -33,59 +33,56 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 	)
 
 	server.AddRoutes(
-		rest.WithMiddlewares(
-			[]rest.Middleware{serverCtx.Auth},
-			[]rest.Route{
-				{
-					// 志愿者申请创建猫咪档案
-					Method:  http.MethodPost,
-					Path:    "/applies",
-					Handler: cat.ApplyCreateCatHandler(serverCtx),
-				},
-				{
-					// 查询申请详情
-					Method:  http.MethodGet,
-					Path:    "/applies/:id",
-					Handler: cat.GetApplyDetailHandler(serverCtx),
-				},
-				{
-					// 管理员审核通过
-					Method:  http.MethodPost,
-					Path:    "/applies/:id/approve",
-					Handler: cat.ApproveCreateCatHandler(serverCtx),
-				},
-				{
-					// 志愿者取消申请
-					Method:  http.MethodPost,
-					Path:    "/applies/:id/cancel",
-					Handler: cat.CancelApplyCreateCatHandler(serverCtx),
-				},
-				{
-					// 管理员驳回申请
-					Method:  http.MethodPost,
-					Path:    "/applies/:id/reject",
-					Handler: cat.RejectCreateCatHandler(serverCtx),
-				},
-				{
-					// 我的申请列表
-					Method:  http.MethodGet,
-					Path:    "/applies/my",
-					Handler: cat.ListMyAppliesHandler(serverCtx),
-				},
-				{
-					// 管理员查询待审核列表
-					Method:  http.MethodGet,
-					Path:    "/applies/pending",
-					Handler: cat.ListPendingAppliesHandler(serverCtx),
-				},
-				{
-					// 管理员直接创建猫咪档案
-					Method:  http.MethodPost,
-					Path:    "/direct",
-					Handler: cat.DirectCreateCatHandler(serverCtx),
-				},
-			}...,
-		),
+		[]rest.Route{
+			{
+				// 志愿者申请创建猫咪档案
+				Method:  http.MethodPost,
+				Path:    "/applies",
+				Handler: cat.ApplyCreateCatHandler(serverCtx),
+			},
+			{
+				// 查询申请详情
+				Method:  http.MethodGet,
+				Path:    "/applies/:id",
+				Handler: cat.GetApplyDetailHandler(serverCtx),
+			},
+			{
+				// 管理员审核通过
+				Method:  http.MethodPost,
+				Path:    "/applies/:id/approve",
+				Handler: cat.ApproveCreateCatHandler(serverCtx),
+			},
+			{
+				// 志愿者取消申请
+				Method:  http.MethodPost,
+				Path:    "/applies/:id/cancel",
+				Handler: cat.CancelApplyCreateCatHandler(serverCtx),
+			},
+			{
+				// 管理员驳回申请
+				Method:  http.MethodPost,
+				Path:    "/applies/:id/reject",
+				Handler: cat.RejectCreateCatHandler(serverCtx),
+			},
+			{
+				// 我的申请列表
+				Method:  http.MethodGet,
+				Path:    "/applies/my",
+				Handler: cat.ListMyAppliesHandler(serverCtx),
+			},
+			{
+				// 管理员查询待审核列表
+				Method:  http.MethodGet,
+				Path:    "/applies/pending",
+				Handler: cat.ListPendingAppliesHandler(serverCtx),
+			},
+			{
+				// 管理员直接创建猫咪档案
+				Method:  http.MethodPost,
+				Path:    "/direct",
+				Handler: cat.DirectCreateCatHandler(serverCtx),
+			},
+		},
 		rest.WithPrefix("/api/v1/cats"),
 	)
 }

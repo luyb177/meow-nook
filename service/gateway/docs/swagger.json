@@ -90,9 +90,739 @@
           }
         }
       }
+    },
+    "/api/v1/cats/applies": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "猫咪模块"
+        ],
+        "summary": "志愿者申请创建猫咪档案",
+        "operationId": "catApplyCreateCat",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "name",
+                "gender",
+                "body_size",
+                "age_stage",
+                "description",
+                "discovery_address",
+                "longitude",
+                "latitude",
+                "images",
+                "tag_ids"
+              ],
+              "properties": {
+                "age_stage": {
+                  "type": "string"
+                },
+                "body_size": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "discovery_address": {
+                  "type": "string"
+                },
+                "gender": {
+                  "type": "string"
+                },
+                "images": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "url",
+                      "description",
+                      "sort",
+                      "is_cover"
+                    ],
+                    "properties": {
+                      "description": {
+                        "type": "string"
+                      },
+                      "is_cover": {
+                        "type": "boolean"
+                      },
+                      "sort": {
+                        "type": "integer"
+                      },
+                      "url": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "latitude": {
+                  "type": "number"
+                },
+                "longitude": {
+                  "type": "number"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "tag_ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "apply_id": {
+                  "type": "integer"
+                },
+                "created_at": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/cats/applies/my": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "猫咪模块"
+        ],
+        "summary": "我的申请列表",
+        "operationId": "catListMyApplies",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "status",
+            "in": "query",
+            "allowEmptyValue": true
+          },
+          {
+            "type": "integer",
+            "default": 1,
+            "example": 1,
+            "name": "page",
+            "in": "query",
+            "required": true
+          },
+          {
+            "type": "integer",
+            "default": 20,
+            "example": 20,
+            "name": "page_size",
+            "in": "query",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "list": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "apply_id",
+                      "name",
+                      "status",
+                      "cat_id",
+                      "created_at"
+                    ],
+                    "properties": {
+                      "apply_id": {
+                        "type": "integer"
+                      },
+                      "cat_id": {
+                        "type": "integer"
+                      },
+                      "created_at": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "status": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "total": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/cats/applies/pending": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "猫咪模块"
+        ],
+        "summary": "管理员查询待审核列表",
+        "operationId": "catListPendingApplies",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "keyword",
+            "in": "query",
+            "allowEmptyValue": true
+          },
+          {
+            "type": "integer",
+            "default": 1,
+            "example": 1,
+            "name": "page",
+            "in": "query",
+            "required": true
+          },
+          {
+            "type": "integer",
+            "default": 20,
+            "example": 20,
+            "name": "page_size",
+            "in": "query",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "list": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "apply_id",
+                      "name",
+                      "gender",
+                      "age_stage",
+                      "discovery_address",
+                      "applicant_user_id",
+                      "created_at"
+                    ],
+                    "properties": {
+                      "age_stage": {
+                        "type": "string"
+                      },
+                      "applicant_user_id": {
+                        "type": "integer"
+                      },
+                      "apply_id": {
+                        "type": "integer"
+                      },
+                      "created_at": {
+                        "type": "string"
+                      },
+                      "discovery_address": {
+                        "type": "string"
+                      },
+                      "gender": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "total": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/cats/applies/{id}": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "猫咪模块"
+        ],
+        "summary": "查询申请详情",
+        "operationId": "catGetApplyDetail",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "age_stage": {
+                  "type": "string"
+                },
+                "applicant_user_id": {
+                  "type": "integer"
+                },
+                "apply_id": {
+                  "type": "integer"
+                },
+                "body_size": {
+                  "type": "string"
+                },
+                "cancel_reason": {
+                  "type": "string"
+                },
+                "cat_id": {
+                  "type": "integer"
+                },
+                "created_at": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "discovery_address": {
+                  "type": "string"
+                },
+                "gender": {
+                  "type": "string"
+                },
+                "images": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "url",
+                      "description",
+                      "sort",
+                      "is_cover"
+                    ],
+                    "properties": {
+                      "description": {
+                        "type": "string"
+                      },
+                      "is_cover": {
+                        "type": "boolean"
+                      },
+                      "sort": {
+                        "type": "integer"
+                      },
+                      "url": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "latitude": {
+                  "type": "number"
+                },
+                "longitude": {
+                  "type": "number"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "reject_reason": {
+                  "type": "string"
+                },
+                "reviewer_id": {
+                  "type": "integer"
+                },
+                "status": {
+                  "type": "string"
+                },
+                "updated_at": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/cats/applies/{id}/approve": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "猫咪模块"
+        ],
+        "summary": "管理员审核通过",
+        "operationId": "catApproveCreateCat",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "cat_code",
+                "breed",
+                "color",
+                "is_vaccinated",
+                "is_healthy",
+                "need_medical_intervention",
+                "sterilization_status",
+                "extra_tag_ids"
+              ],
+              "properties": {
+                "breed": {
+                  "type": "string"
+                },
+                "cat_code": {
+                  "type": "string"
+                },
+                "color": {
+                  "type": "string"
+                },
+                "extra_tag_ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer"
+                  }
+                },
+                "is_healthy": {
+                  "type": "boolean"
+                },
+                "is_vaccinated": {
+                  "type": "boolean"
+                },
+                "need_medical_intervention": {
+                  "type": "boolean"
+                },
+                "sterilization_status": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "cat_code": {
+                  "type": "string"
+                },
+                "cat_id": {
+                  "type": "integer"
+                },
+                "status": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/cats/applies/{id}/cancel": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "猫咪模块"
+        ],
+        "summary": "志愿者取消申请",
+        "operationId": "catCancelApplyCreateCat",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "reason"
+              ],
+              "properties": {
+                "reason": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object"
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/cats/applies/{id}/reject": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "猫咪模块"
+        ],
+        "summary": "管理员驳回申请",
+        "operationId": "catRejectCreateCat",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "reason"
+              ],
+              "properties": {
+                "reason": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object"
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/cats/direct": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "猫咪模块"
+        ],
+        "summary": "管理员直接创建猫咪档案",
+        "operationId": "catDirectCreateCat",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "cat_code",
+                "name",
+                "breed",
+                "color",
+                "gender",
+                "body_size",
+                "age_stage",
+                "description",
+                "discovery_address",
+                "longitude",
+                "latitude",
+                "is_vaccinated",
+                "is_healthy",
+                "need_medical_intervention",
+                "sterilization_status",
+                "images",
+                "tag_ids"
+              ],
+              "properties": {
+                "age_stage": {
+                  "type": "string"
+                },
+                "body_size": {
+                  "type": "string"
+                },
+                "breed": {
+                  "type": "string"
+                },
+                "cat_code": {
+                  "type": "string"
+                },
+                "color": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "discovery_address": {
+                  "type": "string"
+                },
+                "gender": {
+                  "type": "string"
+                },
+                "images": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "url",
+                      "description",
+                      "sort",
+                      "is_cover"
+                    ],
+                    "properties": {
+                      "description": {
+                        "type": "string"
+                      },
+                      "is_cover": {
+                        "type": "boolean"
+                      },
+                      "sort": {
+                        "type": "integer"
+                      },
+                      "url": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "is_healthy": {
+                  "type": "boolean"
+                },
+                "is_vaccinated": {
+                  "type": "boolean"
+                },
+                "latitude": {
+                  "type": "number"
+                },
+                "longitude": {
+                  "type": "number"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "need_medical_intervention": {
+                  "type": "boolean"
+                },
+                "sterilization_status": {
+                  "type": "string"
+                },
+                "tag_ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "cat_code": {
+                  "type": "string"
+                },
+                "cat_id": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
-  "x-date": "2026-04-24 16:37:59",
+  "x-date": "2026-04-27 10:32:46",
   "x-description": "This is a goctl generated swagger file.",
   "x-github": "https://github.com/zeromicro/go-zero",
   "x-go-zero-doc": "https://go-zero.dev/",
