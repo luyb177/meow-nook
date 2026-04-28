@@ -105,6 +105,18 @@ service CatService {
     rpc ApplyCreateCatTask(ApplyCreateCatTaskRequest)
         returns (ApplyCreateCatTaskResponse);
 
+    // 取消申请创建任务
+    rpc CancelApplyCreateCatTask(CancelApplyCreateCatTaskRequest)
+        returns (Response);
+
+    // 获取自己的任务申请详情
+    rpc GetMyTaskApplyDetail(GetMyTaskApplyDetailRequest)
+        returns (GetMyTaskApplyDetailResponse);
+
+    // 我的任务申请列表
+    rpc ListMyTaskApplies(ListMyTaskAppliesRequest)
+        returns (ListMyTaskAppliesResponse);
+
     // 申请认领任务
     rpc ClaimCatTask(ClaimCatTaskRequest)
         returns (ClaimCatTaskResponse);
@@ -113,9 +125,21 @@ service CatService {
     rpc AbandonCatTask(AbandonCatTaskRequest)
         returns (AbandonCatTaskResponse);
 
+    // 完成任务
+    rpc CompleteCatTask(CompleteCatTaskRequest)
+        returns (CompleteCatTaskResponse);
+
     // 上传任务进度（图片/备注）
     rpc UploadTaskProgress(UploadTaskProgressRequest)
         returns (UploadTaskProgressResponse);
+
+    // 获取我认领的任务列表
+    rpc ListMyClaimedTasks(ListMyClaimedTasksRequest)
+        returns (ListMyClaimedTasksResponse);
+
+    // 获取任务详情
+    rpc GetCatTaskDetail(GetCatTaskDetailRequest)
+        returns (GetCatTaskDetailResponse);
 
 
     /*
@@ -850,6 +874,123 @@ message UploadTaskProgressRequest {
 
 message UploadTaskProgressResponse {
     bool success = 1;
+}
+
+message CancelApplyCreateCatTaskRequest {
+    uint64 apply_id = 1;
+    uint64 user_id = 2;
+    string reason = 3;
+}
+
+message GetMyTaskApplyDetailRequest {
+    uint64 apply_id = 1;
+    uint64 user_id = 2;
+}
+
+message GetMyTaskApplyDetailResponse {
+    uint64 apply_id = 1;
+    uint64 cat_id = 2;
+    string cat_name = 3;
+    string title = 4;
+    string task_type = 5;
+    string summary = 6;
+    string detail = 7;
+    google.protobuf.Timestamp deadline = 8;
+    string status = 9;
+    string reject_reason = 10;
+    string urgency_level = 11;
+    int32 difficulty_level = 12;
+    int32 reward_points = 13;
+    google.protobuf.Timestamp created_at = 14;
+    google.protobuf.Timestamp updated_at = 15;
+}
+
+message ListMyTaskAppliesRequest {
+    uint64 user_id = 1;
+    string status = 2;
+    int32 page = 3;
+    int32 page_size = 4;
+}
+
+message TaskApplyItem {
+    uint64 apply_id = 1;
+    uint64 cat_id = 2;
+    string cat_name = 3;
+    string title = 4;
+    string task_type = 5;
+    string status = 6;
+    google.protobuf.Timestamp created_at = 7;
+}
+
+message ListMyTaskAppliesResponse {
+    repeated TaskApplyItem list = 1;
+    int64 total = 2;
+    int32 page = 3;
+    int32 page_size = 4;
+}
+
+message CompleteCatTaskRequest {
+    uint64 task_id = 1;
+    uint64 user_id = 2;
+    string content = 3;
+    repeated string image_urls = 4;
+}
+
+message CompleteCatTaskResponse {
+    bool success = 1;
+}
+
+message ListMyClaimedTasksRequest {
+    uint64 user_id = 1;
+    string claim_status = 2; // active/completed/abandoned
+    int32 page = 3;
+    int32 page_size = 4;
+}
+
+message ClaimedTaskItem {
+    uint64 task_id = 1;
+    uint64 cat_id = 2;
+    string cat_name = 3;
+    string title = 4;
+    string task_type = 5;
+    string urgency_level = 6;
+    int32 difficulty_level = 7;
+    int32 reward_points = 8;
+    string task_status = 9;
+    string claim_status = 10;
+    google.protobuf.Timestamp deadline = 11;
+    google.protobuf.Timestamp claimed_at = 12;
+}
+
+message ListMyClaimedTasksResponse {
+    repeated ClaimedTaskItem list = 1;
+    int64 total = 2;
+    int32 page = 3;
+    int32 page_size = 4;
+}
+
+message GetCatTaskDetailRequest {
+    uint64 task_id = 1;
+}
+
+message GetCatTaskDetailResponse {
+    uint64 task_id = 1;
+    uint64 cat_id = 2;
+    string cat_name = 3;
+    string title = 4;
+    string task_type = 5;
+    string urgency_level = 6;
+    int32 difficulty_level = 7;
+    int32 reward_points = 8;
+    string summary = 9;
+    string detail = 10;
+    string status = 11;
+    string remark = 12;
+    int32 max_claimers = 13;
+    int32 current_claimers = 14;
+    google.protobuf.Timestamp deadline = 15;
+    google.protobuf.Timestamp created_at = 16;
+    google.protobuf.Timestamp updated_at = 17;
 }
 
 

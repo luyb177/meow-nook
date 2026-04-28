@@ -8,6 +8,7 @@ import (
 	"github.com/luyb177/meow-nook/service/cat/internal/repo/image"
 	"github.com/luyb177/meow-nook/service/cat/internal/repo/sequence"
 	"github.com/luyb177/meow-nook/service/cat/internal/repo/tag"
+	"github.com/luyb177/meow-nook/service/cat/internal/repo/task"
 	"github.com/redis/go-redis/v9"
 	"gorm.io/gorm"
 )
@@ -18,6 +19,7 @@ type Repositories struct {
 	Tag      tag.Repository
 	Sequence sequence.Repository
 	Adoption adoption.Repository
+	Task     task.Repository
 	db       *gorm.DB
 }
 
@@ -28,6 +30,7 @@ func NewRepository(db *gorm.DB, client *redis.Client) *Repositories {
 		Tag:      tag.NewRepository(db, client),
 		Sequence: sequence.NewRepository(db, client),
 		Adoption: adoption.NewRepository(db, client),
+		Task:     task.NewRepository(db, client),
 		db:       db,
 	}
 }

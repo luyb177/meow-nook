@@ -197,6 +197,24 @@ func (s *CatServiceServer) ApplyCreateCatTask(ctx context.Context, in *v1.ApplyC
 	return l.ApplyCreateCatTask(in)
 }
 
+// 取消申请创建任务
+func (s *CatServiceServer) CancelApplyCreateCatTask(ctx context.Context, in *v1.CancelApplyCreateCatTaskRequest) (*v1.Response, error) {
+	l := logic.NewCancelApplyCreateCatTaskLogic(ctx, s.svcCtx)
+	return l.CancelApplyCreateCatTask(in)
+}
+
+// 获取自己的任务申请详情
+func (s *CatServiceServer) GetMyTaskApplyDetail(ctx context.Context, in *v1.GetMyTaskApplyDetailRequest) (*v1.GetMyTaskApplyDetailResponse, error) {
+	l := logic.NewGetMyTaskApplyDetailLogic(ctx, s.svcCtx)
+	return l.GetMyTaskApplyDetail(in)
+}
+
+// 我的任务申请列表
+func (s *CatServiceServer) ListMyTaskApplies(ctx context.Context, in *v1.ListMyTaskAppliesRequest) (*v1.ListMyTaskAppliesResponse, error) {
+	l := logic.NewListMyTaskAppliesLogic(ctx, s.svcCtx)
+	return l.ListMyTaskApplies(in)
+}
+
 // 申请认领任务
 func (s *CatServiceServer) ClaimCatTask(ctx context.Context, in *v1.ClaimCatTaskRequest) (*v1.ClaimCatTaskResponse, error) {
 	l := logic.NewClaimCatTaskLogic(ctx, s.svcCtx)
@@ -209,10 +227,28 @@ func (s *CatServiceServer) AbandonCatTask(ctx context.Context, in *v1.AbandonCat
 	return l.AbandonCatTask(in)
 }
 
+// 完成任务
+func (s *CatServiceServer) CompleteCatTask(ctx context.Context, in *v1.CompleteCatTaskRequest) (*v1.CompleteCatTaskResponse, error) {
+	l := logic.NewCompleteCatTaskLogic(ctx, s.svcCtx)
+	return l.CompleteCatTask(in)
+}
+
 // 上传任务进度（图片/备注）
 func (s *CatServiceServer) UploadTaskProgress(ctx context.Context, in *v1.UploadTaskProgressRequest) (*v1.UploadTaskProgressResponse, error) {
 	l := logic.NewUploadTaskProgressLogic(ctx, s.svcCtx)
 	return l.UploadTaskProgress(in)
+}
+
+// 获取我认领的任务列表
+func (s *CatServiceServer) ListMyClaimedTasks(ctx context.Context, in *v1.ListMyClaimedTasksRequest) (*v1.ListMyClaimedTasksResponse, error) {
+	l := logic.NewListMyClaimedTasksLogic(ctx, s.svcCtx)
+	return l.ListMyClaimedTasks(in)
+}
+
+// 获取任务详情
+func (s *CatServiceServer) GetCatTaskDetail(ctx context.Context, in *v1.GetCatTaskDetailRequest) (*v1.GetCatTaskDetailResponse, error) {
+	l := logic.NewGetCatTaskDetailLogic(ctx, s.svcCtx)
+	return l.GetCatTaskDetail(in)
 }
 
 func (s *CatServiceServer) ApproveUpdateCatInfo(ctx context.Context, in *v1.ApproveUpdateCatInfoRequest) (*v1.ApproveUpdateCatInfoResponse, error) {
