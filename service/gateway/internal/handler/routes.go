@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"time"
 
+	adoption "github.com/luyb177/meow-nook/service/gateway/internal/handler/adoption"
 	auth "github.com/luyb177/meow-nook/service/gateway/internal/handler/auth"
 	cat "github.com/luyb177/meow-nook/service/gateway/internal/handler/cat"
 	"github.com/luyb177/meow-nook/service/gateway/internal/svc"
@@ -15,6 +16,97 @@ import (
 )
 
 func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
+	server.AddRoutes(
+		[]rest.Route{
+			{
+				Method:  http.MethodPost,
+				Path:    "/admin/adoption/approve",
+				Handler: adoption.ApproveAdoptHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/admin/adoption/create",
+				Handler: adoption.CreateAdoptionHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/admin/adoption/direct",
+				Handler: adoption.DirectAdoptHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/admin/adoption/home-visit",
+				Handler: adoption.RecordHomeVisitHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/admin/adoption/list",
+				Handler: adoption.ListAdoptionsHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/admin/adoption/pending",
+				Handler: adoption.ListPendingAdoptAppliesHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/admin/adoption/reject",
+				Handler: adoption.RejectAdoptHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/admin/adoption/return",
+				Handler: adoption.UpdateReturnStatusHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/admin/adoption/update",
+				Handler: adoption.UpdateAdoptionHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/admin/adoption/visit",
+				Handler: adoption.RecordFollowUpVisitHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/adoption/apply",
+				Handler: adoption.ApplyAdoptHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/adoption/apply/:apply_id",
+				Handler: adoption.GetAdoptApplyDetailHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/adoption/cancel",
+				Handler: adoption.CancelAdoptApplyHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/adoption/detail/:adoption_id",
+				Handler: adoption.GetAdoptionDetailHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/adoption/my-adoptions",
+				Handler: adoption.ListMyAdoptionsHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/adoption/my-applies",
+				Handler: adoption.ListMyAdoptAppliesHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/adoption/visit/complete",
+				Handler: adoption.CompleteVisitHandler(serverCtx),
+			},
+		},
+		rest.WithPrefix("/api/v1/adoption"),
+	)
+
 	server.AddRoutes(
 		[]rest.Route{
 			{

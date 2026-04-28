@@ -3,6 +3,7 @@ package repo
 import (
 	"context"
 
+	"github.com/luyb177/meow-nook/service/cat/internal/repo/adoption"
 	"github.com/luyb177/meow-nook/service/cat/internal/repo/cat"
 	"github.com/luyb177/meow-nook/service/cat/internal/repo/image"
 	"github.com/luyb177/meow-nook/service/cat/internal/repo/sequence"
@@ -16,6 +17,7 @@ type Repositories struct {
 	Image    image.Repository
 	Tag      tag.Repository
 	Sequence sequence.Repository
+	Adoption adoption.Repository
 	db       *gorm.DB
 }
 
@@ -25,6 +27,7 @@ func NewRepository(db *gorm.DB, client *redis.Client) *Repositories {
 		Image:    image.NewRepository(db, client),
 		Tag:      tag.NewRepository(db, client),
 		Sequence: sequence.NewRepository(db, client),
+		Adoption: adoption.NewRepository(db, client),
 		db:       db,
 	}
 }

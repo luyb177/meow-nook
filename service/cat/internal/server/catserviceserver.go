@@ -65,16 +65,112 @@ func (s *CatServiceServer) ListPendingApplies(ctx context.Context, in *v1.ListPe
 	return l.ListPendingApplies(in)
 }
 
+// 申请领养
+func (s *CatServiceServer) ApplyAdopt(ctx context.Context, in *v1.ApplyAdoptRequest) (*v1.ApplyAdoptResponse, error) {
+	l := logic.NewApplyAdoptLogic(ctx, s.svcCtx)
+	return l.ApplyAdopt(in)
+}
+
+// 取消申请
+func (s *CatServiceServer) CancelAdoptApply(ctx context.Context, in *v1.CancelAdoptApplyRequest) (*v1.CancelAdoptApplyResponse, error) {
+	l := logic.NewCancelAdoptApplyLogic(ctx, s.svcCtx)
+	return l.CancelAdoptApply(in)
+}
+
+// 查看申请详情
+func (s *CatServiceServer) GetAdoptApplyDetail(ctx context.Context, in *v1.GetAdoptApplyDetailRequest) (*v1.GetAdoptApplyDetailResponse, error) {
+	l := logic.NewGetAdoptApplyDetailLogic(ctx, s.svcCtx)
+	return l.GetAdoptApplyDetail(in)
+}
+
+// 我的申请列表
+func (s *CatServiceServer) ListMyAdoptApplies(ctx context.Context, in *v1.ListMyAdoptAppliesRequest) (*v1.ListMyAdoptAppliesResponse, error) {
+	l := logic.NewListMyAdoptAppliesLogic(ctx, s.svcCtx)
+	return l.ListMyAdoptApplies(in)
+}
+
+// 我的领养记录
+func (s *CatServiceServer) ListMyAdoptions(ctx context.Context, in *v1.ListMyAdoptionsRequest) (*v1.ListAdoptionsResponse, error) {
+	l := logic.NewListMyAdoptionsLogic(ctx, s.svcCtx)
+	return l.ListMyAdoptions(in)
+}
+
+// 完成回访
+func (s *CatServiceServer) CompleteVisit(ctx context.Context, in *v1.RecordFollowUpVisitRequest) (*v1.RecordFollowUpVisitResponse, error) {
+	l := logic.NewCompleteVisitLogic(ctx, s.svcCtx)
+	return l.CompleteVisit(in)
+}
+
+// 审核通过
+func (s *CatServiceServer) ApproveAdopt(ctx context.Context, in *v1.ApproveAdoptRequest) (*v1.ApproveAdoptResponse, error) {
+	l := logic.NewApproveAdoptLogic(ctx, s.svcCtx)
+	return l.ApproveAdopt(in)
+}
+
+// 审核拒绝
+func (s *CatServiceServer) RejectAdopt(ctx context.Context, in *v1.RejectAdoptRequest) (*v1.RejectAdoptResponse, error) {
+	l := logic.NewRejectAdoptLogic(ctx, s.svcCtx)
+	return l.RejectAdopt(in)
+}
+
+// 待审核列表
+func (s *CatServiceServer) ListPendingAdoptApplies(ctx context.Context, in *v1.ListPendingAdoptAppliesRequest) (*v1.ListPendingAdoptAppliesResponse, error) {
+	l := logic.NewListPendingAdoptAppliesLogic(ctx, s.svcCtx)
+	return l.ListPendingAdoptApplies(in)
+}
+
+// 从申请创建领养记录
+func (s *CatServiceServer) CreateAdoption(ctx context.Context, in *v1.CreateAdoptionRequest) (*v1.CreateAdoptionResponse, error) {
+	l := logic.NewCreateAdoptionLogic(ctx, s.svcCtx)
+	return l.CreateAdoption(in)
+}
+
+// 直接领养
+func (s *CatServiceServer) DirectAdopt(ctx context.Context, in *v1.DirectAdoptRequest) (*v1.DirectAdoptResponse, error) {
+	l := logic.NewDirectAdoptLogic(ctx, s.svcCtx)
+	return l.DirectAdopt(in)
+}
+
+// 查看领养详情
+func (s *CatServiceServer) GetAdoptionDetail(ctx context.Context, in *v1.GetAdoptionDetailRequest) (*v1.GetAdoptionDetailResponse, error) {
+	l := logic.NewGetAdoptionDetailLogic(ctx, s.svcCtx)
+	return l.GetAdoptionDetail(in)
+}
+
+// 领养记录列表
+func (s *CatServiceServer) ListAdoptions(ctx context.Context, in *v1.ListAdoptionsRequest) (*v1.ListAdoptionsResponse, error) {
+	l := logic.NewListAdoptionsLogic(ctx, s.svcCtx)
+	return l.ListAdoptions(in)
+}
+
+// 更新领养信息
+func (s *CatServiceServer) UpdateAdoption(ctx context.Context, in *v1.UpdateAdoptionRequest) (*v1.UpdateAdoptionResponse, error) {
+	l := logic.NewUpdateAdoptionLogic(ctx, s.svcCtx)
+	return l.UpdateAdoption(in)
+}
+
+// 记录家访
+func (s *CatServiceServer) RecordHomeVisit(ctx context.Context, in *v1.RecordHomeVisitRequest) (*v1.RecordHomeVisitResponse, error) {
+	l := logic.NewRecordHomeVisitLogic(ctx, s.svcCtx)
+	return l.RecordHomeVisit(in)
+}
+
+// 记录回访
+func (s *CatServiceServer) RecordFollowUpVisit(ctx context.Context, in *v1.RecordFollowUpVisitRequest) (*v1.RecordFollowUpVisitResponse, error) {
+	l := logic.NewRecordFollowUpVisitLogic(ctx, s.svcCtx)
+	return l.RecordFollowUpVisit(in)
+}
+
+// 更新退回状态
+func (s *CatServiceServer) UpdateReturnStatus(ctx context.Context, in *v1.UpdateReturnStatusRequest) (*v1.UpdateReturnStatusResponse, error) {
+	l := logic.NewUpdateReturnStatusLogic(ctx, s.svcCtx)
+	return l.UpdateReturnStatus(in)
+}
+
 // 申请修改猫咪档案信息
 func (s *CatServiceServer) ApplyUpdateCatInfo(ctx context.Context, in *v1.ApplyUpdateCatInfoRequest) (*v1.ApplyUpdateCatInfoResponse, error) {
 	l := logic.NewApplyUpdateCatInfoLogic(ctx, s.svcCtx)
 	return l.ApplyUpdateCatInfo(in)
-}
-
-// 查看自己提交的创建申请详情
-func (s *CatServiceServer) GetMyCreateCatApplyDetail(ctx context.Context, in *v1.GetMyCreateCatApplyDetailRequest) (*v1.GetMyCreateCatApplyDetailResponse, error) {
-	l := logic.NewGetMyCreateCatApplyDetailLogic(ctx, s.svcCtx)
-	return l.GetMyCreateCatApplyDetail(in)
 }
 
 // 查看自己提交的修改申请详情
@@ -117,16 +213,6 @@ func (s *CatServiceServer) AbandonCatTask(ctx context.Context, in *v1.AbandonCat
 func (s *CatServiceServer) UploadTaskProgress(ctx context.Context, in *v1.UploadTaskProgressRequest) (*v1.UploadTaskProgressResponse, error) {
 	l := logic.NewUploadTaskProgressLogic(ctx, s.svcCtx)
 	return l.UploadTaskProgress(in)
-}
-
-func (s *CatServiceServer) GetCreateCatApplyDetail(ctx context.Context, in *v1.GetCreateCatApplyDetailRequest) (*v1.GetCreateCatApplyDetailResponse, error) {
-	l := logic.NewGetCreateCatApplyDetailLogic(ctx, s.svcCtx)
-	return l.GetCreateCatApplyDetail(in)
-}
-
-func (s *CatServiceServer) ListCreateCatApply(ctx context.Context, in *v1.ListCreateCatApplyRequest) (*v1.ListCreateCatApplyResponse, error) {
-	l := logic.NewListCreateCatApplyLogic(ctx, s.svcCtx)
-	return l.ListCreateCatApply(in)
 }
 
 func (s *CatServiceServer) ApproveUpdateCatInfo(ctx context.Context, in *v1.ApproveUpdateCatInfoRequest) (*v1.ApproveUpdateCatInfoResponse, error) {
@@ -190,11 +276,6 @@ func (s *CatServiceServer) CreateCatTask(ctx context.Context, in *v1.CreateCatTa
 func (s *CatServiceServer) UpdateCatTaskStatus(ctx context.Context, in *v1.UpdateCatTaskStatusRequest) (*v1.UpdateCatTaskStatusResponse, error) {
 	l := logic.NewUpdateCatTaskStatusLogic(ctx, s.svcCtx)
 	return l.UpdateCatTaskStatus(in)
-}
-
-func (s *CatServiceServer) UpdateAdoptionStatus(ctx context.Context, in *v1.UpdateAdoptionStatusRequest) (*v1.UpdateAdoptionStatusResponse, error) {
-	l := logic.NewUpdateAdoptionStatusLogic(ctx, s.svcCtx)
-	return l.UpdateAdoptionStatus(in)
 }
 
 // 猫咪详情

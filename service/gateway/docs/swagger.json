@@ -15,6 +15,1334 @@
   },
   "basePath": "/",
   "paths": {
+    "/api/v1/adoption/admin/adoption/approve": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "领养模块"
+        ],
+        "summary": "ApproveAdopt",
+        "operationId": "adoptionApproveAdopt",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "apply_id",
+                "note"
+              ],
+              "properties": {
+                "apply_id": {
+                  "type": "integer"
+                },
+                "note": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "apply_id": {
+                  "type": "integer"
+                },
+                "expires_at": {
+                  "type": "string"
+                },
+                "message": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/adoption/admin/adoption/create": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "领养模块"
+        ],
+        "summary": "CreateAdoption",
+        "operationId": "adoptionCreateAdoption",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "apply_id",
+                "agreement_no",
+                "note"
+              ],
+              "properties": {
+                "agreement_no": {
+                  "type": "string"
+                },
+                "apply_id": {
+                  "type": "integer"
+                },
+                "note": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "adoption_id": {
+                  "type": "integer"
+                },
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/adoption/admin/adoption/direct": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "领养模块"
+        ],
+        "summary": "DirectAdopt",
+        "operationId": "adoptionDirectAdopt",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "cat_id",
+                "adopter_id",
+                "agreement_no",
+                "note"
+              ],
+              "properties": {
+                "adopter_id": {
+                  "type": "integer"
+                },
+                "agreement_no": {
+                  "type": "string"
+                },
+                "cat_id": {
+                  "type": "integer"
+                },
+                "note": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "adoption_id": {
+                  "type": "integer"
+                },
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/adoption/admin/adoption/home-visit": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "领养模块"
+        ],
+        "summary": "RecordHomeVisit",
+        "operationId": "adoptionRecordHomeVisit",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "adoption_id",
+                "remark",
+                "photos"
+              ],
+              "properties": {
+                "adoption_id": {
+                  "type": "integer"
+                },
+                "photos": {
+                  "type": "string"
+                },
+                "remark": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/adoption/admin/adoption/list": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "领养模块"
+        ],
+        "summary": "ListAdoptions",
+        "operationId": "adoptionListAdoptions",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "adoption_id",
+                      "cat_id",
+                      "cat_name",
+                      "cat_avatar",
+                      "adopter_id",
+                      "adopter_name",
+                      "status",
+                      "agreement_no",
+                      "adopted_at",
+                      "is_returned"
+                    ],
+                    "properties": {
+                      "adopted_at": {
+                        "type": "string"
+                      },
+                      "adopter_id": {
+                        "type": "integer"
+                      },
+                      "adopter_name": {
+                        "type": "string"
+                      },
+                      "adoption_id": {
+                        "type": "integer"
+                      },
+                      "agreement_no": {
+                        "type": "string"
+                      },
+                      "cat_avatar": {
+                        "type": "string"
+                      },
+                      "cat_id": {
+                        "type": "integer"
+                      },
+                      "cat_name": {
+                        "type": "string"
+                      },
+                      "is_returned": {
+                        "type": "boolean"
+                      },
+                      "status": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "page": {
+                  "type": "integer"
+                },
+                "page_size": {
+                  "type": "integer"
+                },
+                "total": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/adoption/admin/adoption/pending": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "领养模块"
+        ],
+        "summary": "ListPendingAdoptApplies",
+        "operationId": "adoptionListPendingAdoptApplies",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "apply_id",
+                      "cat_id",
+                      "cat_name",
+                      "cat_avatar",
+                      "cat_gender",
+                      "credit_score_required",
+                      "applicant_id",
+                      "applicant_name",
+                      "applicant_avatar",
+                      "applicant_credit_score",
+                      "apply_reason",
+                      "contact_phone",
+                      "contact_wechat",
+                      "created_at"
+                    ],
+                    "properties": {
+                      "applicant_avatar": {
+                        "type": "string"
+                      },
+                      "applicant_credit_score": {
+                        "type": "integer"
+                      },
+                      "applicant_id": {
+                        "type": "integer"
+                      },
+                      "applicant_name": {
+                        "type": "string"
+                      },
+                      "apply_id": {
+                        "type": "integer"
+                      },
+                      "apply_reason": {
+                        "type": "string"
+                      },
+                      "cat_avatar": {
+                        "type": "string"
+                      },
+                      "cat_gender": {
+                        "type": "string"
+                      },
+                      "cat_id": {
+                        "type": "integer"
+                      },
+                      "cat_name": {
+                        "type": "string"
+                      },
+                      "contact_phone": {
+                        "type": "string"
+                      },
+                      "contact_wechat": {
+                        "type": "string"
+                      },
+                      "created_at": {
+                        "type": "string"
+                      },
+                      "credit_score_required": {
+                        "type": "integer"
+                      }
+                    }
+                  }
+                },
+                "page": {
+                  "type": "integer"
+                },
+                "page_size": {
+                  "type": "integer"
+                },
+                "total": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/adoption/admin/adoption/reject": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "领养模块"
+        ],
+        "summary": "RejectAdopt",
+        "operationId": "adoptionRejectAdopt",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "apply_id",
+                "reject_reason"
+              ],
+              "properties": {
+                "apply_id": {
+                  "type": "integer"
+                },
+                "reject_reason": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/adoption/admin/adoption/return": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "领养模块"
+        ],
+        "summary": "UpdateReturnStatus",
+        "operationId": "adoptionUpdateReturnStatus",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "adoption_id",
+                "returned",
+                "returned_to_user_id",
+                "return_reason",
+                "photos"
+              ],
+              "properties": {
+                "adoption_id": {
+                  "type": "integer"
+                },
+                "photos": {
+                  "type": "string"
+                },
+                "return_reason": {
+                  "type": "string"
+                },
+                "returned": {
+                  "type": "boolean"
+                },
+                "returned_to_user_id": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/adoption/admin/adoption/update": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "领养模块"
+        ],
+        "summary": "UpdateAdoption",
+        "operationId": "adoptionUpdateAdoption",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "adoption_id",
+                "agreement_no",
+                "note"
+              ],
+              "properties": {
+                "adoption_id": {
+                  "type": "integer"
+                },
+                "agreement_no": {
+                  "type": "string"
+                },
+                "note": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/adoption/admin/adoption/visit": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "领养模块"
+        ],
+        "summary": "RecordFollowUpVisit",
+        "operationId": "adoptionRecordFollowUpVisit",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "adoption_id",
+                "visit_type",
+                "remark",
+                "photos"
+              ],
+              "properties": {
+                "adoption_id": {
+                  "type": "integer"
+                },
+                "photos": {
+                  "type": "string"
+                },
+                "remark": {
+                  "type": "string"
+                },
+                "visit_type": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/adoption/adoption/apply": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "领养模块"
+        ],
+        "summary": "ApplyAdopt",
+        "operationId": "adoptionApplyAdopt",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "cat_id",
+                "apply_reason",
+                "contact_phone",
+                "contact_wechat"
+              ],
+              "properties": {
+                "apply_reason": {
+                  "type": "string"
+                },
+                "cat_id": {
+                  "type": "integer"
+                },
+                "contact_phone": {
+                  "type": "string"
+                },
+                "contact_wechat": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "applicant_credit_score": {
+                  "type": "integer"
+                },
+                "apply_id": {
+                  "type": "integer"
+                },
+                "message": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/adoption/adoption/apply/{apply_id}": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "领养模块"
+        ],
+        "summary": "GetAdoptApplyDetail",
+        "operationId": "adoptionGetAdoptApplyDetail",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "apply": {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "cat_id",
+                    "cat_name",
+                    "cat_avatar",
+                    "applicant_id",
+                    "applicant_name",
+                    "apply_reason",
+                    "contact_phone",
+                    "contact_wechat",
+                    "applicant_credit_score",
+                    "status",
+                    "reject_reason",
+                    "reviewer_id",
+                    "reviewer_name",
+                    "reviewed_at",
+                    "approved_at",
+                    "expires_at",
+                    "created_at",
+                    "updated_at",
+                    "adoption_id"
+                  ],
+                  "properties": {
+                    "adoption_id": {
+                      "type": "integer"
+                    },
+                    "applicant_credit_score": {
+                      "type": "integer"
+                    },
+                    "applicant_id": {
+                      "type": "integer"
+                    },
+                    "applicant_name": {
+                      "type": "string"
+                    },
+                    "apply_reason": {
+                      "type": "string"
+                    },
+                    "approved_at": {
+                      "type": "string"
+                    },
+                    "cat_avatar": {
+                      "type": "string"
+                    },
+                    "cat_id": {
+                      "type": "integer"
+                    },
+                    "cat_name": {
+                      "type": "string"
+                    },
+                    "contact_phone": {
+                      "type": "string"
+                    },
+                    "contact_wechat": {
+                      "type": "string"
+                    },
+                    "created_at": {
+                      "type": "string"
+                    },
+                    "expires_at": {
+                      "type": "string"
+                    },
+                    "id": {
+                      "type": "integer"
+                    },
+                    "reject_reason": {
+                      "type": "string"
+                    },
+                    "reviewed_at": {
+                      "type": "string"
+                    },
+                    "reviewer_id": {
+                      "type": "integer"
+                    },
+                    "reviewer_name": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "string"
+                    },
+                    "updated_at": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "cat": {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "name",
+                    "avatar",
+                    "gender",
+                    "credit_score_required"
+                  ],
+                  "properties": {
+                    "avatar": {
+                      "type": "string"
+                    },
+                    "credit_score_required": {
+                      "type": "integer"
+                    },
+                    "gender": {
+                      "type": "string"
+                    },
+                    "id": {
+                      "type": "integer"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/adoption/adoption/cancel": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "领养模块"
+        ],
+        "summary": "CancelAdoptApply",
+        "operationId": "adoptionCancelAdoptApply",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "apply_id",
+                "reason"
+              ],
+              "properties": {
+                "apply_id": {
+                  "type": "integer"
+                },
+                "reason": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/adoption/adoption/detail/{adoption_id}": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "领养模块"
+        ],
+        "summary": "GetAdoptionDetail",
+        "operationId": "adoptionGetAdoptionDetail",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "adopter": {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "name",
+                    "avatar"
+                  ],
+                  "properties": {
+                    "avatar": {
+                      "type": "string"
+                    },
+                    "id": {
+                      "type": "integer"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "adoption": {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "cat_id",
+                    "cat_name",
+                    "cat_avatar",
+                    "adopter_id",
+                    "adopter_name",
+                    "status",
+                    "agreement_no",
+                    "agreed_at",
+                    "adopted_at",
+                    "home_visit_at",
+                    "home_visit_user_id",
+                    "home_visit_remark",
+                    "visit_one_week_at",
+                    "visit_one_month_at",
+                    "visit_three_month_at",
+                    "visit_six_month_at",
+                    "is_returned",
+                    "return_reason",
+                    "returned_at",
+                    "note",
+                    "created_at",
+                    "updated_at"
+                  ],
+                  "properties": {
+                    "adopted_at": {
+                      "type": "string"
+                    },
+                    "adopter_id": {
+                      "type": "integer"
+                    },
+                    "adopter_name": {
+                      "type": "string"
+                    },
+                    "agreed_at": {
+                      "type": "string"
+                    },
+                    "agreement_no": {
+                      "type": "string"
+                    },
+                    "cat_avatar": {
+                      "type": "string"
+                    },
+                    "cat_id": {
+                      "type": "integer"
+                    },
+                    "cat_name": {
+                      "type": "string"
+                    },
+                    "created_at": {
+                      "type": "string"
+                    },
+                    "home_visit_at": {
+                      "type": "string"
+                    },
+                    "home_visit_remark": {
+                      "type": "string"
+                    },
+                    "home_visit_user_id": {
+                      "type": "integer"
+                    },
+                    "id": {
+                      "type": "integer"
+                    },
+                    "is_returned": {
+                      "type": "boolean"
+                    },
+                    "note": {
+                      "type": "string"
+                    },
+                    "return_reason": {
+                      "type": "string"
+                    },
+                    "returned_at": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "string"
+                    },
+                    "updated_at": {
+                      "type": "string"
+                    },
+                    "visit_one_month_at": {
+                      "type": "string"
+                    },
+                    "visit_one_week_at": {
+                      "type": "string"
+                    },
+                    "visit_six_month_at": {
+                      "type": "string"
+                    },
+                    "visit_three_month_at": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "cat": {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "name",
+                    "avatar",
+                    "gender",
+                    "credit_score_required"
+                  ],
+                  "properties": {
+                    "avatar": {
+                      "type": "string"
+                    },
+                    "credit_score_required": {
+                      "type": "integer"
+                    },
+                    "gender": {
+                      "type": "string"
+                    },
+                    "id": {
+                      "type": "integer"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/adoption/adoption/my-adoptions": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "领养模块"
+        ],
+        "summary": "ListMyAdoptions",
+        "operationId": "adoptionListMyAdoptions",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "adoption_id",
+                      "cat_id",
+                      "cat_name",
+                      "cat_avatar",
+                      "adopter_id",
+                      "adopter_name",
+                      "status",
+                      "agreement_no",
+                      "adopted_at",
+                      "is_returned"
+                    ],
+                    "properties": {
+                      "adopted_at": {
+                        "type": "string"
+                      },
+                      "adopter_id": {
+                        "type": "integer"
+                      },
+                      "adopter_name": {
+                        "type": "string"
+                      },
+                      "adoption_id": {
+                        "type": "integer"
+                      },
+                      "agreement_no": {
+                        "type": "string"
+                      },
+                      "cat_avatar": {
+                        "type": "string"
+                      },
+                      "cat_id": {
+                        "type": "integer"
+                      },
+                      "cat_name": {
+                        "type": "string"
+                      },
+                      "is_returned": {
+                        "type": "boolean"
+                      },
+                      "status": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "page": {
+                  "type": "integer"
+                },
+                "page_size": {
+                  "type": "integer"
+                },
+                "total": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/adoption/adoption/my-applies": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "领养模块"
+        ],
+        "summary": "ListMyAdoptApplies",
+        "operationId": "adoptionListMyAdoptApplies",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "apply_id",
+                      "cat_id",
+                      "cat_name",
+                      "cat_avatar",
+                      "cat_gender",
+                      "credit_score_required",
+                      "apply_reason",
+                      "status",
+                      "reject_reason",
+                      "created_at",
+                      "expires_at"
+                    ],
+                    "properties": {
+                      "apply_id": {
+                        "type": "integer"
+                      },
+                      "apply_reason": {
+                        "type": "string"
+                      },
+                      "cat_avatar": {
+                        "type": "string"
+                      },
+                      "cat_gender": {
+                        "type": "string"
+                      },
+                      "cat_id": {
+                        "type": "integer"
+                      },
+                      "cat_name": {
+                        "type": "string"
+                      },
+                      "created_at": {
+                        "type": "string"
+                      },
+                      "credit_score_required": {
+                        "type": "integer"
+                      },
+                      "expires_at": {
+                        "type": "string"
+                      },
+                      "reject_reason": {
+                        "type": "string"
+                      },
+                      "status": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "page": {
+                  "type": "integer"
+                },
+                "page_size": {
+                  "type": "integer"
+                },
+                "total": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/adoption/adoption/visit/complete": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "领养模块"
+        ],
+        "summary": "CompleteVisit",
+        "operationId": "adoptionCompleteVisit",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "adoption_id",
+                "visit_type",
+                "remark",
+                "photos"
+              ],
+              "properties": {
+                "adoption_id": {
+                  "type": "integer"
+                },
+                "photos": {
+                  "type": "string"
+                },
+                "remark": {
+                  "type": "string"
+                },
+                "visit_type": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/auth/send_code": {
       "post": {
         "consumes": [
@@ -822,7 +2150,7 @@
       }
     }
   },
-  "x-date": "2026-04-27 10:32:46",
+  "x-date": "2026-04-28 10:49:54",
   "x-description": "This is a goctl generated swagger file.",
   "x-github": "https://github.com/zeromicro/go-zero",
   "x-go-zero-doc": "https://go-zero.dev/",

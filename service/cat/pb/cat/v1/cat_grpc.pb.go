@@ -27,8 +27,24 @@ const (
 	CatService_RejectCreateCat_FullMethodName             = "/cat.CatService/RejectCreateCat"
 	CatService_DirectCreateCat_FullMethodName             = "/cat.CatService/DirectCreateCat"
 	CatService_ListPendingApplies_FullMethodName          = "/cat.CatService/ListPendingApplies"
+	CatService_ApplyAdopt_FullMethodName                  = "/cat.CatService/ApplyAdopt"
+	CatService_CancelAdoptApply_FullMethodName            = "/cat.CatService/CancelAdoptApply"
+	CatService_GetAdoptApplyDetail_FullMethodName         = "/cat.CatService/GetAdoptApplyDetail"
+	CatService_ListMyAdoptApplies_FullMethodName          = "/cat.CatService/ListMyAdoptApplies"
+	CatService_ListMyAdoptions_FullMethodName             = "/cat.CatService/ListMyAdoptions"
+	CatService_CompleteVisit_FullMethodName               = "/cat.CatService/CompleteVisit"
+	CatService_ApproveAdopt_FullMethodName                = "/cat.CatService/ApproveAdopt"
+	CatService_RejectAdopt_FullMethodName                 = "/cat.CatService/RejectAdopt"
+	CatService_ListPendingAdoptApplies_FullMethodName     = "/cat.CatService/ListPendingAdoptApplies"
+	CatService_CreateAdoption_FullMethodName              = "/cat.CatService/CreateAdoption"
+	CatService_DirectAdopt_FullMethodName                 = "/cat.CatService/DirectAdopt"
+	CatService_GetAdoptionDetail_FullMethodName           = "/cat.CatService/GetAdoptionDetail"
+	CatService_ListAdoptions_FullMethodName               = "/cat.CatService/ListAdoptions"
+	CatService_UpdateAdoption_FullMethodName              = "/cat.CatService/UpdateAdoption"
+	CatService_RecordHomeVisit_FullMethodName             = "/cat.CatService/RecordHomeVisit"
+	CatService_RecordFollowUpVisit_FullMethodName         = "/cat.CatService/RecordFollowUpVisit"
+	CatService_UpdateReturnStatus_FullMethodName          = "/cat.CatService/UpdateReturnStatus"
 	CatService_ApplyUpdateCatInfo_FullMethodName          = "/cat.CatService/ApplyUpdateCatInfo"
-	CatService_GetMyCreateCatApplyDetail_FullMethodName   = "/cat.CatService/GetMyCreateCatApplyDetail"
 	CatService_GetMyUpdateCatApplyDetail_FullMethodName   = "/cat.CatService/GetMyUpdateCatApplyDetail"
 	CatService_ApplyAddMedicalRecord_FullMethodName       = "/cat.CatService/ApplyAddMedicalRecord"
 	CatService_ApplyAddRescueRecord_FullMethodName        = "/cat.CatService/ApplyAddRescueRecord"
@@ -36,8 +52,6 @@ const (
 	CatService_ClaimCatTask_FullMethodName                = "/cat.CatService/ClaimCatTask"
 	CatService_AbandonCatTask_FullMethodName              = "/cat.CatService/AbandonCatTask"
 	CatService_UploadTaskProgress_FullMethodName          = "/cat.CatService/UploadTaskProgress"
-	CatService_GetCreateCatApplyDetail_FullMethodName     = "/cat.CatService/GetCreateCatApplyDetail"
-	CatService_ListCreateCatApply_FullMethodName          = "/cat.CatService/ListCreateCatApply"
 	CatService_ApproveUpdateCatInfo_FullMethodName        = "/cat.CatService/ApproveUpdateCatInfo"
 	CatService_RejectUpdateCatInfo_FullMethodName         = "/cat.CatService/RejectUpdateCatInfo"
 	CatService_GetUpdateCatApplyDetail_FullMethodName     = "/cat.CatService/GetUpdateCatApplyDetail"
@@ -50,7 +64,6 @@ const (
 	CatService_ListCreateCatTaskApply_FullMethodName      = "/cat.CatService/ListCreateCatTaskApply"
 	CatService_CreateCatTask_FullMethodName               = "/cat.CatService/CreateCatTask"
 	CatService_UpdateCatTaskStatus_FullMethodName         = "/cat.CatService/UpdateCatTaskStatus"
-	CatService_UpdateAdoptionStatus_FullMethodName        = "/cat.CatService/UpdateAdoptionStatus"
 	CatService_GetCatDetail_FullMethodName                = "/cat.CatService/GetCatDetail"
 	CatService_ListCats_FullMethodName                    = "/cat.CatService/ListCats"
 	CatService_ListCatTasks_FullMethodName                = "/cat.CatService/ListCatTasks"
@@ -70,10 +83,42 @@ type CatServiceClient interface {
 	RejectCreateCat(ctx context.Context, in *RejectCreateCatRequest, opts ...grpc.CallOption) (*Response, error)
 	DirectCreateCat(ctx context.Context, in *DirectCreateCatRequest, opts ...grpc.CallOption) (*DirectCreateCatResponse, error)
 	ListPendingApplies(ctx context.Context, in *ListPendingAppliesRequest, opts ...grpc.CallOption) (*ListPendingAppliesResponse, error)
+	// 申请领养
+	ApplyAdopt(ctx context.Context, in *ApplyAdoptRequest, opts ...grpc.CallOption) (*ApplyAdoptResponse, error)
+	// 取消申请
+	CancelAdoptApply(ctx context.Context, in *CancelAdoptApplyRequest, opts ...grpc.CallOption) (*CancelAdoptApplyResponse, error)
+	// 查看申请详情
+	GetAdoptApplyDetail(ctx context.Context, in *GetAdoptApplyDetailRequest, opts ...grpc.CallOption) (*GetAdoptApplyDetailResponse, error)
+	// 我的申请列表
+	ListMyAdoptApplies(ctx context.Context, in *ListMyAdoptAppliesRequest, opts ...grpc.CallOption) (*ListMyAdoptAppliesResponse, error)
+	// 我的领养记录
+	ListMyAdoptions(ctx context.Context, in *ListMyAdoptionsRequest, opts ...grpc.CallOption) (*ListAdoptionsResponse, error)
+	// 完成回访
+	CompleteVisit(ctx context.Context, in *RecordFollowUpVisitRequest, opts ...grpc.CallOption) (*RecordFollowUpVisitResponse, error)
+	// 审核通过
+	ApproveAdopt(ctx context.Context, in *ApproveAdoptRequest, opts ...grpc.CallOption) (*ApproveAdoptResponse, error)
+	// 审核拒绝
+	RejectAdopt(ctx context.Context, in *RejectAdoptRequest, opts ...grpc.CallOption) (*RejectAdoptResponse, error)
+	// 待审核列表
+	ListPendingAdoptApplies(ctx context.Context, in *ListPendingAdoptAppliesRequest, opts ...grpc.CallOption) (*ListPendingAdoptAppliesResponse, error)
+	// 从申请创建领养记录
+	CreateAdoption(ctx context.Context, in *CreateAdoptionRequest, opts ...grpc.CallOption) (*CreateAdoptionResponse, error)
+	// 直接领养
+	DirectAdopt(ctx context.Context, in *DirectAdoptRequest, opts ...grpc.CallOption) (*DirectAdoptResponse, error)
+	// 查看领养详情
+	GetAdoptionDetail(ctx context.Context, in *GetAdoptionDetailRequest, opts ...grpc.CallOption) (*GetAdoptionDetailResponse, error)
+	// 领养记录列表
+	ListAdoptions(ctx context.Context, in *ListAdoptionsRequest, opts ...grpc.CallOption) (*ListAdoptionsResponse, error)
+	// 更新领养信息
+	UpdateAdoption(ctx context.Context, in *UpdateAdoptionRequest, opts ...grpc.CallOption) (*UpdateAdoptionResponse, error)
+	// 记录家访
+	RecordHomeVisit(ctx context.Context, in *RecordHomeVisitRequest, opts ...grpc.CallOption) (*RecordHomeVisitResponse, error)
+	// 记录回访
+	RecordFollowUpVisit(ctx context.Context, in *RecordFollowUpVisitRequest, opts ...grpc.CallOption) (*RecordFollowUpVisitResponse, error)
+	// 更新退回状态
+	UpdateReturnStatus(ctx context.Context, in *UpdateReturnStatusRequest, opts ...grpc.CallOption) (*UpdateReturnStatusResponse, error)
 	// 申请修改猫咪档案信息
 	ApplyUpdateCatInfo(ctx context.Context, in *ApplyUpdateCatInfoRequest, opts ...grpc.CallOption) (*ApplyUpdateCatInfoResponse, error)
-	// 查看自己提交的创建申请详情
-	GetMyCreateCatApplyDetail(ctx context.Context, in *GetMyCreateCatApplyDetailRequest, opts ...grpc.CallOption) (*GetMyCreateCatApplyDetailResponse, error)
 	// 查看自己提交的修改申请详情
 	GetMyUpdateCatApplyDetail(ctx context.Context, in *GetMyUpdateCatApplyDetailRequest, opts ...grpc.CallOption) (*GetMyUpdateCatApplyDetailResponse, error)
 	// 申请新增医疗记录
@@ -88,8 +133,6 @@ type CatServiceClient interface {
 	AbandonCatTask(ctx context.Context, in *AbandonCatTaskRequest, opts ...grpc.CallOption) (*AbandonCatTaskResponse, error)
 	// 上传任务进度（图片/备注）
 	UploadTaskProgress(ctx context.Context, in *UploadTaskProgressRequest, opts ...grpc.CallOption) (*UploadTaskProgressResponse, error)
-	GetCreateCatApplyDetail(ctx context.Context, in *GetCreateCatApplyDetailRequest, opts ...grpc.CallOption) (*GetCreateCatApplyDetailResponse, error)
-	ListCreateCatApply(ctx context.Context, in *ListCreateCatApplyRequest, opts ...grpc.CallOption) (*ListCreateCatApplyResponse, error)
 	ApproveUpdateCatInfo(ctx context.Context, in *ApproveUpdateCatInfoRequest, opts ...grpc.CallOption) (*ApproveUpdateCatInfoResponse, error)
 	RejectUpdateCatInfo(ctx context.Context, in *RejectUpdateCatInfoRequest, opts ...grpc.CallOption) (*RejectUpdateCatInfoResponse, error)
 	GetUpdateCatApplyDetail(ctx context.Context, in *GetUpdateCatApplyDetailRequest, opts ...grpc.CallOption) (*GetUpdateCatApplyDetailResponse, error)
@@ -105,7 +148,6 @@ type CatServiceClient interface {
 	CreateCatTask(ctx context.Context, in *CreateCatTaskRequest, opts ...grpc.CallOption) (*CreateCatTaskResponse, error)
 	// 管理员更新任务状态
 	UpdateCatTaskStatus(ctx context.Context, in *UpdateCatTaskStatusRequest, opts ...grpc.CallOption) (*UpdateCatTaskStatusResponse, error)
-	UpdateAdoptionStatus(ctx context.Context, in *UpdateAdoptionStatusRequest, opts ...grpc.CallOption) (*UpdateAdoptionStatusResponse, error)
 	// 猫咪详情
 	GetCatDetail(ctx context.Context, in *GetCatDetailRequest, opts ...grpc.CallOption) (*GetCatDetailResponse, error)
 	// 猫咪列表
@@ -202,20 +244,180 @@ func (c *catServiceClient) ListPendingApplies(ctx context.Context, in *ListPendi
 	return out, nil
 }
 
-func (c *catServiceClient) ApplyUpdateCatInfo(ctx context.Context, in *ApplyUpdateCatInfoRequest, opts ...grpc.CallOption) (*ApplyUpdateCatInfoResponse, error) {
+func (c *catServiceClient) ApplyAdopt(ctx context.Context, in *ApplyAdoptRequest, opts ...grpc.CallOption) (*ApplyAdoptResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ApplyUpdateCatInfoResponse)
-	err := c.cc.Invoke(ctx, CatService_ApplyUpdateCatInfo_FullMethodName, in, out, cOpts...)
+	out := new(ApplyAdoptResponse)
+	err := c.cc.Invoke(ctx, CatService_ApplyAdopt_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *catServiceClient) GetMyCreateCatApplyDetail(ctx context.Context, in *GetMyCreateCatApplyDetailRequest, opts ...grpc.CallOption) (*GetMyCreateCatApplyDetailResponse, error) {
+func (c *catServiceClient) CancelAdoptApply(ctx context.Context, in *CancelAdoptApplyRequest, opts ...grpc.CallOption) (*CancelAdoptApplyResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(GetMyCreateCatApplyDetailResponse)
-	err := c.cc.Invoke(ctx, CatService_GetMyCreateCatApplyDetail_FullMethodName, in, out, cOpts...)
+	out := new(CancelAdoptApplyResponse)
+	err := c.cc.Invoke(ctx, CatService_CancelAdoptApply_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *catServiceClient) GetAdoptApplyDetail(ctx context.Context, in *GetAdoptApplyDetailRequest, opts ...grpc.CallOption) (*GetAdoptApplyDetailResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetAdoptApplyDetailResponse)
+	err := c.cc.Invoke(ctx, CatService_GetAdoptApplyDetail_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *catServiceClient) ListMyAdoptApplies(ctx context.Context, in *ListMyAdoptAppliesRequest, opts ...grpc.CallOption) (*ListMyAdoptAppliesResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListMyAdoptAppliesResponse)
+	err := c.cc.Invoke(ctx, CatService_ListMyAdoptApplies_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *catServiceClient) ListMyAdoptions(ctx context.Context, in *ListMyAdoptionsRequest, opts ...grpc.CallOption) (*ListAdoptionsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListAdoptionsResponse)
+	err := c.cc.Invoke(ctx, CatService_ListMyAdoptions_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *catServiceClient) CompleteVisit(ctx context.Context, in *RecordFollowUpVisitRequest, opts ...grpc.CallOption) (*RecordFollowUpVisitResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(RecordFollowUpVisitResponse)
+	err := c.cc.Invoke(ctx, CatService_CompleteVisit_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *catServiceClient) ApproveAdopt(ctx context.Context, in *ApproveAdoptRequest, opts ...grpc.CallOption) (*ApproveAdoptResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ApproveAdoptResponse)
+	err := c.cc.Invoke(ctx, CatService_ApproveAdopt_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *catServiceClient) RejectAdopt(ctx context.Context, in *RejectAdoptRequest, opts ...grpc.CallOption) (*RejectAdoptResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(RejectAdoptResponse)
+	err := c.cc.Invoke(ctx, CatService_RejectAdopt_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *catServiceClient) ListPendingAdoptApplies(ctx context.Context, in *ListPendingAdoptAppliesRequest, opts ...grpc.CallOption) (*ListPendingAdoptAppliesResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListPendingAdoptAppliesResponse)
+	err := c.cc.Invoke(ctx, CatService_ListPendingAdoptApplies_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *catServiceClient) CreateAdoption(ctx context.Context, in *CreateAdoptionRequest, opts ...grpc.CallOption) (*CreateAdoptionResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(CreateAdoptionResponse)
+	err := c.cc.Invoke(ctx, CatService_CreateAdoption_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *catServiceClient) DirectAdopt(ctx context.Context, in *DirectAdoptRequest, opts ...grpc.CallOption) (*DirectAdoptResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DirectAdoptResponse)
+	err := c.cc.Invoke(ctx, CatService_DirectAdopt_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *catServiceClient) GetAdoptionDetail(ctx context.Context, in *GetAdoptionDetailRequest, opts ...grpc.CallOption) (*GetAdoptionDetailResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetAdoptionDetailResponse)
+	err := c.cc.Invoke(ctx, CatService_GetAdoptionDetail_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *catServiceClient) ListAdoptions(ctx context.Context, in *ListAdoptionsRequest, opts ...grpc.CallOption) (*ListAdoptionsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListAdoptionsResponse)
+	err := c.cc.Invoke(ctx, CatService_ListAdoptions_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *catServiceClient) UpdateAdoption(ctx context.Context, in *UpdateAdoptionRequest, opts ...grpc.CallOption) (*UpdateAdoptionResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(UpdateAdoptionResponse)
+	err := c.cc.Invoke(ctx, CatService_UpdateAdoption_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *catServiceClient) RecordHomeVisit(ctx context.Context, in *RecordHomeVisitRequest, opts ...grpc.CallOption) (*RecordHomeVisitResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(RecordHomeVisitResponse)
+	err := c.cc.Invoke(ctx, CatService_RecordHomeVisit_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *catServiceClient) RecordFollowUpVisit(ctx context.Context, in *RecordFollowUpVisitRequest, opts ...grpc.CallOption) (*RecordFollowUpVisitResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(RecordFollowUpVisitResponse)
+	err := c.cc.Invoke(ctx, CatService_RecordFollowUpVisit_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *catServiceClient) UpdateReturnStatus(ctx context.Context, in *UpdateReturnStatusRequest, opts ...grpc.CallOption) (*UpdateReturnStatusResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(UpdateReturnStatusResponse)
+	err := c.cc.Invoke(ctx, CatService_UpdateReturnStatus_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *catServiceClient) ApplyUpdateCatInfo(ctx context.Context, in *ApplyUpdateCatInfoRequest, opts ...grpc.CallOption) (*ApplyUpdateCatInfoResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ApplyUpdateCatInfoResponse)
+	err := c.cc.Invoke(ctx, CatService_ApplyUpdateCatInfo_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -286,26 +488,6 @@ func (c *catServiceClient) UploadTaskProgress(ctx context.Context, in *UploadTas
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(UploadTaskProgressResponse)
 	err := c.cc.Invoke(ctx, CatService_UploadTaskProgress_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *catServiceClient) GetCreateCatApplyDetail(ctx context.Context, in *GetCreateCatApplyDetailRequest, opts ...grpc.CallOption) (*GetCreateCatApplyDetailResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(GetCreateCatApplyDetailResponse)
-	err := c.cc.Invoke(ctx, CatService_GetCreateCatApplyDetail_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *catServiceClient) ListCreateCatApply(ctx context.Context, in *ListCreateCatApplyRequest, opts ...grpc.CallOption) (*ListCreateCatApplyResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ListCreateCatApplyResponse)
-	err := c.cc.Invoke(ctx, CatService_ListCreateCatApply_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -432,16 +614,6 @@ func (c *catServiceClient) UpdateCatTaskStatus(ctx context.Context, in *UpdateCa
 	return out, nil
 }
 
-func (c *catServiceClient) UpdateAdoptionStatus(ctx context.Context, in *UpdateAdoptionStatusRequest, opts ...grpc.CallOption) (*UpdateAdoptionStatusResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(UpdateAdoptionStatusResponse)
-	err := c.cc.Invoke(ctx, CatService_UpdateAdoptionStatus_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 func (c *catServiceClient) GetCatDetail(ctx context.Context, in *GetCatDetailRequest, opts ...grpc.CallOption) (*GetCatDetailResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(GetCatDetailResponse)
@@ -486,10 +658,42 @@ type CatServiceServer interface {
 	RejectCreateCat(context.Context, *RejectCreateCatRequest) (*Response, error)
 	DirectCreateCat(context.Context, *DirectCreateCatRequest) (*DirectCreateCatResponse, error)
 	ListPendingApplies(context.Context, *ListPendingAppliesRequest) (*ListPendingAppliesResponse, error)
+	// 申请领养
+	ApplyAdopt(context.Context, *ApplyAdoptRequest) (*ApplyAdoptResponse, error)
+	// 取消申请
+	CancelAdoptApply(context.Context, *CancelAdoptApplyRequest) (*CancelAdoptApplyResponse, error)
+	// 查看申请详情
+	GetAdoptApplyDetail(context.Context, *GetAdoptApplyDetailRequest) (*GetAdoptApplyDetailResponse, error)
+	// 我的申请列表
+	ListMyAdoptApplies(context.Context, *ListMyAdoptAppliesRequest) (*ListMyAdoptAppliesResponse, error)
+	// 我的领养记录
+	ListMyAdoptions(context.Context, *ListMyAdoptionsRequest) (*ListAdoptionsResponse, error)
+	// 完成回访
+	CompleteVisit(context.Context, *RecordFollowUpVisitRequest) (*RecordFollowUpVisitResponse, error)
+	// 审核通过
+	ApproveAdopt(context.Context, *ApproveAdoptRequest) (*ApproveAdoptResponse, error)
+	// 审核拒绝
+	RejectAdopt(context.Context, *RejectAdoptRequest) (*RejectAdoptResponse, error)
+	// 待审核列表
+	ListPendingAdoptApplies(context.Context, *ListPendingAdoptAppliesRequest) (*ListPendingAdoptAppliesResponse, error)
+	// 从申请创建领养记录
+	CreateAdoption(context.Context, *CreateAdoptionRequest) (*CreateAdoptionResponse, error)
+	// 直接领养
+	DirectAdopt(context.Context, *DirectAdoptRequest) (*DirectAdoptResponse, error)
+	// 查看领养详情
+	GetAdoptionDetail(context.Context, *GetAdoptionDetailRequest) (*GetAdoptionDetailResponse, error)
+	// 领养记录列表
+	ListAdoptions(context.Context, *ListAdoptionsRequest) (*ListAdoptionsResponse, error)
+	// 更新领养信息
+	UpdateAdoption(context.Context, *UpdateAdoptionRequest) (*UpdateAdoptionResponse, error)
+	// 记录家访
+	RecordHomeVisit(context.Context, *RecordHomeVisitRequest) (*RecordHomeVisitResponse, error)
+	// 记录回访
+	RecordFollowUpVisit(context.Context, *RecordFollowUpVisitRequest) (*RecordFollowUpVisitResponse, error)
+	// 更新退回状态
+	UpdateReturnStatus(context.Context, *UpdateReturnStatusRequest) (*UpdateReturnStatusResponse, error)
 	// 申请修改猫咪档案信息
 	ApplyUpdateCatInfo(context.Context, *ApplyUpdateCatInfoRequest) (*ApplyUpdateCatInfoResponse, error)
-	// 查看自己提交的创建申请详情
-	GetMyCreateCatApplyDetail(context.Context, *GetMyCreateCatApplyDetailRequest) (*GetMyCreateCatApplyDetailResponse, error)
 	// 查看自己提交的修改申请详情
 	GetMyUpdateCatApplyDetail(context.Context, *GetMyUpdateCatApplyDetailRequest) (*GetMyUpdateCatApplyDetailResponse, error)
 	// 申请新增医疗记录
@@ -504,8 +708,6 @@ type CatServiceServer interface {
 	AbandonCatTask(context.Context, *AbandonCatTaskRequest) (*AbandonCatTaskResponse, error)
 	// 上传任务进度（图片/备注）
 	UploadTaskProgress(context.Context, *UploadTaskProgressRequest) (*UploadTaskProgressResponse, error)
-	GetCreateCatApplyDetail(context.Context, *GetCreateCatApplyDetailRequest) (*GetCreateCatApplyDetailResponse, error)
-	ListCreateCatApply(context.Context, *ListCreateCatApplyRequest) (*ListCreateCatApplyResponse, error)
 	ApproveUpdateCatInfo(context.Context, *ApproveUpdateCatInfoRequest) (*ApproveUpdateCatInfoResponse, error)
 	RejectUpdateCatInfo(context.Context, *RejectUpdateCatInfoRequest) (*RejectUpdateCatInfoResponse, error)
 	GetUpdateCatApplyDetail(context.Context, *GetUpdateCatApplyDetailRequest) (*GetUpdateCatApplyDetailResponse, error)
@@ -521,7 +723,6 @@ type CatServiceServer interface {
 	CreateCatTask(context.Context, *CreateCatTaskRequest) (*CreateCatTaskResponse, error)
 	// 管理员更新任务状态
 	UpdateCatTaskStatus(context.Context, *UpdateCatTaskStatusRequest) (*UpdateCatTaskStatusResponse, error)
-	UpdateAdoptionStatus(context.Context, *UpdateAdoptionStatusRequest) (*UpdateAdoptionStatusResponse, error)
 	// 猫咪详情
 	GetCatDetail(context.Context, *GetCatDetailRequest) (*GetCatDetailResponse, error)
 	// 猫咪列表
@@ -562,11 +763,59 @@ func (UnimplementedCatServiceServer) DirectCreateCat(context.Context, *DirectCre
 func (UnimplementedCatServiceServer) ListPendingApplies(context.Context, *ListPendingAppliesRequest) (*ListPendingAppliesResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method ListPendingApplies not implemented")
 }
+func (UnimplementedCatServiceServer) ApplyAdopt(context.Context, *ApplyAdoptRequest) (*ApplyAdoptResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ApplyAdopt not implemented")
+}
+func (UnimplementedCatServiceServer) CancelAdoptApply(context.Context, *CancelAdoptApplyRequest) (*CancelAdoptApplyResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method CancelAdoptApply not implemented")
+}
+func (UnimplementedCatServiceServer) GetAdoptApplyDetail(context.Context, *GetAdoptApplyDetailRequest) (*GetAdoptApplyDetailResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetAdoptApplyDetail not implemented")
+}
+func (UnimplementedCatServiceServer) ListMyAdoptApplies(context.Context, *ListMyAdoptAppliesRequest) (*ListMyAdoptAppliesResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListMyAdoptApplies not implemented")
+}
+func (UnimplementedCatServiceServer) ListMyAdoptions(context.Context, *ListMyAdoptionsRequest) (*ListAdoptionsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListMyAdoptions not implemented")
+}
+func (UnimplementedCatServiceServer) CompleteVisit(context.Context, *RecordFollowUpVisitRequest) (*RecordFollowUpVisitResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method CompleteVisit not implemented")
+}
+func (UnimplementedCatServiceServer) ApproveAdopt(context.Context, *ApproveAdoptRequest) (*ApproveAdoptResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ApproveAdopt not implemented")
+}
+func (UnimplementedCatServiceServer) RejectAdopt(context.Context, *RejectAdoptRequest) (*RejectAdoptResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method RejectAdopt not implemented")
+}
+func (UnimplementedCatServiceServer) ListPendingAdoptApplies(context.Context, *ListPendingAdoptAppliesRequest) (*ListPendingAdoptAppliesResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListPendingAdoptApplies not implemented")
+}
+func (UnimplementedCatServiceServer) CreateAdoption(context.Context, *CreateAdoptionRequest) (*CreateAdoptionResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method CreateAdoption not implemented")
+}
+func (UnimplementedCatServiceServer) DirectAdopt(context.Context, *DirectAdoptRequest) (*DirectAdoptResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method DirectAdopt not implemented")
+}
+func (UnimplementedCatServiceServer) GetAdoptionDetail(context.Context, *GetAdoptionDetailRequest) (*GetAdoptionDetailResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetAdoptionDetail not implemented")
+}
+func (UnimplementedCatServiceServer) ListAdoptions(context.Context, *ListAdoptionsRequest) (*ListAdoptionsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListAdoptions not implemented")
+}
+func (UnimplementedCatServiceServer) UpdateAdoption(context.Context, *UpdateAdoptionRequest) (*UpdateAdoptionResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method UpdateAdoption not implemented")
+}
+func (UnimplementedCatServiceServer) RecordHomeVisit(context.Context, *RecordHomeVisitRequest) (*RecordHomeVisitResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method RecordHomeVisit not implemented")
+}
+func (UnimplementedCatServiceServer) RecordFollowUpVisit(context.Context, *RecordFollowUpVisitRequest) (*RecordFollowUpVisitResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method RecordFollowUpVisit not implemented")
+}
+func (UnimplementedCatServiceServer) UpdateReturnStatus(context.Context, *UpdateReturnStatusRequest) (*UpdateReturnStatusResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method UpdateReturnStatus not implemented")
+}
 func (UnimplementedCatServiceServer) ApplyUpdateCatInfo(context.Context, *ApplyUpdateCatInfoRequest) (*ApplyUpdateCatInfoResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method ApplyUpdateCatInfo not implemented")
-}
-func (UnimplementedCatServiceServer) GetMyCreateCatApplyDetail(context.Context, *GetMyCreateCatApplyDetailRequest) (*GetMyCreateCatApplyDetailResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method GetMyCreateCatApplyDetail not implemented")
 }
 func (UnimplementedCatServiceServer) GetMyUpdateCatApplyDetail(context.Context, *GetMyUpdateCatApplyDetailRequest) (*GetMyUpdateCatApplyDetailResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method GetMyUpdateCatApplyDetail not implemented")
@@ -588,12 +837,6 @@ func (UnimplementedCatServiceServer) AbandonCatTask(context.Context, *AbandonCat
 }
 func (UnimplementedCatServiceServer) UploadTaskProgress(context.Context, *UploadTaskProgressRequest) (*UploadTaskProgressResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method UploadTaskProgress not implemented")
-}
-func (UnimplementedCatServiceServer) GetCreateCatApplyDetail(context.Context, *GetCreateCatApplyDetailRequest) (*GetCreateCatApplyDetailResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method GetCreateCatApplyDetail not implemented")
-}
-func (UnimplementedCatServiceServer) ListCreateCatApply(context.Context, *ListCreateCatApplyRequest) (*ListCreateCatApplyResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method ListCreateCatApply not implemented")
 }
 func (UnimplementedCatServiceServer) ApproveUpdateCatInfo(context.Context, *ApproveUpdateCatInfoRequest) (*ApproveUpdateCatInfoResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method ApproveUpdateCatInfo not implemented")
@@ -630,9 +873,6 @@ func (UnimplementedCatServiceServer) CreateCatTask(context.Context, *CreateCatTa
 }
 func (UnimplementedCatServiceServer) UpdateCatTaskStatus(context.Context, *UpdateCatTaskStatusRequest) (*UpdateCatTaskStatusResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method UpdateCatTaskStatus not implemented")
-}
-func (UnimplementedCatServiceServer) UpdateAdoptionStatus(context.Context, *UpdateAdoptionStatusRequest) (*UpdateAdoptionStatusResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method UpdateAdoptionStatus not implemented")
 }
 func (UnimplementedCatServiceServer) GetCatDetail(context.Context, *GetCatDetailRequest) (*GetCatDetailResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method GetCatDetail not implemented")
@@ -808,6 +1048,312 @@ func _CatService_ListPendingApplies_Handler(srv interface{}, ctx context.Context
 	return interceptor(ctx, in, info, handler)
 }
 
+func _CatService_ApplyAdopt_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ApplyAdoptRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CatServiceServer).ApplyAdopt(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CatService_ApplyAdopt_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CatServiceServer).ApplyAdopt(ctx, req.(*ApplyAdoptRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CatService_CancelAdoptApply_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CancelAdoptApplyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CatServiceServer).CancelAdoptApply(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CatService_CancelAdoptApply_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CatServiceServer).CancelAdoptApply(ctx, req.(*CancelAdoptApplyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CatService_GetAdoptApplyDetail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetAdoptApplyDetailRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CatServiceServer).GetAdoptApplyDetail(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CatService_GetAdoptApplyDetail_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CatServiceServer).GetAdoptApplyDetail(ctx, req.(*GetAdoptApplyDetailRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CatService_ListMyAdoptApplies_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListMyAdoptAppliesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CatServiceServer).ListMyAdoptApplies(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CatService_ListMyAdoptApplies_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CatServiceServer).ListMyAdoptApplies(ctx, req.(*ListMyAdoptAppliesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CatService_ListMyAdoptions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListMyAdoptionsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CatServiceServer).ListMyAdoptions(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CatService_ListMyAdoptions_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CatServiceServer).ListMyAdoptions(ctx, req.(*ListMyAdoptionsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CatService_CompleteVisit_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RecordFollowUpVisitRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CatServiceServer).CompleteVisit(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CatService_CompleteVisit_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CatServiceServer).CompleteVisit(ctx, req.(*RecordFollowUpVisitRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CatService_ApproveAdopt_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ApproveAdoptRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CatServiceServer).ApproveAdopt(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CatService_ApproveAdopt_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CatServiceServer).ApproveAdopt(ctx, req.(*ApproveAdoptRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CatService_RejectAdopt_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RejectAdoptRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CatServiceServer).RejectAdopt(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CatService_RejectAdopt_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CatServiceServer).RejectAdopt(ctx, req.(*RejectAdoptRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CatService_ListPendingAdoptApplies_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListPendingAdoptAppliesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CatServiceServer).ListPendingAdoptApplies(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CatService_ListPendingAdoptApplies_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CatServiceServer).ListPendingAdoptApplies(ctx, req.(*ListPendingAdoptAppliesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CatService_CreateAdoption_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateAdoptionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CatServiceServer).CreateAdoption(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CatService_CreateAdoption_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CatServiceServer).CreateAdoption(ctx, req.(*CreateAdoptionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CatService_DirectAdopt_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DirectAdoptRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CatServiceServer).DirectAdopt(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CatService_DirectAdopt_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CatServiceServer).DirectAdopt(ctx, req.(*DirectAdoptRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CatService_GetAdoptionDetail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetAdoptionDetailRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CatServiceServer).GetAdoptionDetail(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CatService_GetAdoptionDetail_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CatServiceServer).GetAdoptionDetail(ctx, req.(*GetAdoptionDetailRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CatService_ListAdoptions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListAdoptionsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CatServiceServer).ListAdoptions(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CatService_ListAdoptions_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CatServiceServer).ListAdoptions(ctx, req.(*ListAdoptionsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CatService_UpdateAdoption_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateAdoptionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CatServiceServer).UpdateAdoption(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CatService_UpdateAdoption_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CatServiceServer).UpdateAdoption(ctx, req.(*UpdateAdoptionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CatService_RecordHomeVisit_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RecordHomeVisitRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CatServiceServer).RecordHomeVisit(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CatService_RecordHomeVisit_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CatServiceServer).RecordHomeVisit(ctx, req.(*RecordHomeVisitRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CatService_RecordFollowUpVisit_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RecordFollowUpVisitRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CatServiceServer).RecordFollowUpVisit(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CatService_RecordFollowUpVisit_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CatServiceServer).RecordFollowUpVisit(ctx, req.(*RecordFollowUpVisitRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CatService_UpdateReturnStatus_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateReturnStatusRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CatServiceServer).UpdateReturnStatus(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CatService_UpdateReturnStatus_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CatServiceServer).UpdateReturnStatus(ctx, req.(*UpdateReturnStatusRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _CatService_ApplyUpdateCatInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ApplyUpdateCatInfoRequest)
 	if err := dec(in); err != nil {
@@ -822,24 +1368,6 @@ func _CatService_ApplyUpdateCatInfo_Handler(srv interface{}, ctx context.Context
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(CatServiceServer).ApplyUpdateCatInfo(ctx, req.(*ApplyUpdateCatInfoRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _CatService_GetMyCreateCatApplyDetail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetMyCreateCatApplyDetailRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(CatServiceServer).GetMyCreateCatApplyDetail(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: CatService_GetMyCreateCatApplyDetail_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CatServiceServer).GetMyCreateCatApplyDetail(ctx, req.(*GetMyCreateCatApplyDetailRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -966,42 +1494,6 @@ func _CatService_UploadTaskProgress_Handler(srv interface{}, ctx context.Context
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(CatServiceServer).UploadTaskProgress(ctx, req.(*UploadTaskProgressRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _CatService_GetCreateCatApplyDetail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetCreateCatApplyDetailRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(CatServiceServer).GetCreateCatApplyDetail(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: CatService_GetCreateCatApplyDetail_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CatServiceServer).GetCreateCatApplyDetail(ctx, req.(*GetCreateCatApplyDetailRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _CatService_ListCreateCatApply_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ListCreateCatApplyRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(CatServiceServer).ListCreateCatApply(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: CatService_ListCreateCatApply_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CatServiceServer).ListCreateCatApply(ctx, req.(*ListCreateCatApplyRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -1222,24 +1714,6 @@ func _CatService_UpdateCatTaskStatus_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
-func _CatService_UpdateAdoptionStatus_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UpdateAdoptionStatusRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(CatServiceServer).UpdateAdoptionStatus(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: CatService_UpdateAdoptionStatus_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CatServiceServer).UpdateAdoptionStatus(ctx, req.(*UpdateAdoptionStatusRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _CatService_GetCatDetail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetCatDetailRequest)
 	if err := dec(in); err != nil {
@@ -1334,12 +1808,76 @@ var CatService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _CatService_ListPendingApplies_Handler,
 		},
 		{
-			MethodName: "ApplyUpdateCatInfo",
-			Handler:    _CatService_ApplyUpdateCatInfo_Handler,
+			MethodName: "ApplyAdopt",
+			Handler:    _CatService_ApplyAdopt_Handler,
 		},
 		{
-			MethodName: "GetMyCreateCatApplyDetail",
-			Handler:    _CatService_GetMyCreateCatApplyDetail_Handler,
+			MethodName: "CancelAdoptApply",
+			Handler:    _CatService_CancelAdoptApply_Handler,
+		},
+		{
+			MethodName: "GetAdoptApplyDetail",
+			Handler:    _CatService_GetAdoptApplyDetail_Handler,
+		},
+		{
+			MethodName: "ListMyAdoptApplies",
+			Handler:    _CatService_ListMyAdoptApplies_Handler,
+		},
+		{
+			MethodName: "ListMyAdoptions",
+			Handler:    _CatService_ListMyAdoptions_Handler,
+		},
+		{
+			MethodName: "CompleteVisit",
+			Handler:    _CatService_CompleteVisit_Handler,
+		},
+		{
+			MethodName: "ApproveAdopt",
+			Handler:    _CatService_ApproveAdopt_Handler,
+		},
+		{
+			MethodName: "RejectAdopt",
+			Handler:    _CatService_RejectAdopt_Handler,
+		},
+		{
+			MethodName: "ListPendingAdoptApplies",
+			Handler:    _CatService_ListPendingAdoptApplies_Handler,
+		},
+		{
+			MethodName: "CreateAdoption",
+			Handler:    _CatService_CreateAdoption_Handler,
+		},
+		{
+			MethodName: "DirectAdopt",
+			Handler:    _CatService_DirectAdopt_Handler,
+		},
+		{
+			MethodName: "GetAdoptionDetail",
+			Handler:    _CatService_GetAdoptionDetail_Handler,
+		},
+		{
+			MethodName: "ListAdoptions",
+			Handler:    _CatService_ListAdoptions_Handler,
+		},
+		{
+			MethodName: "UpdateAdoption",
+			Handler:    _CatService_UpdateAdoption_Handler,
+		},
+		{
+			MethodName: "RecordHomeVisit",
+			Handler:    _CatService_RecordHomeVisit_Handler,
+		},
+		{
+			MethodName: "RecordFollowUpVisit",
+			Handler:    _CatService_RecordFollowUpVisit_Handler,
+		},
+		{
+			MethodName: "UpdateReturnStatus",
+			Handler:    _CatService_UpdateReturnStatus_Handler,
+		},
+		{
+			MethodName: "ApplyUpdateCatInfo",
+			Handler:    _CatService_ApplyUpdateCatInfo_Handler,
 		},
 		{
 			MethodName: "GetMyUpdateCatApplyDetail",
@@ -1368,14 +1906,6 @@ var CatService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UploadTaskProgress",
 			Handler:    _CatService_UploadTaskProgress_Handler,
-		},
-		{
-			MethodName: "GetCreateCatApplyDetail",
-			Handler:    _CatService_GetCreateCatApplyDetail_Handler,
-		},
-		{
-			MethodName: "ListCreateCatApply",
-			Handler:    _CatService_ListCreateCatApply_Handler,
 		},
 		{
 			MethodName: "ApproveUpdateCatInfo",
@@ -1424,10 +1954,6 @@ var CatService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UpdateCatTaskStatus",
 			Handler:    _CatService_UpdateCatTaskStatus_Handler,
-		},
-		{
-			MethodName: "UpdateAdoptionStatus",
-			Handler:    _CatService_UpdateAdoptionStatus_Handler,
 		},
 		{
 			MethodName: "GetCatDetail",

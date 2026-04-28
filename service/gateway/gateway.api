@@ -345,6 +345,317 @@ service gateway {
 	get /applies/pending (ListPendingAppliesReq) returns (ListPendingAppliesResp)
 }
 
+type (
+	// ==================== 领养申请 ====================
+	ApplyAdoptReq {
+		CatId         uint64 `json:"cat_id"`
+		ApplyReason   string `json:"apply_reason"`
+		ContactPhone  string `json:"contact_phone"`
+		ContactWechat string `json:"contact_wechat"`
+	}
+	ApplyAdoptResp {
+		ApplyId              uint64 `json:"apply_id"`
+		Status               string `json:"status"`
+		Message              string `json:"message"`
+		ApplicantCreditScore int32  `json:"applicant_credit_score"`
+	}
+	CancelAdoptApplyReq {
+		ApplyId uint64 `json:"apply_id"`
+		Reason  string `json:"reason"`
+	}
+	CancelAdoptApplyResp {
+		Message string `json:"message"`
+	}
+	GetAdoptApplyDetailReq {
+		ApplyId uint64 `path:"apply_id"`
+	}
+	GetAdoptApplyDetailResp {
+		Apply AdoptApplicationVO `json:"apply"`
+		Cat   CatBriefVO         `json:"cat"`
+	}
+	ListMyAdoptAppliesReq {
+		Status   string `form:"status,optional"`
+		Page     int32  `form:"page,optional"`
+		PageSize int32  `form:"page_size,optional"`
+	}
+	ListMyAdoptAppliesResp {
+		Items    []AdoptApplyItemVO `json:"items"`
+		Total    int64              `json:"total"`
+		Page     int32              `json:"page"`
+		PageSize int32              `json:"page_size"`
+	}
+	// ==================== 管理员审核 ====================
+	ApproveAdoptReq {
+		ApplyId uint64 `json:"apply_id"`
+		Note    string `json:"note"`
+	}
+	ApproveAdoptResp {
+		ApplyId   uint64 `json:"apply_id"`
+		Status    string `json:"status"`
+		Message   string `json:"message"`
+		ExpiresAt string `json:"expires_at,omitempty"`
+	}
+	RejectAdoptReq {
+		ApplyId      uint64 `json:"apply_id"`
+		RejectReason string `json:"reject_reason"`
+	}
+	RejectAdoptResp {
+		Message string `json:"message"`
+	}
+	ListPendingAdoptAppliesReq {
+		CatId    uint64 `form:"cat_id,optional"`
+		Page     int32  `form:"page,optional"`
+		PageSize int32  `form:"page_size,optional"`
+	}
+	ListPendingAdoptAppliesResp {
+		Items    []PendingApplyVO `json:"items"`
+		Total    int64            `json:"total"`
+		Page     int32            `json:"page"`
+		PageSize int32            `json:"page_size"`
+	}
+	// ==================== 领养记录 ====================
+	CreateAdoptionReq {
+		ApplyId     uint64 `json:"apply_id"`
+		AgreementNo string `json:"agreement_no"`
+		Note        string `json:"note"`
+	}
+	CreateAdoptionResp {
+		AdoptionId uint64 `json:"adoption_id"`
+		Message    string `json:"message"`
+	}
+	DirectAdoptReq {
+		CatId       uint64 `json:"cat_id"`
+		AdopterId   uint64 `json:"adopter_id"`
+		AgreementNo string `json:"agreement_no"`
+		Note        string `json:"note"`
+	}
+	DirectAdoptResp {
+		AdoptionId uint64 `json:"adoption_id"`
+		Message    string `json:"message"`
+	}
+	GetAdoptionDetailReq {
+		AdoptionId uint64 `path:"adoption_id"`
+	}
+	GetAdoptionDetailResp {
+		Adoption AdoptionVO  `json:"adoption"`
+		Cat      CatBriefVO  `json:"cat"`
+		Adopter  UserBriefVO `json:"adopter"`
+	}
+	ListMyAdoptionsReq {
+		Page     int32 `form:"page,optional"`
+		PageSize int32 `form:"page_size,optional"`
+	}
+	ListAdoptionsReq {
+		AdopterId uint64 `form:"adopter_id,optional"`
+		CatId     uint64 `form:"cat_id,optional"`
+		Status    string `form:"status,optional"`
+		Page      int32  `form:"page,optional"`
+		PageSize  int32  `form:"page_size,optional"`
+	}
+	ListAdoptionsResp {
+		Items    []AdoptionItemVO `json:"items"`
+		Total    int64            `json:"total"`
+		Page     int32            `json:"page"`
+		PageSize int32            `json:"page_size"`
+	}
+	UpdateAdoptionReq {
+		AdoptionId  uint64 `json:"adoption_id"`
+		AgreementNo string `json:"agreement_no"`
+		Note        string `json:"note"`
+	}
+	UpdateAdoptionResp {
+		Message string `json:"message"`
+	}
+	RecordHomeVisitReq {
+		AdoptionId uint64 `json:"adoption_id"`
+		Remark     string `json:"remark"`
+		Photos     string `json:"photos"`
+	}
+	RecordHomeVisitResp {
+		Message string `json:"message"`
+	}
+	RecordFollowUpVisitReq {
+		AdoptionId uint64 `json:"adoption_id"`
+		VisitType  int32  `json:"visit_type"`
+		Remark     string `json:"remark"`
+		Photos     string `json:"photos"`
+	}
+	RecordFollowUpVisitResp {
+		Message string `json:"message"`
+	}
+	UpdateReturnStatusReq {
+		AdoptionId       uint64 `json:"adoption_id"`
+		Returned         bool   `json:"returned"`
+		ReturnedToUserId uint64 `json:"returned_to_user_id"`
+		ReturnReason     string `json:"return_reason"`
+		Photos           string `json:"photos"`
+	}
+	UpdateReturnStatusResp {
+		Message string `json:"message"`
+	}
+	// ==================== 通用 VO ====================
+	CatBriefVO {
+		Id                  uint64 `json:"id"`
+		Name                string `json:"name"`
+		Avatar              string `json:"avatar"`
+		Gender              string `json:"gender"`
+		CreditScoreRequired int32  `json:"credit_score_required"`
+	}
+	UserBriefVO {
+		Id     uint64 `json:"id"`
+		Name   string `json:"name"`
+		Avatar string `json:"avatar"`
+	}
+	AdoptApplicationVO {
+		Id                   uint64 `json:"id"`
+		CatId                uint64 `json:"cat_id"`
+		CatName              string `json:"cat_name"`
+		CatAvatar            string `json:"cat_avatar"`
+		ApplicantId          uint64 `json:"applicant_id"`
+		ApplicantName        string `json:"applicant_name"`
+		ApplyReason          string `json:"apply_reason"`
+		ContactPhone         string `json:"contact_phone"`
+		ContactWechat        string `json:"contact_wechat"`
+		ApplicantCreditScore int32  `json:"applicant_credit_score"`
+		Status               string `json:"status"`
+		RejectReason         string `json:"reject_reason"`
+		ReviewerId           uint64 `json:"reviewer_id"`
+		ReviewerName         string `json:"reviewer_name"`
+		ReviewedAt           string `json:"reviewed_at,omitempty"`
+		ApprovedAt           string `json:"approved_at,omitempty"`
+		ExpiresAt            string `json:"expires_at,omitempty"`
+		CreatedAt            string `json:"created_at"`
+		UpdatedAt            string `json:"updated_at"`
+		AdoptionId           uint64 `json:"adoption_id"`
+	}
+	AdoptApplyItemVO {
+		ApplyId             uint64 `json:"apply_id"`
+		CatId               uint64 `json:"cat_id"`
+		CatName             string `json:"cat_name"`
+		CatAvatar           string `json:"cat_avatar"`
+		CatGender           string `json:"cat_gender"`
+		CreditScoreRequired int32  `json:"credit_score_required"`
+		ApplyReason         string `json:"apply_reason"`
+		Status              string `json:"status"`
+		RejectReason        string `json:"reject_reason"`
+		CreatedAt           string `json:"created_at"`
+		ExpiresAt           string `json:"expires_at,omitempty"`
+	}
+	PendingApplyVO {
+		ApplyId              uint64 `json:"apply_id"`
+		CatId                uint64 `json:"cat_id"`
+		CatName              string `json:"cat_name"`
+		CatAvatar            string `json:"cat_avatar"`
+		CatGender            string `json:"cat_gender"`
+		CreditScoreRequired  int32  `json:"credit_score_required"`
+		ApplicantId          uint64 `json:"applicant_id"`
+		ApplicantName        string `json:"applicant_name"`
+		ApplicantAvatar      string `json:"applicant_avatar"`
+		ApplicantCreditScore int32  `json:"applicant_credit_score"`
+		ApplyReason          string `json:"apply_reason"`
+		ContactPhone         string `json:"contact_phone"`
+		ContactWechat        string `json:"contact_wechat"`
+		CreatedAt            string `json:"created_at"`
+	}
+	AdoptionVO {
+		Id                uint64 `json:"id"`
+		CatId             uint64 `json:"cat_id"`
+		CatName           string `json:"cat_name"`
+		CatAvatar         string `json:"cat_avatar"`
+		AdopterId         uint64 `json:"adopter_id"`
+		AdopterName       string `json:"adopter_name"`
+		Status            string `json:"status"`
+		AgreementNo       string `json:"agreement_no"`
+		AgreedAt          string `json:"agreed_at,omitempty"`
+		AdoptedAt         string `json:"adopted_at,omitempty"`
+		HomeVisitAt       string `json:"home_visit_at,omitempty"`
+		HomeVisitUserId   uint64 `json:"home_visit_user_id,omitempty"`
+		HomeVisitRemark   string `json:"home_visit_remark,omitempty"`
+		VisitOneWeekAt    string `json:"visit_one_week_at,omitempty"`
+		VisitOneMonthAt   string `json:"visit_one_month_at,omitempty"`
+		VisitThreeMonthAt string `json:"visit_three_month_at,omitempty"`
+		VisitSixMonthAt   string `json:"visit_six_month_at,omitempty"`
+		IsReturned        bool   `json:"is_returned"`
+		ReturnReason      string `json:"return_reason,omitempty"`
+		ReturnedAt        string `json:"returned_at,omitempty"`
+		Note              string `json:"note,omitempty"`
+		CreatedAt         string `json:"created_at"`
+		UpdatedAt         string `json:"updated_at"`
+	}
+	AdoptionItemVO {
+		AdoptionId  uint64 `json:"adoption_id"`
+		CatId       uint64 `json:"cat_id"`
+		CatName     string `json:"cat_name"`
+		CatAvatar   string `json:"cat_avatar"`
+		AdopterId   uint64 `json:"adopter_id"`
+		AdopterName string `json:"adopter_name"`
+		Status      string `json:"status"`
+		AgreementNo string `json:"agreement_no"`
+		AdoptedAt   string `json:"adopted_at,omitempty"`
+		IsReturned  bool   `json:"is_returned"`
+	}
+)
+
+@server (
+	prefix: /api/v1/adoption
+	tags:   "领养模块"
+	group:  adoption
+)
+service gateway {
+	// ==================== 志愿者端 ====================
+	@handler ApplyAdopt
+	post /adoption/apply (ApplyAdoptReq) returns (ApplyAdoptResp)
+
+	@handler CancelAdoptApply
+	post /adoption/cancel (CancelAdoptApplyReq) returns (CancelAdoptApplyResp)
+
+	@handler GetAdoptApplyDetail
+	get /adoption/apply/:apply_id (GetAdoptApplyDetailReq) returns (GetAdoptApplyDetailResp)
+
+	@handler ListMyAdoptApplies
+	get /adoption/my-applies (ListMyAdoptAppliesReq) returns (ListMyAdoptAppliesResp)
+
+	@handler ListMyAdoptions
+	get /adoption/my-adoptions (ListMyAdoptionsReq) returns (ListAdoptionsResp)
+
+	@handler CompleteVisit
+	post /adoption/visit/complete (RecordFollowUpVisitReq) returns (RecordFollowUpVisitResp)
+
+	// ==================== 管理员端 ====================
+	@handler ApproveAdopt
+	post /admin/adoption/approve (ApproveAdoptReq) returns (ApproveAdoptResp)
+
+	@handler RejectAdopt
+	post /admin/adoption/reject (RejectAdoptReq) returns (RejectAdoptResp)
+
+	@handler ListPendingAdoptApplies
+	get /admin/adoption/pending (ListPendingAdoptAppliesReq) returns (ListPendingAdoptAppliesResp)
+
+	@handler CreateAdoption
+	post /admin/adoption/create (CreateAdoptionReq) returns (CreateAdoptionResp)
+
+	@handler DirectAdopt
+	post /admin/adoption/direct (DirectAdoptReq) returns (DirectAdoptResp)
+
+	@handler GetAdoptionDetail
+	get /adoption/detail/:adoption_id (GetAdoptionDetailReq) returns (GetAdoptionDetailResp)
+
+	@handler ListAdoptions
+	get /admin/adoption/list (ListAdoptionsReq) returns (ListAdoptionsResp)
+
+	@handler UpdateAdoption
+	post /admin/adoption/update (UpdateAdoptionReq) returns (UpdateAdoptionResp)
+
+	@handler RecordHomeVisit
+	post /admin/adoption/home-visit (RecordHomeVisitReq) returns (RecordHomeVisitResp)
+
+	@handler RecordFollowUpVisit
+	post /admin/adoption/visit (RecordFollowUpVisitReq) returns (RecordFollowUpVisitResp)
+
+	@handler UpdateReturnStatus
+	post /admin/adoption/return (UpdateReturnStatusReq) returns (UpdateReturnStatusResp)
+}
+
 //type (
 // CatInfo {
 //  Id             int64    `json:"id"`

@@ -3,6 +3,96 @@
 
 package types
 
+type AdoptApplicationVO struct {
+	Id                   uint64 `json:"id"`
+	CatId                uint64 `json:"cat_id"`
+	CatName              string `json:"cat_name"`
+	CatAvatar            string `json:"cat_avatar"`
+	ApplicantId          uint64 `json:"applicant_id"`
+	ApplicantName        string `json:"applicant_name"`
+	ApplyReason          string `json:"apply_reason"`
+	ContactPhone         string `json:"contact_phone"`
+	ContactWechat        string `json:"contact_wechat"`
+	ApplicantCreditScore int32  `json:"applicant_credit_score"`
+	Status               string `json:"status"`
+	RejectReason         string `json:"reject_reason"`
+	ReviewerId           uint64 `json:"reviewer_id"`
+	ReviewerName         string `json:"reviewer_name"`
+	ReviewedAt           string `json:"reviewed_at,omitempty"`
+	ApprovedAt           string `json:"approved_at,omitempty"`
+	ExpiresAt            string `json:"expires_at,omitempty"`
+	CreatedAt            string `json:"created_at"`
+	UpdatedAt            string `json:"updated_at"`
+	AdoptionId           uint64 `json:"adoption_id"`
+}
+
+type AdoptApplyItemVO struct {
+	ApplyId             uint64 `json:"apply_id"`
+	CatId               uint64 `json:"cat_id"`
+	CatName             string `json:"cat_name"`
+	CatAvatar           string `json:"cat_avatar"`
+	CatGender           string `json:"cat_gender"`
+	CreditScoreRequired int32  `json:"credit_score_required"`
+	ApplyReason         string `json:"apply_reason"`
+	Status              string `json:"status"`
+	RejectReason        string `json:"reject_reason"`
+	CreatedAt           string `json:"created_at"`
+	ExpiresAt           string `json:"expires_at,omitempty"`
+}
+
+type AdoptionItemVO struct {
+	AdoptionId  uint64 `json:"adoption_id"`
+	CatId       uint64 `json:"cat_id"`
+	CatName     string `json:"cat_name"`
+	CatAvatar   string `json:"cat_avatar"`
+	AdopterId   uint64 `json:"adopter_id"`
+	AdopterName string `json:"adopter_name"`
+	Status      string `json:"status"`
+	AgreementNo string `json:"agreement_no"`
+	AdoptedAt   string `json:"adopted_at,omitempty"`
+	IsReturned  bool   `json:"is_returned"`
+}
+
+type AdoptionVO struct {
+	Id                uint64 `json:"id"`
+	CatId             uint64 `json:"cat_id"`
+	CatName           string `json:"cat_name"`
+	CatAvatar         string `json:"cat_avatar"`
+	AdopterId         uint64 `json:"adopter_id"`
+	AdopterName       string `json:"adopter_name"`
+	Status            string `json:"status"`
+	AgreementNo       string `json:"agreement_no"`
+	AgreedAt          string `json:"agreed_at,omitempty"`
+	AdoptedAt         string `json:"adopted_at,omitempty"`
+	HomeVisitAt       string `json:"home_visit_at,omitempty"`
+	HomeVisitUserId   uint64 `json:"home_visit_user_id,omitempty"`
+	HomeVisitRemark   string `json:"home_visit_remark,omitempty"`
+	VisitOneWeekAt    string `json:"visit_one_week_at,omitempty"`
+	VisitOneMonthAt   string `json:"visit_one_month_at,omitempty"`
+	VisitThreeMonthAt string `json:"visit_three_month_at,omitempty"`
+	VisitSixMonthAt   string `json:"visit_six_month_at,omitempty"`
+	IsReturned        bool   `json:"is_returned"`
+	ReturnReason      string `json:"return_reason,omitempty"`
+	ReturnedAt        string `json:"returned_at,omitempty"`
+	Note              string `json:"note,omitempty"`
+	CreatedAt         string `json:"created_at"`
+	UpdatedAt         string `json:"updated_at"`
+}
+
+type ApplyAdoptReq struct {
+	CatId         uint64 `json:"cat_id"`
+	ApplyReason   string `json:"apply_reason"`
+	ContactPhone  string `json:"contact_phone"`
+	ContactWechat string `json:"contact_wechat"`
+}
+
+type ApplyAdoptResp struct {
+	ApplyId              uint64 `json:"apply_id"`
+	Status               string `json:"status"`
+	Message              string `json:"message"`
+	ApplicantCreditScore int32  `json:"applicant_credit_score"`
+}
+
 type ApplyCreateCatReq struct {
 	Name             string      `json:"name"`
 	Gender           string      `json:"gender"`
@@ -29,6 +119,18 @@ type ApplyItem struct {
 	CreatedAt string `json:"created_at"`
 }
 
+type ApproveAdoptReq struct {
+	ApplyId uint64 `json:"apply_id"`
+	Note    string `json:"note"`
+}
+
+type ApproveAdoptResp struct {
+	ApplyId   uint64 `json:"apply_id"`
+	Status    string `json:"status"`
+	Message   string `json:"message"`
+	ExpiresAt string `json:"expires_at,omitempty"`
+}
+
 type ApproveCreateCatReq struct {
 	Id                      uint64   `path:"id"`
 	CatCode                 string   `json:"cat_code"`
@@ -47,9 +149,49 @@ type ApproveCreateCatResp struct {
 	Status  string `json:"status"`
 }
 
+type CancelAdoptApplyReq struct {
+	ApplyId uint64 `json:"apply_id"`
+	Reason  string `json:"reason"`
+}
+
+type CancelAdoptApplyResp struct {
+	Message string `json:"message"`
+}
+
 type CancelApplyCreateCatReq struct {
 	Id     uint64 `path:"id"`
 	Reason string `json:"reason"`
+}
+
+type CatBriefVO struct {
+	Id                  uint64 `json:"id"`
+	Name                string `json:"name"`
+	Avatar              string `json:"avatar"`
+	Gender              string `json:"gender"`
+	CreditScoreRequired int32  `json:"credit_score_required"`
+}
+
+type CreateAdoptionReq struct {
+	ApplyId     uint64 `json:"apply_id"`
+	AgreementNo string `json:"agreement_no"`
+	Note        string `json:"note"`
+}
+
+type CreateAdoptionResp struct {
+	AdoptionId uint64 `json:"adoption_id"`
+	Message    string `json:"message"`
+}
+
+type DirectAdoptReq struct {
+	CatId       uint64 `json:"cat_id"`
+	AdopterId   uint64 `json:"adopter_id"`
+	AgreementNo string `json:"agreement_no"`
+	Note        string `json:"note"`
+}
+
+type DirectAdoptResp struct {
+	AdoptionId uint64 `json:"adoption_id"`
+	Message    string `json:"message"`
 }
 
 type DirectCreateCatReq struct {
@@ -75,6 +217,25 @@ type DirectCreateCatReq struct {
 type DirectCreateCatResp struct {
 	CatId   uint64 `json:"cat_id"`
 	CatCode string `json:"cat_code"`
+}
+
+type GetAdoptApplyDetailReq struct {
+	ApplyId uint64 `path:"apply_id"`
+}
+
+type GetAdoptApplyDetailResp struct {
+	Apply AdoptApplicationVO `json:"apply"`
+	Cat   CatBriefVO         `json:"cat"`
+}
+
+type GetAdoptionDetailReq struct {
+	AdoptionId uint64 `path:"adoption_id"`
+}
+
+type GetAdoptionDetailResp struct {
+	Adoption AdoptionVO  `json:"adoption"`
+	Cat      CatBriefVO  `json:"cat"`
+	Adopter  UserBriefVO `json:"adopter"`
 }
 
 type GetApplyDetailReq struct {
@@ -109,6 +270,39 @@ type ImageItem struct {
 	IsCover     bool   `json:"is_cover"`
 }
 
+type ListAdoptionsReq struct {
+	AdopterId uint64 `form:"adopter_id,optional"`
+	CatId     uint64 `form:"cat_id,optional"`
+	Status    string `form:"status,optional"`
+	Page      int32  `form:"page,optional"`
+	PageSize  int32  `form:"page_size,optional"`
+}
+
+type ListAdoptionsResp struct {
+	Items    []AdoptionItemVO `json:"items"`
+	Total    int64            `json:"total"`
+	Page     int32            `json:"page"`
+	PageSize int32            `json:"page_size"`
+}
+
+type ListMyAdoptAppliesReq struct {
+	Status   string `form:"status,optional"`
+	Page     int32  `form:"page,optional"`
+	PageSize int32  `form:"page_size,optional"`
+}
+
+type ListMyAdoptAppliesResp struct {
+	Items    []AdoptApplyItemVO `json:"items"`
+	Total    int64              `json:"total"`
+	Page     int32              `json:"page"`
+	PageSize int32              `json:"page_size"`
+}
+
+type ListMyAdoptionsReq struct {
+	Page     int32 `form:"page,optional"`
+	PageSize int32 `form:"page_size,optional"`
+}
+
 type ListMyAppliesReq struct {
 	Status   string `form:"status,optional"`
 	Page     int32  `form:"page,default=1"`
@@ -118,6 +312,19 @@ type ListMyAppliesReq struct {
 type ListMyAppliesResp struct {
 	List  []ApplyItem `json:"list"`
 	Total int64       `json:"total"`
+}
+
+type ListPendingAdoptAppliesReq struct {
+	CatId    uint64 `form:"cat_id,optional"`
+	Page     int32  `form:"page,optional"`
+	PageSize int32  `form:"page_size,optional"`
+}
+
+type ListPendingAdoptAppliesResp struct {
+	Items    []PendingApplyVO `json:"items"`
+	Total    int64            `json:"total"`
+	Page     int32            `json:"page"`
+	PageSize int32            `json:"page_size"`
 }
 
 type ListPendingAppliesReq struct {
@@ -141,6 +348,53 @@ type PendingApplyItem struct {
 	CreatedAt        string `json:"created_at"`
 }
 
+type PendingApplyVO struct {
+	ApplyId              uint64 `json:"apply_id"`
+	CatId                uint64 `json:"cat_id"`
+	CatName              string `json:"cat_name"`
+	CatAvatar            string `json:"cat_avatar"`
+	CatGender            string `json:"cat_gender"`
+	CreditScoreRequired  int32  `json:"credit_score_required"`
+	ApplicantId          uint64 `json:"applicant_id"`
+	ApplicantName        string `json:"applicant_name"`
+	ApplicantAvatar      string `json:"applicant_avatar"`
+	ApplicantCreditScore int32  `json:"applicant_credit_score"`
+	ApplyReason          string `json:"apply_reason"`
+	ContactPhone         string `json:"contact_phone"`
+	ContactWechat        string `json:"contact_wechat"`
+	CreatedAt            string `json:"created_at"`
+}
+
+type RecordFollowUpVisitReq struct {
+	AdoptionId uint64 `json:"adoption_id"`
+	VisitType  int32  `json:"visit_type"`
+	Remark     string `json:"remark"`
+	Photos     string `json:"photos"`
+}
+
+type RecordFollowUpVisitResp struct {
+	Message string `json:"message"`
+}
+
+type RecordHomeVisitReq struct {
+	AdoptionId uint64 `json:"adoption_id"`
+	Remark     string `json:"remark"`
+	Photos     string `json:"photos"`
+}
+
+type RecordHomeVisitResp struct {
+	Message string `json:"message"`
+}
+
+type RejectAdoptReq struct {
+	ApplyId      uint64 `json:"apply_id"`
+	RejectReason string `json:"reject_reason"`
+}
+
+type RejectAdoptResp struct {
+	Message string `json:"message"`
+}
+
 type RejectCreateCatReq struct {
 	Id     uint64 `path:"id"`
 	Reason string `json:"reason"`
@@ -159,4 +413,32 @@ type TestReq struct {
 }
 
 type TestResp struct {
+}
+
+type UpdateAdoptionReq struct {
+	AdoptionId  uint64 `json:"adoption_id"`
+	AgreementNo string `json:"agreement_no"`
+	Note        string `json:"note"`
+}
+
+type UpdateAdoptionResp struct {
+	Message string `json:"message"`
+}
+
+type UpdateReturnStatusReq struct {
+	AdoptionId       uint64 `json:"adoption_id"`
+	Returned         bool   `json:"returned"`
+	ReturnedToUserId uint64 `json:"returned_to_user_id"`
+	ReturnReason     string `json:"return_reason"`
+	Photos           string `json:"photos"`
+}
+
+type UpdateReturnStatusResp struct {
+	Message string `json:"message"`
+}
+
+type UserBriefVO struct {
+	Id     uint64 `json:"id"`
+	Name   string `json:"name"`
+	Avatar string `json:"avatar"`
 }
