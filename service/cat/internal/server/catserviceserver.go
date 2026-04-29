@@ -167,6 +167,126 @@ func (s *CatServiceServer) UpdateReturnStatus(ctx context.Context, in *v1.Update
 	return l.UpdateReturnStatus(in)
 }
 
+// 申请创建任务
+func (s *CatServiceServer) ApplyCreateTask(ctx context.Context, in *v1.ApplyCreateTaskRequest) (*v1.ApplyCreateTaskResponse, error) {
+	l := logic.NewApplyCreateTaskLogic(ctx, s.svcCtx)
+	return l.ApplyCreateTask(in)
+}
+
+// 取消任务申请
+func (s *CatServiceServer) CancelTaskApply(ctx context.Context, in *v1.CancelTaskApplyRequest) (*v1.CancelTaskApplyResponse, error) {
+	l := logic.NewCancelTaskApplyLogic(ctx, s.svcCtx)
+	return l.CancelTaskApply(in)
+}
+
+// 查看任务申请详情
+func (s *CatServiceServer) GetTaskApplyDetail(ctx context.Context, in *v1.GetTaskApplyDetailRequest) (*v1.GetTaskApplyDetailResponse, error) {
+	l := logic.NewGetTaskApplyDetailLogic(ctx, s.svcCtx)
+	return l.GetTaskApplyDetail(in)
+}
+
+// 我的任务申请列表
+func (s *CatServiceServer) ListMyTaskApplies(ctx context.Context, in *v1.ListMyTaskAppliesRequest) (*v1.ListMyTaskAppliesResponse, error) {
+	l := logic.NewListMyTaskAppliesLogic(ctx, s.svcCtx)
+	return l.ListMyTaskApplies(in)
+}
+
+// 认领任务
+func (s *CatServiceServer) ClaimTask(ctx context.Context, in *v1.ClaimTaskRequest) (*v1.ClaimTaskResponse, error) {
+	l := logic.NewClaimTaskLogic(ctx, s.svcCtx)
+	return l.ClaimTask(in)
+}
+
+// 放弃任务
+func (s *CatServiceServer) AbandonTask(ctx context.Context, in *v1.AbandonTaskRequest) (*v1.AbandonTaskResponse, error) {
+	l := logic.NewAbandonTaskLogic(ctx, s.svcCtx)
+	return l.AbandonTask(in)
+}
+
+// 完成任务
+func (s *CatServiceServer) CompleteTask(ctx context.Context, in *v1.CompleteTaskRequest) (*v1.CompleteTaskResponse, error) {
+	l := logic.NewCompleteTaskLogic(ctx, s.svcCtx)
+	return l.CompleteTask(in)
+}
+
+// 查看任务详情
+func (s *CatServiceServer) GetTaskDetail(ctx context.Context, in *v1.GetTaskDetailRequest) (*v1.GetTaskDetailResponse, error) {
+	l := logic.NewGetTaskDetailLogic(ctx, s.svcCtx)
+	return l.GetTaskDetail(in)
+}
+
+// 任务列表（公开查询）
+func (s *CatServiceServer) ListTasks(ctx context.Context, in *v1.ListTasksRequest) (*v1.ListTasksResponse, error) {
+	l := logic.NewListTasksLogic(ctx, s.svcCtx)
+	return l.ListTasks(in)
+}
+
+// 我认领的任务列表
+func (s *CatServiceServer) ListMyClaimedTasks(ctx context.Context, in *v1.ListMyClaimedTasksRequest) (*v1.ListMyClaimedTasksResponse, error) {
+	l := logic.NewListMyClaimedTasksLogic(ctx, s.svcCtx)
+	return l.ListMyClaimedTasks(in)
+}
+
+// 我完成的任务列表
+func (s *CatServiceServer) ListMyCompletedTasks(ctx context.Context, in *v1.ListMyCompletedTasksRequest) (*v1.ListMyCompletedTasksResponse, error) {
+	l := logic.NewListMyCompletedTasksLogic(ctx, s.svcCtx)
+	return l.ListMyCompletedTasks(in)
+}
+
+// 审核通过任务申请
+func (s *CatServiceServer) ApproveTaskApply(ctx context.Context, in *v1.ApproveTaskApplyRequest) (*v1.ApproveTaskApplyResponse, error) {
+	l := logic.NewApproveTaskApplyLogic(ctx, s.svcCtx)
+	return l.ApproveTaskApply(in)
+}
+
+// 拒绝任务申请
+func (s *CatServiceServer) RejectTaskApply(ctx context.Context, in *v1.RejectTaskApplyRequest) (*v1.RejectTaskApplyResponse, error) {
+	l := logic.NewRejectTaskApplyLogic(ctx, s.svcCtx)
+	return l.RejectTaskApply(in)
+}
+
+// 待审核任务申请列表
+func (s *CatServiceServer) ListPendingTaskApplies(ctx context.Context, in *v1.ListPendingTaskAppliesRequest) (*v1.ListPendingTaskAppliesResponse, error) {
+	l := logic.NewListPendingTaskAppliesLogic(ctx, s.svcCtx)
+	return l.ListPendingTaskApplies(in)
+}
+
+// 直接创建任务（跳过申请）
+func (s *CatServiceServer) DirectCreateTask(ctx context.Context, in *v1.DirectCreateTaskRequest) (*v1.DirectCreateTaskResponse, error) {
+	l := logic.NewDirectCreateTaskLogic(ctx, s.svcCtx)
+	return l.DirectCreateTask(in)
+}
+
+// 更新任务
+func (s *CatServiceServer) UpdateTask(ctx context.Context, in *v1.UpdateTaskRequest) (*v1.UpdateTaskResponse, error) {
+	l := logic.NewUpdateTaskLogic(ctx, s.svcCtx)
+	return l.UpdateTask(in)
+}
+
+// 取消任务
+func (s *CatServiceServer) CancelTask(ctx context.Context, in *v1.CancelTaskRequest) (*v1.CancelTaskResponse, error) {
+	l := logic.NewCancelTaskLogic(ctx, s.svcCtx)
+	return l.CancelTask(in)
+}
+
+// 升级任务紧急度
+func (s *CatServiceServer) EscalateTaskUrgency(ctx context.Context, in *v1.EscalateTaskUrgencyRequest) (*v1.EscalateTaskUrgencyResponse, error) {
+	l := logic.NewEscalateTaskUrgencyLogic(ctx, s.svcCtx)
+	return l.EscalateTaskUrgency(in)
+}
+
+// 查看任务流转日志
+func (s *CatServiceServer) GetTaskFlows(ctx context.Context, in *v1.GetTaskFlowsRequest) (*v1.GetTaskFlowsResponse, error) {
+	l := logic.NewGetTaskFlowsLogic(ctx, s.svcCtx)
+	return l.GetTaskFlows(in)
+}
+
+// 查看任务操作日志
+func (s *CatServiceServer) GetTaskLogs(ctx context.Context, in *v1.GetTaskLogsRequest) (*v1.GetTaskLogsResponse, error) {
+	l := logic.NewGetTaskLogsLogic(ctx, s.svcCtx)
+	return l.GetTaskLogs(in)
+}
+
 // 申请修改猫咪档案信息
 func (s *CatServiceServer) ApplyUpdateCatInfo(ctx context.Context, in *v1.ApplyUpdateCatInfoRequest) (*v1.ApplyUpdateCatInfoResponse, error) {
 	l := logic.NewApplyUpdateCatInfoLogic(ctx, s.svcCtx)

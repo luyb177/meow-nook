@@ -77,6 +77,77 @@ service CatService {
         rpc UpdateReturnStatus(UpdateReturnStatusRequest) returns (UpdateReturnStatusResponse);
 
 
+    // ==================== 志愿者端 - 任务申请 ====================
+
+    // 申请创建任务
+    rpc ApplyCreateTask(ApplyCreateTaskRequest) returns (ApplyCreateTaskResponse);
+
+    // 取消任务申请
+    rpc CancelTaskApply(CancelTaskApplyRequest) returns (CancelTaskApplyResponse);
+
+    // 查看任务申请详情
+    rpc GetTaskApplyDetail(GetTaskApplyDetailRequest) returns (GetTaskApplyDetailResponse);
+
+    // 我的任务申请列表
+    rpc ListMyTaskApplies(ListMyTaskAppliesRequest) returns (ListMyTaskAppliesResponse);
+
+    // ==================== 志愿者端 - 任务操作 ====================
+
+    // 认领任务
+    rpc ClaimTask(ClaimTaskRequest) returns (ClaimTaskResponse);
+
+    // 放弃任务
+    rpc AbandonTask(AbandonTaskRequest) returns (AbandonTaskResponse);
+
+    // 完成任务
+    rpc CompleteTask(CompleteTaskRequest) returns (CompleteTaskResponse);
+
+    // 查看任务详情
+    rpc GetTaskDetail(GetTaskDetailRequest) returns (GetTaskDetailResponse);
+
+    // 任务列表（公开查询）
+    rpc ListTasks(ListTasksRequest) returns (ListTasksResponse);
+
+    // 我认领的任务列表
+    rpc ListMyClaimedTasks(ListMyClaimedTasksRequest) returns (ListMyClaimedTasksResponse);
+
+    // 我完成的任务列表
+    rpc ListMyCompletedTasks(ListMyCompletedTasksRequest) returns (ListMyCompletedTasksResponse);
+
+    // ==================== 管理员端 - 任务申请审核 ====================
+
+    // 审核通过任务申请
+    rpc ApproveTaskApply(ApproveTaskApplyRequest) returns (ApproveTaskApplyResponse);
+
+    // 拒绝任务申请
+    rpc RejectTaskApply(RejectTaskApplyRequest) returns (RejectTaskApplyResponse);
+
+    // 待审核任务申请列表
+    rpc ListPendingTaskApplies(ListPendingTaskAppliesRequest) returns (ListPendingTaskAppliesResponse);
+
+    // ==================== 管理员端 - 任务管理 ====================
+
+    // 直接创建任务（跳过申请）
+    rpc DirectCreateTask(DirectCreateTaskRequest) returns (DirectCreateTaskResponse);
+
+    // 更新任务
+    rpc UpdateTask(UpdateTaskRequest) returns (UpdateTaskResponse);
+
+    // 取消任务
+    rpc CancelTask(CancelTaskRequest) returns (CancelTaskResponse);
+
+    // 升级任务紧急度
+    rpc EscalateTaskUrgency(EscalateTaskUrgencyRequest) returns (EscalateTaskUrgencyResponse);
+
+    // ==================== 流转日志 ====================
+
+    // 查看任务流转日志
+    rpc GetTaskFlows(GetTaskFlowsRequest) returns (GetTaskFlowsResponse);
+
+    // 查看任务操作日志
+    rpc GetTaskLogs(GetTaskLogsRequest) returns (GetTaskLogsResponse);
+
+    // todo: 以下接口还未实现
 
     // 申请修改猫咪档案信息
     rpc ApplyUpdateCatInfo(ApplyUpdateCatInfoRequest) returns (ApplyUpdateCatInfoResponse);
@@ -717,6 +788,462 @@ message UserBriefVO {
     string avatar = 3;
 }
 
+// ==================== 任务申请相关 ====================
+
+message ApplyCreateTaskRequest {
+    uint64 cat_id = 1;                  // 猫咪ID
+    string title = 2;                   // 任务标题
+    string task_type = 3;               // 任务类型
+    string summary = 4;                 // 简介
+    string detail = 5;                  // 详细描述
+    string location = 6;                // 地点描述
+    double longitude = 7;               // 经度
+    double latitude = 8;                // 纬度
+    google.protobuf.Timestamp deadline_at = 9; // 截止时间
+    repeated string image_urls = 10;    // 图片URLs
+    repeated uint64 tag_ids = 11;       // 标签IDs
+
+    uint64 applicant_user_id = 12;      // 申请人ID（HTTP注入）
+}
+
+message ApplyCreateTaskResponse {
+    uint64 apply_id = 1;
+    string status = 2;
+    string message = 3;
+}
+
+message CancelTaskApplyRequest {
+    uint64 apply_id = 1;
+    string reason = 2;
+
+    uint64 user_id = 3;                 // 当前用户ID
+}
+
+message CancelTaskApplyResponse {
+    string message = 1;
+}
+
+message GetTaskApplyDetailRequest {
+    uint64 apply_id = 1;
+
+    uint64 requester_id = 2;            // 当前查看人ID
+}
+
+message TaskApplyVO {
+    uint64 id = 1;
+    uint64 cat_id = 2;
+    string cat_name = 3;
+    string cat_avatar = 4;
+    uint64 applicant_user_id = 5;
+    string applicant_name = 6;
+    string applicant_avatar = 7;
+
+    string title = 8;
+    string task_type = 9;
+    string summary = 10;
+    string detail = 11;
+    string location = 12;
+    double longitude = 13;
+    double latitude = 14;
+
+    string status = 15;                 // pending/approved/rejected/cancelled
+    uint64 reviewer_id = 16;
+    string reviewer_name = 17;
+    google.protobuf.Timestamp reviewed_at = 18;
+    string reject_reason = 19;
+
+    string urgency_level = 20;
+    int32 difficulty_level = 21;
+    int32 reward_points = 22;
+
+    uint64 task_id = 23;                // 关联的正式任务ID
+
+    google.protobuf.Timestamp deadline_at = 24;
+    google.protobuf.Timestamp created_at = 25;
+    google.protobuf.Timestamp updated_at = 26;
+
+    repeated string image_urls = 27;
+    repeated TagVO tags = 28;
+}
+
+message GetTaskApplyDetailResponse {
+    TaskApplyVO apply = 1;
+    CatBriefVO cat = 2;
+}
+
+message ListMyTaskAppliesRequest {
+    string status = 1;                  // 可选
+    int32 page = 2;
+    int32 page_size = 3;
+
+    uint64 applicant_user_id = 4;
+}
+
+message ListMyTaskAppliesResponse {
+    repeated TaskApplyItemVO items = 1;
+    int64 total = 2;
+    int32 page = 3;
+    int32 page_size = 4;
+}
+
+message TaskApplyItemVO {
+    uint64 apply_id = 1;
+    uint64 cat_id = 2;
+    string cat_name = 3;
+    string cat_avatar = 4;
+    string title = 5;
+    string task_type = 6;
+    string status = 7;
+    string reject_reason = 8;
+    google.protobuf.Timestamp created_at = 9;
+}
+
+// ==================== 管理员审核 ====================
+
+message ApproveTaskApplyRequest {
+    uint64 apply_id = 1;
+    string urgency_level = 2;           // 紧急程度
+    int32 difficulty_level = 3;         // 难度等级
+    int32 reward_points = 4;            // 奖励积分
+    int32 max_claimers = 5;             // 最多认领人数
+    string area = 6;                    // 所在区域
+    string remark = 7;                  // 备注
+
+    uint64 reviewer_id = 8;             // 审核人ID
+}
+
+message ApproveTaskApplyResponse {
+    uint64 task_id = 1;
+    string message = 2;
+}
+
+message RejectTaskApplyRequest {
+    uint64 apply_id = 1;
+    string reject_reason = 2;
+
+    uint64 reviewer_id = 3;
+}
+
+message RejectTaskApplyResponse {
+    string message = 1;
+}
+
+message ListPendingTaskAppliesRequest {
+    uint64 cat_id = 1;                  // 可选
+    int32 page = 2;
+    int32 page_size = 3;
+
+    uint64 admin_id = 4;
+}
+
+message ListPendingTaskAppliesResponse {
+    repeated TaskApplyVO items = 1;
+    int64 total = 2;
+    int32 page = 3;
+    int32 page_size = 4;
+}
+
+// ==================== 正式任务相关 ====================
+
+message DirectCreateTaskRequest {
+    uint64 cat_id = 1;
+    string title = 2;
+    string task_type = 3;
+    string summary = 4;
+    string detail = 5;
+    string location = 6;
+    double longitude = 7;
+    double latitude = 8;
+    string area = 9;
+
+    string urgency_level = 10;
+    int32 difficulty_level = 11;
+    int32 reward_points = 12;
+    int32 max_claimers = 13;
+
+    google.protobuf.Timestamp deadline_at = 14;
+    string remark = 15;
+
+    repeated string image_urls = 16;
+    repeated uint64 tag_ids = 17;
+
+    uint64 creator_id = 18;             // 管理员ID
+}
+
+message DirectCreateTaskResponse {
+    uint64 task_id = 1;
+    string message = 2;
+}
+
+message GetTaskDetailRequest {
+    uint64 task_id = 1;
+
+    uint64 requester_id = 2;
+}
+
+message TaskVO {
+    uint64 id = 1;
+    uint64 cat_id = 2;
+    string cat_name = 3;
+    string cat_avatar = 4;
+    uint64 apply_id = 5;
+    uint64 creator_id = 6;
+    string creator_name = 7;
+
+    string title = 8;
+    string task_type = 9;
+    string summary = 10;
+    string detail = 11;
+
+    string location = 12;
+    double longitude = 13;
+    double latitude = 14;
+    string area = 15;
+
+    string urgency_level = 16;
+    int32 difficulty_level = 17;
+    int32 reward_points = 18;
+    int32 final_reward_points = 19;
+
+    int32 max_claimers = 20;
+    int32 current_claimers = 21;
+
+    string status = 22;                 // pending/processing/completed/cancelled
+    string remark = 23;
+
+    google.protobuf.Timestamp deadline_at = 24;
+    google.protobuf.Timestamp last_escalated_at = 25;
+    int32 escalation_count = 26;
+
+    google.protobuf.Timestamp created_at = 27;
+    google.protobuf.Timestamp updated_at = 28;
+
+    repeated string image_urls = 29;
+    repeated TagVO tags = 30;
+}
+
+message GetTaskDetailResponse {
+    TaskVO task = 1;
+    CatBriefVO cat = 2;
+}
+
+message ListTasksRequest {
+    uint64 cat_id = 1;                  // 可选
+    string status = 2;                  // 可选
+    string urgency_level = 3;           // 可选
+    int32 difficulty_level = 4;         // 可选
+    string area = 5;                    // 可选
+
+    int32 page = 6;
+    int32 page_size = 7;
+
+    uint64 requester_id = 8;
+}
+
+message ListTasksResponse {
+    repeated TaskItemVO items = 1;
+    int64 total = 2;
+    int32 page = 3;
+    int32 page_size = 4;
+}
+
+message TaskItemVO {
+    uint64 task_id = 1;
+    uint64 cat_id = 2;
+    string cat_name = 3;
+    string cat_avatar = 4;
+    string title = 5;
+    string task_type = 6;
+    string summary = 7;
+    string location = 8;
+    string urgency_level = 9;
+    int32 difficulty_level = 10;
+    int32 reward_points = 11;
+    int32 current_claimers = 12;
+    int32 max_claimers = 13;
+    string status = 14;
+    google.protobuf.Timestamp deadline_at = 15;
+    google.protobuf.Timestamp created_at = 16;
+}
+
+message UpdateTaskRequest {
+    uint64 task_id = 1;
+    string title = 2;
+    string summary = 3;
+    string detail = 4;
+    int32 difficulty_level = 5;
+    int32 reward_points = 6;
+    google.protobuf.Timestamp deadline_at = 7;
+    string remark = 8;
+
+    uint64 operator_id = 9;
+}
+
+message UpdateTaskResponse {
+    string message = 1;
+}
+
+message CancelTaskRequest {
+    uint64 task_id = 1;
+    string reason = 2;
+
+    uint64 operator_id = 3;
+}
+
+message CancelTaskResponse {
+    string message = 1;
+}
+
+message EscalateTaskUrgencyRequest {
+    uint64 task_id = 1;
+
+    uint64 operator_id = 2;
+}
+
+message EscalateTaskUrgencyResponse {
+    string new_urgency_level = 1;
+    int32 escalation_count = 2;
+    string message = 3;
+}
+
+// ==================== 任务认领相关 ====================
+
+message ClaimTaskRequest {
+    uint64 task_id = 1;
+
+    uint64 user_id = 2;
+}
+
+message ClaimTaskResponse {
+    uint64 claim_id = 1;
+    string message = 2;
+}
+
+message AbandonTaskRequest {
+    uint64 claim_id = 1;
+    string reason = 2;
+
+    uint64 user_id = 3;
+}
+
+message AbandonTaskResponse {
+    string message = 1;
+}
+
+message CompleteTaskRequest {
+    uint64 claim_id = 1;
+    string content = 2;
+    repeated string image_urls = 3;
+
+    uint64 user_id = 4;
+}
+
+message CompleteTaskResponse {
+    int32 reward_points = 1;
+    bool is_overdue = 2;
+    int32 reputation_deduction = 3;
+    string message = 4;
+}
+
+message ListMyClaimedTasksRequest {
+    string status = 1;                  // active/completed/abandoned
+    int32 page = 2;
+    int32 page_size = 3;
+
+    uint64 user_id = 4;
+}
+
+message ListMyClaimedTasksResponse {
+    repeated ClaimItemVO items = 1;
+    int64 total = 2;
+    int32 page = 3;
+    int32 page_size = 4;
+}
+
+message ClaimItemVO {
+    uint64 claim_id = 1;
+    uint64 task_id = 2;
+    string task_title = 3;
+    string task_type = 4;
+    string cat_name = 5;
+    string status = 6;
+    int32 reward_points = 7;
+    bool is_overdue = 8;
+    google.protobuf.Timestamp claimed_at = 9;
+    google.protobuf.Timestamp deadline_at = 10;
+}
+
+message ListMyCompletedTasksRequest {
+    int32 page = 1;
+    int32 page_size = 2;
+
+    uint64 user_id = 3;
+}
+
+message ListMyCompletedTasksResponse {
+    repeated ClaimItemVO items = 1;
+    int64 total = 2;
+    int32 total_points = 3;             // 累计积分
+    int32 page = 4;
+    int32 page_size = 5;
+}
+
+// ==================== 流转日志 ====================
+
+message GetTaskFlowsRequest {
+    uint64 task_id = 1;
+
+    uint64 requester_id = 2;
+}
+
+message GetTaskFlowsResponse {
+    repeated TaskFlowVO items = 1;
+}
+
+message TaskFlowVO {
+    uint64 id = 1;
+    uint64 task_id = 2;
+    uint64 user_id = 3;
+    string user_name = 4;
+    string action = 5;
+    string from_status = 6;
+    string to_status = 7;
+    string remark = 8;
+    google.protobuf.Timestamp created_at = 9;
+}
+
+message GetTaskLogsRequest {
+    uint64 task_id = 1;
+
+    uint64 requester_id = 2;
+}
+
+message GetTaskLogsResponse {
+    repeated TaskLogVO items = 1;
+}
+
+message TaskLogVO {
+    uint64 id = 1;
+    uint64 task_id = 2;
+    uint64 user_id = 3;
+    string user_name = 4;
+    string action = 5;
+    string content = 6;
+    google.protobuf.Timestamp created_at = 7;
+}
+
+// ==================== 通用 VO ====================
+
+
+
+message TagVO {
+    uint64 id = 1;
+    string name = 2;
+    string type = 3;
+    string theme = 4;
+}
+
+// todo: 以下消息体在已实现的接口中没有使用
 
 message ApplyUpdateCatInfoRequest {
     uint64 cat_id = 1;

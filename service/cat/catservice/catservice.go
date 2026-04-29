@@ -16,6 +16,8 @@ import (
 type (
 	AbandonCatTaskRequest                = v1.AbandonCatTaskRequest
 	AbandonCatTaskResponse               = v1.AbandonCatTaskResponse
+	AbandonTaskRequest                   = v1.AbandonTaskRequest
+	AbandonTaskResponse                  = v1.AbandonTaskResponse
 	AdoptApplicationVO                   = v1.AdoptApplicationVO
 	AdoptApplyItemVO                     = v1.AdoptApplyItemVO
 	AdoptionItemVO                       = v1.AdoptionItemVO
@@ -30,6 +32,8 @@ type (
 	ApplyCreateCatResponse               = v1.ApplyCreateCatResponse
 	ApplyCreateCatTaskRequest            = v1.ApplyCreateCatTaskRequest
 	ApplyCreateCatTaskResponse           = v1.ApplyCreateCatTaskResponse
+	ApplyCreateTaskRequest               = v1.ApplyCreateTaskRequest
+	ApplyCreateTaskResponse              = v1.ApplyCreateTaskResponse
 	ApplyUpdateCatInfoRequest            = v1.ApplyUpdateCatInfoRequest
 	ApplyUpdateCatInfoResponse           = v1.ApplyUpdateCatInfoResponse
 	ApproveAdoptRequest                  = v1.ApproveAdoptRequest
@@ -40,16 +44,27 @@ type (
 	ApproveCreateCatTaskResponse         = v1.ApproveCreateCatTaskResponse
 	ApproveMedicalRecordRequest          = v1.ApproveMedicalRecordRequest
 	ApproveMedicalRecordResponse         = v1.ApproveMedicalRecordResponse
+	ApproveTaskApplyRequest              = v1.ApproveTaskApplyRequest
+	ApproveTaskApplyResponse             = v1.ApproveTaskApplyResponse
 	ApproveUpdateCatInfoRequest          = v1.ApproveUpdateCatInfoRequest
 	ApproveUpdateCatInfoResponse         = v1.ApproveUpdateCatInfoResponse
 	CancelAdoptApplyRequest              = v1.CancelAdoptApplyRequest
 	CancelAdoptApplyResponse             = v1.CancelAdoptApplyResponse
 	CancelApplyCreateCatRequest          = v1.CancelApplyCreateCatRequest
+	CancelTaskApplyRequest               = v1.CancelTaskApplyRequest
+	CancelTaskApplyResponse              = v1.CancelTaskApplyResponse
+	CancelTaskRequest                    = v1.CancelTaskRequest
+	CancelTaskResponse                   = v1.CancelTaskResponse
 	CatBriefVO                           = v1.CatBriefVO
 	CatItem                              = v1.CatItem
 	CatTaskItem                          = v1.CatTaskItem
 	ClaimCatTaskRequest                  = v1.ClaimCatTaskRequest
 	ClaimCatTaskResponse                 = v1.ClaimCatTaskResponse
+	ClaimItemVO                          = v1.ClaimItemVO
+	ClaimTaskRequest                     = v1.ClaimTaskRequest
+	ClaimTaskResponse                    = v1.ClaimTaskResponse
+	CompleteTaskRequest                  = v1.CompleteTaskRequest
+	CompleteTaskResponse                 = v1.CompleteTaskResponse
 	CreateAdoptionRequest                = v1.CreateAdoptionRequest
 	CreateAdoptionResponse               = v1.CreateAdoptionResponse
 	CreateCatApplyItem                   = v1.CreateCatApplyItem
@@ -60,6 +75,10 @@ type (
 	DirectAdoptResponse                  = v1.DirectAdoptResponse
 	DirectCreateCatRequest               = v1.DirectCreateCatRequest
 	DirectCreateCatResponse              = v1.DirectCreateCatResponse
+	DirectCreateTaskRequest              = v1.DirectCreateTaskRequest
+	DirectCreateTaskResponse             = v1.DirectCreateTaskResponse
+	EscalateTaskUrgencyRequest           = v1.EscalateTaskUrgencyRequest
+	EscalateTaskUrgencyResponse          = v1.EscalateTaskUrgencyResponse
 	GetAdoptApplyDetailRequest           = v1.GetAdoptApplyDetailRequest
 	GetAdoptApplyDetailResponse          = v1.GetAdoptApplyDetailResponse
 	GetAdoptionDetailRequest             = v1.GetAdoptionDetailRequest
@@ -72,6 +91,14 @@ type (
 	GetCreateCatTaskApplyDetailResponse  = v1.GetCreateCatTaskApplyDetailResponse
 	GetMyUpdateCatApplyDetailRequest     = v1.GetMyUpdateCatApplyDetailRequest
 	GetMyUpdateCatApplyDetailResponse    = v1.GetMyUpdateCatApplyDetailResponse
+	GetTaskApplyDetailRequest            = v1.GetTaskApplyDetailRequest
+	GetTaskApplyDetailResponse           = v1.GetTaskApplyDetailResponse
+	GetTaskDetailRequest                 = v1.GetTaskDetailRequest
+	GetTaskDetailResponse                = v1.GetTaskDetailResponse
+	GetTaskFlowsRequest                  = v1.GetTaskFlowsRequest
+	GetTaskFlowsResponse                 = v1.GetTaskFlowsResponse
+	GetTaskLogsRequest                   = v1.GetTaskLogsRequest
+	GetTaskLogsResponse                  = v1.GetTaskLogsResponse
 	GetUpdateCatApplyDetailRequest       = v1.GetUpdateCatApplyDetailRequest
 	GetUpdateCatApplyDetailResponse      = v1.GetUpdateCatApplyDetailResponse
 	ImageItem                            = v1.ImageItem
@@ -89,11 +116,21 @@ type (
 	ListMyAppliesRequest                 = v1.ListMyAppliesRequest
 	ListMyAppliesResponse                = v1.ListMyAppliesResponse
 	ListMyAppliesResponse_ApplyItem      = v1.ListMyAppliesResponse_ApplyItem
+	ListMyClaimedTasksRequest            = v1.ListMyClaimedTasksRequest
+	ListMyClaimedTasksResponse           = v1.ListMyClaimedTasksResponse
+	ListMyCompletedTasksRequest          = v1.ListMyCompletedTasksRequest
+	ListMyCompletedTasksResponse         = v1.ListMyCompletedTasksResponse
+	ListMyTaskAppliesRequest             = v1.ListMyTaskAppliesRequest
+	ListMyTaskAppliesResponse            = v1.ListMyTaskAppliesResponse
 	ListPendingAdoptAppliesRequest       = v1.ListPendingAdoptAppliesRequest
 	ListPendingAdoptAppliesResponse      = v1.ListPendingAdoptAppliesResponse
 	ListPendingAppliesRequest            = v1.ListPendingAppliesRequest
 	ListPendingAppliesResponse           = v1.ListPendingAppliesResponse
 	ListPendingAppliesResponse_ApplyItem = v1.ListPendingAppliesResponse_ApplyItem
+	ListPendingTaskAppliesRequest        = v1.ListPendingTaskAppliesRequest
+	ListPendingTaskAppliesResponse       = v1.ListPendingTaskAppliesResponse
+	ListTasksRequest                     = v1.ListTasksRequest
+	ListTasksResponse                    = v1.ListTasksResponse
 	ListUpdateCatApplyRequest            = v1.ListUpdateCatApplyRequest
 	ListUpdateCatApplyResponse           = v1.ListUpdateCatApplyResponse
 	PendingApplyVO                       = v1.PendingApplyVO
@@ -108,9 +145,18 @@ type (
 	RejectCreateCatTaskResponse          = v1.RejectCreateCatTaskResponse
 	RejectMedicalRecordRequest           = v1.RejectMedicalRecordRequest
 	RejectMedicalRecordResponse          = v1.RejectMedicalRecordResponse
+	RejectTaskApplyRequest               = v1.RejectTaskApplyRequest
+	RejectTaskApplyResponse              = v1.RejectTaskApplyResponse
 	RejectUpdateCatInfoRequest           = v1.RejectUpdateCatInfoRequest
 	RejectUpdateCatInfoResponse          = v1.RejectUpdateCatInfoResponse
 	Response                             = v1.Response
+	TagVO                                = v1.TagVO
+	TaskApplyItemVO                      = v1.TaskApplyItemVO
+	TaskApplyVO                          = v1.TaskApplyVO
+	TaskFlowVO                           = v1.TaskFlowVO
+	TaskItemVO                           = v1.TaskItemVO
+	TaskLogVO                            = v1.TaskLogVO
+	TaskVO                               = v1.TaskVO
 	UpdateAdoptionRequest                = v1.UpdateAdoptionRequest
 	UpdateAdoptionResponse               = v1.UpdateAdoptionResponse
 	UpdateAdoptionStatusRequest          = v1.UpdateAdoptionStatusRequest
@@ -120,6 +166,8 @@ type (
 	UpdateCatTaskStatusResponse          = v1.UpdateCatTaskStatusResponse
 	UpdateReturnStatusRequest            = v1.UpdateReturnStatusRequest
 	UpdateReturnStatusResponse           = v1.UpdateReturnStatusResponse
+	UpdateTaskRequest                    = v1.UpdateTaskRequest
+	UpdateTaskResponse                   = v1.UpdateTaskResponse
 	UploadTaskProgressRequest            = v1.UploadTaskProgressRequest
 	UploadTaskProgressResponse           = v1.UploadTaskProgressResponse
 	UserBriefVO                          = v1.UserBriefVO
@@ -169,6 +217,46 @@ type (
 		RecordFollowUpVisit(ctx context.Context, in *RecordFollowUpVisitRequest, opts ...grpc.CallOption) (*RecordFollowUpVisitResponse, error)
 		// 更新退回状态
 		UpdateReturnStatus(ctx context.Context, in *UpdateReturnStatusRequest, opts ...grpc.CallOption) (*UpdateReturnStatusResponse, error)
+		// 申请创建任务
+		ApplyCreateTask(ctx context.Context, in *ApplyCreateTaskRequest, opts ...grpc.CallOption) (*ApplyCreateTaskResponse, error)
+		// 取消任务申请
+		CancelTaskApply(ctx context.Context, in *CancelTaskApplyRequest, opts ...grpc.CallOption) (*CancelTaskApplyResponse, error)
+		// 查看任务申请详情
+		GetTaskApplyDetail(ctx context.Context, in *GetTaskApplyDetailRequest, opts ...grpc.CallOption) (*GetTaskApplyDetailResponse, error)
+		// 我的任务申请列表
+		ListMyTaskApplies(ctx context.Context, in *ListMyTaskAppliesRequest, opts ...grpc.CallOption) (*ListMyTaskAppliesResponse, error)
+		// 认领任务
+		ClaimTask(ctx context.Context, in *ClaimTaskRequest, opts ...grpc.CallOption) (*ClaimTaskResponse, error)
+		// 放弃任务
+		AbandonTask(ctx context.Context, in *AbandonTaskRequest, opts ...grpc.CallOption) (*AbandonTaskResponse, error)
+		// 完成任务
+		CompleteTask(ctx context.Context, in *CompleteTaskRequest, opts ...grpc.CallOption) (*CompleteTaskResponse, error)
+		// 查看任务详情
+		GetTaskDetail(ctx context.Context, in *GetTaskDetailRequest, opts ...grpc.CallOption) (*GetTaskDetailResponse, error)
+		// 任务列表（公开查询）
+		ListTasks(ctx context.Context, in *ListTasksRequest, opts ...grpc.CallOption) (*ListTasksResponse, error)
+		// 我认领的任务列表
+		ListMyClaimedTasks(ctx context.Context, in *ListMyClaimedTasksRequest, opts ...grpc.CallOption) (*ListMyClaimedTasksResponse, error)
+		// 我完成的任务列表
+		ListMyCompletedTasks(ctx context.Context, in *ListMyCompletedTasksRequest, opts ...grpc.CallOption) (*ListMyCompletedTasksResponse, error)
+		// 审核通过任务申请
+		ApproveTaskApply(ctx context.Context, in *ApproveTaskApplyRequest, opts ...grpc.CallOption) (*ApproveTaskApplyResponse, error)
+		// 拒绝任务申请
+		RejectTaskApply(ctx context.Context, in *RejectTaskApplyRequest, opts ...grpc.CallOption) (*RejectTaskApplyResponse, error)
+		// 待审核任务申请列表
+		ListPendingTaskApplies(ctx context.Context, in *ListPendingTaskAppliesRequest, opts ...grpc.CallOption) (*ListPendingTaskAppliesResponse, error)
+		// 直接创建任务（跳过申请）
+		DirectCreateTask(ctx context.Context, in *DirectCreateTaskRequest, opts ...grpc.CallOption) (*DirectCreateTaskResponse, error)
+		// 更新任务
+		UpdateTask(ctx context.Context, in *UpdateTaskRequest, opts ...grpc.CallOption) (*UpdateTaskResponse, error)
+		// 取消任务
+		CancelTask(ctx context.Context, in *CancelTaskRequest, opts ...grpc.CallOption) (*CancelTaskResponse, error)
+		// 升级任务紧急度
+		EscalateTaskUrgency(ctx context.Context, in *EscalateTaskUrgencyRequest, opts ...grpc.CallOption) (*EscalateTaskUrgencyResponse, error)
+		// 查看任务流转日志
+		GetTaskFlows(ctx context.Context, in *GetTaskFlowsRequest, opts ...grpc.CallOption) (*GetTaskFlowsResponse, error)
+		// 查看任务操作日志
+		GetTaskLogs(ctx context.Context, in *GetTaskLogsRequest, opts ...grpc.CallOption) (*GetTaskLogsResponse, error)
 		// 申请修改猫咪档案信息
 		ApplyUpdateCatInfo(ctx context.Context, in *ApplyUpdateCatInfoRequest, opts ...grpc.CallOption) (*ApplyUpdateCatInfoResponse, error)
 		// 查看自己提交的修改申请详情
@@ -361,6 +449,126 @@ func (m *defaultCatService) RecordFollowUpVisit(ctx context.Context, in *RecordF
 func (m *defaultCatService) UpdateReturnStatus(ctx context.Context, in *UpdateReturnStatusRequest, opts ...grpc.CallOption) (*UpdateReturnStatusResponse, error) {
 	client := v1.NewCatServiceClient(m.cli.Conn())
 	return client.UpdateReturnStatus(ctx, in, opts...)
+}
+
+// 申请创建任务
+func (m *defaultCatService) ApplyCreateTask(ctx context.Context, in *ApplyCreateTaskRequest, opts ...grpc.CallOption) (*ApplyCreateTaskResponse, error) {
+	client := v1.NewCatServiceClient(m.cli.Conn())
+	return client.ApplyCreateTask(ctx, in, opts...)
+}
+
+// 取消任务申请
+func (m *defaultCatService) CancelTaskApply(ctx context.Context, in *CancelTaskApplyRequest, opts ...grpc.CallOption) (*CancelTaskApplyResponse, error) {
+	client := v1.NewCatServiceClient(m.cli.Conn())
+	return client.CancelTaskApply(ctx, in, opts...)
+}
+
+// 查看任务申请详情
+func (m *defaultCatService) GetTaskApplyDetail(ctx context.Context, in *GetTaskApplyDetailRequest, opts ...grpc.CallOption) (*GetTaskApplyDetailResponse, error) {
+	client := v1.NewCatServiceClient(m.cli.Conn())
+	return client.GetTaskApplyDetail(ctx, in, opts...)
+}
+
+// 我的任务申请列表
+func (m *defaultCatService) ListMyTaskApplies(ctx context.Context, in *ListMyTaskAppliesRequest, opts ...grpc.CallOption) (*ListMyTaskAppliesResponse, error) {
+	client := v1.NewCatServiceClient(m.cli.Conn())
+	return client.ListMyTaskApplies(ctx, in, opts...)
+}
+
+// 认领任务
+func (m *defaultCatService) ClaimTask(ctx context.Context, in *ClaimTaskRequest, opts ...grpc.CallOption) (*ClaimTaskResponse, error) {
+	client := v1.NewCatServiceClient(m.cli.Conn())
+	return client.ClaimTask(ctx, in, opts...)
+}
+
+// 放弃任务
+func (m *defaultCatService) AbandonTask(ctx context.Context, in *AbandonTaskRequest, opts ...grpc.CallOption) (*AbandonTaskResponse, error) {
+	client := v1.NewCatServiceClient(m.cli.Conn())
+	return client.AbandonTask(ctx, in, opts...)
+}
+
+// 完成任务
+func (m *defaultCatService) CompleteTask(ctx context.Context, in *CompleteTaskRequest, opts ...grpc.CallOption) (*CompleteTaskResponse, error) {
+	client := v1.NewCatServiceClient(m.cli.Conn())
+	return client.CompleteTask(ctx, in, opts...)
+}
+
+// 查看任务详情
+func (m *defaultCatService) GetTaskDetail(ctx context.Context, in *GetTaskDetailRequest, opts ...grpc.CallOption) (*GetTaskDetailResponse, error) {
+	client := v1.NewCatServiceClient(m.cli.Conn())
+	return client.GetTaskDetail(ctx, in, opts...)
+}
+
+// 任务列表（公开查询）
+func (m *defaultCatService) ListTasks(ctx context.Context, in *ListTasksRequest, opts ...grpc.CallOption) (*ListTasksResponse, error) {
+	client := v1.NewCatServiceClient(m.cli.Conn())
+	return client.ListTasks(ctx, in, opts...)
+}
+
+// 我认领的任务列表
+func (m *defaultCatService) ListMyClaimedTasks(ctx context.Context, in *ListMyClaimedTasksRequest, opts ...grpc.CallOption) (*ListMyClaimedTasksResponse, error) {
+	client := v1.NewCatServiceClient(m.cli.Conn())
+	return client.ListMyClaimedTasks(ctx, in, opts...)
+}
+
+// 我完成的任务列表
+func (m *defaultCatService) ListMyCompletedTasks(ctx context.Context, in *ListMyCompletedTasksRequest, opts ...grpc.CallOption) (*ListMyCompletedTasksResponse, error) {
+	client := v1.NewCatServiceClient(m.cli.Conn())
+	return client.ListMyCompletedTasks(ctx, in, opts...)
+}
+
+// 审核通过任务申请
+func (m *defaultCatService) ApproveTaskApply(ctx context.Context, in *ApproveTaskApplyRequest, opts ...grpc.CallOption) (*ApproveTaskApplyResponse, error) {
+	client := v1.NewCatServiceClient(m.cli.Conn())
+	return client.ApproveTaskApply(ctx, in, opts...)
+}
+
+// 拒绝任务申请
+func (m *defaultCatService) RejectTaskApply(ctx context.Context, in *RejectTaskApplyRequest, opts ...grpc.CallOption) (*RejectTaskApplyResponse, error) {
+	client := v1.NewCatServiceClient(m.cli.Conn())
+	return client.RejectTaskApply(ctx, in, opts...)
+}
+
+// 待审核任务申请列表
+func (m *defaultCatService) ListPendingTaskApplies(ctx context.Context, in *ListPendingTaskAppliesRequest, opts ...grpc.CallOption) (*ListPendingTaskAppliesResponse, error) {
+	client := v1.NewCatServiceClient(m.cli.Conn())
+	return client.ListPendingTaskApplies(ctx, in, opts...)
+}
+
+// 直接创建任务（跳过申请）
+func (m *defaultCatService) DirectCreateTask(ctx context.Context, in *DirectCreateTaskRequest, opts ...grpc.CallOption) (*DirectCreateTaskResponse, error) {
+	client := v1.NewCatServiceClient(m.cli.Conn())
+	return client.DirectCreateTask(ctx, in, opts...)
+}
+
+// 更新任务
+func (m *defaultCatService) UpdateTask(ctx context.Context, in *UpdateTaskRequest, opts ...grpc.CallOption) (*UpdateTaskResponse, error) {
+	client := v1.NewCatServiceClient(m.cli.Conn())
+	return client.UpdateTask(ctx, in, opts...)
+}
+
+// 取消任务
+func (m *defaultCatService) CancelTask(ctx context.Context, in *CancelTaskRequest, opts ...grpc.CallOption) (*CancelTaskResponse, error) {
+	client := v1.NewCatServiceClient(m.cli.Conn())
+	return client.CancelTask(ctx, in, opts...)
+}
+
+// 升级任务紧急度
+func (m *defaultCatService) EscalateTaskUrgency(ctx context.Context, in *EscalateTaskUrgencyRequest, opts ...grpc.CallOption) (*EscalateTaskUrgencyResponse, error) {
+	client := v1.NewCatServiceClient(m.cli.Conn())
+	return client.EscalateTaskUrgency(ctx, in, opts...)
+}
+
+// 查看任务流转日志
+func (m *defaultCatService) GetTaskFlows(ctx context.Context, in *GetTaskFlowsRequest, opts ...grpc.CallOption) (*GetTaskFlowsResponse, error) {
+	client := v1.NewCatServiceClient(m.cli.Conn())
+	return client.GetTaskFlows(ctx, in, opts...)
+}
+
+// 查看任务操作日志
+func (m *defaultCatService) GetTaskLogs(ctx context.Context, in *GetTaskLogsRequest, opts ...grpc.CallOption) (*GetTaskLogsResponse, error) {
+	client := v1.NewCatServiceClient(m.cli.Conn())
+	return client.GetTaskLogs(ctx, in, opts...)
 }
 
 // 申请修改猫咪档案信息

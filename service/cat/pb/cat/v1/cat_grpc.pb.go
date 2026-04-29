@@ -44,6 +44,26 @@ const (
 	CatService_RecordHomeVisit_FullMethodName             = "/cat.CatService/RecordHomeVisit"
 	CatService_RecordFollowUpVisit_FullMethodName         = "/cat.CatService/RecordFollowUpVisit"
 	CatService_UpdateReturnStatus_FullMethodName          = "/cat.CatService/UpdateReturnStatus"
+	CatService_ApplyCreateTask_FullMethodName             = "/cat.CatService/ApplyCreateTask"
+	CatService_CancelTaskApply_FullMethodName             = "/cat.CatService/CancelTaskApply"
+	CatService_GetTaskApplyDetail_FullMethodName          = "/cat.CatService/GetTaskApplyDetail"
+	CatService_ListMyTaskApplies_FullMethodName           = "/cat.CatService/ListMyTaskApplies"
+	CatService_ClaimTask_FullMethodName                   = "/cat.CatService/ClaimTask"
+	CatService_AbandonTask_FullMethodName                 = "/cat.CatService/AbandonTask"
+	CatService_CompleteTask_FullMethodName                = "/cat.CatService/CompleteTask"
+	CatService_GetTaskDetail_FullMethodName               = "/cat.CatService/GetTaskDetail"
+	CatService_ListTasks_FullMethodName                   = "/cat.CatService/ListTasks"
+	CatService_ListMyClaimedTasks_FullMethodName          = "/cat.CatService/ListMyClaimedTasks"
+	CatService_ListMyCompletedTasks_FullMethodName        = "/cat.CatService/ListMyCompletedTasks"
+	CatService_ApproveTaskApply_FullMethodName            = "/cat.CatService/ApproveTaskApply"
+	CatService_RejectTaskApply_FullMethodName             = "/cat.CatService/RejectTaskApply"
+	CatService_ListPendingTaskApplies_FullMethodName      = "/cat.CatService/ListPendingTaskApplies"
+	CatService_DirectCreateTask_FullMethodName            = "/cat.CatService/DirectCreateTask"
+	CatService_UpdateTask_FullMethodName                  = "/cat.CatService/UpdateTask"
+	CatService_CancelTask_FullMethodName                  = "/cat.CatService/CancelTask"
+	CatService_EscalateTaskUrgency_FullMethodName         = "/cat.CatService/EscalateTaskUrgency"
+	CatService_GetTaskFlows_FullMethodName                = "/cat.CatService/GetTaskFlows"
+	CatService_GetTaskLogs_FullMethodName                 = "/cat.CatService/GetTaskLogs"
 	CatService_ApplyUpdateCatInfo_FullMethodName          = "/cat.CatService/ApplyUpdateCatInfo"
 	CatService_GetMyUpdateCatApplyDetail_FullMethodName   = "/cat.CatService/GetMyUpdateCatApplyDetail"
 	CatService_ApplyAddMedicalRecord_FullMethodName       = "/cat.CatService/ApplyAddMedicalRecord"
@@ -117,6 +137,46 @@ type CatServiceClient interface {
 	RecordFollowUpVisit(ctx context.Context, in *RecordFollowUpVisitRequest, opts ...grpc.CallOption) (*RecordFollowUpVisitResponse, error)
 	// 更新退回状态
 	UpdateReturnStatus(ctx context.Context, in *UpdateReturnStatusRequest, opts ...grpc.CallOption) (*UpdateReturnStatusResponse, error)
+	// 申请创建任务
+	ApplyCreateTask(ctx context.Context, in *ApplyCreateTaskRequest, opts ...grpc.CallOption) (*ApplyCreateTaskResponse, error)
+	// 取消任务申请
+	CancelTaskApply(ctx context.Context, in *CancelTaskApplyRequest, opts ...grpc.CallOption) (*CancelTaskApplyResponse, error)
+	// 查看任务申请详情
+	GetTaskApplyDetail(ctx context.Context, in *GetTaskApplyDetailRequest, opts ...grpc.CallOption) (*GetTaskApplyDetailResponse, error)
+	// 我的任务申请列表
+	ListMyTaskApplies(ctx context.Context, in *ListMyTaskAppliesRequest, opts ...grpc.CallOption) (*ListMyTaskAppliesResponse, error)
+	// 认领任务
+	ClaimTask(ctx context.Context, in *ClaimTaskRequest, opts ...grpc.CallOption) (*ClaimTaskResponse, error)
+	// 放弃任务
+	AbandonTask(ctx context.Context, in *AbandonTaskRequest, opts ...grpc.CallOption) (*AbandonTaskResponse, error)
+	// 完成任务
+	CompleteTask(ctx context.Context, in *CompleteTaskRequest, opts ...grpc.CallOption) (*CompleteTaskResponse, error)
+	// 查看任务详情
+	GetTaskDetail(ctx context.Context, in *GetTaskDetailRequest, opts ...grpc.CallOption) (*GetTaskDetailResponse, error)
+	// 任务列表（公开查询）
+	ListTasks(ctx context.Context, in *ListTasksRequest, opts ...grpc.CallOption) (*ListTasksResponse, error)
+	// 我认领的任务列表
+	ListMyClaimedTasks(ctx context.Context, in *ListMyClaimedTasksRequest, opts ...grpc.CallOption) (*ListMyClaimedTasksResponse, error)
+	// 我完成的任务列表
+	ListMyCompletedTasks(ctx context.Context, in *ListMyCompletedTasksRequest, opts ...grpc.CallOption) (*ListMyCompletedTasksResponse, error)
+	// 审核通过任务申请
+	ApproveTaskApply(ctx context.Context, in *ApproveTaskApplyRequest, opts ...grpc.CallOption) (*ApproveTaskApplyResponse, error)
+	// 拒绝任务申请
+	RejectTaskApply(ctx context.Context, in *RejectTaskApplyRequest, opts ...grpc.CallOption) (*RejectTaskApplyResponse, error)
+	// 待审核任务申请列表
+	ListPendingTaskApplies(ctx context.Context, in *ListPendingTaskAppliesRequest, opts ...grpc.CallOption) (*ListPendingTaskAppliesResponse, error)
+	// 直接创建任务（跳过申请）
+	DirectCreateTask(ctx context.Context, in *DirectCreateTaskRequest, opts ...grpc.CallOption) (*DirectCreateTaskResponse, error)
+	// 更新任务
+	UpdateTask(ctx context.Context, in *UpdateTaskRequest, opts ...grpc.CallOption) (*UpdateTaskResponse, error)
+	// 取消任务
+	CancelTask(ctx context.Context, in *CancelTaskRequest, opts ...grpc.CallOption) (*CancelTaskResponse, error)
+	// 升级任务紧急度
+	EscalateTaskUrgency(ctx context.Context, in *EscalateTaskUrgencyRequest, opts ...grpc.CallOption) (*EscalateTaskUrgencyResponse, error)
+	// 查看任务流转日志
+	GetTaskFlows(ctx context.Context, in *GetTaskFlowsRequest, opts ...grpc.CallOption) (*GetTaskFlowsResponse, error)
+	// 查看任务操作日志
+	GetTaskLogs(ctx context.Context, in *GetTaskLogsRequest, opts ...grpc.CallOption) (*GetTaskLogsResponse, error)
 	// 申请修改猫咪档案信息
 	ApplyUpdateCatInfo(ctx context.Context, in *ApplyUpdateCatInfoRequest, opts ...grpc.CallOption) (*ApplyUpdateCatInfoResponse, error)
 	// 查看自己提交的修改申请详情
@@ -414,6 +474,206 @@ func (c *catServiceClient) UpdateReturnStatus(ctx context.Context, in *UpdateRet
 	return out, nil
 }
 
+func (c *catServiceClient) ApplyCreateTask(ctx context.Context, in *ApplyCreateTaskRequest, opts ...grpc.CallOption) (*ApplyCreateTaskResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ApplyCreateTaskResponse)
+	err := c.cc.Invoke(ctx, CatService_ApplyCreateTask_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *catServiceClient) CancelTaskApply(ctx context.Context, in *CancelTaskApplyRequest, opts ...grpc.CallOption) (*CancelTaskApplyResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(CancelTaskApplyResponse)
+	err := c.cc.Invoke(ctx, CatService_CancelTaskApply_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *catServiceClient) GetTaskApplyDetail(ctx context.Context, in *GetTaskApplyDetailRequest, opts ...grpc.CallOption) (*GetTaskApplyDetailResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetTaskApplyDetailResponse)
+	err := c.cc.Invoke(ctx, CatService_GetTaskApplyDetail_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *catServiceClient) ListMyTaskApplies(ctx context.Context, in *ListMyTaskAppliesRequest, opts ...grpc.CallOption) (*ListMyTaskAppliesResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListMyTaskAppliesResponse)
+	err := c.cc.Invoke(ctx, CatService_ListMyTaskApplies_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *catServiceClient) ClaimTask(ctx context.Context, in *ClaimTaskRequest, opts ...grpc.CallOption) (*ClaimTaskResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ClaimTaskResponse)
+	err := c.cc.Invoke(ctx, CatService_ClaimTask_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *catServiceClient) AbandonTask(ctx context.Context, in *AbandonTaskRequest, opts ...grpc.CallOption) (*AbandonTaskResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(AbandonTaskResponse)
+	err := c.cc.Invoke(ctx, CatService_AbandonTask_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *catServiceClient) CompleteTask(ctx context.Context, in *CompleteTaskRequest, opts ...grpc.CallOption) (*CompleteTaskResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(CompleteTaskResponse)
+	err := c.cc.Invoke(ctx, CatService_CompleteTask_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *catServiceClient) GetTaskDetail(ctx context.Context, in *GetTaskDetailRequest, opts ...grpc.CallOption) (*GetTaskDetailResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetTaskDetailResponse)
+	err := c.cc.Invoke(ctx, CatService_GetTaskDetail_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *catServiceClient) ListTasks(ctx context.Context, in *ListTasksRequest, opts ...grpc.CallOption) (*ListTasksResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListTasksResponse)
+	err := c.cc.Invoke(ctx, CatService_ListTasks_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *catServiceClient) ListMyClaimedTasks(ctx context.Context, in *ListMyClaimedTasksRequest, opts ...grpc.CallOption) (*ListMyClaimedTasksResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListMyClaimedTasksResponse)
+	err := c.cc.Invoke(ctx, CatService_ListMyClaimedTasks_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *catServiceClient) ListMyCompletedTasks(ctx context.Context, in *ListMyCompletedTasksRequest, opts ...grpc.CallOption) (*ListMyCompletedTasksResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListMyCompletedTasksResponse)
+	err := c.cc.Invoke(ctx, CatService_ListMyCompletedTasks_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *catServiceClient) ApproveTaskApply(ctx context.Context, in *ApproveTaskApplyRequest, opts ...grpc.CallOption) (*ApproveTaskApplyResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ApproveTaskApplyResponse)
+	err := c.cc.Invoke(ctx, CatService_ApproveTaskApply_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *catServiceClient) RejectTaskApply(ctx context.Context, in *RejectTaskApplyRequest, opts ...grpc.CallOption) (*RejectTaskApplyResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(RejectTaskApplyResponse)
+	err := c.cc.Invoke(ctx, CatService_RejectTaskApply_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *catServiceClient) ListPendingTaskApplies(ctx context.Context, in *ListPendingTaskAppliesRequest, opts ...grpc.CallOption) (*ListPendingTaskAppliesResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListPendingTaskAppliesResponse)
+	err := c.cc.Invoke(ctx, CatService_ListPendingTaskApplies_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *catServiceClient) DirectCreateTask(ctx context.Context, in *DirectCreateTaskRequest, opts ...grpc.CallOption) (*DirectCreateTaskResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DirectCreateTaskResponse)
+	err := c.cc.Invoke(ctx, CatService_DirectCreateTask_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *catServiceClient) UpdateTask(ctx context.Context, in *UpdateTaskRequest, opts ...grpc.CallOption) (*UpdateTaskResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(UpdateTaskResponse)
+	err := c.cc.Invoke(ctx, CatService_UpdateTask_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *catServiceClient) CancelTask(ctx context.Context, in *CancelTaskRequest, opts ...grpc.CallOption) (*CancelTaskResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(CancelTaskResponse)
+	err := c.cc.Invoke(ctx, CatService_CancelTask_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *catServiceClient) EscalateTaskUrgency(ctx context.Context, in *EscalateTaskUrgencyRequest, opts ...grpc.CallOption) (*EscalateTaskUrgencyResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(EscalateTaskUrgencyResponse)
+	err := c.cc.Invoke(ctx, CatService_EscalateTaskUrgency_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *catServiceClient) GetTaskFlows(ctx context.Context, in *GetTaskFlowsRequest, opts ...grpc.CallOption) (*GetTaskFlowsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetTaskFlowsResponse)
+	err := c.cc.Invoke(ctx, CatService_GetTaskFlows_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *catServiceClient) GetTaskLogs(ctx context.Context, in *GetTaskLogsRequest, opts ...grpc.CallOption) (*GetTaskLogsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetTaskLogsResponse)
+	err := c.cc.Invoke(ctx, CatService_GetTaskLogs_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *catServiceClient) ApplyUpdateCatInfo(ctx context.Context, in *ApplyUpdateCatInfoRequest, opts ...grpc.CallOption) (*ApplyUpdateCatInfoResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ApplyUpdateCatInfoResponse)
@@ -692,6 +952,46 @@ type CatServiceServer interface {
 	RecordFollowUpVisit(context.Context, *RecordFollowUpVisitRequest) (*RecordFollowUpVisitResponse, error)
 	// 更新退回状态
 	UpdateReturnStatus(context.Context, *UpdateReturnStatusRequest) (*UpdateReturnStatusResponse, error)
+	// 申请创建任务
+	ApplyCreateTask(context.Context, *ApplyCreateTaskRequest) (*ApplyCreateTaskResponse, error)
+	// 取消任务申请
+	CancelTaskApply(context.Context, *CancelTaskApplyRequest) (*CancelTaskApplyResponse, error)
+	// 查看任务申请详情
+	GetTaskApplyDetail(context.Context, *GetTaskApplyDetailRequest) (*GetTaskApplyDetailResponse, error)
+	// 我的任务申请列表
+	ListMyTaskApplies(context.Context, *ListMyTaskAppliesRequest) (*ListMyTaskAppliesResponse, error)
+	// 认领任务
+	ClaimTask(context.Context, *ClaimTaskRequest) (*ClaimTaskResponse, error)
+	// 放弃任务
+	AbandonTask(context.Context, *AbandonTaskRequest) (*AbandonTaskResponse, error)
+	// 完成任务
+	CompleteTask(context.Context, *CompleteTaskRequest) (*CompleteTaskResponse, error)
+	// 查看任务详情
+	GetTaskDetail(context.Context, *GetTaskDetailRequest) (*GetTaskDetailResponse, error)
+	// 任务列表（公开查询）
+	ListTasks(context.Context, *ListTasksRequest) (*ListTasksResponse, error)
+	// 我认领的任务列表
+	ListMyClaimedTasks(context.Context, *ListMyClaimedTasksRequest) (*ListMyClaimedTasksResponse, error)
+	// 我完成的任务列表
+	ListMyCompletedTasks(context.Context, *ListMyCompletedTasksRequest) (*ListMyCompletedTasksResponse, error)
+	// 审核通过任务申请
+	ApproveTaskApply(context.Context, *ApproveTaskApplyRequest) (*ApproveTaskApplyResponse, error)
+	// 拒绝任务申请
+	RejectTaskApply(context.Context, *RejectTaskApplyRequest) (*RejectTaskApplyResponse, error)
+	// 待审核任务申请列表
+	ListPendingTaskApplies(context.Context, *ListPendingTaskAppliesRequest) (*ListPendingTaskAppliesResponse, error)
+	// 直接创建任务（跳过申请）
+	DirectCreateTask(context.Context, *DirectCreateTaskRequest) (*DirectCreateTaskResponse, error)
+	// 更新任务
+	UpdateTask(context.Context, *UpdateTaskRequest) (*UpdateTaskResponse, error)
+	// 取消任务
+	CancelTask(context.Context, *CancelTaskRequest) (*CancelTaskResponse, error)
+	// 升级任务紧急度
+	EscalateTaskUrgency(context.Context, *EscalateTaskUrgencyRequest) (*EscalateTaskUrgencyResponse, error)
+	// 查看任务流转日志
+	GetTaskFlows(context.Context, *GetTaskFlowsRequest) (*GetTaskFlowsResponse, error)
+	// 查看任务操作日志
+	GetTaskLogs(context.Context, *GetTaskLogsRequest) (*GetTaskLogsResponse, error)
 	// 申请修改猫咪档案信息
 	ApplyUpdateCatInfo(context.Context, *ApplyUpdateCatInfoRequest) (*ApplyUpdateCatInfoResponse, error)
 	// 查看自己提交的修改申请详情
@@ -813,6 +1113,66 @@ func (UnimplementedCatServiceServer) RecordFollowUpVisit(context.Context, *Recor
 }
 func (UnimplementedCatServiceServer) UpdateReturnStatus(context.Context, *UpdateReturnStatusRequest) (*UpdateReturnStatusResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method UpdateReturnStatus not implemented")
+}
+func (UnimplementedCatServiceServer) ApplyCreateTask(context.Context, *ApplyCreateTaskRequest) (*ApplyCreateTaskResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ApplyCreateTask not implemented")
+}
+func (UnimplementedCatServiceServer) CancelTaskApply(context.Context, *CancelTaskApplyRequest) (*CancelTaskApplyResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method CancelTaskApply not implemented")
+}
+func (UnimplementedCatServiceServer) GetTaskApplyDetail(context.Context, *GetTaskApplyDetailRequest) (*GetTaskApplyDetailResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetTaskApplyDetail not implemented")
+}
+func (UnimplementedCatServiceServer) ListMyTaskApplies(context.Context, *ListMyTaskAppliesRequest) (*ListMyTaskAppliesResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListMyTaskApplies not implemented")
+}
+func (UnimplementedCatServiceServer) ClaimTask(context.Context, *ClaimTaskRequest) (*ClaimTaskResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ClaimTask not implemented")
+}
+func (UnimplementedCatServiceServer) AbandonTask(context.Context, *AbandonTaskRequest) (*AbandonTaskResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method AbandonTask not implemented")
+}
+func (UnimplementedCatServiceServer) CompleteTask(context.Context, *CompleteTaskRequest) (*CompleteTaskResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method CompleteTask not implemented")
+}
+func (UnimplementedCatServiceServer) GetTaskDetail(context.Context, *GetTaskDetailRequest) (*GetTaskDetailResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetTaskDetail not implemented")
+}
+func (UnimplementedCatServiceServer) ListTasks(context.Context, *ListTasksRequest) (*ListTasksResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListTasks not implemented")
+}
+func (UnimplementedCatServiceServer) ListMyClaimedTasks(context.Context, *ListMyClaimedTasksRequest) (*ListMyClaimedTasksResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListMyClaimedTasks not implemented")
+}
+func (UnimplementedCatServiceServer) ListMyCompletedTasks(context.Context, *ListMyCompletedTasksRequest) (*ListMyCompletedTasksResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListMyCompletedTasks not implemented")
+}
+func (UnimplementedCatServiceServer) ApproveTaskApply(context.Context, *ApproveTaskApplyRequest) (*ApproveTaskApplyResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ApproveTaskApply not implemented")
+}
+func (UnimplementedCatServiceServer) RejectTaskApply(context.Context, *RejectTaskApplyRequest) (*RejectTaskApplyResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method RejectTaskApply not implemented")
+}
+func (UnimplementedCatServiceServer) ListPendingTaskApplies(context.Context, *ListPendingTaskAppliesRequest) (*ListPendingTaskAppliesResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ListPendingTaskApplies not implemented")
+}
+func (UnimplementedCatServiceServer) DirectCreateTask(context.Context, *DirectCreateTaskRequest) (*DirectCreateTaskResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method DirectCreateTask not implemented")
+}
+func (UnimplementedCatServiceServer) UpdateTask(context.Context, *UpdateTaskRequest) (*UpdateTaskResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method UpdateTask not implemented")
+}
+func (UnimplementedCatServiceServer) CancelTask(context.Context, *CancelTaskRequest) (*CancelTaskResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method CancelTask not implemented")
+}
+func (UnimplementedCatServiceServer) EscalateTaskUrgency(context.Context, *EscalateTaskUrgencyRequest) (*EscalateTaskUrgencyResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method EscalateTaskUrgency not implemented")
+}
+func (UnimplementedCatServiceServer) GetTaskFlows(context.Context, *GetTaskFlowsRequest) (*GetTaskFlowsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetTaskFlows not implemented")
+}
+func (UnimplementedCatServiceServer) GetTaskLogs(context.Context, *GetTaskLogsRequest) (*GetTaskLogsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetTaskLogs not implemented")
 }
 func (UnimplementedCatServiceServer) ApplyUpdateCatInfo(context.Context, *ApplyUpdateCatInfoRequest) (*ApplyUpdateCatInfoResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method ApplyUpdateCatInfo not implemented")
@@ -1354,6 +1714,366 @@ func _CatService_UpdateReturnStatus_Handler(srv interface{}, ctx context.Context
 	return interceptor(ctx, in, info, handler)
 }
 
+func _CatService_ApplyCreateTask_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ApplyCreateTaskRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CatServiceServer).ApplyCreateTask(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CatService_ApplyCreateTask_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CatServiceServer).ApplyCreateTask(ctx, req.(*ApplyCreateTaskRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CatService_CancelTaskApply_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CancelTaskApplyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CatServiceServer).CancelTaskApply(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CatService_CancelTaskApply_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CatServiceServer).CancelTaskApply(ctx, req.(*CancelTaskApplyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CatService_GetTaskApplyDetail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetTaskApplyDetailRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CatServiceServer).GetTaskApplyDetail(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CatService_GetTaskApplyDetail_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CatServiceServer).GetTaskApplyDetail(ctx, req.(*GetTaskApplyDetailRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CatService_ListMyTaskApplies_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListMyTaskAppliesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CatServiceServer).ListMyTaskApplies(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CatService_ListMyTaskApplies_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CatServiceServer).ListMyTaskApplies(ctx, req.(*ListMyTaskAppliesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CatService_ClaimTask_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ClaimTaskRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CatServiceServer).ClaimTask(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CatService_ClaimTask_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CatServiceServer).ClaimTask(ctx, req.(*ClaimTaskRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CatService_AbandonTask_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AbandonTaskRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CatServiceServer).AbandonTask(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CatService_AbandonTask_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CatServiceServer).AbandonTask(ctx, req.(*AbandonTaskRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CatService_CompleteTask_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CompleteTaskRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CatServiceServer).CompleteTask(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CatService_CompleteTask_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CatServiceServer).CompleteTask(ctx, req.(*CompleteTaskRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CatService_GetTaskDetail_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetTaskDetailRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CatServiceServer).GetTaskDetail(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CatService_GetTaskDetail_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CatServiceServer).GetTaskDetail(ctx, req.(*GetTaskDetailRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CatService_ListTasks_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListTasksRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CatServiceServer).ListTasks(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CatService_ListTasks_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CatServiceServer).ListTasks(ctx, req.(*ListTasksRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CatService_ListMyClaimedTasks_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListMyClaimedTasksRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CatServiceServer).ListMyClaimedTasks(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CatService_ListMyClaimedTasks_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CatServiceServer).ListMyClaimedTasks(ctx, req.(*ListMyClaimedTasksRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CatService_ListMyCompletedTasks_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListMyCompletedTasksRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CatServiceServer).ListMyCompletedTasks(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CatService_ListMyCompletedTasks_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CatServiceServer).ListMyCompletedTasks(ctx, req.(*ListMyCompletedTasksRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CatService_ApproveTaskApply_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ApproveTaskApplyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CatServiceServer).ApproveTaskApply(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CatService_ApproveTaskApply_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CatServiceServer).ApproveTaskApply(ctx, req.(*ApproveTaskApplyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CatService_RejectTaskApply_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RejectTaskApplyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CatServiceServer).RejectTaskApply(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CatService_RejectTaskApply_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CatServiceServer).RejectTaskApply(ctx, req.(*RejectTaskApplyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CatService_ListPendingTaskApplies_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListPendingTaskAppliesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CatServiceServer).ListPendingTaskApplies(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CatService_ListPendingTaskApplies_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CatServiceServer).ListPendingTaskApplies(ctx, req.(*ListPendingTaskAppliesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CatService_DirectCreateTask_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DirectCreateTaskRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CatServiceServer).DirectCreateTask(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CatService_DirectCreateTask_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CatServiceServer).DirectCreateTask(ctx, req.(*DirectCreateTaskRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CatService_UpdateTask_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateTaskRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CatServiceServer).UpdateTask(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CatService_UpdateTask_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CatServiceServer).UpdateTask(ctx, req.(*UpdateTaskRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CatService_CancelTask_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CancelTaskRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CatServiceServer).CancelTask(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CatService_CancelTask_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CatServiceServer).CancelTask(ctx, req.(*CancelTaskRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CatService_EscalateTaskUrgency_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(EscalateTaskUrgencyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CatServiceServer).EscalateTaskUrgency(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CatService_EscalateTaskUrgency_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CatServiceServer).EscalateTaskUrgency(ctx, req.(*EscalateTaskUrgencyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CatService_GetTaskFlows_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetTaskFlowsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CatServiceServer).GetTaskFlows(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CatService_GetTaskFlows_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CatServiceServer).GetTaskFlows(ctx, req.(*GetTaskFlowsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CatService_GetTaskLogs_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetTaskLogsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CatServiceServer).GetTaskLogs(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CatService_GetTaskLogs_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CatServiceServer).GetTaskLogs(ctx, req.(*GetTaskLogsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _CatService_ApplyUpdateCatInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ApplyUpdateCatInfoRequest)
 	if err := dec(in); err != nil {
@@ -1874,6 +2594,86 @@ var CatService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UpdateReturnStatus",
 			Handler:    _CatService_UpdateReturnStatus_Handler,
+		},
+		{
+			MethodName: "ApplyCreateTask",
+			Handler:    _CatService_ApplyCreateTask_Handler,
+		},
+		{
+			MethodName: "CancelTaskApply",
+			Handler:    _CatService_CancelTaskApply_Handler,
+		},
+		{
+			MethodName: "GetTaskApplyDetail",
+			Handler:    _CatService_GetTaskApplyDetail_Handler,
+		},
+		{
+			MethodName: "ListMyTaskApplies",
+			Handler:    _CatService_ListMyTaskApplies_Handler,
+		},
+		{
+			MethodName: "ClaimTask",
+			Handler:    _CatService_ClaimTask_Handler,
+		},
+		{
+			MethodName: "AbandonTask",
+			Handler:    _CatService_AbandonTask_Handler,
+		},
+		{
+			MethodName: "CompleteTask",
+			Handler:    _CatService_CompleteTask_Handler,
+		},
+		{
+			MethodName: "GetTaskDetail",
+			Handler:    _CatService_GetTaskDetail_Handler,
+		},
+		{
+			MethodName: "ListTasks",
+			Handler:    _CatService_ListTasks_Handler,
+		},
+		{
+			MethodName: "ListMyClaimedTasks",
+			Handler:    _CatService_ListMyClaimedTasks_Handler,
+		},
+		{
+			MethodName: "ListMyCompletedTasks",
+			Handler:    _CatService_ListMyCompletedTasks_Handler,
+		},
+		{
+			MethodName: "ApproveTaskApply",
+			Handler:    _CatService_ApproveTaskApply_Handler,
+		},
+		{
+			MethodName: "RejectTaskApply",
+			Handler:    _CatService_RejectTaskApply_Handler,
+		},
+		{
+			MethodName: "ListPendingTaskApplies",
+			Handler:    _CatService_ListPendingTaskApplies_Handler,
+		},
+		{
+			MethodName: "DirectCreateTask",
+			Handler:    _CatService_DirectCreateTask_Handler,
+		},
+		{
+			MethodName: "UpdateTask",
+			Handler:    _CatService_UpdateTask_Handler,
+		},
+		{
+			MethodName: "CancelTask",
+			Handler:    _CatService_CancelTask_Handler,
+		},
+		{
+			MethodName: "EscalateTaskUrgency",
+			Handler:    _CatService_EscalateTaskUrgency_Handler,
+		},
+		{
+			MethodName: "GetTaskFlows",
+			Handler:    _CatService_GetTaskFlows_Handler,
+		},
+		{
+			MethodName: "GetTaskLogs",
+			Handler:    _CatService_GetTaskLogs_Handler,
 		},
 		{
 			MethodName: "ApplyUpdateCatInfo",

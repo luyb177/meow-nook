@@ -72,6 +72,12 @@ const (
 const (
 	TargetTypeCatApply   = "cat_apply"
 	TargetTypeCatProfile = "cat_profile"
+
+	// Tag Target Types
+	TagTargetTypeCatTask      = "cat_task"
+	TagTargetTypeCatTaskApply = "cat_task_apply"
+	TagTargetTypeCatTaskClaim = "cat_task_claim"
+	TagTargetTypeCatTaskLog   = "cat_task_log"
 )
 
 var (

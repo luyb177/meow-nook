@@ -24,3 +24,11 @@ type Image struct {
 func (Image) TableName() string {
 	return "images"
 }
+
+const (
+	// Image Target Types
+	TargetTypeCatTask      = "cat_task"
+	TargetTypeCatTaskApply = "cat_task_apply"
+	TargetTypeCatTaskClaim = "cat_task_claim"
+	TargetTypeCatTaskLog   = "cat_task_log"
+)
