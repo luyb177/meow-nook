@@ -36,6 +36,7 @@ func (l *ListPendingTaskAppliesLogic) ListPendingTaskApplies(in *v1.ListPendingT
 		return nil, errorx.WrapDBQuery("查询待审核任务申请列表失败", err)
 	}
 
+	// todo it would throw an error if the cat is not found
 	items := make([]*v1.TaskApplyVO, 0, len(applies))
 	for _, v := range applies {
 		// 查询猫咪信息

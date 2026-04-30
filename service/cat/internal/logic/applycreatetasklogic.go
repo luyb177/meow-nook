@@ -33,10 +33,10 @@ func (l *ApplyCreateTaskLogic) ApplyCreateTask(in *v1.ApplyCreateTaskRequest) (*
 	userID := in.ApplicantUserId
 
 	// 防重复申请（可选）
-	exist, _ := l.svcCtx.Repo.Task.GetTaskApplyByCatAndUser(l.ctx, in.CatId, userID)
-	if exist != nil {
-		return nil, errorx.Wrap(errorx.CodeBadRequest, "您已为该猫咪提过任务申请", errorx.ErrBadRequest)
-	}
+	//exist, _ := l.svcCtx.Repo.Task.GetTaskApplyByCatAndUser(l.ctx, in.CatId, userID)
+	//if exist != nil {
+	//	return nil, errorx.Wrap(errorx.CodeBadRequest, "您已为该猫咪提过任务申请", errorx.ErrBadRequest)
+	//}
 
 	apply := &task.CatTaskApply{
 		CatID:           in.CatId,

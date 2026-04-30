@@ -311,24 +311,6 @@ func (s *CatServiceServer) ApplyAddRescueRecord(ctx context.Context, in *v1.Appl
 	return l.ApplyAddRescueRecord(in)
 }
 
-// 申请创建任务
-func (s *CatServiceServer) ApplyCreateCatTask(ctx context.Context, in *v1.ApplyCreateCatTaskRequest) (*v1.ApplyCreateCatTaskResponse, error) {
-	l := logic.NewApplyCreateCatTaskLogic(ctx, s.svcCtx)
-	return l.ApplyCreateCatTask(in)
-}
-
-// 申请认领任务
-func (s *CatServiceServer) ClaimCatTask(ctx context.Context, in *v1.ClaimCatTaskRequest) (*v1.ClaimCatTaskResponse, error) {
-	l := logic.NewClaimCatTaskLogic(ctx, s.svcCtx)
-	return l.ClaimCatTask(in)
-}
-
-// 申请放弃任务
-func (s *CatServiceServer) AbandonCatTask(ctx context.Context, in *v1.AbandonCatTaskRequest) (*v1.AbandonCatTaskResponse, error) {
-	l := logic.NewAbandonCatTaskLogic(ctx, s.svcCtx)
-	return l.AbandonCatTask(in)
-}
-
 // 上传任务进度（图片/备注）
 func (s *CatServiceServer) UploadTaskProgress(ctx context.Context, in *v1.UploadTaskProgressRequest) (*v1.UploadTaskProgressResponse, error) {
 	l := logic.NewUploadTaskProgressLogic(ctx, s.svcCtx)
@@ -365,33 +347,6 @@ func (s *CatServiceServer) RejectMedicalRecord(ctx context.Context, in *v1.Rejec
 	return l.RejectMedicalRecord(in)
 }
 
-// 管理员审核志愿者任务申请
-func (s *CatServiceServer) ApproveCreateCatTask(ctx context.Context, in *v1.ApproveCreateCatTaskRequest) (*v1.ApproveCreateCatTaskResponse, error) {
-	l := logic.NewApproveCreateCatTaskLogic(ctx, s.svcCtx)
-	return l.ApproveCreateCatTask(in)
-}
-
-func (s *CatServiceServer) RejectCreateCatTask(ctx context.Context, in *v1.RejectCreateCatTaskRequest) (*v1.RejectCreateCatTaskResponse, error) {
-	l := logic.NewRejectCreateCatTaskLogic(ctx, s.svcCtx)
-	return l.RejectCreateCatTask(in)
-}
-
-func (s *CatServiceServer) GetCreateCatTaskApplyDetail(ctx context.Context, in *v1.GetCreateCatTaskApplyDetailRequest) (*v1.GetCreateCatTaskApplyDetailResponse, error) {
-	l := logic.NewGetCreateCatTaskApplyDetailLogic(ctx, s.svcCtx)
-	return l.GetCreateCatTaskApplyDetail(in)
-}
-
-func (s *CatServiceServer) ListCreateCatTaskApply(ctx context.Context, in *v1.ListCreateCatTaskApplyRequest) (*v1.ListCreateCatTaskApplyResponse, error) {
-	l := logic.NewListCreateCatTaskApplyLogic(ctx, s.svcCtx)
-	return l.ListCreateCatTaskApply(in)
-}
-
-// 管理员直接创建正式任务（无需审核）
-func (s *CatServiceServer) CreateCatTask(ctx context.Context, in *v1.CreateCatTaskRequest) (*v1.CreateCatTaskResponse, error) {
-	l := logic.NewCreateCatTaskLogic(ctx, s.svcCtx)
-	return l.CreateCatTask(in)
-}
-
 // 管理员更新任务状态
 func (s *CatServiceServer) UpdateCatTaskStatus(ctx context.Context, in *v1.UpdateCatTaskStatusRequest) (*v1.UpdateCatTaskStatusResponse, error) {
 	l := logic.NewUpdateCatTaskStatusLogic(ctx, s.svcCtx)
@@ -408,10 +363,4 @@ func (s *CatServiceServer) GetCatDetail(ctx context.Context, in *v1.GetCatDetail
 func (s *CatServiceServer) ListCats(ctx context.Context, in *v1.ListCatsRequest) (*v1.ListCatsResponse, error) {
 	l := logic.NewListCatsLogic(ctx, s.svcCtx)
 	return l.ListCats(in)
-}
-
-// 正式任务列表
-func (s *CatServiceServer) ListCatTasks(ctx context.Context, in *v1.ListCatTasksRequest) (*v1.ListCatTasksResponse, error) {
-	l := logic.NewListCatTasksLogic(ctx, s.svcCtx)
-	return l.ListCatTasks(in)
 }

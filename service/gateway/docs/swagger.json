@@ -271,6 +271,38 @@
         ],
         "summary": "ListAdoptions",
         "operationId": "adoptionListAdoptions",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "adopter_id",
+            "in": "query",
+            "allowEmptyValue": true
+          },
+          {
+            "type": "integer",
+            "name": "cat_id",
+            "in": "query",
+            "allowEmptyValue": true
+          },
+          {
+            "type": "string",
+            "name": "status",
+            "in": "query",
+            "allowEmptyValue": true
+          },
+          {
+            "type": "integer",
+            "name": "page",
+            "in": "query",
+            "allowEmptyValue": true
+          },
+          {
+            "type": "integer",
+            "name": "page_size",
+            "in": "query",
+            "allowEmptyValue": true
+          }
+        ],
         "responses": {
           "200": {
             "description": "",
@@ -355,6 +387,26 @@
         ],
         "summary": "ListPendingAdoptApplies",
         "operationId": "adoptionListPendingAdoptApplies",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "cat_id",
+            "in": "query",
+            "allowEmptyValue": true
+          },
+          {
+            "type": "integer",
+            "name": "page",
+            "in": "query",
+            "allowEmptyValue": true
+          },
+          {
+            "type": "integer",
+            "name": "page_size",
+            "in": "query",
+            "allowEmptyValue": true
+          }
+        ],
         "responses": {
           "200": {
             "description": "",
@@ -761,6 +813,14 @@
         ],
         "summary": "GetAdoptApplyDetail",
         "operationId": "adoptionGetAdoptApplyDetail",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "apply_id",
+            "in": "path",
+            "required": true
+          }
+        ],
         "responses": {
           "200": {
             "description": "",
@@ -953,6 +1013,14 @@
         ],
         "summary": "GetAdoptionDetail",
         "operationId": "adoptionGetAdoptionDetail",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "adoption_id",
+            "in": "path",
+            "required": true
+          }
+        ],
         "responses": {
           "200": {
             "description": "",
@@ -1123,6 +1191,20 @@
         ],
         "summary": "ListMyAdoptions",
         "operationId": "adoptionListMyAdoptions",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "page",
+            "in": "query",
+            "allowEmptyValue": true
+          },
+          {
+            "type": "integer",
+            "name": "page_size",
+            "in": "query",
+            "allowEmptyValue": true
+          }
+        ],
         "responses": {
           "200": {
             "description": "",
@@ -1207,6 +1289,26 @@
         ],
         "summary": "ListMyAdoptApplies",
         "operationId": "adoptionListMyAdoptApplies",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "status",
+            "in": "query",
+            "allowEmptyValue": true
+          },
+          {
+            "type": "integer",
+            "name": "page",
+            "in": "query",
+            "allowEmptyValue": true
+          },
+          {
+            "type": "integer",
+            "name": "page_size",
+            "in": "query",
+            "allowEmptyValue": true
+          }
+        ],
         "responses": {
           "200": {
             "description": "",
@@ -2148,9 +2250,2000 @@
           }
         }
       }
+    },
+    "/api/v1/task/admin/task/apply/pending": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "任务模块"
+        ],
+        "summary": "ListPendingTaskApplies",
+        "operationId": "taskListPendingTaskApplies",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "cat_id",
+            "in": "query",
+            "allowEmptyValue": true
+          },
+          {
+            "type": "integer",
+            "name": "page",
+            "in": "query",
+            "allowEmptyValue": true
+          },
+          {
+            "type": "integer",
+            "name": "page_size",
+            "in": "query",
+            "allowEmptyValue": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "cat_id",
+                      "cat_name",
+                      "cat_avatar",
+                      "applicant_user_id",
+                      "applicant_name",
+                      "applicant_avatar",
+                      "title",
+                      "task_type",
+                      "summary",
+                      "detail",
+                      "location",
+                      "longitude",
+                      "latitude",
+                      "status",
+                      "reviewer_id",
+                      "reviewer_name",
+                      "reviewed_at",
+                      "reject_reason",
+                      "urgency_level",
+                      "difficulty_level",
+                      "reward_points",
+                      "task_id",
+                      "deadline_at",
+                      "created_at",
+                      "updated_at",
+                      "image_urls",
+                      "tags"
+                    ],
+                    "properties": {
+                      "applicant_avatar": {
+                        "type": "string"
+                      },
+                      "applicant_name": {
+                        "type": "string"
+                      },
+                      "applicant_user_id": {
+                        "type": "integer"
+                      },
+                      "cat_avatar": {
+                        "type": "string"
+                      },
+                      "cat_id": {
+                        "type": "integer"
+                      },
+                      "cat_name": {
+                        "type": "string"
+                      },
+                      "created_at": {
+                        "type": "string"
+                      },
+                      "deadline_at": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "difficulty_level": {
+                        "type": "integer"
+                      },
+                      "id": {
+                        "type": "integer"
+                      },
+                      "image_urls": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "latitude": {
+                        "type": "number"
+                      },
+                      "location": {
+                        "type": "string"
+                      },
+                      "longitude": {
+                        "type": "number"
+                      },
+                      "reject_reason": {
+                        "type": "string"
+                      },
+                      "reviewed_at": {
+                        "type": "string"
+                      },
+                      "reviewer_id": {
+                        "type": "integer"
+                      },
+                      "reviewer_name": {
+                        "type": "string"
+                      },
+                      "reward_points": {
+                        "type": "integer"
+                      },
+                      "status": {
+                        "type": "string"
+                      },
+                      "summary": {
+                        "type": "string"
+                      },
+                      "tags": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "required": [
+                            "id",
+                            "name",
+                            "type",
+                            "theme"
+                          ],
+                          "properties": {
+                            "id": {
+                              "type": "integer"
+                            },
+                            "name": {
+                              "type": "string"
+                            },
+                            "theme": {
+                              "type": "string"
+                            },
+                            "type": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      },
+                      "task_id": {
+                        "type": "integer"
+                      },
+                      "task_type": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "updated_at": {
+                        "type": "string"
+                      },
+                      "urgency_level": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "page": {
+                  "type": "integer"
+                },
+                "page_size": {
+                  "type": "integer"
+                },
+                "total": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/task/admin/task/apply/{apply_id}/approve": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "任务模块"
+        ],
+        "summary": "ApproveTaskApply",
+        "operationId": "taskApproveTaskApply",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "apply_id",
+                "urgency_level",
+                "difficulty_level",
+                "reward_points",
+                "max_claimers",
+                "area",
+                "remark"
+              ],
+              "properties": {
+                "apply_id": {
+                  "type": "integer"
+                },
+                "area": {
+                  "type": "string"
+                },
+                "difficulty_level": {
+                  "type": "integer"
+                },
+                "max_claimers": {
+                  "type": "integer"
+                },
+                "remark": {
+                  "type": "string"
+                },
+                "reward_points": {
+                  "type": "integer"
+                },
+                "urgency_level": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                },
+                "task_id": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/task/admin/task/apply/{apply_id}/reject": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "任务模块"
+        ],
+        "summary": "RejectTaskApply",
+        "operationId": "taskRejectTaskApply",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "apply_id",
+                "reject_reason"
+              ],
+              "properties": {
+                "apply_id": {
+                  "type": "integer"
+                },
+                "reject_reason": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/task/admin/task/create": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "任务模块"
+        ],
+        "summary": "DirectCreateTask",
+        "operationId": "taskDirectCreateTask",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "cat_id",
+                "title",
+                "task_type",
+                "summary",
+                "detail",
+                "location",
+                "longitude",
+                "latitude",
+                "area",
+                "urgency_level",
+                "difficulty_level",
+                "reward_points",
+                "max_claimers",
+                "deadline_at",
+                "remark",
+                "image_urls",
+                "tag_ids"
+              ],
+              "properties": {
+                "area": {
+                  "type": "string"
+                },
+                "cat_id": {
+                  "type": "integer"
+                },
+                "deadline_at": {
+                  "type": "string"
+                },
+                "detail": {
+                  "type": "string"
+                },
+                "difficulty_level": {
+                  "type": "integer"
+                },
+                "image_urls": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "latitude": {
+                  "type": "number"
+                },
+                "location": {
+                  "type": "string"
+                },
+                "longitude": {
+                  "type": "number"
+                },
+                "max_claimers": {
+                  "type": "integer"
+                },
+                "remark": {
+                  "type": "string"
+                },
+                "reward_points": {
+                  "type": "integer"
+                },
+                "summary": {
+                  "type": "string"
+                },
+                "tag_ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer"
+                  }
+                },
+                "task_type": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "urgency_level": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                },
+                "task_id": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/task/admin/task/{task_id}/cancel": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "任务模块"
+        ],
+        "summary": "CancelTask",
+        "operationId": "taskCancelTask",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "task_id",
+                "reason"
+              ],
+              "properties": {
+                "reason": {
+                  "type": "string"
+                },
+                "task_id": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/task/admin/task/{task_id}/escalate": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "任务模块"
+        ],
+        "summary": "EscalateTaskUrgency",
+        "operationId": "taskEscalateTaskUrgency",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "task_id"
+              ],
+              "properties": {
+                "task_id": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "escalation_count": {
+                  "type": "integer"
+                },
+                "message": {
+                  "type": "string"
+                },
+                "new_urgency_level": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/task/admin/task/{task_id}/update": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "任务模块"
+        ],
+        "summary": "UpdateTask",
+        "operationId": "taskUpdateTask",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "task_id",
+                "title",
+                "summary",
+                "detail",
+                "difficulty_level",
+                "reward_points",
+                "deadline_at",
+                "remark"
+              ],
+              "properties": {
+                "deadline_at": {
+                  "type": "string"
+                },
+                "detail": {
+                  "type": "string"
+                },
+                "difficulty_level": {
+                  "type": "integer"
+                },
+                "remark": {
+                  "type": "string"
+                },
+                "reward_points": {
+                  "type": "integer"
+                },
+                "summary": {
+                  "type": "string"
+                },
+                "task_id": {
+                  "type": "integer"
+                },
+                "title": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/task/task/apply": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "任务模块"
+        ],
+        "summary": "ApplyCreateTask",
+        "operationId": "taskApplyCreateTask",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "cat_id",
+                "title",
+                "task_type",
+                "summary",
+                "detail",
+                "location",
+                "longitude",
+                "latitude",
+                "deadline_at",
+                "image_urls",
+                "tag_ids"
+              ],
+              "properties": {
+                "cat_id": {
+                  "type": "integer"
+                },
+                "deadline_at": {
+                  "type": "string"
+                },
+                "detail": {
+                  "type": "string"
+                },
+                "image_urls": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "latitude": {
+                  "type": "number"
+                },
+                "location": {
+                  "type": "string"
+                },
+                "longitude": {
+                  "type": "number"
+                },
+                "summary": {
+                  "type": "string"
+                },
+                "tag_ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer"
+                  }
+                },
+                "task_type": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "apply_id": {
+                  "type": "integer"
+                },
+                "message": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/task/task/apply/cancel": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "任务模块"
+        ],
+        "summary": "CancelTaskApply",
+        "operationId": "taskCancelTaskApply",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "apply_id",
+                "reason"
+              ],
+              "properties": {
+                "apply_id": {
+                  "type": "integer"
+                },
+                "reason": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/task/task/apply/{apply_id}": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "任务模块"
+        ],
+        "summary": "GetTaskApplyDetail",
+        "operationId": "taskGetTaskApplyDetail",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "apply_id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "apply": {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "cat_id",
+                    "cat_name",
+                    "cat_avatar",
+                    "applicant_user_id",
+                    "applicant_name",
+                    "applicant_avatar",
+                    "title",
+                    "task_type",
+                    "summary",
+                    "detail",
+                    "location",
+                    "longitude",
+                    "latitude",
+                    "status",
+                    "reviewer_id",
+                    "reviewer_name",
+                    "reviewed_at",
+                    "reject_reason",
+                    "urgency_level",
+                    "difficulty_level",
+                    "reward_points",
+                    "task_id",
+                    "deadline_at",
+                    "created_at",
+                    "updated_at",
+                    "image_urls",
+                    "tags"
+                  ],
+                  "properties": {
+                    "applicant_avatar": {
+                      "type": "string"
+                    },
+                    "applicant_name": {
+                      "type": "string"
+                    },
+                    "applicant_user_id": {
+                      "type": "integer"
+                    },
+                    "cat_avatar": {
+                      "type": "string"
+                    },
+                    "cat_id": {
+                      "type": "integer"
+                    },
+                    "cat_name": {
+                      "type": "string"
+                    },
+                    "created_at": {
+                      "type": "string"
+                    },
+                    "deadline_at": {
+                      "type": "string"
+                    },
+                    "detail": {
+                      "type": "string"
+                    },
+                    "difficulty_level": {
+                      "type": "integer"
+                    },
+                    "id": {
+                      "type": "integer"
+                    },
+                    "image_urls": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "latitude": {
+                      "type": "number"
+                    },
+                    "location": {
+                      "type": "string"
+                    },
+                    "longitude": {
+                      "type": "number"
+                    },
+                    "reject_reason": {
+                      "type": "string"
+                    },
+                    "reviewed_at": {
+                      "type": "string"
+                    },
+                    "reviewer_id": {
+                      "type": "integer"
+                    },
+                    "reviewer_name": {
+                      "type": "string"
+                    },
+                    "reward_points": {
+                      "type": "integer"
+                    },
+                    "status": {
+                      "type": "string"
+                    },
+                    "summary": {
+                      "type": "string"
+                    },
+                    "tags": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "id",
+                          "name",
+                          "type",
+                          "theme"
+                        ],
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "theme": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "task_id": {
+                      "type": "integer"
+                    },
+                    "task_type": {
+                      "type": "string"
+                    },
+                    "title": {
+                      "type": "string"
+                    },
+                    "updated_at": {
+                      "type": "string"
+                    },
+                    "urgency_level": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "cat": {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "name",
+                    "avatar",
+                    "gender",
+                    "credit_score_required"
+                  ],
+                  "properties": {
+                    "avatar": {
+                      "type": "string"
+                    },
+                    "credit_score_required": {
+                      "type": "integer"
+                    },
+                    "gender": {
+                      "type": "string"
+                    },
+                    "id": {
+                      "type": "integer"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/task/task/claim/{claim_id}/abandon": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "任务模块"
+        ],
+        "summary": "AbandonTask",
+        "operationId": "taskAbandonTask",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "claim_id",
+                "reason"
+              ],
+              "properties": {
+                "claim_id": {
+                  "type": "integer"
+                },
+                "reason": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/task/task/claim/{claim_id}/complete": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "任务模块"
+        ],
+        "summary": "CompleteTask",
+        "operationId": "taskCompleteTask",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "claim_id",
+                "content",
+                "image_urls"
+              ],
+              "properties": {
+                "claim_id": {
+                  "type": "integer"
+                },
+                "content": {
+                  "type": "string"
+                },
+                "image_urls": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "is_overdue": {
+                  "type": "boolean"
+                },
+                "message": {
+                  "type": "string"
+                },
+                "reputation_deduction": {
+                  "type": "integer"
+                },
+                "reward_points": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/task/task/list": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "任务模块"
+        ],
+        "summary": "ListTasks",
+        "operationId": "taskListTasks",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "cat_id",
+            "in": "query",
+            "allowEmptyValue": true
+          },
+          {
+            "type": "string",
+            "name": "status",
+            "in": "query",
+            "allowEmptyValue": true
+          },
+          {
+            "type": "string",
+            "name": "urgency_level",
+            "in": "query",
+            "allowEmptyValue": true
+          },
+          {
+            "type": "integer",
+            "name": "difficulty_level",
+            "in": "query",
+            "allowEmptyValue": true
+          },
+          {
+            "type": "string",
+            "name": "area",
+            "in": "query",
+            "allowEmptyValue": true
+          },
+          {
+            "type": "integer",
+            "name": "page",
+            "in": "query",
+            "allowEmptyValue": true
+          },
+          {
+            "type": "integer",
+            "name": "page_size",
+            "in": "query",
+            "allowEmptyValue": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "task_id",
+                      "cat_id",
+                      "cat_name",
+                      "cat_avatar",
+                      "title",
+                      "task_type",
+                      "summary",
+                      "location",
+                      "urgency_level",
+                      "difficulty_level",
+                      "reward_points",
+                      "current_claimers",
+                      "max_claimers",
+                      "status",
+                      "deadline_at",
+                      "created_at"
+                    ],
+                    "properties": {
+                      "cat_avatar": {
+                        "type": "string"
+                      },
+                      "cat_id": {
+                        "type": "integer"
+                      },
+                      "cat_name": {
+                        "type": "string"
+                      },
+                      "created_at": {
+                        "type": "string"
+                      },
+                      "current_claimers": {
+                        "type": "integer"
+                      },
+                      "deadline_at": {
+                        "type": "string"
+                      },
+                      "difficulty_level": {
+                        "type": "integer"
+                      },
+                      "location": {
+                        "type": "string"
+                      },
+                      "max_claimers": {
+                        "type": "integer"
+                      },
+                      "reward_points": {
+                        "type": "integer"
+                      },
+                      "status": {
+                        "type": "string"
+                      },
+                      "summary": {
+                        "type": "string"
+                      },
+                      "task_id": {
+                        "type": "integer"
+                      },
+                      "task_type": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "urgency_level": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "page": {
+                  "type": "integer"
+                },
+                "page_size": {
+                  "type": "integer"
+                },
+                "total": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/task/task/my-applies": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "任务模块"
+        ],
+        "summary": "ListMyTaskApplies",
+        "operationId": "taskListMyTaskApplies",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "status",
+            "in": "query",
+            "allowEmptyValue": true
+          },
+          {
+            "type": "integer",
+            "name": "page",
+            "in": "query",
+            "allowEmptyValue": true
+          },
+          {
+            "type": "integer",
+            "name": "page_size",
+            "in": "query",
+            "allowEmptyValue": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "apply_id",
+                      "cat_id",
+                      "cat_name",
+                      "cat_avatar",
+                      "title",
+                      "task_type",
+                      "status",
+                      "reject_reason",
+                      "created_at"
+                    ],
+                    "properties": {
+                      "apply_id": {
+                        "type": "integer"
+                      },
+                      "cat_avatar": {
+                        "type": "string"
+                      },
+                      "cat_id": {
+                        "type": "integer"
+                      },
+                      "cat_name": {
+                        "type": "string"
+                      },
+                      "created_at": {
+                        "type": "string"
+                      },
+                      "reject_reason": {
+                        "type": "string"
+                      },
+                      "status": {
+                        "type": "string"
+                      },
+                      "task_type": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "page": {
+                  "type": "integer"
+                },
+                "page_size": {
+                  "type": "integer"
+                },
+                "total": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/task/task/my-claimed": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "任务模块"
+        ],
+        "summary": "ListMyClaimedTasks",
+        "operationId": "taskListMyClaimedTasks",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "status",
+            "in": "query",
+            "allowEmptyValue": true
+          },
+          {
+            "type": "integer",
+            "name": "page",
+            "in": "query",
+            "allowEmptyValue": true
+          },
+          {
+            "type": "integer",
+            "name": "page_size",
+            "in": "query",
+            "allowEmptyValue": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "claim_id",
+                      "task_id",
+                      "task_title",
+                      "task_type",
+                      "cat_name",
+                      "status",
+                      "reward_points",
+                      "is_overdue",
+                      "claimed_at",
+                      "deadline_at"
+                    ],
+                    "properties": {
+                      "cat_name": {
+                        "type": "string"
+                      },
+                      "claim_id": {
+                        "type": "integer"
+                      },
+                      "claimed_at": {
+                        "type": "string"
+                      },
+                      "deadline_at": {
+                        "type": "string"
+                      },
+                      "is_overdue": {
+                        "type": "boolean"
+                      },
+                      "reward_points": {
+                        "type": "integer"
+                      },
+                      "status": {
+                        "type": "string"
+                      },
+                      "task_id": {
+                        "type": "integer"
+                      },
+                      "task_title": {
+                        "type": "string"
+                      },
+                      "task_type": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "page": {
+                  "type": "integer"
+                },
+                "page_size": {
+                  "type": "integer"
+                },
+                "total": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/task/task/my-completed": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "任务模块"
+        ],
+        "summary": "ListMyCompletedTasks",
+        "operationId": "taskListMyCompletedTasks",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "page",
+            "in": "query",
+            "allowEmptyValue": true
+          },
+          {
+            "type": "integer",
+            "name": "page_size",
+            "in": "query",
+            "allowEmptyValue": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "claim_id",
+                      "task_id",
+                      "task_title",
+                      "task_type",
+                      "cat_name",
+                      "status",
+                      "reward_points",
+                      "is_overdue",
+                      "claimed_at",
+                      "deadline_at"
+                    ],
+                    "properties": {
+                      "cat_name": {
+                        "type": "string"
+                      },
+                      "claim_id": {
+                        "type": "integer"
+                      },
+                      "claimed_at": {
+                        "type": "string"
+                      },
+                      "deadline_at": {
+                        "type": "string"
+                      },
+                      "is_overdue": {
+                        "type": "boolean"
+                      },
+                      "reward_points": {
+                        "type": "integer"
+                      },
+                      "status": {
+                        "type": "string"
+                      },
+                      "task_id": {
+                        "type": "integer"
+                      },
+                      "task_title": {
+                        "type": "string"
+                      },
+                      "task_type": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "page": {
+                  "type": "integer"
+                },
+                "page_size": {
+                  "type": "integer"
+                },
+                "total": {
+                  "type": "integer"
+                },
+                "total_points": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/task/task/{task_id}": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "任务模块"
+        ],
+        "summary": "GetTaskDetail",
+        "operationId": "taskGetTaskDetail",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "task_id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "cat": {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "name",
+                    "avatar",
+                    "gender",
+                    "credit_score_required"
+                  ],
+                  "properties": {
+                    "avatar": {
+                      "type": "string"
+                    },
+                    "credit_score_required": {
+                      "type": "integer"
+                    },
+                    "gender": {
+                      "type": "string"
+                    },
+                    "id": {
+                      "type": "integer"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "task": {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "cat_id",
+                    "cat_name",
+                    "cat_avatar",
+                    "apply_id",
+                    "creator_id",
+                    "creator_name",
+                    "title",
+                    "task_type",
+                    "summary",
+                    "detail",
+                    "location",
+                    "longitude",
+                    "latitude",
+                    "area",
+                    "urgency_level",
+                    "difficulty_level",
+                    "reward_points",
+                    "final_reward_points",
+                    "max_claimers",
+                    "current_claimers",
+                    "status",
+                    "remark",
+                    "deadline_at",
+                    "last_escalated_at",
+                    "escalation_count",
+                    "created_at",
+                    "updated_at",
+                    "image_urls",
+                    "tags"
+                  ],
+                  "properties": {
+                    "apply_id": {
+                      "type": "integer"
+                    },
+                    "area": {
+                      "type": "string"
+                    },
+                    "cat_avatar": {
+                      "type": "string"
+                    },
+                    "cat_id": {
+                      "type": "integer"
+                    },
+                    "cat_name": {
+                      "type": "string"
+                    },
+                    "created_at": {
+                      "type": "string"
+                    },
+                    "creator_id": {
+                      "type": "integer"
+                    },
+                    "creator_name": {
+                      "type": "string"
+                    },
+                    "current_claimers": {
+                      "type": "integer"
+                    },
+                    "deadline_at": {
+                      "type": "string"
+                    },
+                    "detail": {
+                      "type": "string"
+                    },
+                    "difficulty_level": {
+                      "type": "integer"
+                    },
+                    "escalation_count": {
+                      "type": "integer"
+                    },
+                    "final_reward_points": {
+                      "type": "integer"
+                    },
+                    "id": {
+                      "type": "integer"
+                    },
+                    "image_urls": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "last_escalated_at": {
+                      "type": "string"
+                    },
+                    "latitude": {
+                      "type": "number"
+                    },
+                    "location": {
+                      "type": "string"
+                    },
+                    "longitude": {
+                      "type": "number"
+                    },
+                    "max_claimers": {
+                      "type": "integer"
+                    },
+                    "remark": {
+                      "type": "string"
+                    },
+                    "reward_points": {
+                      "type": "integer"
+                    },
+                    "status": {
+                      "type": "string"
+                    },
+                    "summary": {
+                      "type": "string"
+                    },
+                    "tags": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "id",
+                          "name",
+                          "type",
+                          "theme"
+                        ],
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "theme": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "task_type": {
+                      "type": "string"
+                    },
+                    "title": {
+                      "type": "string"
+                    },
+                    "updated_at": {
+                      "type": "string"
+                    },
+                    "urgency_level": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/task/task/{task_id}/claim": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "任务模块"
+        ],
+        "summary": "ClaimTask",
+        "operationId": "taskClaimTask",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "task_id"
+              ],
+              "properties": {
+                "task_id": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "claim_id": {
+                  "type": "integer"
+                },
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/task/task/{task_id}/flows": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "任务模块"
+        ],
+        "summary": "GetTaskFlows",
+        "operationId": "taskGetTaskFlows",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "task_id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "task_id",
+                      "user_id",
+                      "user_name",
+                      "action",
+                      "from_status",
+                      "to_status",
+                      "remark",
+                      "created_at"
+                    ],
+                    "properties": {
+                      "action": {
+                        "type": "string"
+                      },
+                      "created_at": {
+                        "type": "string"
+                      },
+                      "from_status": {
+                        "type": "string"
+                      },
+                      "id": {
+                        "type": "integer"
+                      },
+                      "remark": {
+                        "type": "string"
+                      },
+                      "task_id": {
+                        "type": "integer"
+                      },
+                      "to_status": {
+                        "type": "string"
+                      },
+                      "user_id": {
+                        "type": "integer"
+                      },
+                      "user_name": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/task/task/{task_id}/logs": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "任务模块"
+        ],
+        "summary": "GetTaskLogs",
+        "operationId": "taskGetTaskLogs",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "task_id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "task_id",
+                      "user_id",
+                      "user_name",
+                      "action",
+                      "content",
+                      "created_at"
+                    ],
+                    "properties": {
+                      "action": {
+                        "type": "string"
+                      },
+                      "content": {
+                        "type": "string"
+                      },
+                      "created_at": {
+                        "type": "string"
+                      },
+                      "id": {
+                        "type": "integer"
+                      },
+                      "task_id": {
+                        "type": "integer"
+                      },
+                      "user_id": {
+                        "type": "integer"
+                      },
+                      "user_name": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
-  "x-date": "2026-04-28 10:49:54",
+  "x-date": "2026-04-29 23:02:44",
   "x-description": "This is a goctl generated swagger file.",
   "x-github": "https://github.com/zeromicro/go-zero",
   "x-go-zero-doc": "https://go-zero.dev/",

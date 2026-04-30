@@ -12737,7 +12737,7 @@ const file_pb_cat_v1_cat_proto_rawDesc = "" +
 	"\x04list\x18\x01 \x03(\v2\x10.cat.CatTaskItemR\x04list\x12\x1f\n" +
 	"\vnext_cursor\x18\x02 \x01(\tR\n" +
 	"nextCursor\x12\x19\n" +
-	"\bhas_more\x18\x03 \x01(\bR\ahasMore2\xf7*\n" +
+	"\bhas_more\x18\x03 \x01(\bR\ahasMore2\xf7$\n" +
 	"\n" +
 	"CatService\x12I\n" +
 	"\x0eApplyCreateCat\x12\x1a.cat.ApplyCreateCatRequest\x1a\x1b.cat.ApplyCreateCatResponse\x12G\n" +
@@ -12792,25 +12792,16 @@ const file_pb_cat_v1_cat_proto_rawDesc = "" +
 	"\x19GetMyUpdateCatApplyDetail\x12%.cat.GetMyUpdateCatApplyDetailRequest\x1a&.cat.GetMyUpdateCatApplyDetailResponse\x12^\n" +
 	"\x15ApplyAddMedicalRecord\x12!.cat.ApplyAddMedicalRecordRequest\x1a\".cat.ApplyAddMedicalRecordResponse\x12[\n" +
 	"\x14ApplyAddRescueRecord\x12 .cat.ApplyAddRescueRecordRequest\x1a!.cat.ApplyAddRescueRecordResponse\x12U\n" +
-	"\x12ApplyCreateCatTask\x12\x1e.cat.ApplyCreateCatTaskRequest\x1a\x1f.cat.ApplyCreateCatTaskResponse\x12C\n" +
-	"\fClaimCatTask\x12\x18.cat.ClaimCatTaskRequest\x1a\x19.cat.ClaimCatTaskResponse\x12I\n" +
-	"\x0eAbandonCatTask\x12\x1a.cat.AbandonCatTaskRequest\x1a\x1b.cat.AbandonCatTaskResponse\x12U\n" +
 	"\x12UploadTaskProgress\x12\x1e.cat.UploadTaskProgressRequest\x1a\x1f.cat.UploadTaskProgressResponse\x12[\n" +
 	"\x14ApproveUpdateCatInfo\x12 .cat.ApproveUpdateCatInfoRequest\x1a!.cat.ApproveUpdateCatInfoResponse\x12X\n" +
 	"\x13RejectUpdateCatInfo\x12\x1f.cat.RejectUpdateCatInfoRequest\x1a .cat.RejectUpdateCatInfoResponse\x12d\n" +
 	"\x17GetUpdateCatApplyDetail\x12#.cat.GetUpdateCatApplyDetailRequest\x1a$.cat.GetUpdateCatApplyDetailResponse\x12U\n" +
 	"\x12ListUpdateCatApply\x12\x1e.cat.ListUpdateCatApplyRequest\x1a\x1f.cat.ListUpdateCatApplyResponse\x12[\n" +
 	"\x14ApproveMedicalRecord\x12 .cat.ApproveMedicalRecordRequest\x1a!.cat.ApproveMedicalRecordResponse\x12X\n" +
-	"\x13RejectMedicalRecord\x12\x1f.cat.RejectMedicalRecordRequest\x1a .cat.RejectMedicalRecordResponse\x12[\n" +
-	"\x14ApproveCreateCatTask\x12 .cat.ApproveCreateCatTaskRequest\x1a!.cat.ApproveCreateCatTaskResponse\x12X\n" +
-	"\x13RejectCreateCatTask\x12\x1f.cat.RejectCreateCatTaskRequest\x1a .cat.RejectCreateCatTaskResponse\x12p\n" +
-	"\x1bGetCreateCatTaskApplyDetail\x12'.cat.GetCreateCatTaskApplyDetailRequest\x1a(.cat.GetCreateCatTaskApplyDetailResponse\x12a\n" +
-	"\x16ListCreateCatTaskApply\x12\".cat.ListCreateCatTaskApplyRequest\x1a#.cat.ListCreateCatTaskApplyResponse\x12F\n" +
-	"\rCreateCatTask\x12\x19.cat.CreateCatTaskRequest\x1a\x1a.cat.CreateCatTaskResponse\x12X\n" +
+	"\x13RejectMedicalRecord\x12\x1f.cat.RejectMedicalRecordRequest\x1a .cat.RejectMedicalRecordResponse\x12X\n" +
 	"\x13UpdateCatTaskStatus\x12\x1f.cat.UpdateCatTaskStatusRequest\x1a .cat.UpdateCatTaskStatusResponse\x12C\n" +
 	"\fGetCatDetail\x12\x18.cat.GetCatDetailRequest\x1a\x19.cat.GetCatDetailResponse\x127\n" +
-	"\bListCats\x12\x14.cat.ListCatsRequest\x1a\x15.cat.ListCatsResponse\x12C\n" +
-	"\fListCatTasks\x12\x18.cat.ListCatTasksRequest\x1a\x19.cat.ListCatTasksResponseB\rZ\v./pb/cat/v1b\x06proto3"
+	"\bListCats\x12\x14.cat.ListCatsRequest\x1a\x15.cat.ListCatsResponseB\rZ\v./pb/cat/v1b\x06proto3"
 
 var (
 	file_pb_cat_v1_cat_proto_rawDescOnce sync.Once
@@ -13124,95 +13115,77 @@ var file_pb_cat_v1_cat_proto_depIdxs = []int32{
 	104, // 135: cat.CatService.GetMyUpdateCatApplyDetail:input_type -> cat.GetMyUpdateCatApplyDetailRequest
 	106, // 136: cat.CatService.ApplyAddMedicalRecord:input_type -> cat.ApplyAddMedicalRecordRequest
 	108, // 137: cat.CatService.ApplyAddRescueRecord:input_type -> cat.ApplyAddRescueRecordRequest
-	110, // 138: cat.CatService.ApplyCreateCatTask:input_type -> cat.ApplyCreateCatTaskRequest
-	112, // 139: cat.CatService.ClaimCatTask:input_type -> cat.ClaimCatTaskRequest
-	114, // 140: cat.CatService.AbandonCatTask:input_type -> cat.AbandonCatTaskRequest
-	116, // 141: cat.CatService.UploadTaskProgress:input_type -> cat.UploadTaskProgressRequest
-	119, // 142: cat.CatService.ApproveUpdateCatInfo:input_type -> cat.ApproveUpdateCatInfoRequest
-	121, // 143: cat.CatService.RejectUpdateCatInfo:input_type -> cat.RejectUpdateCatInfoRequest
-	123, // 144: cat.CatService.GetUpdateCatApplyDetail:input_type -> cat.GetUpdateCatApplyDetailRequest
-	125, // 145: cat.CatService.ListUpdateCatApply:input_type -> cat.ListUpdateCatApplyRequest
-	128, // 146: cat.CatService.ApproveMedicalRecord:input_type -> cat.ApproveMedicalRecordRequest
-	130, // 147: cat.CatService.RejectMedicalRecord:input_type -> cat.RejectMedicalRecordRequest
-	132, // 148: cat.CatService.ApproveCreateCatTask:input_type -> cat.ApproveCreateCatTaskRequest
-	134, // 149: cat.CatService.RejectCreateCatTask:input_type -> cat.RejectCreateCatTaskRequest
-	136, // 150: cat.CatService.GetCreateCatTaskApplyDetail:input_type -> cat.GetCreateCatTaskApplyDetailRequest
-	138, // 151: cat.CatService.ListCreateCatTaskApply:input_type -> cat.ListCreateCatTaskApplyRequest
-	141, // 152: cat.CatService.CreateCatTask:input_type -> cat.CreateCatTaskRequest
-	143, // 153: cat.CatService.UpdateCatTaskStatus:input_type -> cat.UpdateCatTaskStatusRequest
-	147, // 154: cat.CatService.GetCatDetail:input_type -> cat.GetCatDetailRequest
-	149, // 155: cat.CatService.ListCats:input_type -> cat.ListCatsRequest
-	152, // 156: cat.CatService.ListCatTasks:input_type -> cat.ListCatTasksRequest
-	3,   // 157: cat.CatService.ApplyCreateCat:output_type -> cat.ApplyCreateCatResponse
-	0,   // 158: cat.CatService.CancelApplyCreateCat:output_type -> cat.Response
-	11,  // 159: cat.CatService.GetApplyDetail:output_type -> cat.GetApplyDetailResponse
-	13,  // 160: cat.CatService.ListMyApplies:output_type -> cat.ListMyAppliesResponse
-	6,   // 161: cat.CatService.ApproveCreateCat:output_type -> cat.ApproveCreateCatResponse
-	0,   // 162: cat.CatService.RejectCreateCat:output_type -> cat.Response
-	9,   // 163: cat.CatService.DirectCreateCat:output_type -> cat.DirectCreateCatResponse
-	15,  // 164: cat.CatService.ListPendingApplies:output_type -> cat.ListPendingAppliesResponse
-	17,  // 165: cat.CatService.ApplyAdopt:output_type -> cat.ApplyAdoptResponse
-	19,  // 166: cat.CatService.CancelAdoptApply:output_type -> cat.CancelAdoptApplyResponse
-	22,  // 167: cat.CatService.GetAdoptApplyDetail:output_type -> cat.GetAdoptApplyDetailResponse
-	26,  // 168: cat.CatService.ListMyAdoptApplies:output_type -> cat.ListMyAdoptAppliesResponse
-	43,  // 169: cat.CatService.ListMyAdoptions:output_type -> cat.ListAdoptionsResponse
-	49,  // 170: cat.CatService.CompleteVisit:output_type -> cat.RecordFollowUpVisitResponse
-	28,  // 171: cat.CatService.ApproveAdopt:output_type -> cat.ApproveAdoptResponse
-	30,  // 172: cat.CatService.RejectAdopt:output_type -> cat.RejectAdoptResponse
-	33,  // 173: cat.CatService.ListPendingAdoptApplies:output_type -> cat.ListPendingAdoptAppliesResponse
-	35,  // 174: cat.CatService.CreateAdoption:output_type -> cat.CreateAdoptionResponse
-	37,  // 175: cat.CatService.DirectAdopt:output_type -> cat.DirectAdoptResponse
-	40,  // 176: cat.CatService.GetAdoptionDetail:output_type -> cat.GetAdoptionDetailResponse
-	43,  // 177: cat.CatService.ListAdoptions:output_type -> cat.ListAdoptionsResponse
-	45,  // 178: cat.CatService.UpdateAdoption:output_type -> cat.UpdateAdoptionResponse
-	47,  // 179: cat.CatService.RecordHomeVisit:output_type -> cat.RecordHomeVisitResponse
-	49,  // 180: cat.CatService.RecordFollowUpVisit:output_type -> cat.RecordFollowUpVisitResponse
-	51,  // 181: cat.CatService.UpdateReturnStatus:output_type -> cat.UpdateReturnStatusResponse
-	55,  // 182: cat.CatService.ApplyCreateTask:output_type -> cat.ApplyCreateTaskResponse
-	57,  // 183: cat.CatService.CancelTaskApply:output_type -> cat.CancelTaskApplyResponse
-	60,  // 184: cat.CatService.GetTaskApplyDetail:output_type -> cat.GetTaskApplyDetailResponse
-	62,  // 185: cat.CatService.ListMyTaskApplies:output_type -> cat.ListMyTaskAppliesResponse
-	85,  // 186: cat.CatService.ClaimTask:output_type -> cat.ClaimTaskResponse
-	87,  // 187: cat.CatService.AbandonTask:output_type -> cat.AbandonTaskResponse
-	89,  // 188: cat.CatService.CompleteTask:output_type -> cat.CompleteTaskResponse
-	74,  // 189: cat.CatService.GetTaskDetail:output_type -> cat.GetTaskDetailResponse
-	76,  // 190: cat.CatService.ListTasks:output_type -> cat.ListTasksResponse
-	91,  // 191: cat.CatService.ListMyClaimedTasks:output_type -> cat.ListMyClaimedTasksResponse
-	94,  // 192: cat.CatService.ListMyCompletedTasks:output_type -> cat.ListMyCompletedTasksResponse
-	65,  // 193: cat.CatService.ApproveTaskApply:output_type -> cat.ApproveTaskApplyResponse
-	67,  // 194: cat.CatService.RejectTaskApply:output_type -> cat.RejectTaskApplyResponse
-	69,  // 195: cat.CatService.ListPendingTaskApplies:output_type -> cat.ListPendingTaskAppliesResponse
-	71,  // 196: cat.CatService.DirectCreateTask:output_type -> cat.DirectCreateTaskResponse
-	79,  // 197: cat.CatService.UpdateTask:output_type -> cat.UpdateTaskResponse
-	81,  // 198: cat.CatService.CancelTask:output_type -> cat.CancelTaskResponse
-	83,  // 199: cat.CatService.EscalateTaskUrgency:output_type -> cat.EscalateTaskUrgencyResponse
-	96,  // 200: cat.CatService.GetTaskFlows:output_type -> cat.GetTaskFlowsResponse
-	99,  // 201: cat.CatService.GetTaskLogs:output_type -> cat.GetTaskLogsResponse
-	103, // 202: cat.CatService.ApplyUpdateCatInfo:output_type -> cat.ApplyUpdateCatInfoResponse
-	105, // 203: cat.CatService.GetMyUpdateCatApplyDetail:output_type -> cat.GetMyUpdateCatApplyDetailResponse
-	107, // 204: cat.CatService.ApplyAddMedicalRecord:output_type -> cat.ApplyAddMedicalRecordResponse
-	109, // 205: cat.CatService.ApplyAddRescueRecord:output_type -> cat.ApplyAddRescueRecordResponse
-	111, // 206: cat.CatService.ApplyCreateCatTask:output_type -> cat.ApplyCreateCatTaskResponse
-	113, // 207: cat.CatService.ClaimCatTask:output_type -> cat.ClaimCatTaskResponse
-	115, // 208: cat.CatService.AbandonCatTask:output_type -> cat.AbandonCatTaskResponse
-	117, // 209: cat.CatService.UploadTaskProgress:output_type -> cat.UploadTaskProgressResponse
-	120, // 210: cat.CatService.ApproveUpdateCatInfo:output_type -> cat.ApproveUpdateCatInfoResponse
-	122, // 211: cat.CatService.RejectUpdateCatInfo:output_type -> cat.RejectUpdateCatInfoResponse
-	124, // 212: cat.CatService.GetUpdateCatApplyDetail:output_type -> cat.GetUpdateCatApplyDetailResponse
-	127, // 213: cat.CatService.ListUpdateCatApply:output_type -> cat.ListUpdateCatApplyResponse
-	129, // 214: cat.CatService.ApproveMedicalRecord:output_type -> cat.ApproveMedicalRecordResponse
-	131, // 215: cat.CatService.RejectMedicalRecord:output_type -> cat.RejectMedicalRecordResponse
-	133, // 216: cat.CatService.ApproveCreateCatTask:output_type -> cat.ApproveCreateCatTaskResponse
-	135, // 217: cat.CatService.RejectCreateCatTask:output_type -> cat.RejectCreateCatTaskResponse
-	137, // 218: cat.CatService.GetCreateCatTaskApplyDetail:output_type -> cat.GetCreateCatTaskApplyDetailResponse
-	140, // 219: cat.CatService.ListCreateCatTaskApply:output_type -> cat.ListCreateCatTaskApplyResponse
-	142, // 220: cat.CatService.CreateCatTask:output_type -> cat.CreateCatTaskResponse
-	144, // 221: cat.CatService.UpdateCatTaskStatus:output_type -> cat.UpdateCatTaskStatusResponse
-	148, // 222: cat.CatService.GetCatDetail:output_type -> cat.GetCatDetailResponse
-	151, // 223: cat.CatService.ListCats:output_type -> cat.ListCatsResponse
-	154, // 224: cat.CatService.ListCatTasks:output_type -> cat.ListCatTasksResponse
-	157, // [157:225] is the sub-list for method output_type
-	89,  // [89:157] is the sub-list for method input_type
+	116, // 138: cat.CatService.UploadTaskProgress:input_type -> cat.UploadTaskProgressRequest
+	119, // 139: cat.CatService.ApproveUpdateCatInfo:input_type -> cat.ApproveUpdateCatInfoRequest
+	121, // 140: cat.CatService.RejectUpdateCatInfo:input_type -> cat.RejectUpdateCatInfoRequest
+	123, // 141: cat.CatService.GetUpdateCatApplyDetail:input_type -> cat.GetUpdateCatApplyDetailRequest
+	125, // 142: cat.CatService.ListUpdateCatApply:input_type -> cat.ListUpdateCatApplyRequest
+	128, // 143: cat.CatService.ApproveMedicalRecord:input_type -> cat.ApproveMedicalRecordRequest
+	130, // 144: cat.CatService.RejectMedicalRecord:input_type -> cat.RejectMedicalRecordRequest
+	143, // 145: cat.CatService.UpdateCatTaskStatus:input_type -> cat.UpdateCatTaskStatusRequest
+	147, // 146: cat.CatService.GetCatDetail:input_type -> cat.GetCatDetailRequest
+	149, // 147: cat.CatService.ListCats:input_type -> cat.ListCatsRequest
+	3,   // 148: cat.CatService.ApplyCreateCat:output_type -> cat.ApplyCreateCatResponse
+	0,   // 149: cat.CatService.CancelApplyCreateCat:output_type -> cat.Response
+	11,  // 150: cat.CatService.GetApplyDetail:output_type -> cat.GetApplyDetailResponse
+	13,  // 151: cat.CatService.ListMyApplies:output_type -> cat.ListMyAppliesResponse
+	6,   // 152: cat.CatService.ApproveCreateCat:output_type -> cat.ApproveCreateCatResponse
+	0,   // 153: cat.CatService.RejectCreateCat:output_type -> cat.Response
+	9,   // 154: cat.CatService.DirectCreateCat:output_type -> cat.DirectCreateCatResponse
+	15,  // 155: cat.CatService.ListPendingApplies:output_type -> cat.ListPendingAppliesResponse
+	17,  // 156: cat.CatService.ApplyAdopt:output_type -> cat.ApplyAdoptResponse
+	19,  // 157: cat.CatService.CancelAdoptApply:output_type -> cat.CancelAdoptApplyResponse
+	22,  // 158: cat.CatService.GetAdoptApplyDetail:output_type -> cat.GetAdoptApplyDetailResponse
+	26,  // 159: cat.CatService.ListMyAdoptApplies:output_type -> cat.ListMyAdoptAppliesResponse
+	43,  // 160: cat.CatService.ListMyAdoptions:output_type -> cat.ListAdoptionsResponse
+	49,  // 161: cat.CatService.CompleteVisit:output_type -> cat.RecordFollowUpVisitResponse
+	28,  // 162: cat.CatService.ApproveAdopt:output_type -> cat.ApproveAdoptResponse
+	30,  // 163: cat.CatService.RejectAdopt:output_type -> cat.RejectAdoptResponse
+	33,  // 164: cat.CatService.ListPendingAdoptApplies:output_type -> cat.ListPendingAdoptAppliesResponse
+	35,  // 165: cat.CatService.CreateAdoption:output_type -> cat.CreateAdoptionResponse
+	37,  // 166: cat.CatService.DirectAdopt:output_type -> cat.DirectAdoptResponse
+	40,  // 167: cat.CatService.GetAdoptionDetail:output_type -> cat.GetAdoptionDetailResponse
+	43,  // 168: cat.CatService.ListAdoptions:output_type -> cat.ListAdoptionsResponse
+	45,  // 169: cat.CatService.UpdateAdoption:output_type -> cat.UpdateAdoptionResponse
+	47,  // 170: cat.CatService.RecordHomeVisit:output_type -> cat.RecordHomeVisitResponse
+	49,  // 171: cat.CatService.RecordFollowUpVisit:output_type -> cat.RecordFollowUpVisitResponse
+	51,  // 172: cat.CatService.UpdateReturnStatus:output_type -> cat.UpdateReturnStatusResponse
+	55,  // 173: cat.CatService.ApplyCreateTask:output_type -> cat.ApplyCreateTaskResponse
+	57,  // 174: cat.CatService.CancelTaskApply:output_type -> cat.CancelTaskApplyResponse
+	60,  // 175: cat.CatService.GetTaskApplyDetail:output_type -> cat.GetTaskApplyDetailResponse
+	62,  // 176: cat.CatService.ListMyTaskApplies:output_type -> cat.ListMyTaskAppliesResponse
+	85,  // 177: cat.CatService.ClaimTask:output_type -> cat.ClaimTaskResponse
+	87,  // 178: cat.CatService.AbandonTask:output_type -> cat.AbandonTaskResponse
+	89,  // 179: cat.CatService.CompleteTask:output_type -> cat.CompleteTaskResponse
+	74,  // 180: cat.CatService.GetTaskDetail:output_type -> cat.GetTaskDetailResponse
+	76,  // 181: cat.CatService.ListTasks:output_type -> cat.ListTasksResponse
+	91,  // 182: cat.CatService.ListMyClaimedTasks:output_type -> cat.ListMyClaimedTasksResponse
+	94,  // 183: cat.CatService.ListMyCompletedTasks:output_type -> cat.ListMyCompletedTasksResponse
+	65,  // 184: cat.CatService.ApproveTaskApply:output_type -> cat.ApproveTaskApplyResponse
+	67,  // 185: cat.CatService.RejectTaskApply:output_type -> cat.RejectTaskApplyResponse
+	69,  // 186: cat.CatService.ListPendingTaskApplies:output_type -> cat.ListPendingTaskAppliesResponse
+	71,  // 187: cat.CatService.DirectCreateTask:output_type -> cat.DirectCreateTaskResponse
+	79,  // 188: cat.CatService.UpdateTask:output_type -> cat.UpdateTaskResponse
+	81,  // 189: cat.CatService.CancelTask:output_type -> cat.CancelTaskResponse
+	83,  // 190: cat.CatService.EscalateTaskUrgency:output_type -> cat.EscalateTaskUrgencyResponse
+	96,  // 191: cat.CatService.GetTaskFlows:output_type -> cat.GetTaskFlowsResponse
+	99,  // 192: cat.CatService.GetTaskLogs:output_type -> cat.GetTaskLogsResponse
+	103, // 193: cat.CatService.ApplyUpdateCatInfo:output_type -> cat.ApplyUpdateCatInfoResponse
+	105, // 194: cat.CatService.GetMyUpdateCatApplyDetail:output_type -> cat.GetMyUpdateCatApplyDetailResponse
+	107, // 195: cat.CatService.ApplyAddMedicalRecord:output_type -> cat.ApplyAddMedicalRecordResponse
+	109, // 196: cat.CatService.ApplyAddRescueRecord:output_type -> cat.ApplyAddRescueRecordResponse
+	117, // 197: cat.CatService.UploadTaskProgress:output_type -> cat.UploadTaskProgressResponse
+	120, // 198: cat.CatService.ApproveUpdateCatInfo:output_type -> cat.ApproveUpdateCatInfoResponse
+	122, // 199: cat.CatService.RejectUpdateCatInfo:output_type -> cat.RejectUpdateCatInfoResponse
+	124, // 200: cat.CatService.GetUpdateCatApplyDetail:output_type -> cat.GetUpdateCatApplyDetailResponse
+	127, // 201: cat.CatService.ListUpdateCatApply:output_type -> cat.ListUpdateCatApplyResponse
+	129, // 202: cat.CatService.ApproveMedicalRecord:output_type -> cat.ApproveMedicalRecordResponse
+	131, // 203: cat.CatService.RejectMedicalRecord:output_type -> cat.RejectMedicalRecordResponse
+	144, // 204: cat.CatService.UpdateCatTaskStatus:output_type -> cat.UpdateCatTaskStatusResponse
+	148, // 205: cat.CatService.GetCatDetail:output_type -> cat.GetCatDetailResponse
+	151, // 206: cat.CatService.ListCats:output_type -> cat.ListCatsResponse
+	148, // [148:207] is the sub-list for method output_type
+	89,  // [89:148] is the sub-list for method input_type
 	89,  // [89:89] is the sub-list for extension type_name
 	89,  // [89:89] is the sub-list for extension extendee
 	0,   // [0:89] is the sub-list for field type_name

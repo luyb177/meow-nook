@@ -265,12 +265,6 @@ type (
 		ApplyAddMedicalRecord(ctx context.Context, in *ApplyAddMedicalRecordRequest, opts ...grpc.CallOption) (*ApplyAddMedicalRecordResponse, error)
 		// 申请新增救助记录
 		ApplyAddRescueRecord(ctx context.Context, in *ApplyAddRescueRecordRequest, opts ...grpc.CallOption) (*ApplyAddRescueRecordResponse, error)
-		// 申请创建任务
-		ApplyCreateCatTask(ctx context.Context, in *ApplyCreateCatTaskRequest, opts ...grpc.CallOption) (*ApplyCreateCatTaskResponse, error)
-		// 申请认领任务
-		ClaimCatTask(ctx context.Context, in *ClaimCatTaskRequest, opts ...grpc.CallOption) (*ClaimCatTaskResponse, error)
-		// 申请放弃任务
-		AbandonCatTask(ctx context.Context, in *AbandonCatTaskRequest, opts ...grpc.CallOption) (*AbandonCatTaskResponse, error)
 		// 上传任务进度（图片/备注）
 		UploadTaskProgress(ctx context.Context, in *UploadTaskProgressRequest, opts ...grpc.CallOption) (*UploadTaskProgressResponse, error)
 		ApproveUpdateCatInfo(ctx context.Context, in *ApproveUpdateCatInfoRequest, opts ...grpc.CallOption) (*ApproveUpdateCatInfoResponse, error)
@@ -279,21 +273,12 @@ type (
 		ListUpdateCatApply(ctx context.Context, in *ListUpdateCatApplyRequest, opts ...grpc.CallOption) (*ListUpdateCatApplyResponse, error)
 		ApproveMedicalRecord(ctx context.Context, in *ApproveMedicalRecordRequest, opts ...grpc.CallOption) (*ApproveMedicalRecordResponse, error)
 		RejectMedicalRecord(ctx context.Context, in *RejectMedicalRecordRequest, opts ...grpc.CallOption) (*RejectMedicalRecordResponse, error)
-		// 管理员审核志愿者任务申请
-		ApproveCreateCatTask(ctx context.Context, in *ApproveCreateCatTaskRequest, opts ...grpc.CallOption) (*ApproveCreateCatTaskResponse, error)
-		RejectCreateCatTask(ctx context.Context, in *RejectCreateCatTaskRequest, opts ...grpc.CallOption) (*RejectCreateCatTaskResponse, error)
-		GetCreateCatTaskApplyDetail(ctx context.Context, in *GetCreateCatTaskApplyDetailRequest, opts ...grpc.CallOption) (*GetCreateCatTaskApplyDetailResponse, error)
-		ListCreateCatTaskApply(ctx context.Context, in *ListCreateCatTaskApplyRequest, opts ...grpc.CallOption) (*ListCreateCatTaskApplyResponse, error)
-		// 管理员直接创建正式任务（无需审核）
-		CreateCatTask(ctx context.Context, in *CreateCatTaskRequest, opts ...grpc.CallOption) (*CreateCatTaskResponse, error)
 		// 管理员更新任务状态
 		UpdateCatTaskStatus(ctx context.Context, in *UpdateCatTaskStatusRequest, opts ...grpc.CallOption) (*UpdateCatTaskStatusResponse, error)
 		// 猫咪详情
 		GetCatDetail(ctx context.Context, in *GetCatDetailRequest, opts ...grpc.CallOption) (*GetCatDetailResponse, error)
 		// 猫咪列表
 		ListCats(ctx context.Context, in *ListCatsRequest, opts ...grpc.CallOption) (*ListCatsResponse, error)
-		// 正式任务列表
-		ListCatTasks(ctx context.Context, in *ListCatTasksRequest, opts ...grpc.CallOption) (*ListCatTasksResponse, error)
 	}
 
 	defaultCatService struct {
@@ -595,24 +580,6 @@ func (m *defaultCatService) ApplyAddRescueRecord(ctx context.Context, in *ApplyA
 	return client.ApplyAddRescueRecord(ctx, in, opts...)
 }
 
-// 申请创建任务
-func (m *defaultCatService) ApplyCreateCatTask(ctx context.Context, in *ApplyCreateCatTaskRequest, opts ...grpc.CallOption) (*ApplyCreateCatTaskResponse, error) {
-	client := v1.NewCatServiceClient(m.cli.Conn())
-	return client.ApplyCreateCatTask(ctx, in, opts...)
-}
-
-// 申请认领任务
-func (m *defaultCatService) ClaimCatTask(ctx context.Context, in *ClaimCatTaskRequest, opts ...grpc.CallOption) (*ClaimCatTaskResponse, error) {
-	client := v1.NewCatServiceClient(m.cli.Conn())
-	return client.ClaimCatTask(ctx, in, opts...)
-}
-
-// 申请放弃任务
-func (m *defaultCatService) AbandonCatTask(ctx context.Context, in *AbandonCatTaskRequest, opts ...grpc.CallOption) (*AbandonCatTaskResponse, error) {
-	client := v1.NewCatServiceClient(m.cli.Conn())
-	return client.AbandonCatTask(ctx, in, opts...)
-}
-
 // 上传任务进度（图片/备注）
 func (m *defaultCatService) UploadTaskProgress(ctx context.Context, in *UploadTaskProgressRequest, opts ...grpc.CallOption) (*UploadTaskProgressResponse, error) {
 	client := v1.NewCatServiceClient(m.cli.Conn())
@@ -649,33 +616,6 @@ func (m *defaultCatService) RejectMedicalRecord(ctx context.Context, in *RejectM
 	return client.RejectMedicalRecord(ctx, in, opts...)
 }
 
-// 管理员审核志愿者任务申请
-func (m *defaultCatService) ApproveCreateCatTask(ctx context.Context, in *ApproveCreateCatTaskRequest, opts ...grpc.CallOption) (*ApproveCreateCatTaskResponse, error) {
-	client := v1.NewCatServiceClient(m.cli.Conn())
-	return client.ApproveCreateCatTask(ctx, in, opts...)
-}
-
-func (m *defaultCatService) RejectCreateCatTask(ctx context.Context, in *RejectCreateCatTaskRequest, opts ...grpc.CallOption) (*RejectCreateCatTaskResponse, error) {
-	client := v1.NewCatServiceClient(m.cli.Conn())
-	return client.RejectCreateCatTask(ctx, in, opts...)
-}
-
-func (m *defaultCatService) GetCreateCatTaskApplyDetail(ctx context.Context, in *GetCreateCatTaskApplyDetailRequest, opts ...grpc.CallOption) (*GetCreateCatTaskApplyDetailResponse, error) {
-	client := v1.NewCatServiceClient(m.cli.Conn())
-	return client.GetCreateCatTaskApplyDetail(ctx, in, opts...)
-}
-
-func (m *defaultCatService) ListCreateCatTaskApply(ctx context.Context, in *ListCreateCatTaskApplyRequest, opts ...grpc.CallOption) (*ListCreateCatTaskApplyResponse, error) {
-	client := v1.NewCatServiceClient(m.cli.Conn())
-	return client.ListCreateCatTaskApply(ctx, in, opts...)
-}
-
-// 管理员直接创建正式任务（无需审核）
-func (m *defaultCatService) CreateCatTask(ctx context.Context, in *CreateCatTaskRequest, opts ...grpc.CallOption) (*CreateCatTaskResponse, error) {
-	client := v1.NewCatServiceClient(m.cli.Conn())
-	return client.CreateCatTask(ctx, in, opts...)
-}
-
 // 管理员更新任务状态
 func (m *defaultCatService) UpdateCatTaskStatus(ctx context.Context, in *UpdateCatTaskStatusRequest, opts ...grpc.CallOption) (*UpdateCatTaskStatusResponse, error) {
 	client := v1.NewCatServiceClient(m.cli.Conn())
@@ -692,10 +632,4 @@ func (m *defaultCatService) GetCatDetail(ctx context.Context, in *GetCatDetailRe
 func (m *defaultCatService) ListCats(ctx context.Context, in *ListCatsRequest, opts ...grpc.CallOption) (*ListCatsResponse, error) {
 	client := v1.NewCatServiceClient(m.cli.Conn())
 	return client.ListCats(ctx, in, opts...)
-}
-
-// 正式任务列表
-func (m *defaultCatService) ListCatTasks(ctx context.Context, in *ListCatTasksRequest, opts ...grpc.CallOption) (*ListCatTasksResponse, error) {
-	client := v1.NewCatServiceClient(m.cli.Conn())
-	return client.ListCatTasks(ctx, in, opts...)
 }

@@ -10,6 +10,7 @@ import (
 	adoption "github.com/luyb177/meow-nook/service/gateway/internal/handler/adoption"
 	auth "github.com/luyb177/meow-nook/service/gateway/internal/handler/auth"
 	cat "github.com/luyb177/meow-nook/service/gateway/internal/handler/cat"
+	task "github.com/luyb177/meow-nook/service/gateway/internal/handler/task"
 	"github.com/luyb177/meow-nook/service/gateway/internal/svc"
 
 	"github.com/zeromicro/go-zero/rest"
@@ -176,5 +177,111 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			},
 		},
 		rest.WithPrefix("/api/v1/cats"),
+	)
+
+	server.AddRoutes(
+		[]rest.Route{
+			{
+				Method:  http.MethodPost,
+				Path:    "/admin/task/:task_id/cancel",
+				Handler: task.CancelTaskHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/admin/task/:task_id/escalate",
+				Handler: task.EscalateTaskUrgencyHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/admin/task/:task_id/update",
+				Handler: task.UpdateTaskHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/admin/task/apply/:apply_id/approve",
+				Handler: task.ApproveTaskApplyHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/admin/task/apply/:apply_id/reject",
+				Handler: task.RejectTaskApplyHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/admin/task/apply/pending",
+				Handler: task.ListPendingTaskAppliesHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/admin/task/create",
+				Handler: task.DirectCreateTaskHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/task/:task_id",
+				Handler: task.GetTaskDetailHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/task/:task_id/claim",
+				Handler: task.ClaimTaskHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/task/:task_id/flows",
+				Handler: task.GetTaskFlowsHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/task/:task_id/logs",
+				Handler: task.GetTaskLogsHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/task/apply",
+				Handler: task.ApplyCreateTaskHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/task/apply/:apply_id",
+				Handler: task.GetTaskApplyDetailHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/task/apply/cancel",
+				Handler: task.CancelTaskApplyHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/task/claim/:claim_id/abandon",
+				Handler: task.AbandonTaskHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/task/claim/:claim_id/complete",
+				Handler: task.CompleteTaskHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/task/list",
+				Handler: task.ListTasksHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/task/my-applies",
+				Handler: task.ListMyTaskAppliesHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/task/my-claimed",
+				Handler: task.ListMyClaimedTasksHandler(serverCtx),
+			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/task/my-completed",
+				Handler: task.ListMyCompletedTasksHandler(serverCtx),
+			},
+		},
+		rest.WithPrefix("/api/v1/task"),
 	)
 }

@@ -656,55 +656,468 @@ service gateway {
 	post /admin/adoption/return (UpdateReturnStatusReq) returns (UpdateReturnStatusResp)
 }
 
+// ==================== 任务申请相关 ====================
+type ApplyCreateTaskReq {
+	CatId      uint64   `json:"cat_id"`
+	Title      string   `json:"title"`
+	TaskType   string   `json:"task_type"`
+	Summary    string   `json:"summary"`
+	Detail     string   `json:"detail"`
+	Location   string   `json:"location"`
+	Longitude  float64  `json:"longitude"`
+	Latitude   float64  `json:"latitude"`
+	DeadlineAt string   `json:"deadline_at,omitempty"`
+	ImageUrls  []string `json:"image_urls"`
+	TagIds     []uint64 `json:"tag_ids"`
+}
+
+type ApplyCreateTaskResp {
+	ApplyId uint64 `json:"apply_id"`
+	Status  string `json:"status"`
+	Message string `json:"message"`
+}
+
+type CancelTaskApplyReq {
+	ApplyId uint64 `json:"apply_id"`
+	Reason  string `json:"reason"`
+}
+
+type CancelTaskApplyResp {
+	Message string `json:"message"`
+}
+
+type GetTaskApplyDetailReq {
+	ApplyId uint64 `path:"apply_id"`
+}
+
+type GetTaskApplyDetailResp {
+	Apply TaskApplyVO `json:"apply"`
+	Cat   CatBriefVO  `json:"cat"`
+}
+
+type ListMyTaskAppliesReq {
+	Status   string `form:"status,optional"`
+	Page     int32  `form:"page,optional"`
+	PageSize int32  `form:"page_size,optional"`
+}
+
+type ListMyTaskAppliesResp {
+	Items    []TaskApplyItemVO `json:"items"`
+	Total    int64             `json:"total"`
+	Page     int32             `json:"page"`
+	PageSize int32             `json:"page_size"`
+}
+
+type TaskApplyVO {
+	Id              uint64   `json:"id"`
+	CatId           uint64   `json:"cat_id"`
+	CatName         string   `json:"cat_name"`
+	CatAvatar       string   `json:"cat_avatar"`
+	ApplicantUserId uint64   `json:"applicant_user_id"`
+	ApplicantName   string   `json:"applicant_name"`
+	ApplicantAvatar string   `json:"applicant_avatar"`
+	Title           string   `json:"title"`
+	TaskType        string   `json:"task_type"`
+	Summary         string   `json:"summary"`
+	Detail          string   `json:"detail"`
+	Location        string   `json:"location"`
+	Longitude       float64  `json:"longitude"`
+	Latitude        float64  `json:"latitude"`
+	Status          string   `json:"status"`
+	ReviewerId      uint64   `json:"reviewer_id"`
+	ReviewerName    string   `json:"reviewer_name"`
+	ReviewedAt      string   `json:"reviewed_at,omitempty"`
+	RejectReason    string   `json:"reject_reason"`
+	UrgencyLevel    string   `json:"urgency_level"`
+	DifficultyLevel int32    `json:"difficulty_level"`
+	RewardPoints    int32    `json:"reward_points"`
+	TaskId          uint64   `json:"task_id"`
+	DeadlineAt      string   `json:"deadline_at,omitempty"`
+	CreatedAt       string   `json:"created_at"`
+	UpdatedAt       string   `json:"updated_at"`
+	ImageUrls       []string `json:"image_urls"`
+	Tags            []TagVO  `json:"tags"`
+}
+
+type TaskApplyItemVO {
+	ApplyId      uint64 `json:"apply_id"`
+	CatId        uint64 `json:"cat_id"`
+	CatName      string `json:"cat_name"`
+	CatAvatar    string `json:"cat_avatar"`
+	Title        string `json:"title"`
+	TaskType     string `json:"task_type"`
+	Status       string `json:"status"`
+	RejectReason string `json:"reject_reason"`
+	CreatedAt    string `json:"created_at"`
+}
+
+// ==================== 管理员审核相关 ====================
+type ApproveTaskApplyReq {
+	ApplyId         uint64 `path:"apply_id"`
+	UrgencyLevel    string `json:"urgency_level"`
+	DifficultyLevel int32  `json:"difficulty_level"`
+	RewardPoints    int32  `json:"reward_points"`
+	MaxClaimers     int32  `json:"max_claimers"`
+	Area            string `json:"area"`
+	Remark          string `json:"remark"`
+}
+
+type ApproveTaskApplyResp {
+	TaskId  uint64 `json:"task_id"`
+	Message string `json:"message"`
+}
+
+type RejectTaskApplyReq {
+	ApplyId      uint64 `path:"apply_id"`
+	RejectReason string `json:"reject_reason"`
+}
+
+type RejectTaskApplyResp {
+	Message string `json:"message"`
+}
+
+type ListPendingTaskAppliesReq {
+	CatId    uint64 `form:"cat_id,optional"`
+	Page     int32  `form:"page,optional"`
+	PageSize int32  `form:"page_size,optional"`
+}
+
+type ListPendingTaskAppliesResp {
+	Items    []TaskApplyVO `json:"items"`
+	Total    int64         `json:"total"`
+	Page     int32         `json:"page"`
+	PageSize int32         `json:"page_size"`
+}
+
+// ==================== 正式任务相关 ====================
+type DirectCreateTaskReq {
+	CatId           uint64   `json:"cat_id"`
+	Title           string   `json:"title"`
+	TaskType        string   `json:"task_type"`
+	Summary         string   `json:"summary"`
+	Detail          string   `json:"detail"`
+	Location        string   `json:"location"`
+	Longitude       float64  `json:"longitude"`
+	Latitude        float64  `json:"latitude"`
+	Area            string   `json:"area"`
+	UrgencyLevel    string   `json:"urgency_level"`
+	DifficultyLevel int32    `json:"difficulty_level"`
+	RewardPoints    int32    `json:"reward_points"`
+	MaxClaimers     int32    `json:"max_claimers"`
+	DeadlineAt      string   `json:"deadline_at,omitempty"`
+	Remark          string   `json:"remark"`
+	ImageUrls       []string `json:"image_urls"`
+	TagIds          []uint64 `json:"tag_ids"`
+}
+
+type DirectCreateTaskResp {
+	TaskId  uint64 `json:"task_id"`
+	Message string `json:"message"`
+}
+
+type GetTaskDetailReq {
+	TaskId uint64 `path:"task_id"`
+}
+
+type GetTaskDetailResp {
+	Task TaskVO     `json:"task"`
+	Cat  CatBriefVO `json:"cat"`
+}
+
+type ListTasksReq {
+	CatId           uint64 `form:"cat_id,optional"`
+	Status          string `form:"status,optional"`
+	UrgencyLevel    string `form:"urgency_level,optional"`
+	DifficultyLevel int32  `form:"difficulty_level,optional"`
+	Area            string `form:"area,optional"`
+	Page            int32  `form:"page,optional"`
+	PageSize        int32  `form:"page_size,optional"`
+}
+
+type ListTasksResp {
+	Items    []TaskItemVO `json:"items"`
+	Total    int64        `json:"total"`
+	Page     int32        `json:"page"`
+	PageSize int32        `json:"page_size"`
+}
+
+type TaskVO {
+	Id                uint64   `json:"id"`
+	CatId             uint64   `json:"cat_id"`
+	CatName           string   `json:"cat_name"`
+	CatAvatar         string   `json:"cat_avatar"`
+	ApplyId           uint64   `json:"apply_id"`
+	CreatorId         uint64   `json:"creator_id"`
+	CreatorName       string   `json:"creator_name"`
+	Title             string   `json:"title"`
+	TaskType          string   `json:"task_type"`
+	Summary           string   `json:"summary"`
+	Detail            string   `json:"detail"`
+	Location          string   `json:"location"`
+	Longitude         float64  `json:"longitude"`
+	Latitude          float64  `json:"latitude"`
+	Area              string   `json:"area"`
+	UrgencyLevel      string   `json:"urgency_level"`
+	DifficultyLevel   int32    `json:"difficulty_level"`
+	RewardPoints      int32    `json:"reward_points"`
+	FinalRewardPoints int32    `json:"final_reward_points"`
+	MaxClaimers       int32    `json:"max_claimers"`
+	CurrentClaimers   int32    `json:"current_claimers"`
+	Status            string   `json:"status"`
+	Remark            string   `json:"remark"`
+	DeadlineAt        string   `json:"deadline_at,omitempty"`
+	LastEscalatedAt   string   `json:"last_escalated_at,omitempty"`
+	EscalationCount   int32    `json:"escalation_count"`
+	CreatedAt         string   `json:"created_at"`
+	UpdatedAt         string   `json:"updated_at"`
+	ImageUrls         []string `json:"image_urls"`
+	Tags              []TagVO  `json:"tags"`
+}
+
+type TaskItemVO {
+	TaskId          uint64 `json:"task_id"`
+	CatId           uint64 `json:"cat_id"`
+	CatName         string `json:"cat_name"`
+	CatAvatar       string `json:"cat_avatar"`
+	Title           string `json:"title"`
+	TaskType        string `json:"task_type"`
+	Summary         string `json:"summary"`
+	Location        string `json:"location"`
+	UrgencyLevel    string `json:"urgency_level"`
+	DifficultyLevel int32  `json:"difficulty_level"`
+	RewardPoints    int32  `json:"reward_points"`
+	CurrentClaimers int32  `json:"current_claimers"`
+	MaxClaimers     int32  `json:"max_claimers"`
+	Status          string `json:"status"`
+	DeadlineAt      string `json:"deadline_at,omitempty"`
+	CreatedAt       string `json:"created_at"`
+}
+
+type UpdateTaskReq {
+	TaskId          uint64 `path:"task_id"`
+	Title           string `json:"title"`
+	Summary         string `json:"summary"`
+	Detail          string `json:"detail"`
+	DifficultyLevel int32  `json:"difficulty_level"`
+	RewardPoints    int32  `json:"reward_points"`
+	DeadlineAt      string `json:"deadline_at,omitempty"`
+	Remark          string `json:"remark"`
+}
+
+type UpdateTaskResp {
+	Message string `json:"message"`
+}
+
+type CancelTaskReq {
+	TaskId uint64 `path:"task_id"`
+	Reason string `json:"reason"`
+}
+
+type CancelTaskResp {
+	Message string `json:"message"`
+}
+
+type EscalateTaskUrgencyReq {
+	TaskId uint64 `path:"task_id"`
+}
+
+type EscalateTaskUrgencyResp {
+	NewUrgencyLevel string `json:"new_urgency_level"`
+	EscalationCount int32  `json:"escalation_count"`
+	Message         string `json:"message"`
+}
+
+// ==================== 任务认领相关 ====================
+type ClaimTaskReq {
+	TaskId uint64 `path:"task_id"`
+}
+
+type ClaimTaskResp {
+	ClaimId uint64 `json:"claim_id"`
+	Message string `json:"message"`
+}
+
+type AbandonTaskReq {
+	ClaimId uint64 `path:"claim_id"`
+	Reason  string `json:"reason"`
+}
+
+type AbandonTaskResp {
+	Message string `json:"message"`
+}
+
+type CompleteTaskReq {
+	ClaimId   uint64   `path:"claim_id"`
+	Content   string   `json:"content"`
+	ImageUrls []string `json:"image_urls"`
+}
+
+type CompleteTaskResp {
+	RewardPoints        int32  `json:"reward_points"`
+	IsOverdue           bool   `json:"is_overdue"`
+	ReputationDeduction int32  `json:"reputation_deduction"`
+	Message             string `json:"message"`
+}
+
+type ListMyClaimedTasksReq {
+	Status   string `form:"status,optional"`
+	Page     int32  `form:"page,optional"`
+	PageSize int32  `form:"page_size,optional"`
+}
+
+type ListMyClaimedTasksResp {
+	Items    []ClaimItemVO `json:"items"`
+	Total    int64         `json:"total"`
+	Page     int32         `json:"page"`
+	PageSize int32         `json:"page_size"`
+}
+
+type ListMyCompletedTasksReq {
+	Page     int32 `form:"page,optional"`
+	PageSize int32 `form:"page_size,optional"`
+}
+
+type ListMyCompletedTasksResp {
+	Items       []ClaimItemVO `json:"items"`
+	Total       int64         `json:"total"`
+	TotalPoints int32         `json:"total_points"`
+	Page        int32         `json:"page"`
+	PageSize    int32         `json:"page_size"`
+}
+
+type ClaimItemVO {
+	ClaimId      uint64 `json:"claim_id"`
+	TaskId       uint64 `json:"task_id"`
+	TaskTitle    string `json:"task_title"`
+	TaskType     string `json:"task_type"`
+	CatName      string `json:"cat_name"`
+	Status       string `json:"status"`
+	RewardPoints int32  `json:"reward_points"`
+	IsOverdue    bool   `json:"is_overdue"`
+	ClaimedAt    string `json:"claimed_at"`
+	DeadlineAt   string `json:"deadline_at,omitempty"`
+}
+
+// ==================== 流转日志相关 ====================
+type GetTaskFlowsReq {
+	TaskId uint64 `path:"task_id"`
+}
+
+type GetTaskFlowsResp {
+	Items []TaskFlowVO `json:"items"`
+}
+
+type TaskFlowVO {
+	Id         uint64 `json:"id"`
+	TaskId     uint64 `json:"task_id"`
+	UserId     uint64 `json:"user_id"`
+	UserName   string `json:"user_name"`
+	Action     string `json:"action"`
+	FromStatus string `json:"from_status"`
+	ToStatus   string `json:"to_status"`
+	Remark     string `json:"remark"`
+	CreatedAt  string `json:"created_at"`
+}
+
+type GetTaskLogsReq {
+	TaskId uint64 `path:"task_id"`
+}
+
+type GetTaskLogsResp {
+	Items []TaskLogVO `json:"items"`
+}
+
+type TaskLogVO {
+	Id        uint64 `json:"id"`
+	TaskId    uint64 `json:"task_id"`
+	UserId    uint64 `json:"user_id"`
+	UserName  string `json:"user_name"`
+	Action    string `json:"action"`
+	Content   string `json:"content"`
+	CreatedAt string `json:"created_at"`
+}
+
+// ==================== 通用 VO ====================
+type TagVO {
+	Id    uint64 `json:"id"`
+	Name  string `json:"name"`
+	Type  string `json:"type"`
+	Theme string `json:"theme"`
+}
+
+@server (
+	prefix: /api/v1/task
+	tags:   "任务模块"
+	group:  task
+)
+service gateway {
+	// ==================== 志愿者端 - 任务申请 ====================
+	@handler ApplyCreateTask
+	post /task/apply (ApplyCreateTaskReq) returns (ApplyCreateTaskResp)
+
+	@handler CancelTaskApply
+	post /task/apply/cancel (CancelTaskApplyReq) returns (CancelTaskApplyResp)
+
+	@handler GetTaskApplyDetail
+	get /task/apply/:apply_id (GetTaskApplyDetailReq) returns (GetTaskApplyDetailResp)
+
+	@handler ListMyTaskApplies
+	get /task/my-applies (ListMyTaskAppliesReq) returns (ListMyTaskAppliesResp)
+
+	// ==================== 志愿者端 - 任务操作 ====================
+	@handler ClaimTask
+	post /task/:task_id/claim (ClaimTaskReq) returns (ClaimTaskResp)
+
+	@handler AbandonTask
+	post /task/claim/:claim_id/abandon (AbandonTaskReq) returns (AbandonTaskResp)
+
+	@handler CompleteTask
+	post /task/claim/:claim_id/complete (CompleteTaskReq) returns (CompleteTaskResp)
+
+	@handler GetTaskDetail
+	get /task/:task_id (GetTaskDetailReq) returns (GetTaskDetailResp)
+
+	@handler ListTasks
+	get /task/list (ListTasksReq) returns (ListTasksResp)
+
+	@handler ListMyClaimedTasks
+	get /task/my-claimed (ListMyClaimedTasksReq) returns (ListMyClaimedTasksResp)
+
+	@handler ListMyCompletedTasks
+	get /task/my-completed (ListMyCompletedTasksReq) returns (ListMyCompletedTasksResp)
+
+	// ==================== 管理员端 - 任务申请审核 ====================
+	@handler ApproveTaskApply
+	post /admin/task/apply/:apply_id/approve (ApproveTaskApplyReq) returns (ApproveTaskApplyResp)
+
+	@handler RejectTaskApply
+	post /admin/task/apply/:apply_id/reject (RejectTaskApplyReq) returns (RejectTaskApplyResp)
+
+	@handler ListPendingTaskApplies
+	get /admin/task/apply/pending (ListPendingTaskAppliesReq) returns (ListPendingTaskAppliesResp)
+
+	// ==================== 管理员端 - 任务管理 ====================
+	@handler DirectCreateTask
+	post /admin/task/create (DirectCreateTaskReq) returns (DirectCreateTaskResp)
+
+	@handler UpdateTask
+	post /admin/task/:task_id/update (UpdateTaskReq) returns (UpdateTaskResp)
+
+	@handler CancelTask
+	post /admin/task/:task_id/cancel (CancelTaskReq) returns (CancelTaskResp)
+
+	@handler EscalateTaskUrgency
+	post /admin/task/:task_id/escalate (EscalateTaskUrgencyReq) returns (EscalateTaskUrgencyResp)
+
+	// ==================== 流转日志 ====================
+	@handler GetTaskFlows
+	get /task/:task_id/flows (GetTaskFlowsReq) returns (GetTaskFlowsResp)
+
+	@handler GetTaskLogs
+	get /task/:task_id/logs (GetTaskLogsReq) returns (GetTaskLogsResp)
+}
+
 //type (
-// CatInfo {
-//  Id             int64    `json:"id"`
-//  Name           string   `json:"name"`
-//  Gender         int32    `json:"gender"`
-//  AgeStage       int32    `json:"ageStage"`
-//  Size           int32    `json:"size"`
-//  NeuterStatus   int32    `json:"neuterStatus"`
-//  AdoptionStatus int32    `json:"adoptionStatus"`
-//  FoundLocation  string   `json:"foundLocation"`
-//  FoundLat       float64  `json:"foundLat"`
-//  FoundLng       float64  `json:"foundLng"`
-//  Description    string   `json:"description"`
-//  Tags           []string `json:"tags"`
-//  Photos         []string `json:"photos"`
-//  CreatedAt      int64    `json:"createdAt"`
-//  UpdatedAt      int64    `json:"updatedAt"`
-// }
-// ListCatsReq {
-//  Gender         int32  `form:"gender,optional"`
-//  Size           int32  `form:"size,optional"`
-//  AgeStage       int32  `form:"ageStage,optional"`
-//  NeuterStatus   int32  `form:"neuterStatus,optional"`
-//  AdoptionStatus int32  `form:"adoptionStatus,optional"`
-//  Keyword        string `form:"keyword,optional"`
-//  Page           int32  `form:"page,optional,default=1"`
-//  PageSize       int32  `form:"pageSize,optional,default=20"`
-// }
-// ListCatsResp {
-//  Cats  []CatInfo `json:"cats"`
-//  Total int64     `json:"total"`
-// }
-// CreateCatReq {
-//  Name           string   `json:"name"`
-//  Gender         int32    `json:"gender"`
-//  AgeStage       int32    `json:"ageStage"`
-//  Size           int32    `json:"size"`
-//  NeuterStatus   int32    `json:"neuterStatus"`
-//  AdoptionStatus int32    `json:"adoptionStatus"`
-//  FoundLocation  string   `json:"foundLocation"`
-//  FoundLat       float64  `json:"foundLat"`
-//  FoundLng       float64  `json:"foundLng"`
-//  Description    string   `json:"description,optional"`
-//  Tags           []string `json:"tags,optional"`
-//  Photos         []string `json:"photos,optional"`
-// }
-// CreateCatResp {
-//  CatId int64 `json:"catId"`
-// }
 // UpdateCatReq {
 //  Name           string   `json:"name,optional"`
 //  Gender         int32    `json:"gender,optional"`
@@ -942,87 +1355,6 @@ service gateway {
 //
 // @handler ExtendDeadline
 // post /:id/extend (ExtendDeadlineReq)
-//}
-//
-//// ──────────────────────────────────────────────
-//// Adoption
-//// ──────────────────────────────────────────────
-//type (
-// AdoptionApplication {
-//  Id             int64  `json:"id"`
-//  CatId          int64  `json:"catId"`
-//  CatName        string `json:"catName"`
-//  ApplicantId    int64  `json:"applicantId"`
-//  ApplicantName  string `json:"applicantName"`
-//  Status         int32  `json:"status"`
-//  RejectReason   string `json:"rejectReason"`
-//  RequiredPoints int32  `json:"requiredPoints"`
-//  AppliedAt      int64  `json:"appliedAt"`
-//  UpdatedAt      int64  `json:"updatedAt"`
-// }
-// ApplyAdoptionReq {
-//  CatId int64  `json:"catId"`
-//  Note  string `json:"note,optional"`
-// }
-// ApplyAdoptionResp {
-//  ApplicationId int64 `json:"applicationId"`
-// }
-// ListAdoptionReq {
-//  Status   int32 `form:"status,optional"`
-//  Page     int32 `form:"page,optional,default=1"`
-//  PageSize int32 `form:"pageSize,optional,default=20"`
-// }
-// ListAdoptionResp {
-//  Applications []AdoptionApplication `json:"applications"`
-//  Total        int64                 `json:"total"`
-// }
-// ReviewApplicationReq {
-//  Approved     bool   `json:"approved"`
-//  RejectReason string `json:"rejectReason,optional"`
-// }
-// FollowUpRecord {
-//  Id            int64    `json:"id"`
-//  ApplicationId int64    `json:"applicationId"`
-//  ApplicantId   int64    `json:"applicantId"`
-//  Stage         string   `json:"stage"`
-//  Content       string   `json:"content"`
-//  Photos        []string `json:"photos"`
-//  SubmittedAt   int64    `json:"submittedAt"`
-// }
-// SubmitFollowUpReq {
-//  Stage   string   `json:"stage"`
-//  Content string   `json:"content"`
-//  Photos  []string `json:"photos,optional"`
-// }
-// AdoptionPathIdReq {
-//  Id int64 `path:"id"`
-// }
-//)
-//
-//@server (
-// prefix:     /api/v1/adoption
-// middleware: Auth
-// tags:       "领养模块"
-// group:      adoption
-//)
-//service gateway {
-// @handler ListAdoptions
-// get / (ListAdoptionReq) returns (ListAdoptionResp)
-//
-// @handler ApplyAdoption
-// post /apply (ApplyAdoptionReq) returns (ApplyAdoptionResp)
-//
-// @handler GetAdoption
-// get /:id (AdoptionPathIdReq) returns (AdoptionApplication)
-//
-// @handler ReviewAdoption
-// post /:id/review (ReviewApplicationReq)
-//
-// @handler ListFollowUps
-// get /:id/followup (AdoptionPathIdReq) returns ([]FollowUpRecord)
-//
-// @handler SubmitFollowUp
-// post /:id/followup (SubmitFollowUpReq)
 //}
 //
 //// ──────────────────────────────────────────────

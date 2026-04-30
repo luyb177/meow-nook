@@ -172,18 +172,6 @@ service CatService {
 
     // ---------- 猫咪任务 ----------
 
-    // 申请创建任务
-    rpc ApplyCreateCatTask(ApplyCreateCatTaskRequest)
-        returns (ApplyCreateCatTaskResponse);
-
-    // 申请认领任务
-    rpc ClaimCatTask(ClaimCatTaskRequest)
-        returns (ClaimCatTaskResponse);
-
-    // 申请放弃任务
-    rpc AbandonCatTask(AbandonCatTaskRequest)
-        returns (AbandonCatTaskResponse);
-
     // 上传任务进度（图片/备注）
     rpc UploadTaskProgress(UploadTaskProgressRequest)
         returns (UploadTaskProgressResponse);
@@ -221,23 +209,6 @@ service CatService {
 
     // ---------- 任务审核 ----------
 
-    // 管理员审核志愿者任务申请
-    rpc ApproveCreateCatTask(ApproveCreateCatTaskRequest)
-        returns (ApproveCreateCatTaskResponse);
-
-    rpc RejectCreateCatTask(RejectCreateCatTaskRequest)
-        returns (RejectCreateCatTaskResponse);
-
-    rpc GetCreateCatTaskApplyDetail(GetCreateCatTaskApplyDetailRequest)
-        returns (GetCreateCatTaskApplyDetailResponse);
-
-    rpc ListCreateCatTaskApply(ListCreateCatTaskApplyRequest)
-        returns (ListCreateCatTaskApplyResponse);
-
-    // 管理员直接创建正式任务（无需审核）
-    rpc CreateCatTask(CreateCatTaskRequest)
-        returns (CreateCatTaskResponse);
-
     // 管理员更新任务状态
     rpc UpdateCatTaskStatus(UpdateCatTaskStatusRequest)
         returns (UpdateCatTaskStatusResponse);
@@ -255,10 +226,6 @@ service CatService {
     // 猫咪列表
     rpc ListCats(ListCatsRequest)
         returns (ListCatsResponse);
-
-    // 正式任务列表
-    rpc ListCatTasks(ListCatTasksRequest)
-        returns (ListCatTasksResponse);
 }
 
 // ==================== 通用响应 ====================
