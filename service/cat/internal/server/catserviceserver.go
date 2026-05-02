@@ -65,6 +65,11 @@ func (s *CatServiceServer) ListPendingApplies(ctx context.Context, in *v1.ListPe
 	return l.ListPendingApplies(in)
 }
 
+func (s *CatServiceServer) ListCats(ctx context.Context, in *v1.ListCatsReq) (*v1.ListCatsResp, error) {
+	l := logic.NewListCatsLogic(ctx, s.svcCtx)
+	return l.ListCats(in)
+}
+
 // 申请领养
 func (s *CatServiceServer) ApplyAdopt(ctx context.Context, in *v1.ApplyAdoptRequest) (*v1.ApplyAdoptResponse, error) {
 	l := logic.NewApplyAdoptLogic(ctx, s.svcCtx)
@@ -285,82 +290,4 @@ func (s *CatServiceServer) GetTaskFlows(ctx context.Context, in *v1.GetTaskFlows
 func (s *CatServiceServer) GetTaskLogs(ctx context.Context, in *v1.GetTaskLogsRequest) (*v1.GetTaskLogsResponse, error) {
 	l := logic.NewGetTaskLogsLogic(ctx, s.svcCtx)
 	return l.GetTaskLogs(in)
-}
-
-// 申请修改猫咪档案信息
-func (s *CatServiceServer) ApplyUpdateCatInfo(ctx context.Context, in *v1.ApplyUpdateCatInfoRequest) (*v1.ApplyUpdateCatInfoResponse, error) {
-	l := logic.NewApplyUpdateCatInfoLogic(ctx, s.svcCtx)
-	return l.ApplyUpdateCatInfo(in)
-}
-
-// 查看自己提交的修改申请详情
-func (s *CatServiceServer) GetMyUpdateCatApplyDetail(ctx context.Context, in *v1.GetMyUpdateCatApplyDetailRequest) (*v1.GetMyUpdateCatApplyDetailResponse, error) {
-	l := logic.NewGetMyUpdateCatApplyDetailLogic(ctx, s.svcCtx)
-	return l.GetMyUpdateCatApplyDetail(in)
-}
-
-// 申请新增医疗记录
-func (s *CatServiceServer) ApplyAddMedicalRecord(ctx context.Context, in *v1.ApplyAddMedicalRecordRequest) (*v1.ApplyAddMedicalRecordResponse, error) {
-	l := logic.NewApplyAddMedicalRecordLogic(ctx, s.svcCtx)
-	return l.ApplyAddMedicalRecord(in)
-}
-
-// 申请新增救助记录
-func (s *CatServiceServer) ApplyAddRescueRecord(ctx context.Context, in *v1.ApplyAddRescueRecordRequest) (*v1.ApplyAddRescueRecordResponse, error) {
-	l := logic.NewApplyAddRescueRecordLogic(ctx, s.svcCtx)
-	return l.ApplyAddRescueRecord(in)
-}
-
-// 上传任务进度（图片/备注）
-func (s *CatServiceServer) UploadTaskProgress(ctx context.Context, in *v1.UploadTaskProgressRequest) (*v1.UploadTaskProgressResponse, error) {
-	l := logic.NewUploadTaskProgressLogic(ctx, s.svcCtx)
-	return l.UploadTaskProgress(in)
-}
-
-func (s *CatServiceServer) ApproveUpdateCatInfo(ctx context.Context, in *v1.ApproveUpdateCatInfoRequest) (*v1.ApproveUpdateCatInfoResponse, error) {
-	l := logic.NewApproveUpdateCatInfoLogic(ctx, s.svcCtx)
-	return l.ApproveUpdateCatInfo(in)
-}
-
-func (s *CatServiceServer) RejectUpdateCatInfo(ctx context.Context, in *v1.RejectUpdateCatInfoRequest) (*v1.RejectUpdateCatInfoResponse, error) {
-	l := logic.NewRejectUpdateCatInfoLogic(ctx, s.svcCtx)
-	return l.RejectUpdateCatInfo(in)
-}
-
-func (s *CatServiceServer) GetUpdateCatApplyDetail(ctx context.Context, in *v1.GetUpdateCatApplyDetailRequest) (*v1.GetUpdateCatApplyDetailResponse, error) {
-	l := logic.NewGetUpdateCatApplyDetailLogic(ctx, s.svcCtx)
-	return l.GetUpdateCatApplyDetail(in)
-}
-
-func (s *CatServiceServer) ListUpdateCatApply(ctx context.Context, in *v1.ListUpdateCatApplyRequest) (*v1.ListUpdateCatApplyResponse, error) {
-	l := logic.NewListUpdateCatApplyLogic(ctx, s.svcCtx)
-	return l.ListUpdateCatApply(in)
-}
-
-func (s *CatServiceServer) ApproveMedicalRecord(ctx context.Context, in *v1.ApproveMedicalRecordRequest) (*v1.ApproveMedicalRecordResponse, error) {
-	l := logic.NewApproveMedicalRecordLogic(ctx, s.svcCtx)
-	return l.ApproveMedicalRecord(in)
-}
-
-func (s *CatServiceServer) RejectMedicalRecord(ctx context.Context, in *v1.RejectMedicalRecordRequest) (*v1.RejectMedicalRecordResponse, error) {
-	l := logic.NewRejectMedicalRecordLogic(ctx, s.svcCtx)
-	return l.RejectMedicalRecord(in)
-}
-
-// 管理员更新任务状态
-func (s *CatServiceServer) UpdateCatTaskStatus(ctx context.Context, in *v1.UpdateCatTaskStatusRequest) (*v1.UpdateCatTaskStatusResponse, error) {
-	l := logic.NewUpdateCatTaskStatusLogic(ctx, s.svcCtx)
-	return l.UpdateCatTaskStatus(in)
-}
-
-// 猫咪详情
-func (s *CatServiceServer) GetCatDetail(ctx context.Context, in *v1.GetCatDetailRequest) (*v1.GetCatDetailResponse, error) {
-	l := logic.NewGetCatDetailLogic(ctx, s.svcCtx)
-	return l.GetCatDetail(in)
-}
-
-// 猫咪列表
-func (s *CatServiceServer) ListCats(ctx context.Context, in *v1.ListCatsRequest) (*v1.ListCatsResponse, error) {
-	l := logic.NewListCatsLogic(ctx, s.svcCtx)
-	return l.ListCats(in)
 }

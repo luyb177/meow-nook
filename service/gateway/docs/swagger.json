@@ -29,7 +29,7 @@
         "tags": [
           "领养模块"
         ],
-        "summary": "ApproveAdopt",
+        "summary": "审核通过领养申请",
         "operationId": "adoptionApproveAdopt",
         "parameters": [
           {
@@ -91,7 +91,7 @@
         "tags": [
           "领养模块"
         ],
-        "summary": "CreateAdoption",
+        "summary": "创建领养记录（管理员直接创建）",
         "operationId": "adoptionCreateAdoption",
         "parameters": [
           {
@@ -151,7 +151,7 @@
         "tags": [
           "领养模块"
         ],
-        "summary": "DirectAdopt",
+        "summary": "管理员直接审核通过领养申请（快捷通过）",
         "operationId": "adoptionDirectAdopt",
         "parameters": [
           {
@@ -215,7 +215,7 @@
         "tags": [
           "领养模块"
         ],
-        "summary": "RecordHomeVisit",
+        "summary": "记录家访信息",
         "operationId": "adoptionRecordHomeVisit",
         "parameters": [
           {
@@ -269,7 +269,7 @@
         "tags": [
           "领养模块"
         ],
-        "summary": "ListAdoptions",
+        "summary": "查询所有领养记录列表（管理员专用）",
         "operationId": "adoptionListAdoptions",
         "parameters": [
           {
@@ -385,7 +385,7 @@
         "tags": [
           "领养模块"
         ],
-        "summary": "ListPendingAdoptApplies",
+        "summary": "查询待审核的领养申请列表",
         "operationId": "adoptionListPendingAdoptApplies",
         "parameters": [
           {
@@ -508,7 +508,7 @@
         "tags": [
           "领养模块"
         ],
-        "summary": "RejectAdopt",
+        "summary": "驳回领养申请",
         "operationId": "adoptionRejectAdopt",
         "parameters": [
           {
@@ -561,7 +561,7 @@
         "tags": [
           "领养模块"
         ],
-        "summary": "UpdateReturnStatus",
+        "summary": "更新退养状态",
         "operationId": "adoptionUpdateReturnStatus",
         "parameters": [
           {
@@ -626,7 +626,7 @@
         "tags": [
           "领养模块"
         ],
-        "summary": "UpdateAdoption",
+        "summary": "更新领养记录信息",
         "operationId": "adoptionUpdateAdoption",
         "parameters": [
           {
@@ -683,7 +683,7 @@
         "tags": [
           "领养模块"
         ],
-        "summary": "RecordFollowUpVisit",
+        "summary": "记录回访信息",
         "operationId": "adoptionRecordFollowUpVisit",
         "parameters": [
           {
@@ -744,7 +744,7 @@
         "tags": [
           "领养模块"
         ],
-        "summary": "ApplyAdopt",
+        "summary": "提交领养申请（志愿者提交领养意向）",
         "operationId": "adoptionApplyAdopt",
         "parameters": [
           {
@@ -811,7 +811,7 @@
         "tags": [
           "领养模块"
         ],
-        "summary": "GetAdoptApplyDetail",
+        "summary": "获取领养申请详情",
         "operationId": "adoptionGetAdoptApplyDetail",
         "parameters": [
           {
@@ -961,7 +961,7 @@
         "tags": [
           "领养模块"
         ],
-        "summary": "CancelAdoptApply",
+        "summary": "取消待审核的领养申请",
         "operationId": "adoptionCancelAdoptApply",
         "parameters": [
           {
@@ -1011,7 +1011,7 @@
         "tags": [
           "领养模块"
         ],
-        "summary": "GetAdoptionDetail",
+        "summary": "查询领养记录详情",
         "operationId": "adoptionGetAdoptionDetail",
         "parameters": [
           {
@@ -1189,7 +1189,7 @@
         "tags": [
           "领养模块"
         ],
-        "summary": "ListMyAdoptions",
+        "summary": "查询我的领养记录列表（志愿者已成功领养的记录）",
         "operationId": "adoptionListMyAdoptions",
         "parameters": [
           {
@@ -1287,7 +1287,7 @@
         "tags": [
           "领养模块"
         ],
-        "summary": "ListMyAdoptApplies",
+        "summary": "查询我的领养申请列表（志愿者查询自己提交的申请）",
         "operationId": "adoptionListMyAdoptApplies",
         "parameters": [
           {
@@ -1398,7 +1398,7 @@
         "tags": [
           "领养模块"
         ],
-        "summary": "CompleteVisit",
+        "summary": "完成回访（志愿者提交回访完成状态）",
         "operationId": "adoptionCompleteVisit",
         "parameters": [
           {
@@ -1459,7 +1459,7 @@
         "tags": [
           "认证模块"
         ],
-        "summary": "SendVerificationCode",
+        "summary": "发送验证码，支持邮件",
         "operationId": "authSendVerificationCode",
         "parameters": [
           {
@@ -1509,7 +1509,7 @@
         "tags": [
           "认证模块"
         ],
-        "summary": "Test",
+        "summary": "测试接口，验证网关是否正常工作",
         "operationId": "authTest",
         "responses": {
           "200": {
@@ -2109,6 +2109,303 @@
         }
       }
     },
+    "/api/v1/cats/cats/list": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "猫咪模块"
+        ],
+        "summary": "获取小猫列表（支持筛选、分页、附近查找）",
+        "operationId": "catListCats",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "adopter_id": {
+                  "description": "领养人ID",
+                  "type": "integer"
+                },
+                "adoption_status": {
+                  "description": "领养状态（pending/adopted/unavailable）",
+                  "type": "string"
+                },
+                "age_stage": {
+                  "description": "年龄阶段（kitten/young/adult/old）",
+                  "type": "string"
+                },
+                "apply_id": {
+                  "description": "申请单ID",
+                  "type": "integer"
+                },
+                "body_size": {
+                  "description": "体型（small/medium/large）",
+                  "type": "string"
+                },
+                "breed": {
+                  "description": "品种",
+                  "type": "string"
+                },
+                "cat_code": {
+                  "description": "猫咪编号精确搜索",
+                  "type": "string"
+                },
+                "color": {
+                  "description": "毛色",
+                  "type": "string"
+                },
+                "created_at_end": {
+                  "description": "创建结束时间",
+                  "type": "string"
+                },
+                "created_at_start": {
+                  "description": "创建开始时间",
+                  "type": "string"
+                },
+                "creator_id": {
+                  "description": "创建人ID",
+                  "type": "integer"
+                },
+                "found_at_end": {
+                  "description": "发现结束时间",
+                  "type": "string"
+                },
+                "found_at_start": {
+                  "description": "发现开始时间",
+                  "type": "string"
+                },
+                "gender": {
+                  "description": "性别（male/female/unknown）",
+                  "type": "string"
+                },
+                "is_healthy": {
+                  "description": "是否健康",
+                  "type": "boolean"
+                },
+                "is_vaccinated": {
+                  "description": "是否已接种疫苗",
+                  "type": "boolean"
+                },
+                "keyword": {
+                  "description": "关键词搜索（name/cat_code/breed/color）",
+                  "type": "string"
+                },
+                "name": {
+                  "description": "名称模糊搜索",
+                  "type": "string"
+                },
+                "nearby": {
+                  "description": "附近查找条件",
+                  "type": "object",
+                  "required": [
+                    "latitude",
+                    "longitude",
+                    "radius"
+                  ],
+                  "properties": {
+                    "latitude": {
+                      "description": "纬度",
+                      "type": "number"
+                    },
+                    "longitude": {
+                      "description": "经度",
+                      "type": "number"
+                    },
+                    "radius": {
+                      "description": "半径（公里，默认5km，最大50km）",
+                      "type": "number"
+                    }
+                  }
+                },
+                "need_medical_intervention": {
+                  "description": "是否需要医疗干预",
+                  "type": "boolean"
+                },
+                "page": {
+                  "description": "页码（默认1）",
+                  "type": "integer",
+                  "default": 1,
+                  "example": 1
+                },
+                "page_size": {
+                  "description": "每页数量（默认20，最大100）",
+                  "type": "integer",
+                  "default": 20,
+                  "example": 20
+                },
+                "sort_by": {
+                  "description": "排序字段（id/created_at/found_at/updated_at/distance）",
+                  "type": "string",
+                  "default": "created_at",
+                  "example": "created_at"
+                },
+                "sort_order": {
+                  "description": "排序方向（asc/desc）",
+                  "type": "string",
+                  "default": "desc",
+                  "example": "desc"
+                },
+                "sterilization_status": {
+                  "description": "绝育状态（sterilized/unsterilized）",
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "list": {
+                  "description": "小猫列表",
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "cat_code",
+                      "name",
+                      "breed",
+                      "color",
+                      "gender",
+                      "body_size",
+                      "age_stage",
+                      "weight",
+                      "character",
+                      "avatar",
+                      "description",
+                      "discovery_address",
+                      "longitude",
+                      "latitude",
+                      "is_vaccinated",
+                      "is_healthy",
+                      "need_medical_intervention",
+                      "sterilization_status",
+                      "adoption_status",
+                      "adopter_id",
+                      "apply_id",
+                      "creator_id",
+                      "created_at",
+                      "updated_at"
+                    ],
+                    "properties": {
+                      "adopted_at": {
+                        "type": "string"
+                      },
+                      "adopter_id": {
+                        "type": "integer"
+                      },
+                      "adoption_status": {
+                        "type": "string"
+                      },
+                      "age_stage": {
+                        "type": "string"
+                      },
+                      "apply_id": {
+                        "type": "integer"
+                      },
+                      "avatar": {
+                        "type": "string"
+                      },
+                      "birth_date": {
+                        "type": "string"
+                      },
+                      "body_size": {
+                        "type": "string"
+                      },
+                      "breed": {
+                        "type": "string"
+                      },
+                      "cat_code": {
+                        "type": "string"
+                      },
+                      "character": {
+                        "type": "string"
+                      },
+                      "color": {
+                        "type": "string"
+                      },
+                      "created_at": {
+                        "type": "string"
+                      },
+                      "creator_id": {
+                        "type": "integer"
+                      },
+                      "description": {
+                        "type": "string"
+                      },
+                      "discovery_address": {
+                        "type": "string"
+                      },
+                      "distance": {
+                        "type": "number"
+                      },
+                      "found_at": {
+                        "type": "string"
+                      },
+                      "gender": {
+                        "type": "string"
+                      },
+                      "id": {
+                        "type": "integer"
+                      },
+                      "is_healthy": {
+                        "type": "boolean"
+                      },
+                      "is_vaccinated": {
+                        "type": "boolean"
+                      },
+                      "last_medical_check_at": {
+                        "type": "string"
+                      },
+                      "latitude": {
+                        "type": "number"
+                      },
+                      "longitude": {
+                        "type": "number"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "need_medical_intervention": {
+                        "type": "boolean"
+                      },
+                      "sterilization_status": {
+                        "type": "string"
+                      },
+                      "updated_at": {
+                        "type": "string"
+                      },
+                      "weight": {
+                        "type": "number"
+                      }
+                    }
+                  }
+                },
+                "total": {
+                  "description": "总数",
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/cats/direct": {
       "post": {
         "consumes": [
@@ -2262,7 +2559,7 @@
         "tags": [
           "任务模块"
         ],
-        "summary": "ListPendingTaskApplies",
+        "summary": "查询待审核的任务申请列表",
         "operationId": "taskListPendingTaskApplies",
         "parameters": [
           {
@@ -2467,9 +2764,15 @@
         "tags": [
           "任务模块"
         ],
-        "summary": "ApproveTaskApply",
+        "summary": "审核通过任务申请",
         "operationId": "taskApproveTaskApply",
         "parameters": [
+          {
+            "type": "integer",
+            "name": "apply_id",
+            "in": "path",
+            "required": true
+          },
           {
             "name": "body",
             "in": "body",
@@ -2477,7 +2780,6 @@
             "schema": {
               "type": "object",
               "required": [
-                "apply_id",
                 "urgency_level",
                 "difficulty_level",
                 "reward_points",
@@ -2486,9 +2788,6 @@
                 "remark"
               ],
               "properties": {
-                "apply_id": {
-                  "type": "integer"
-                },
                 "area": {
                   "type": "string"
                 },
@@ -2543,9 +2842,15 @@
         "tags": [
           "任务模块"
         ],
-        "summary": "RejectTaskApply",
+        "summary": "驳回任务申请",
         "operationId": "taskRejectTaskApply",
         "parameters": [
+          {
+            "type": "integer",
+            "name": "apply_id",
+            "in": "path",
+            "required": true
+          },
           {
             "name": "body",
             "in": "body",
@@ -2553,13 +2858,9 @@
             "schema": {
               "type": "object",
               "required": [
-                "apply_id",
                 "reject_reason"
               ],
               "properties": {
-                "apply_id": {
-                  "type": "integer"
-                },
                 "reject_reason": {
                   "type": "string"
                 }
@@ -2596,7 +2897,7 @@
         "tags": [
           "任务模块"
         ],
-        "summary": "DirectCreateTask",
+        "summary": "直接创建任务（管理员直接发布任务，无需申请）",
         "operationId": "taskDirectCreateTask",
         "parameters": [
           {
@@ -2718,9 +3019,15 @@
         "tags": [
           "任务模块"
         ],
-        "summary": "CancelTask",
+        "summary": "取消任务",
         "operationId": "taskCancelTask",
         "parameters": [
+          {
+            "type": "integer",
+            "name": "task_id",
+            "in": "path",
+            "required": true
+          },
           {
             "name": "body",
             "in": "body",
@@ -2728,15 +3035,11 @@
             "schema": {
               "type": "object",
               "required": [
-                "task_id",
                 "reason"
               ],
               "properties": {
                 "reason": {
                   "type": "string"
-                },
-                "task_id": {
-                  "type": "integer"
                 }
               }
             }
@@ -2760,7 +3063,7 @@
     "/api/v1/task/admin/task/{task_id}/escalate": {
       "post": {
         "consumes": [
-          "application/json"
+          "application/x-www-form-urlencoded"
         ],
         "produces": [
           "application/json"
@@ -2771,24 +3074,14 @@
         "tags": [
           "任务模块"
         ],
-        "summary": "EscalateTaskUrgency",
+        "summary": "提升任务紧急程度",
         "operationId": "taskEscalateTaskUrgency",
         "parameters": [
           {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "type": "object",
-              "required": [
-                "task_id"
-              ],
-              "properties": {
-                "task_id": {
-                  "type": "integer"
-                }
-              }
-            }
+            "type": "integer",
+            "name": "task_id",
+            "in": "path",
+            "required": true
           }
         ],
         "responses": {
@@ -2826,9 +3119,15 @@
         "tags": [
           "任务模块"
         ],
-        "summary": "UpdateTask",
+        "summary": "更新任务信息",
         "operationId": "taskUpdateTask",
         "parameters": [
+          {
+            "type": "integer",
+            "name": "task_id",
+            "in": "path",
+            "required": true
+          },
           {
             "name": "body",
             "in": "body",
@@ -2836,7 +3135,6 @@
             "schema": {
               "type": "object",
               "required": [
-                "task_id",
                 "title",
                 "summary",
                 "detail",
@@ -2863,9 +3161,6 @@
                 },
                 "summary": {
                   "type": "string"
-                },
-                "task_id": {
-                  "type": "integer"
                 },
                 "title": {
                   "type": "string"
@@ -2903,7 +3198,7 @@
         "tags": [
           "任务模块"
         ],
-        "summary": "ApplyCreateTask",
+        "summary": "提交任务创建申请（志愿者申请创建新任务）",
         "operationId": "taskApplyCreateTask",
         "parameters": [
           {
@@ -3004,7 +3299,7 @@
         "tags": [
           "任务模块"
         ],
-        "summary": "CancelTaskApply",
+        "summary": "取消待审核的任务申请",
         "operationId": "taskCancelTaskApply",
         "parameters": [
           {
@@ -3054,7 +3349,7 @@
         "tags": [
           "任务模块"
         ],
-        "summary": "GetTaskApplyDetail",
+        "summary": "获取任务申请详情",
         "operationId": "taskGetTaskApplyDetail",
         "parameters": [
           {
@@ -3262,9 +3557,15 @@
         "tags": [
           "任务模块"
         ],
-        "summary": "AbandonTask",
+        "summary": "放弃已领取的任务",
         "operationId": "taskAbandonTask",
         "parameters": [
+          {
+            "type": "integer",
+            "name": "claim_id",
+            "in": "path",
+            "required": true
+          },
           {
             "name": "body",
             "in": "body",
@@ -3272,13 +3573,9 @@
             "schema": {
               "type": "object",
               "required": [
-                "claim_id",
                 "reason"
               ],
               "properties": {
-                "claim_id": {
-                  "type": "integer"
-                },
                 "reason": {
                   "type": "string"
                 }
@@ -3315,9 +3612,15 @@
         "tags": [
           "任务模块"
         ],
-        "summary": "CompleteTask",
+        "summary": "完成任务（提交完成状态）",
         "operationId": "taskCompleteTask",
         "parameters": [
+          {
+            "type": "integer",
+            "name": "claim_id",
+            "in": "path",
+            "required": true
+          },
           {
             "name": "body",
             "in": "body",
@@ -3325,14 +3628,10 @@
             "schema": {
               "type": "object",
               "required": [
-                "claim_id",
                 "content",
                 "image_urls"
               ],
               "properties": {
-                "claim_id": {
-                  "type": "integer"
-                },
                 "content": {
                   "type": "string"
                 },
@@ -3381,7 +3680,7 @@
         "tags": [
           "任务模块"
         ],
-        "summary": "ListTasks",
+        "summary": "查询任务列表（所有可领取的任务）",
         "operationId": "taskListTasks",
         "parameters": [
           {
@@ -3533,7 +3832,7 @@
         "tags": [
           "任务模块"
         ],
-        "summary": "ListMyTaskApplies",
+        "summary": "查询我的任务申请列表",
         "operationId": "taskListMyTaskApplies",
         "parameters": [
           {
@@ -3633,7 +3932,7 @@
         "tags": [
           "任务模块"
         ],
-        "summary": "ListMyClaimedTasks",
+        "summary": "查询我已领取的任务列表",
         "operationId": "taskListMyClaimedTasks",
         "parameters": [
           {
@@ -3737,7 +4036,7 @@
         "tags": [
           "任务模块"
         ],
-        "summary": "ListMyCompletedTasks",
+        "summary": "查询我已完成的任务列表",
         "operationId": "taskListMyCompletedTasks",
         "parameters": [
           {
@@ -3838,7 +4137,7 @@
         "tags": [
           "任务模块"
         ],
-        "summary": "GetTaskDetail",
+        "summary": "获取任务详情",
         "operationId": "taskGetTaskDetail",
         "parameters": [
           {
@@ -4043,7 +4342,7 @@
     "/api/v1/task/task/{task_id}/claim": {
       "post": {
         "consumes": [
-          "application/json"
+          "application/x-www-form-urlencoded"
         ],
         "produces": [
           "application/json"
@@ -4054,24 +4353,14 @@
         "tags": [
           "任务模块"
         ],
-        "summary": "ClaimTask",
+        "summary": "领取/认领任务",
         "operationId": "taskClaimTask",
         "parameters": [
           {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "type": "object",
-              "required": [
-                "task_id"
-              ],
-              "properties": {
-                "task_id": {
-                  "type": "integer"
-                }
-              }
-            }
+            "type": "integer",
+            "name": "task_id",
+            "in": "path",
+            "required": true
           }
         ],
         "responses": {
@@ -4103,7 +4392,7 @@
         "tags": [
           "任务模块"
         ],
-        "summary": "GetTaskFlows",
+        "summary": "查询任务流转记录（状态变更历史）",
         "operationId": "taskGetTaskFlows",
         "parameters": [
           {
@@ -4182,7 +4471,7 @@
         "tags": [
           "任务模块"
         ],
-        "summary": "GetTaskLogs",
+        "summary": "查询任务操作日志",
         "operationId": "taskGetTaskLogs",
         "parameters": [
           {
@@ -4243,7 +4532,7 @@
       }
     }
   },
-  "x-date": "2026-04-29 23:02:44",
+  "x-date": "2026-05-02 17:07:54",
   "x-description": "This is a goctl generated swagger file.",
   "x-github": "https://github.com/zeromicro/go-zero",
   "x-go-zero-doc": "https://go-zero.dev/",

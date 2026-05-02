@@ -63,4 +63,6 @@ type Repository interface {
 	UpdateCat(ctx context.Context, catID uint64, values map[string]any, tx ...*gorm.DB) error
 	UpdateCatAdoptionStatus(ctx context.Context, catID uint64, status string, adopterID uint64, tx ...*gorm.DB) error
 	DeleteCat(ctx context.Context, catID uint64, tx ...*gorm.DB) error
+
+	ListCatsWithNearby(ctx context.Context, filter CatListFilter, near *NearFilter, tx ...*gorm.DB) ([]*Cat, []float64, int64, error)
 }

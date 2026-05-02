@@ -1293,6 +1293,651 @@ func (x *ListPendingAppliesResponse) GetTotal() int64 {
 	return 0
 }
 
+// ==================== 查询：猫咪列表 ====================
+// 获取小猫列表请求
+type ListCatsReq struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// 基础筛选
+	Keyword string `protobuf:"bytes,1,opt,name=keyword,proto3" json:"keyword,omitempty"`                // 关键词搜索（name/cat_code/breed/color）
+	Name    string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`                      // 名称模糊搜索
+	CatCode string `protobuf:"bytes,3,opt,name=cat_code,json=catCode,proto3" json:"cat_code,omitempty"` // 猫咪编号精确搜索
+	Breed   string `protobuf:"bytes,4,opt,name=breed,proto3" json:"breed,omitempty"`                    // 品种
+	Color   string `protobuf:"bytes,5,opt,name=color,proto3" json:"color,omitempty"`                    // 毛色
+	Gender  string `protobuf:"bytes,6,opt,name=gender,proto3" json:"gender,omitempty"`                  // 性别（male/female/unknown）
+	// 体态筛选
+	BodySize string `protobuf:"bytes,7,opt,name=body_size,json=bodySize,proto3" json:"body_size,omitempty"` // 体型（small/medium/large）
+	AgeStage string `protobuf:"bytes,8,opt,name=age_stage,json=ageStage,proto3" json:"age_stage,omitempty"` // 年龄阶段（kitten/young/adult/old）
+	// 健康筛选
+	SterilizationStatus     string `protobuf:"bytes,9,opt,name=sterilization_status,json=sterilizationStatus,proto3" json:"sterilization_status,omitempty"`                       // 绝育状态（sterilized/unsterilized）
+	AdoptionStatus          string `protobuf:"bytes,10,opt,name=adoption_status,json=adoptionStatus,proto3" json:"adoption_status,omitempty"`                                     // 领养状态（pending/adopted/unavailable）
+	IsVaccinated            *bool  `protobuf:"varint,11,opt,name=is_vaccinated,json=isVaccinated,proto3,oneof" json:"is_vaccinated,omitempty"`                                    // 是否已接种疫苗
+	IsHealthy               *bool  `protobuf:"varint,12,opt,name=is_healthy,json=isHealthy,proto3,oneof" json:"is_healthy,omitempty"`                                             // 是否健康
+	NeedMedicalIntervention *bool  `protobuf:"varint,13,opt,name=need_medical_intervention,json=needMedicalIntervention,proto3,oneof" json:"need_medical_intervention,omitempty"` // 是否需要医疗干预
+	// 附近筛选
+	Nearby *NearbyFilter `protobuf:"bytes,14,opt,name=nearby,proto3" json:"nearby,omitempty"` // 附近查找条件
+	// 其他筛选
+	AdopterId uint64 `protobuf:"varint,15,opt,name=adopter_id,json=adopterId,proto3" json:"adopter_id,omitempty"` // 领养人ID
+	CreatorId uint64 `protobuf:"varint,16,opt,name=creator_id,json=creatorId,proto3" json:"creator_id,omitempty"` // 创建人ID
+	ApplyId   uint64 `protobuf:"varint,17,opt,name=apply_id,json=applyId,proto3" json:"apply_id,omitempty"`       // 申请单ID
+	// 时间范围
+	FoundAtStart   string `protobuf:"bytes,18,opt,name=found_at_start,json=foundAtStart,proto3" json:"found_at_start,omitempty"`       // 发现开始时间（RFC3339格式）
+	FoundAtEnd     string `protobuf:"bytes,19,opt,name=found_at_end,json=foundAtEnd,proto3" json:"found_at_end,omitempty"`             // 发现结束时间
+	CreatedAtStart string `protobuf:"bytes,20,opt,name=created_at_start,json=createdAtStart,proto3" json:"created_at_start,omitempty"` // 创建开始时间
+	CreatedAtEnd   string `protobuf:"bytes,21,opt,name=created_at_end,json=createdAtEnd,proto3" json:"created_at_end,omitempty"`       // 创建结束时间
+	// 分页排序
+	Page          int32  `protobuf:"varint,22,opt,name=page,proto3" json:"page,omitempty"`                           // 页码（默认1）
+	PageSize      int32  `protobuf:"varint,23,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`   // 每页数量（默认20，最大100）
+	SortBy        string `protobuf:"bytes,24,opt,name=sort_by,json=sortBy,proto3" json:"sort_by,omitempty"`          // 排序字段（id/created_at/found_at/updated_at/distance）
+	SortOrder     string `protobuf:"bytes,25,opt,name=sort_order,json=sortOrder,proto3" json:"sort_order,omitempty"` // 排序方向（asc/desc）
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListCatsReq) Reset() {
+	*x = ListCatsReq{}
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[16]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListCatsReq) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListCatsReq) ProtoMessage() {}
+
+func (x *ListCatsReq) ProtoReflect() protoreflect.Message {
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[16]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListCatsReq.ProtoReflect.Descriptor instead.
+func (*ListCatsReq) Descriptor() ([]byte, []int) {
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{16}
+}
+
+func (x *ListCatsReq) GetKeyword() string {
+	if x != nil {
+		return x.Keyword
+	}
+	return ""
+}
+
+func (x *ListCatsReq) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *ListCatsReq) GetCatCode() string {
+	if x != nil {
+		return x.CatCode
+	}
+	return ""
+}
+
+func (x *ListCatsReq) GetBreed() string {
+	if x != nil {
+		return x.Breed
+	}
+	return ""
+}
+
+func (x *ListCatsReq) GetColor() string {
+	if x != nil {
+		return x.Color
+	}
+	return ""
+}
+
+func (x *ListCatsReq) GetGender() string {
+	if x != nil {
+		return x.Gender
+	}
+	return ""
+}
+
+func (x *ListCatsReq) GetBodySize() string {
+	if x != nil {
+		return x.BodySize
+	}
+	return ""
+}
+
+func (x *ListCatsReq) GetAgeStage() string {
+	if x != nil {
+		return x.AgeStage
+	}
+	return ""
+}
+
+func (x *ListCatsReq) GetSterilizationStatus() string {
+	if x != nil {
+		return x.SterilizationStatus
+	}
+	return ""
+}
+
+func (x *ListCatsReq) GetAdoptionStatus() string {
+	if x != nil {
+		return x.AdoptionStatus
+	}
+	return ""
+}
+
+func (x *ListCatsReq) GetIsVaccinated() bool {
+	if x != nil && x.IsVaccinated != nil {
+		return *x.IsVaccinated
+	}
+	return false
+}
+
+func (x *ListCatsReq) GetIsHealthy() bool {
+	if x != nil && x.IsHealthy != nil {
+		return *x.IsHealthy
+	}
+	return false
+}
+
+func (x *ListCatsReq) GetNeedMedicalIntervention() bool {
+	if x != nil && x.NeedMedicalIntervention != nil {
+		return *x.NeedMedicalIntervention
+	}
+	return false
+}
+
+func (x *ListCatsReq) GetNearby() *NearbyFilter {
+	if x != nil {
+		return x.Nearby
+	}
+	return nil
+}
+
+func (x *ListCatsReq) GetAdopterId() uint64 {
+	if x != nil {
+		return x.AdopterId
+	}
+	return 0
+}
+
+func (x *ListCatsReq) GetCreatorId() uint64 {
+	if x != nil {
+		return x.CreatorId
+	}
+	return 0
+}
+
+func (x *ListCatsReq) GetApplyId() uint64 {
+	if x != nil {
+		return x.ApplyId
+	}
+	return 0
+}
+
+func (x *ListCatsReq) GetFoundAtStart() string {
+	if x != nil {
+		return x.FoundAtStart
+	}
+	return ""
+}
+
+func (x *ListCatsReq) GetFoundAtEnd() string {
+	if x != nil {
+		return x.FoundAtEnd
+	}
+	return ""
+}
+
+func (x *ListCatsReq) GetCreatedAtStart() string {
+	if x != nil {
+		return x.CreatedAtStart
+	}
+	return ""
+}
+
+func (x *ListCatsReq) GetCreatedAtEnd() string {
+	if x != nil {
+		return x.CreatedAtEnd
+	}
+	return ""
+}
+
+func (x *ListCatsReq) GetPage() int32 {
+	if x != nil {
+		return x.Page
+	}
+	return 0
+}
+
+func (x *ListCatsReq) GetPageSize() int32 {
+	if x != nil {
+		return x.PageSize
+	}
+	return 0
+}
+
+func (x *ListCatsReq) GetSortBy() string {
+	if x != nil {
+		return x.SortBy
+	}
+	return ""
+}
+
+func (x *ListCatsReq) GetSortOrder() string {
+	if x != nil {
+		return x.SortOrder
+	}
+	return ""
+}
+
+// 附近筛选条件
+type NearbyFilter struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Latitude      float64                `protobuf:"fixed64,1,opt,name=latitude,proto3" json:"latitude,omitempty"`   // 纬度
+	Longitude     float64                `protobuf:"fixed64,2,opt,name=longitude,proto3" json:"longitude,omitempty"` // 经度
+	Radius        float64                `protobuf:"fixed64,3,opt,name=radius,proto3" json:"radius,omitempty"`       // 半径（公里，默认5km，最大50km）
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *NearbyFilter) Reset() {
+	*x = NearbyFilter{}
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[17]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *NearbyFilter) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*NearbyFilter) ProtoMessage() {}
+
+func (x *NearbyFilter) ProtoReflect() protoreflect.Message {
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[17]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use NearbyFilter.ProtoReflect.Descriptor instead.
+func (*NearbyFilter) Descriptor() ([]byte, []int) {
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{17}
+}
+
+func (x *NearbyFilter) GetLatitude() float64 {
+	if x != nil {
+		return x.Latitude
+	}
+	return 0
+}
+
+func (x *NearbyFilter) GetLongitude() float64 {
+	if x != nil {
+		return x.Longitude
+	}
+	return 0
+}
+
+func (x *NearbyFilter) GetRadius() float64 {
+	if x != nil {
+		return x.Radius
+	}
+	return 0
+}
+
+// 获取小猫列表响应
+type ListCatsResp struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Total         int64                  `protobuf:"varint,1,opt,name=total,proto3" json:"total,omitempty"` // 总数
+	List          []*CatInfo             `protobuf:"bytes,2,rep,name=list,proto3" json:"list,omitempty"`    // 小猫列表
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListCatsResp) Reset() {
+	*x = ListCatsResp{}
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[18]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListCatsResp) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListCatsResp) ProtoMessage() {}
+
+func (x *ListCatsResp) ProtoReflect() protoreflect.Message {
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[18]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListCatsResp.ProtoReflect.Descriptor instead.
+func (*ListCatsResp) Descriptor() ([]byte, []int) {
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{18}
+}
+
+func (x *ListCatsResp) GetTotal() int64 {
+	if x != nil {
+		return x.Total
+	}
+	return 0
+}
+
+func (x *ListCatsResp) GetList() []*CatInfo {
+	if x != nil {
+		return x.List
+	}
+	return nil
+}
+
+// 小猫信息（含距离）
+type CatInfo struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// 基础信息
+	Id      uint64 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	CatCode string `protobuf:"bytes,2,opt,name=cat_code,json=catCode,proto3" json:"cat_code,omitempty"`
+	Name    string `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
+	Breed   string `protobuf:"bytes,4,opt,name=breed,proto3" json:"breed,omitempty"`
+	Color   string `protobuf:"bytes,5,opt,name=color,proto3" json:"color,omitempty"`
+	Gender  string `protobuf:"bytes,6,opt,name=gender,proto3" json:"gender,omitempty"`
+	// 体态信息
+	BodySize  string  `protobuf:"bytes,7,opt,name=body_size,json=bodySize,proto3" json:"body_size,omitempty"`
+	AgeStage  string  `protobuf:"bytes,8,opt,name=age_stage,json=ageStage,proto3" json:"age_stage,omitempty"`
+	Weight    float32 `protobuf:"fixed32,9,opt,name=weight,proto3" json:"weight,omitempty"`
+	Character string  `protobuf:"bytes,10,opt,name=character,proto3" json:"character,omitempty"`
+	BirthDate string  `protobuf:"bytes,11,opt,name=birth_date,json=birthDate,proto3" json:"birth_date,omitempty"`
+	// 展示信息
+	Avatar      string `protobuf:"bytes,12,opt,name=avatar,proto3" json:"avatar,omitempty"`
+	Description string `protobuf:"bytes,13,opt,name=description,proto3" json:"description,omitempty"`
+	// 发现信息
+	FoundAt          string  `protobuf:"bytes,14,opt,name=found_at,json=foundAt,proto3" json:"found_at,omitempty"`
+	DiscoveryAddress string  `protobuf:"bytes,15,opt,name=discovery_address,json=discoveryAddress,proto3" json:"discovery_address,omitempty"`
+	Longitude        float64 `protobuf:"fixed64,16,opt,name=longitude,proto3" json:"longitude,omitempty"`
+	Latitude         float64 `protobuf:"fixed64,17,opt,name=latitude,proto3" json:"latitude,omitempty"`
+	// 健康信息
+	IsVaccinated            bool   `protobuf:"varint,18,opt,name=is_vaccinated,json=isVaccinated,proto3" json:"is_vaccinated,omitempty"`
+	IsHealthy               bool   `protobuf:"varint,19,opt,name=is_healthy,json=isHealthy,proto3" json:"is_healthy,omitempty"`
+	NeedMedicalIntervention bool   `protobuf:"varint,20,opt,name=need_medical_intervention,json=needMedicalIntervention,proto3" json:"need_medical_intervention,omitempty"`
+	SterilizationStatus     string `protobuf:"bytes,21,opt,name=sterilization_status,json=sterilizationStatus,proto3" json:"sterilization_status,omitempty"`
+	LastMedicalCheckAt      string `protobuf:"bytes,22,opt,name=last_medical_check_at,json=lastMedicalCheckAt,proto3" json:"last_medical_check_at,omitempty"`
+	// 领养信息
+	AdoptionStatus string `protobuf:"bytes,23,opt,name=adoption_status,json=adoptionStatus,proto3" json:"adoption_status,omitempty"`
+	AdopterId      uint64 `protobuf:"varint,24,opt,name=adopter_id,json=adopterId,proto3" json:"adopter_id,omitempty"`
+	AdoptedAt      string `protobuf:"bytes,25,opt,name=adopted_at,json=adoptedAt,proto3" json:"adopted_at,omitempty"`
+	// 来源信息
+	ApplyId   uint64 `protobuf:"varint,26,opt,name=apply_id,json=applyId,proto3" json:"apply_id,omitempty"`
+	CreatorId uint64 `protobuf:"varint,27,opt,name=creator_id,json=creatorId,proto3" json:"creator_id,omitempty"`
+	// 时间信息
+	CreatedAt string `protobuf:"bytes,28,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	UpdatedAt string `protobuf:"bytes,29,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	// 距离（公里，仅在附近搜索时有值）
+	Distance      float64 `protobuf:"fixed64,30,opt,name=distance,proto3" json:"distance,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CatInfo) Reset() {
+	*x = CatInfo{}
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[19]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CatInfo) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CatInfo) ProtoMessage() {}
+
+func (x *CatInfo) ProtoReflect() protoreflect.Message {
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[19]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CatInfo.ProtoReflect.Descriptor instead.
+func (*CatInfo) Descriptor() ([]byte, []int) {
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{19}
+}
+
+func (x *CatInfo) GetId() uint64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *CatInfo) GetCatCode() string {
+	if x != nil {
+		return x.CatCode
+	}
+	return ""
+}
+
+func (x *CatInfo) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *CatInfo) GetBreed() string {
+	if x != nil {
+		return x.Breed
+	}
+	return ""
+}
+
+func (x *CatInfo) GetColor() string {
+	if x != nil {
+		return x.Color
+	}
+	return ""
+}
+
+func (x *CatInfo) GetGender() string {
+	if x != nil {
+		return x.Gender
+	}
+	return ""
+}
+
+func (x *CatInfo) GetBodySize() string {
+	if x != nil {
+		return x.BodySize
+	}
+	return ""
+}
+
+func (x *CatInfo) GetAgeStage() string {
+	if x != nil {
+		return x.AgeStage
+	}
+	return ""
+}
+
+func (x *CatInfo) GetWeight() float32 {
+	if x != nil {
+		return x.Weight
+	}
+	return 0
+}
+
+func (x *CatInfo) GetCharacter() string {
+	if x != nil {
+		return x.Character
+	}
+	return ""
+}
+
+func (x *CatInfo) GetBirthDate() string {
+	if x != nil {
+		return x.BirthDate
+	}
+	return ""
+}
+
+func (x *CatInfo) GetAvatar() string {
+	if x != nil {
+		return x.Avatar
+	}
+	return ""
+}
+
+func (x *CatInfo) GetDescription() string {
+	if x != nil {
+		return x.Description
+	}
+	return ""
+}
+
+func (x *CatInfo) GetFoundAt() string {
+	if x != nil {
+		return x.FoundAt
+	}
+	return ""
+}
+
+func (x *CatInfo) GetDiscoveryAddress() string {
+	if x != nil {
+		return x.DiscoveryAddress
+	}
+	return ""
+}
+
+func (x *CatInfo) GetLongitude() float64 {
+	if x != nil {
+		return x.Longitude
+	}
+	return 0
+}
+
+func (x *CatInfo) GetLatitude() float64 {
+	if x != nil {
+		return x.Latitude
+	}
+	return 0
+}
+
+func (x *CatInfo) GetIsVaccinated() bool {
+	if x != nil {
+		return x.IsVaccinated
+	}
+	return false
+}
+
+func (x *CatInfo) GetIsHealthy() bool {
+	if x != nil {
+		return x.IsHealthy
+	}
+	return false
+}
+
+func (x *CatInfo) GetNeedMedicalIntervention() bool {
+	if x != nil {
+		return x.NeedMedicalIntervention
+	}
+	return false
+}
+
+func (x *CatInfo) GetSterilizationStatus() string {
+	if x != nil {
+		return x.SterilizationStatus
+	}
+	return ""
+}
+
+func (x *CatInfo) GetLastMedicalCheckAt() string {
+	if x != nil {
+		return x.LastMedicalCheckAt
+	}
+	return ""
+}
+
+func (x *CatInfo) GetAdoptionStatus() string {
+	if x != nil {
+		return x.AdoptionStatus
+	}
+	return ""
+}
+
+func (x *CatInfo) GetAdopterId() uint64 {
+	if x != nil {
+		return x.AdopterId
+	}
+	return 0
+}
+
+func (x *CatInfo) GetAdoptedAt() string {
+	if x != nil {
+		return x.AdoptedAt
+	}
+	return ""
+}
+
+func (x *CatInfo) GetApplyId() uint64 {
+	if x != nil {
+		return x.ApplyId
+	}
+	return 0
+}
+
+func (x *CatInfo) GetCreatorId() uint64 {
+	if x != nil {
+		return x.CreatorId
+	}
+	return 0
+}
+
+func (x *CatInfo) GetCreatedAt() string {
+	if x != nil {
+		return x.CreatedAt
+	}
+	return ""
+}
+
+func (x *CatInfo) GetUpdatedAt() string {
+	if x != nil {
+		return x.UpdatedAt
+	}
+	return ""
+}
+
+func (x *CatInfo) GetDistance() float64 {
+	if x != nil {
+		return x.Distance
+	}
+	return 0
+}
+
 type ApplyAdoptRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	CatId         uint64                 `protobuf:"varint,1,opt,name=cat_id,json=catId,proto3" json:"cat_id,omitempty"`                        // 猫咪ID
@@ -1306,7 +1951,7 @@ type ApplyAdoptRequest struct {
 
 func (x *ApplyAdoptRequest) Reset() {
 	*x = ApplyAdoptRequest{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[16]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[20]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1318,7 +1963,7 @@ func (x *ApplyAdoptRequest) String() string {
 func (*ApplyAdoptRequest) ProtoMessage() {}
 
 func (x *ApplyAdoptRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[16]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[20]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1331,7 +1976,7 @@ func (x *ApplyAdoptRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ApplyAdoptRequest.ProtoReflect.Descriptor instead.
 func (*ApplyAdoptRequest) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{16}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *ApplyAdoptRequest) GetCatId() uint64 {
@@ -1381,7 +2026,7 @@ type ApplyAdoptResponse struct {
 
 func (x *ApplyAdoptResponse) Reset() {
 	*x = ApplyAdoptResponse{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[17]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[21]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1393,7 +2038,7 @@ func (x *ApplyAdoptResponse) String() string {
 func (*ApplyAdoptResponse) ProtoMessage() {}
 
 func (x *ApplyAdoptResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[17]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[21]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1406,7 +2051,7 @@ func (x *ApplyAdoptResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ApplyAdoptResponse.ProtoReflect.Descriptor instead.
 func (*ApplyAdoptResponse) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{17}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{21}
 }
 
 func (x *ApplyAdoptResponse) GetApplyId() uint64 {
@@ -1448,7 +2093,7 @@ type CancelAdoptApplyRequest struct {
 
 func (x *CancelAdoptApplyRequest) Reset() {
 	*x = CancelAdoptApplyRequest{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[18]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[22]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1460,7 +2105,7 @@ func (x *CancelAdoptApplyRequest) String() string {
 func (*CancelAdoptApplyRequest) ProtoMessage() {}
 
 func (x *CancelAdoptApplyRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[18]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[22]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1473,7 +2118,7 @@ func (x *CancelAdoptApplyRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CancelAdoptApplyRequest.ProtoReflect.Descriptor instead.
 func (*CancelAdoptApplyRequest) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{18}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{22}
 }
 
 func (x *CancelAdoptApplyRequest) GetApplyId() uint64 {
@@ -1506,7 +2151,7 @@ type CancelAdoptApplyResponse struct {
 
 func (x *CancelAdoptApplyResponse) Reset() {
 	*x = CancelAdoptApplyResponse{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[19]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[23]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1518,7 +2163,7 @@ func (x *CancelAdoptApplyResponse) String() string {
 func (*CancelAdoptApplyResponse) ProtoMessage() {}
 
 func (x *CancelAdoptApplyResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[19]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[23]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1531,7 +2176,7 @@ func (x *CancelAdoptApplyResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CancelAdoptApplyResponse.ProtoReflect.Descriptor instead.
 func (*CancelAdoptApplyResponse) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{19}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{23}
 }
 
 func (x *CancelAdoptApplyResponse) GetMessage() string {
@@ -1551,7 +2196,7 @@ type GetAdoptApplyDetailRequest struct {
 
 func (x *GetAdoptApplyDetailRequest) Reset() {
 	*x = GetAdoptApplyDetailRequest{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[20]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[24]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1563,7 +2208,7 @@ func (x *GetAdoptApplyDetailRequest) String() string {
 func (*GetAdoptApplyDetailRequest) ProtoMessage() {}
 
 func (x *GetAdoptApplyDetailRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[20]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[24]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1576,7 +2221,7 @@ func (x *GetAdoptApplyDetailRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetAdoptApplyDetailRequest.ProtoReflect.Descriptor instead.
 func (*GetAdoptApplyDetailRequest) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{20}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{24}
 }
 
 func (x *GetAdoptApplyDetailRequest) GetApplyId() uint64 {
@@ -1621,7 +2266,7 @@ type AdoptApplicationVO struct {
 
 func (x *AdoptApplicationVO) Reset() {
 	*x = AdoptApplicationVO{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[21]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[25]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1633,7 +2278,7 @@ func (x *AdoptApplicationVO) String() string {
 func (*AdoptApplicationVO) ProtoMessage() {}
 
 func (x *AdoptApplicationVO) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[21]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[25]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1646,7 +2291,7 @@ func (x *AdoptApplicationVO) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AdoptApplicationVO.ProtoReflect.Descriptor instead.
 func (*AdoptApplicationVO) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{21}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{25}
 }
 
 func (x *AdoptApplicationVO) GetId() uint64 {
@@ -1799,7 +2444,7 @@ type GetAdoptApplyDetailResponse struct {
 
 func (x *GetAdoptApplyDetailResponse) Reset() {
 	*x = GetAdoptApplyDetailResponse{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[22]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[26]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1811,7 +2456,7 @@ func (x *GetAdoptApplyDetailResponse) String() string {
 func (*GetAdoptApplyDetailResponse) ProtoMessage() {}
 
 func (x *GetAdoptApplyDetailResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[22]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[26]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1824,7 +2469,7 @@ func (x *GetAdoptApplyDetailResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetAdoptApplyDetailResponse.ProtoReflect.Descriptor instead.
 func (*GetAdoptApplyDetailResponse) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{22}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{26}
 }
 
 func (x *GetAdoptApplyDetailResponse) GetApply() *AdoptApplicationVO {
@@ -1853,7 +2498,7 @@ type ListMyAdoptAppliesRequest struct {
 
 func (x *ListMyAdoptAppliesRequest) Reset() {
 	*x = ListMyAdoptAppliesRequest{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[23]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[27]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1865,7 +2510,7 @@ func (x *ListMyAdoptAppliesRequest) String() string {
 func (*ListMyAdoptAppliesRequest) ProtoMessage() {}
 
 func (x *ListMyAdoptAppliesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[23]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[27]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1878,7 +2523,7 @@ func (x *ListMyAdoptAppliesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListMyAdoptAppliesRequest.ProtoReflect.Descriptor instead.
 func (*ListMyAdoptAppliesRequest) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{23}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{27}
 }
 
 func (x *ListMyAdoptAppliesRequest) GetStatus() string {
@@ -1920,7 +2565,7 @@ type ListMyAdoptionsRequest struct {
 
 func (x *ListMyAdoptionsRequest) Reset() {
 	*x = ListMyAdoptionsRequest{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[24]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[28]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1932,7 +2577,7 @@ func (x *ListMyAdoptionsRequest) String() string {
 func (*ListMyAdoptionsRequest) ProtoMessage() {}
 
 func (x *ListMyAdoptionsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[24]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[28]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1945,7 +2590,7 @@ func (x *ListMyAdoptionsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListMyAdoptionsRequest.ProtoReflect.Descriptor instead.
 func (*ListMyAdoptionsRequest) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{24}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{28}
 }
 
 func (x *ListMyAdoptionsRequest) GetUserId() uint64 {
@@ -1988,7 +2633,7 @@ type AdoptApplyItemVO struct {
 
 func (x *AdoptApplyItemVO) Reset() {
 	*x = AdoptApplyItemVO{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[25]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[29]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2000,7 +2645,7 @@ func (x *AdoptApplyItemVO) String() string {
 func (*AdoptApplyItemVO) ProtoMessage() {}
 
 func (x *AdoptApplyItemVO) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[25]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[29]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2013,7 +2658,7 @@ func (x *AdoptApplyItemVO) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AdoptApplyItemVO.ProtoReflect.Descriptor instead.
 func (*AdoptApplyItemVO) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{25}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{29}
 }
 
 func (x *AdoptApplyItemVO) GetApplyId() uint64 {
@@ -2105,7 +2750,7 @@ type ListMyAdoptAppliesResponse struct {
 
 func (x *ListMyAdoptAppliesResponse) Reset() {
 	*x = ListMyAdoptAppliesResponse{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[26]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[30]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2117,7 +2762,7 @@ func (x *ListMyAdoptAppliesResponse) String() string {
 func (*ListMyAdoptAppliesResponse) ProtoMessage() {}
 
 func (x *ListMyAdoptAppliesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[26]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[30]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2130,7 +2775,7 @@ func (x *ListMyAdoptAppliesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListMyAdoptAppliesResponse.ProtoReflect.Descriptor instead.
 func (*ListMyAdoptAppliesResponse) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{26}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{30}
 }
 
 func (x *ListMyAdoptAppliesResponse) GetItems() []*AdoptApplyItemVO {
@@ -2172,7 +2817,7 @@ type ApproveAdoptRequest struct {
 
 func (x *ApproveAdoptRequest) Reset() {
 	*x = ApproveAdoptRequest{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[27]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[31]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2184,7 +2829,7 @@ func (x *ApproveAdoptRequest) String() string {
 func (*ApproveAdoptRequest) ProtoMessage() {}
 
 func (x *ApproveAdoptRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[27]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[31]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2197,7 +2842,7 @@ func (x *ApproveAdoptRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ApproveAdoptRequest.ProtoReflect.Descriptor instead.
 func (*ApproveAdoptRequest) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{27}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{31}
 }
 
 func (x *ApproveAdoptRequest) GetApplyId() uint64 {
@@ -2233,7 +2878,7 @@ type ApproveAdoptResponse struct {
 
 func (x *ApproveAdoptResponse) Reset() {
 	*x = ApproveAdoptResponse{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[28]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[32]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2245,7 +2890,7 @@ func (x *ApproveAdoptResponse) String() string {
 func (*ApproveAdoptResponse) ProtoMessage() {}
 
 func (x *ApproveAdoptResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[28]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[32]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2258,7 +2903,7 @@ func (x *ApproveAdoptResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ApproveAdoptResponse.ProtoReflect.Descriptor instead.
 func (*ApproveAdoptResponse) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{28}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{32}
 }
 
 func (x *ApproveAdoptResponse) GetApplyId() uint64 {
@@ -2301,7 +2946,7 @@ type RejectAdoptRequest struct {
 
 func (x *RejectAdoptRequest) Reset() {
 	*x = RejectAdoptRequest{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[29]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[33]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2313,7 +2958,7 @@ func (x *RejectAdoptRequest) String() string {
 func (*RejectAdoptRequest) ProtoMessage() {}
 
 func (x *RejectAdoptRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[29]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[33]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2326,7 +2971,7 @@ func (x *RejectAdoptRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RejectAdoptRequest.ProtoReflect.Descriptor instead.
 func (*RejectAdoptRequest) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{29}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{33}
 }
 
 func (x *RejectAdoptRequest) GetApplyId() uint64 {
@@ -2359,7 +3004,7 @@ type RejectAdoptResponse struct {
 
 func (x *RejectAdoptResponse) Reset() {
 	*x = RejectAdoptResponse{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[30]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[34]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2371,7 +3016,7 @@ func (x *RejectAdoptResponse) String() string {
 func (*RejectAdoptResponse) ProtoMessage() {}
 
 func (x *RejectAdoptResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[30]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[34]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2384,7 +3029,7 @@ func (x *RejectAdoptResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RejectAdoptResponse.ProtoReflect.Descriptor instead.
 func (*RejectAdoptResponse) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{30}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{34}
 }
 
 func (x *RejectAdoptResponse) GetMessage() string {
@@ -2406,7 +3051,7 @@ type ListPendingAdoptAppliesRequest struct {
 
 func (x *ListPendingAdoptAppliesRequest) Reset() {
 	*x = ListPendingAdoptAppliesRequest{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[31]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[35]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2418,7 +3063,7 @@ func (x *ListPendingAdoptAppliesRequest) String() string {
 func (*ListPendingAdoptAppliesRequest) ProtoMessage() {}
 
 func (x *ListPendingAdoptAppliesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[31]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[35]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2431,7 +3076,7 @@ func (x *ListPendingAdoptAppliesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListPendingAdoptAppliesRequest.ProtoReflect.Descriptor instead.
 func (*ListPendingAdoptAppliesRequest) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{31}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{35}
 }
 
 func (x *ListPendingAdoptAppliesRequest) GetCatId() uint64 {
@@ -2484,7 +3129,7 @@ type PendingApplyVO struct {
 
 func (x *PendingApplyVO) Reset() {
 	*x = PendingApplyVO{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[32]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[36]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2496,7 +3141,7 @@ func (x *PendingApplyVO) String() string {
 func (*PendingApplyVO) ProtoMessage() {}
 
 func (x *PendingApplyVO) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[32]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[36]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2509,7 +3154,7 @@ func (x *PendingApplyVO) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PendingApplyVO.ProtoReflect.Descriptor instead.
 func (*PendingApplyVO) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{32}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{36}
 }
 
 func (x *PendingApplyVO) GetApplyId() uint64 {
@@ -2622,7 +3267,7 @@ type ListPendingAdoptAppliesResponse struct {
 
 func (x *ListPendingAdoptAppliesResponse) Reset() {
 	*x = ListPendingAdoptAppliesResponse{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[33]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[37]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2634,7 +3279,7 @@ func (x *ListPendingAdoptAppliesResponse) String() string {
 func (*ListPendingAdoptAppliesResponse) ProtoMessage() {}
 
 func (x *ListPendingAdoptAppliesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[33]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[37]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2647,7 +3292,7 @@ func (x *ListPendingAdoptAppliesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListPendingAdoptAppliesResponse.ProtoReflect.Descriptor instead.
 func (*ListPendingAdoptAppliesResponse) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{33}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{37}
 }
 
 func (x *ListPendingAdoptAppliesResponse) GetItems() []*PendingApplyVO {
@@ -2690,7 +3335,7 @@ type CreateAdoptionRequest struct {
 
 func (x *CreateAdoptionRequest) Reset() {
 	*x = CreateAdoptionRequest{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[34]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[38]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2702,7 +3347,7 @@ func (x *CreateAdoptionRequest) String() string {
 func (*CreateAdoptionRequest) ProtoMessage() {}
 
 func (x *CreateAdoptionRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[34]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[38]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2715,7 +3360,7 @@ func (x *CreateAdoptionRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateAdoptionRequest.ProtoReflect.Descriptor instead.
 func (*CreateAdoptionRequest) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{34}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{38}
 }
 
 func (x *CreateAdoptionRequest) GetApplyId() uint64 {
@@ -2756,7 +3401,7 @@ type CreateAdoptionResponse struct {
 
 func (x *CreateAdoptionResponse) Reset() {
 	*x = CreateAdoptionResponse{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[35]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[39]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2768,7 +3413,7 @@ func (x *CreateAdoptionResponse) String() string {
 func (*CreateAdoptionResponse) ProtoMessage() {}
 
 func (x *CreateAdoptionResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[35]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[39]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2781,7 +3426,7 @@ func (x *CreateAdoptionResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateAdoptionResponse.ProtoReflect.Descriptor instead.
 func (*CreateAdoptionResponse) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{35}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{39}
 }
 
 func (x *CreateAdoptionResponse) GetAdoptionId() uint64 {
@@ -2812,7 +3457,7 @@ type DirectAdoptRequest struct {
 
 func (x *DirectAdoptRequest) Reset() {
 	*x = DirectAdoptRequest{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[36]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[40]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2824,7 +3469,7 @@ func (x *DirectAdoptRequest) String() string {
 func (*DirectAdoptRequest) ProtoMessage() {}
 
 func (x *DirectAdoptRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[36]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[40]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2837,7 +3482,7 @@ func (x *DirectAdoptRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DirectAdoptRequest.ProtoReflect.Descriptor instead.
 func (*DirectAdoptRequest) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{36}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{40}
 }
 
 func (x *DirectAdoptRequest) GetCatId() uint64 {
@@ -2885,7 +3530,7 @@ type DirectAdoptResponse struct {
 
 func (x *DirectAdoptResponse) Reset() {
 	*x = DirectAdoptResponse{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[37]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[41]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2897,7 +3542,7 @@ func (x *DirectAdoptResponse) String() string {
 func (*DirectAdoptResponse) ProtoMessage() {}
 
 func (x *DirectAdoptResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[37]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[41]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2910,7 +3555,7 @@ func (x *DirectAdoptResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DirectAdoptResponse.ProtoReflect.Descriptor instead.
 func (*DirectAdoptResponse) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{37}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{41}
 }
 
 func (x *DirectAdoptResponse) GetAdoptionId() uint64 {
@@ -2938,7 +3583,7 @@ type GetAdoptionDetailRequest struct {
 
 func (x *GetAdoptionDetailRequest) Reset() {
 	*x = GetAdoptionDetailRequest{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[38]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[42]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2950,7 +3595,7 @@ func (x *GetAdoptionDetailRequest) String() string {
 func (*GetAdoptionDetailRequest) ProtoMessage() {}
 
 func (x *GetAdoptionDetailRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[38]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[42]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2963,7 +3608,7 @@ func (x *GetAdoptionDetailRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetAdoptionDetailRequest.ProtoReflect.Descriptor instead.
 func (*GetAdoptionDetailRequest) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{38}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{42}
 }
 
 func (x *GetAdoptionDetailRequest) GetAdoptionId() uint64 {
@@ -3014,7 +3659,7 @@ type AdoptionVO struct {
 
 func (x *AdoptionVO) Reset() {
 	*x = AdoptionVO{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[39]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[43]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3026,7 +3671,7 @@ func (x *AdoptionVO) String() string {
 func (*AdoptionVO) ProtoMessage() {}
 
 func (x *AdoptionVO) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[39]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[43]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3039,7 +3684,7 @@ func (x *AdoptionVO) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AdoptionVO.ProtoReflect.Descriptor instead.
 func (*AdoptionVO) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{39}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{43}
 }
 
 func (x *AdoptionVO) GetId() uint64 {
@@ -3214,7 +3859,7 @@ type GetAdoptionDetailResponse struct {
 
 func (x *GetAdoptionDetailResponse) Reset() {
 	*x = GetAdoptionDetailResponse{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[40]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[44]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3226,7 +3871,7 @@ func (x *GetAdoptionDetailResponse) String() string {
 func (*GetAdoptionDetailResponse) ProtoMessage() {}
 
 func (x *GetAdoptionDetailResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[40]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[44]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3239,7 +3884,7 @@ func (x *GetAdoptionDetailResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetAdoptionDetailResponse.ProtoReflect.Descriptor instead.
 func (*GetAdoptionDetailResponse) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{40}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{44}
 }
 
 func (x *GetAdoptionDetailResponse) GetAdoption() *AdoptionVO {
@@ -3278,7 +3923,7 @@ type ListAdoptionsRequest struct {
 
 func (x *ListAdoptionsRequest) Reset() {
 	*x = ListAdoptionsRequest{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[41]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[45]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3290,7 +3935,7 @@ func (x *ListAdoptionsRequest) String() string {
 func (*ListAdoptionsRequest) ProtoMessage() {}
 
 func (x *ListAdoptionsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[41]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[45]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3303,7 +3948,7 @@ func (x *ListAdoptionsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListAdoptionsRequest.ProtoReflect.Descriptor instead.
 func (*ListAdoptionsRequest) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{41}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{45}
 }
 
 func (x *ListAdoptionsRequest) GetAdopterId() uint64 {
@@ -3366,7 +4011,7 @@ type AdoptionItemVO struct {
 
 func (x *AdoptionItemVO) Reset() {
 	*x = AdoptionItemVO{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[42]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[46]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3378,7 +4023,7 @@ func (x *AdoptionItemVO) String() string {
 func (*AdoptionItemVO) ProtoMessage() {}
 
 func (x *AdoptionItemVO) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[42]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[46]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3391,7 +4036,7 @@ func (x *AdoptionItemVO) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AdoptionItemVO.ProtoReflect.Descriptor instead.
 func (*AdoptionItemVO) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{42}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{46}
 }
 
 func (x *AdoptionItemVO) GetAdoptionId() uint64 {
@@ -3476,7 +4121,7 @@ type ListAdoptionsResponse struct {
 
 func (x *ListAdoptionsResponse) Reset() {
 	*x = ListAdoptionsResponse{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[43]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[47]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3488,7 +4133,7 @@ func (x *ListAdoptionsResponse) String() string {
 func (*ListAdoptionsResponse) ProtoMessage() {}
 
 func (x *ListAdoptionsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[43]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[47]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3501,7 +4146,7 @@ func (x *ListAdoptionsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListAdoptionsResponse.ProtoReflect.Descriptor instead.
 func (*ListAdoptionsResponse) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{43}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{47}
 }
 
 func (x *ListAdoptionsResponse) GetItems() []*AdoptionItemVO {
@@ -3545,7 +4190,7 @@ type UpdateAdoptionRequest struct {
 
 func (x *UpdateAdoptionRequest) Reset() {
 	*x = UpdateAdoptionRequest{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[44]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[48]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3557,7 +4202,7 @@ func (x *UpdateAdoptionRequest) String() string {
 func (*UpdateAdoptionRequest) ProtoMessage() {}
 
 func (x *UpdateAdoptionRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[44]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[48]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3570,7 +4215,7 @@ func (x *UpdateAdoptionRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateAdoptionRequest.ProtoReflect.Descriptor instead.
 func (*UpdateAdoptionRequest) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{44}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{48}
 }
 
 func (x *UpdateAdoptionRequest) GetAdoptionId() uint64 {
@@ -3610,7 +4255,7 @@ type UpdateAdoptionResponse struct {
 
 func (x *UpdateAdoptionResponse) Reset() {
 	*x = UpdateAdoptionResponse{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[45]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[49]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3622,7 +4267,7 @@ func (x *UpdateAdoptionResponse) String() string {
 func (*UpdateAdoptionResponse) ProtoMessage() {}
 
 func (x *UpdateAdoptionResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[45]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[49]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3635,7 +4280,7 @@ func (x *UpdateAdoptionResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateAdoptionResponse.ProtoReflect.Descriptor instead.
 func (*UpdateAdoptionResponse) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{45}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{49}
 }
 
 func (x *UpdateAdoptionResponse) GetMessage() string {
@@ -3658,7 +4303,7 @@ type RecordHomeVisitRequest struct {
 
 func (x *RecordHomeVisitRequest) Reset() {
 	*x = RecordHomeVisitRequest{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[46]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[50]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3670,7 +4315,7 @@ func (x *RecordHomeVisitRequest) String() string {
 func (*RecordHomeVisitRequest) ProtoMessage() {}
 
 func (x *RecordHomeVisitRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[46]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[50]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3683,7 +4328,7 @@ func (x *RecordHomeVisitRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RecordHomeVisitRequest.ProtoReflect.Descriptor instead.
 func (*RecordHomeVisitRequest) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{46}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{50}
 }
 
 func (x *RecordHomeVisitRequest) GetAdoptionId() uint64 {
@@ -3723,7 +4368,7 @@ type RecordHomeVisitResponse struct {
 
 func (x *RecordHomeVisitResponse) Reset() {
 	*x = RecordHomeVisitResponse{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[47]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[51]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3735,7 +4380,7 @@ func (x *RecordHomeVisitResponse) String() string {
 func (*RecordHomeVisitResponse) ProtoMessage() {}
 
 func (x *RecordHomeVisitResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[47]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[51]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3748,7 +4393,7 @@ func (x *RecordHomeVisitResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RecordHomeVisitResponse.ProtoReflect.Descriptor instead.
 func (*RecordHomeVisitResponse) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{47}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{51}
 }
 
 func (x *RecordHomeVisitResponse) GetMessage() string {
@@ -3772,7 +4417,7 @@ type RecordFollowUpVisitRequest struct {
 
 func (x *RecordFollowUpVisitRequest) Reset() {
 	*x = RecordFollowUpVisitRequest{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[48]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[52]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3784,7 +4429,7 @@ func (x *RecordFollowUpVisitRequest) String() string {
 func (*RecordFollowUpVisitRequest) ProtoMessage() {}
 
 func (x *RecordFollowUpVisitRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[48]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[52]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3797,7 +4442,7 @@ func (x *RecordFollowUpVisitRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RecordFollowUpVisitRequest.ProtoReflect.Descriptor instead.
 func (*RecordFollowUpVisitRequest) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{48}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{52}
 }
 
 func (x *RecordFollowUpVisitRequest) GetAdoptionId() uint64 {
@@ -3844,7 +4489,7 @@ type RecordFollowUpVisitResponse struct {
 
 func (x *RecordFollowUpVisitResponse) Reset() {
 	*x = RecordFollowUpVisitResponse{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[49]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[53]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3856,7 +4501,7 @@ func (x *RecordFollowUpVisitResponse) String() string {
 func (*RecordFollowUpVisitResponse) ProtoMessage() {}
 
 func (x *RecordFollowUpVisitResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[49]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[53]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3869,7 +4514,7 @@ func (x *RecordFollowUpVisitResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RecordFollowUpVisitResponse.ProtoReflect.Descriptor instead.
 func (*RecordFollowUpVisitResponse) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{49}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{53}
 }
 
 func (x *RecordFollowUpVisitResponse) GetMessage() string {
@@ -3895,7 +4540,7 @@ type UpdateReturnStatusRequest struct {
 
 func (x *UpdateReturnStatusRequest) Reset() {
 	*x = UpdateReturnStatusRequest{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[50]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[54]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3907,7 +4552,7 @@ func (x *UpdateReturnStatusRequest) String() string {
 func (*UpdateReturnStatusRequest) ProtoMessage() {}
 
 func (x *UpdateReturnStatusRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[50]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[54]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3920,7 +4565,7 @@ func (x *UpdateReturnStatusRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateReturnStatusRequest.ProtoReflect.Descriptor instead.
 func (*UpdateReturnStatusRequest) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{50}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{54}
 }
 
 func (x *UpdateReturnStatusRequest) GetAdoptionId() uint64 {
@@ -3981,7 +4626,7 @@ type UpdateReturnStatusResponse struct {
 
 func (x *UpdateReturnStatusResponse) Reset() {
 	*x = UpdateReturnStatusResponse{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[51]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[55]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3993,7 +4638,7 @@ func (x *UpdateReturnStatusResponse) String() string {
 func (*UpdateReturnStatusResponse) ProtoMessage() {}
 
 func (x *UpdateReturnStatusResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[51]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[55]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4006,7 +4651,7 @@ func (x *UpdateReturnStatusResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateReturnStatusResponse.ProtoReflect.Descriptor instead.
 func (*UpdateReturnStatusResponse) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{51}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{55}
 }
 
 func (x *UpdateReturnStatusResponse) GetMessage() string {
@@ -4029,7 +4674,7 @@ type CatBriefVO struct {
 
 func (x *CatBriefVO) Reset() {
 	*x = CatBriefVO{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[52]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[56]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4041,7 +4686,7 @@ func (x *CatBriefVO) String() string {
 func (*CatBriefVO) ProtoMessage() {}
 
 func (x *CatBriefVO) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[52]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[56]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4054,7 +4699,7 @@ func (x *CatBriefVO) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CatBriefVO.ProtoReflect.Descriptor instead.
 func (*CatBriefVO) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{52}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{56}
 }
 
 func (x *CatBriefVO) GetId() uint64 {
@@ -4103,7 +4748,7 @@ type UserBriefVO struct {
 
 func (x *UserBriefVO) Reset() {
 	*x = UserBriefVO{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[53]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[57]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4115,7 +4760,7 @@ func (x *UserBriefVO) String() string {
 func (*UserBriefVO) ProtoMessage() {}
 
 func (x *UserBriefVO) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[53]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[57]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4128,7 +4773,7 @@ func (x *UserBriefVO) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserBriefVO.ProtoReflect.Descriptor instead.
 func (*UserBriefVO) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{53}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{57}
 }
 
 func (x *UserBriefVO) GetId() uint64 {
@@ -4172,7 +4817,7 @@ type ApplyCreateTaskRequest struct {
 
 func (x *ApplyCreateTaskRequest) Reset() {
 	*x = ApplyCreateTaskRequest{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[54]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[58]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4184,7 +4829,7 @@ func (x *ApplyCreateTaskRequest) String() string {
 func (*ApplyCreateTaskRequest) ProtoMessage() {}
 
 func (x *ApplyCreateTaskRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[54]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[58]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4197,7 +4842,7 @@ func (x *ApplyCreateTaskRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ApplyCreateTaskRequest.ProtoReflect.Descriptor instead.
 func (*ApplyCreateTaskRequest) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{54}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{58}
 }
 
 func (x *ApplyCreateTaskRequest) GetCatId() uint64 {
@@ -4295,7 +4940,7 @@ type ApplyCreateTaskResponse struct {
 
 func (x *ApplyCreateTaskResponse) Reset() {
 	*x = ApplyCreateTaskResponse{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[55]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[59]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4307,7 +4952,7 @@ func (x *ApplyCreateTaskResponse) String() string {
 func (*ApplyCreateTaskResponse) ProtoMessage() {}
 
 func (x *ApplyCreateTaskResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[55]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[59]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4320,7 +4965,7 @@ func (x *ApplyCreateTaskResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ApplyCreateTaskResponse.ProtoReflect.Descriptor instead.
 func (*ApplyCreateTaskResponse) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{55}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{59}
 }
 
 func (x *ApplyCreateTaskResponse) GetApplyId() uint64 {
@@ -4355,7 +5000,7 @@ type CancelTaskApplyRequest struct {
 
 func (x *CancelTaskApplyRequest) Reset() {
 	*x = CancelTaskApplyRequest{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[56]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[60]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4367,7 +5012,7 @@ func (x *CancelTaskApplyRequest) String() string {
 func (*CancelTaskApplyRequest) ProtoMessage() {}
 
 func (x *CancelTaskApplyRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[56]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[60]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4380,7 +5025,7 @@ func (x *CancelTaskApplyRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CancelTaskApplyRequest.ProtoReflect.Descriptor instead.
 func (*CancelTaskApplyRequest) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{56}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{60}
 }
 
 func (x *CancelTaskApplyRequest) GetApplyId() uint64 {
@@ -4413,7 +5058,7 @@ type CancelTaskApplyResponse struct {
 
 func (x *CancelTaskApplyResponse) Reset() {
 	*x = CancelTaskApplyResponse{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[57]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[61]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4425,7 +5070,7 @@ func (x *CancelTaskApplyResponse) String() string {
 func (*CancelTaskApplyResponse) ProtoMessage() {}
 
 func (x *CancelTaskApplyResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[57]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[61]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4438,7 +5083,7 @@ func (x *CancelTaskApplyResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CancelTaskApplyResponse.ProtoReflect.Descriptor instead.
 func (*CancelTaskApplyResponse) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{57}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{61}
 }
 
 func (x *CancelTaskApplyResponse) GetMessage() string {
@@ -4458,7 +5103,7 @@ type GetTaskApplyDetailRequest struct {
 
 func (x *GetTaskApplyDetailRequest) Reset() {
 	*x = GetTaskApplyDetailRequest{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[58]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[62]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4470,7 +5115,7 @@ func (x *GetTaskApplyDetailRequest) String() string {
 func (*GetTaskApplyDetailRequest) ProtoMessage() {}
 
 func (x *GetTaskApplyDetailRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[58]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[62]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4483,7 +5128,7 @@ func (x *GetTaskApplyDetailRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetTaskApplyDetailRequest.ProtoReflect.Descriptor instead.
 func (*GetTaskApplyDetailRequest) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{58}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{62}
 }
 
 func (x *GetTaskApplyDetailRequest) GetApplyId() uint64 {
@@ -4536,7 +5181,7 @@ type TaskApplyVO struct {
 
 func (x *TaskApplyVO) Reset() {
 	*x = TaskApplyVO{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[59]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[63]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4548,7 +5193,7 @@ func (x *TaskApplyVO) String() string {
 func (*TaskApplyVO) ProtoMessage() {}
 
 func (x *TaskApplyVO) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[59]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[63]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4561,7 +5206,7 @@ func (x *TaskApplyVO) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TaskApplyVO.ProtoReflect.Descriptor instead.
 func (*TaskApplyVO) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{59}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{63}
 }
 
 func (x *TaskApplyVO) GetId() uint64 {
@@ -4770,7 +5415,7 @@ type GetTaskApplyDetailResponse struct {
 
 func (x *GetTaskApplyDetailResponse) Reset() {
 	*x = GetTaskApplyDetailResponse{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[60]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[64]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4782,7 +5427,7 @@ func (x *GetTaskApplyDetailResponse) String() string {
 func (*GetTaskApplyDetailResponse) ProtoMessage() {}
 
 func (x *GetTaskApplyDetailResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[60]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[64]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4795,7 +5440,7 @@ func (x *GetTaskApplyDetailResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetTaskApplyDetailResponse.ProtoReflect.Descriptor instead.
 func (*GetTaskApplyDetailResponse) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{60}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{64}
 }
 
 func (x *GetTaskApplyDetailResponse) GetApply() *TaskApplyVO {
@@ -4824,7 +5469,7 @@ type ListMyTaskAppliesRequest struct {
 
 func (x *ListMyTaskAppliesRequest) Reset() {
 	*x = ListMyTaskAppliesRequest{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[61]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[65]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4836,7 +5481,7 @@ func (x *ListMyTaskAppliesRequest) String() string {
 func (*ListMyTaskAppliesRequest) ProtoMessage() {}
 
 func (x *ListMyTaskAppliesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[61]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[65]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4849,7 +5494,7 @@ func (x *ListMyTaskAppliesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListMyTaskAppliesRequest.ProtoReflect.Descriptor instead.
 func (*ListMyTaskAppliesRequest) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{61}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{65}
 }
 
 func (x *ListMyTaskAppliesRequest) GetStatus() string {
@@ -4892,7 +5537,7 @@ type ListMyTaskAppliesResponse struct {
 
 func (x *ListMyTaskAppliesResponse) Reset() {
 	*x = ListMyTaskAppliesResponse{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[62]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[66]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4904,7 +5549,7 @@ func (x *ListMyTaskAppliesResponse) String() string {
 func (*ListMyTaskAppliesResponse) ProtoMessage() {}
 
 func (x *ListMyTaskAppliesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[62]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[66]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4917,7 +5562,7 @@ func (x *ListMyTaskAppliesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListMyTaskAppliesResponse.ProtoReflect.Descriptor instead.
 func (*ListMyTaskAppliesResponse) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{62}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{66}
 }
 
 func (x *ListMyTaskAppliesResponse) GetItems() []*TaskApplyItemVO {
@@ -4965,7 +5610,7 @@ type TaskApplyItemVO struct {
 
 func (x *TaskApplyItemVO) Reset() {
 	*x = TaskApplyItemVO{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[63]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[67]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4977,7 +5622,7 @@ func (x *TaskApplyItemVO) String() string {
 func (*TaskApplyItemVO) ProtoMessage() {}
 
 func (x *TaskApplyItemVO) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[63]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[67]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4990,7 +5635,7 @@ func (x *TaskApplyItemVO) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TaskApplyItemVO.ProtoReflect.Descriptor instead.
 func (*TaskApplyItemVO) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{63}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{67}
 }
 
 func (x *TaskApplyItemVO) GetApplyId() uint64 {
@@ -5072,7 +5717,7 @@ type ApproveTaskApplyRequest struct {
 
 func (x *ApproveTaskApplyRequest) Reset() {
 	*x = ApproveTaskApplyRequest{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[64]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[68]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5084,7 +5729,7 @@ func (x *ApproveTaskApplyRequest) String() string {
 func (*ApproveTaskApplyRequest) ProtoMessage() {}
 
 func (x *ApproveTaskApplyRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[64]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[68]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5097,7 +5742,7 @@ func (x *ApproveTaskApplyRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ApproveTaskApplyRequest.ProtoReflect.Descriptor instead.
 func (*ApproveTaskApplyRequest) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{64}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{68}
 }
 
 func (x *ApproveTaskApplyRequest) GetApplyId() uint64 {
@@ -5166,7 +5811,7 @@ type ApproveTaskApplyResponse struct {
 
 func (x *ApproveTaskApplyResponse) Reset() {
 	*x = ApproveTaskApplyResponse{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[65]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[69]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5178,7 +5823,7 @@ func (x *ApproveTaskApplyResponse) String() string {
 func (*ApproveTaskApplyResponse) ProtoMessage() {}
 
 func (x *ApproveTaskApplyResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[65]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[69]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5191,7 +5836,7 @@ func (x *ApproveTaskApplyResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ApproveTaskApplyResponse.ProtoReflect.Descriptor instead.
 func (*ApproveTaskApplyResponse) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{65}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{69}
 }
 
 func (x *ApproveTaskApplyResponse) GetTaskId() uint64 {
@@ -5219,7 +5864,7 @@ type RejectTaskApplyRequest struct {
 
 func (x *RejectTaskApplyRequest) Reset() {
 	*x = RejectTaskApplyRequest{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[66]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[70]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5231,7 +5876,7 @@ func (x *RejectTaskApplyRequest) String() string {
 func (*RejectTaskApplyRequest) ProtoMessage() {}
 
 func (x *RejectTaskApplyRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[66]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[70]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5244,7 +5889,7 @@ func (x *RejectTaskApplyRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RejectTaskApplyRequest.ProtoReflect.Descriptor instead.
 func (*RejectTaskApplyRequest) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{66}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{70}
 }
 
 func (x *RejectTaskApplyRequest) GetApplyId() uint64 {
@@ -5277,7 +5922,7 @@ type RejectTaskApplyResponse struct {
 
 func (x *RejectTaskApplyResponse) Reset() {
 	*x = RejectTaskApplyResponse{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[67]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[71]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5289,7 +5934,7 @@ func (x *RejectTaskApplyResponse) String() string {
 func (*RejectTaskApplyResponse) ProtoMessage() {}
 
 func (x *RejectTaskApplyResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[67]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[71]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5302,7 +5947,7 @@ func (x *RejectTaskApplyResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RejectTaskApplyResponse.ProtoReflect.Descriptor instead.
 func (*RejectTaskApplyResponse) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{67}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{71}
 }
 
 func (x *RejectTaskApplyResponse) GetMessage() string {
@@ -5324,7 +5969,7 @@ type ListPendingTaskAppliesRequest struct {
 
 func (x *ListPendingTaskAppliesRequest) Reset() {
 	*x = ListPendingTaskAppliesRequest{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[68]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[72]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5336,7 +5981,7 @@ func (x *ListPendingTaskAppliesRequest) String() string {
 func (*ListPendingTaskAppliesRequest) ProtoMessage() {}
 
 func (x *ListPendingTaskAppliesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[68]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[72]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5349,7 +5994,7 @@ func (x *ListPendingTaskAppliesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListPendingTaskAppliesRequest.ProtoReflect.Descriptor instead.
 func (*ListPendingTaskAppliesRequest) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{68}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{72}
 }
 
 func (x *ListPendingTaskAppliesRequest) GetCatId() uint64 {
@@ -5392,7 +6037,7 @@ type ListPendingTaskAppliesResponse struct {
 
 func (x *ListPendingTaskAppliesResponse) Reset() {
 	*x = ListPendingTaskAppliesResponse{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[69]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[73]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5404,7 +6049,7 @@ func (x *ListPendingTaskAppliesResponse) String() string {
 func (*ListPendingTaskAppliesResponse) ProtoMessage() {}
 
 func (x *ListPendingTaskAppliesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[69]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[73]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5417,7 +6062,7 @@ func (x *ListPendingTaskAppliesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListPendingTaskAppliesResponse.ProtoReflect.Descriptor instead.
 func (*ListPendingTaskAppliesResponse) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{69}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{73}
 }
 
 func (x *ListPendingTaskAppliesResponse) GetItems() []*TaskApplyVO {
@@ -5474,7 +6119,7 @@ type DirectCreateTaskRequest struct {
 
 func (x *DirectCreateTaskRequest) Reset() {
 	*x = DirectCreateTaskRequest{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[70]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[74]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5486,7 +6131,7 @@ func (x *DirectCreateTaskRequest) String() string {
 func (*DirectCreateTaskRequest) ProtoMessage() {}
 
 func (x *DirectCreateTaskRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[70]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[74]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5499,7 +6144,7 @@ func (x *DirectCreateTaskRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DirectCreateTaskRequest.ProtoReflect.Descriptor instead.
 func (*DirectCreateTaskRequest) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{70}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{74}
 }
 
 func (x *DirectCreateTaskRequest) GetCatId() uint64 {
@@ -5638,7 +6283,7 @@ type DirectCreateTaskResponse struct {
 
 func (x *DirectCreateTaskResponse) Reset() {
 	*x = DirectCreateTaskResponse{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[71]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[75]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5650,7 +6295,7 @@ func (x *DirectCreateTaskResponse) String() string {
 func (*DirectCreateTaskResponse) ProtoMessage() {}
 
 func (x *DirectCreateTaskResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[71]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[75]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5663,7 +6308,7 @@ func (x *DirectCreateTaskResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DirectCreateTaskResponse.ProtoReflect.Descriptor instead.
 func (*DirectCreateTaskResponse) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{71}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{75}
 }
 
 func (x *DirectCreateTaskResponse) GetTaskId() uint64 {
@@ -5690,7 +6335,7 @@ type GetTaskDetailRequest struct {
 
 func (x *GetTaskDetailRequest) Reset() {
 	*x = GetTaskDetailRequest{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[72]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[76]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5702,7 +6347,7 @@ func (x *GetTaskDetailRequest) String() string {
 func (*GetTaskDetailRequest) ProtoMessage() {}
 
 func (x *GetTaskDetailRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[72]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[76]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5715,7 +6360,7 @@ func (x *GetTaskDetailRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetTaskDetailRequest.ProtoReflect.Descriptor instead.
 func (*GetTaskDetailRequest) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{72}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{76}
 }
 
 func (x *GetTaskDetailRequest) GetTaskId() uint64 {
@@ -5770,7 +6415,7 @@ type TaskVO struct {
 
 func (x *TaskVO) Reset() {
 	*x = TaskVO{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[73]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[77]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -5782,7 +6427,7 @@ func (x *TaskVO) String() string {
 func (*TaskVO) ProtoMessage() {}
 
 func (x *TaskVO) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[73]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[77]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -5795,7 +6440,7 @@ func (x *TaskVO) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TaskVO.ProtoReflect.Descriptor instead.
 func (*TaskVO) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{73}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{77}
 }
 
 func (x *TaskVO) GetId() uint64 {
@@ -6018,7 +6663,7 @@ type GetTaskDetailResponse struct {
 
 func (x *GetTaskDetailResponse) Reset() {
 	*x = GetTaskDetailResponse{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[74]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[78]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6030,7 +6675,7 @@ func (x *GetTaskDetailResponse) String() string {
 func (*GetTaskDetailResponse) ProtoMessage() {}
 
 func (x *GetTaskDetailResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[74]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[78]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6043,7 +6688,7 @@ func (x *GetTaskDetailResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetTaskDetailResponse.ProtoReflect.Descriptor instead.
 func (*GetTaskDetailResponse) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{74}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{78}
 }
 
 func (x *GetTaskDetailResponse) GetTask() *TaskVO {
@@ -6076,7 +6721,7 @@ type ListTasksRequest struct {
 
 func (x *ListTasksRequest) Reset() {
 	*x = ListTasksRequest{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[75]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[79]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6088,7 +6733,7 @@ func (x *ListTasksRequest) String() string {
 func (*ListTasksRequest) ProtoMessage() {}
 
 func (x *ListTasksRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[75]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[79]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6101,7 +6746,7 @@ func (x *ListTasksRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListTasksRequest.ProtoReflect.Descriptor instead.
 func (*ListTasksRequest) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{75}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{79}
 }
 
 func (x *ListTasksRequest) GetCatId() uint64 {
@@ -6172,7 +6817,7 @@ type ListTasksResponse struct {
 
 func (x *ListTasksResponse) Reset() {
 	*x = ListTasksResponse{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[76]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[80]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6184,7 +6829,7 @@ func (x *ListTasksResponse) String() string {
 func (*ListTasksResponse) ProtoMessage() {}
 
 func (x *ListTasksResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[76]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[80]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6197,7 +6842,7 @@ func (x *ListTasksResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListTasksResponse.ProtoReflect.Descriptor instead.
 func (*ListTasksResponse) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{76}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{80}
 }
 
 func (x *ListTasksResponse) GetItems() []*TaskItemVO {
@@ -6252,7 +6897,7 @@ type TaskItemVO struct {
 
 func (x *TaskItemVO) Reset() {
 	*x = TaskItemVO{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[77]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[81]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6264,7 +6909,7 @@ func (x *TaskItemVO) String() string {
 func (*TaskItemVO) ProtoMessage() {}
 
 func (x *TaskItemVO) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[77]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[81]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6277,7 +6922,7 @@ func (x *TaskItemVO) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TaskItemVO.ProtoReflect.Descriptor instead.
 func (*TaskItemVO) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{77}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{81}
 }
 
 func (x *TaskItemVO) GetTaskId() uint64 {
@@ -6409,7 +7054,7 @@ type UpdateTaskRequest struct {
 
 func (x *UpdateTaskRequest) Reset() {
 	*x = UpdateTaskRequest{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[78]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[82]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6421,7 +7066,7 @@ func (x *UpdateTaskRequest) String() string {
 func (*UpdateTaskRequest) ProtoMessage() {}
 
 func (x *UpdateTaskRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[78]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[82]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6434,7 +7079,7 @@ func (x *UpdateTaskRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateTaskRequest.ProtoReflect.Descriptor instead.
 func (*UpdateTaskRequest) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{78}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{82}
 }
 
 func (x *UpdateTaskRequest) GetTaskId() uint64 {
@@ -6509,7 +7154,7 @@ type UpdateTaskResponse struct {
 
 func (x *UpdateTaskResponse) Reset() {
 	*x = UpdateTaskResponse{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[79]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[83]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6521,7 +7166,7 @@ func (x *UpdateTaskResponse) String() string {
 func (*UpdateTaskResponse) ProtoMessage() {}
 
 func (x *UpdateTaskResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[79]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[83]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6534,7 +7179,7 @@ func (x *UpdateTaskResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateTaskResponse.ProtoReflect.Descriptor instead.
 func (*UpdateTaskResponse) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{79}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{83}
 }
 
 func (x *UpdateTaskResponse) GetMessage() string {
@@ -6555,7 +7200,7 @@ type CancelTaskRequest struct {
 
 func (x *CancelTaskRequest) Reset() {
 	*x = CancelTaskRequest{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[80]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[84]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6567,7 +7212,7 @@ func (x *CancelTaskRequest) String() string {
 func (*CancelTaskRequest) ProtoMessage() {}
 
 func (x *CancelTaskRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[80]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[84]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6580,7 +7225,7 @@ func (x *CancelTaskRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CancelTaskRequest.ProtoReflect.Descriptor instead.
 func (*CancelTaskRequest) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{80}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{84}
 }
 
 func (x *CancelTaskRequest) GetTaskId() uint64 {
@@ -6613,7 +7258,7 @@ type CancelTaskResponse struct {
 
 func (x *CancelTaskResponse) Reset() {
 	*x = CancelTaskResponse{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[81]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[85]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6625,7 +7270,7 @@ func (x *CancelTaskResponse) String() string {
 func (*CancelTaskResponse) ProtoMessage() {}
 
 func (x *CancelTaskResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[81]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[85]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6638,7 +7283,7 @@ func (x *CancelTaskResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CancelTaskResponse.ProtoReflect.Descriptor instead.
 func (*CancelTaskResponse) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{81}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{85}
 }
 
 func (x *CancelTaskResponse) GetMessage() string {
@@ -6658,7 +7303,7 @@ type EscalateTaskUrgencyRequest struct {
 
 func (x *EscalateTaskUrgencyRequest) Reset() {
 	*x = EscalateTaskUrgencyRequest{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[82]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[86]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6670,7 +7315,7 @@ func (x *EscalateTaskUrgencyRequest) String() string {
 func (*EscalateTaskUrgencyRequest) ProtoMessage() {}
 
 func (x *EscalateTaskUrgencyRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[82]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[86]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6683,7 +7328,7 @@ func (x *EscalateTaskUrgencyRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EscalateTaskUrgencyRequest.ProtoReflect.Descriptor instead.
 func (*EscalateTaskUrgencyRequest) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{82}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{86}
 }
 
 func (x *EscalateTaskUrgencyRequest) GetTaskId() uint64 {
@@ -6711,7 +7356,7 @@ type EscalateTaskUrgencyResponse struct {
 
 func (x *EscalateTaskUrgencyResponse) Reset() {
 	*x = EscalateTaskUrgencyResponse{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[83]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[87]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6723,7 +7368,7 @@ func (x *EscalateTaskUrgencyResponse) String() string {
 func (*EscalateTaskUrgencyResponse) ProtoMessage() {}
 
 func (x *EscalateTaskUrgencyResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[83]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[87]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6736,7 +7381,7 @@ func (x *EscalateTaskUrgencyResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EscalateTaskUrgencyResponse.ProtoReflect.Descriptor instead.
 func (*EscalateTaskUrgencyResponse) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{83}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{87}
 }
 
 func (x *EscalateTaskUrgencyResponse) GetNewUrgencyLevel() string {
@@ -6770,7 +7415,7 @@ type ClaimTaskRequest struct {
 
 func (x *ClaimTaskRequest) Reset() {
 	*x = ClaimTaskRequest{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[84]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[88]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6782,7 +7427,7 @@ func (x *ClaimTaskRequest) String() string {
 func (*ClaimTaskRequest) ProtoMessage() {}
 
 func (x *ClaimTaskRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[84]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[88]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6795,7 +7440,7 @@ func (x *ClaimTaskRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ClaimTaskRequest.ProtoReflect.Descriptor instead.
 func (*ClaimTaskRequest) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{84}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{88}
 }
 
 func (x *ClaimTaskRequest) GetTaskId() uint64 {
@@ -6822,7 +7467,7 @@ type ClaimTaskResponse struct {
 
 func (x *ClaimTaskResponse) Reset() {
 	*x = ClaimTaskResponse{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[85]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[89]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6834,7 +7479,7 @@ func (x *ClaimTaskResponse) String() string {
 func (*ClaimTaskResponse) ProtoMessage() {}
 
 func (x *ClaimTaskResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[85]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[89]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6847,7 +7492,7 @@ func (x *ClaimTaskResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ClaimTaskResponse.ProtoReflect.Descriptor instead.
 func (*ClaimTaskResponse) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{85}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{89}
 }
 
 func (x *ClaimTaskResponse) GetClaimId() uint64 {
@@ -6875,7 +7520,7 @@ type AbandonTaskRequest struct {
 
 func (x *AbandonTaskRequest) Reset() {
 	*x = AbandonTaskRequest{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[86]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[90]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6887,7 +7532,7 @@ func (x *AbandonTaskRequest) String() string {
 func (*AbandonTaskRequest) ProtoMessage() {}
 
 func (x *AbandonTaskRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[86]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[90]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6900,7 +7545,7 @@ func (x *AbandonTaskRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AbandonTaskRequest.ProtoReflect.Descriptor instead.
 func (*AbandonTaskRequest) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{86}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{90}
 }
 
 func (x *AbandonTaskRequest) GetClaimId() uint64 {
@@ -6933,7 +7578,7 @@ type AbandonTaskResponse struct {
 
 func (x *AbandonTaskResponse) Reset() {
 	*x = AbandonTaskResponse{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[87]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[91]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6945,7 +7590,7 @@ func (x *AbandonTaskResponse) String() string {
 func (*AbandonTaskResponse) ProtoMessage() {}
 
 func (x *AbandonTaskResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[87]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[91]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -6958,7 +7603,7 @@ func (x *AbandonTaskResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AbandonTaskResponse.ProtoReflect.Descriptor instead.
 func (*AbandonTaskResponse) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{87}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{91}
 }
 
 func (x *AbandonTaskResponse) GetMessage() string {
@@ -6980,7 +7625,7 @@ type CompleteTaskRequest struct {
 
 func (x *CompleteTaskRequest) Reset() {
 	*x = CompleteTaskRequest{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[88]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[92]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -6992,7 +7637,7 @@ func (x *CompleteTaskRequest) String() string {
 func (*CompleteTaskRequest) ProtoMessage() {}
 
 func (x *CompleteTaskRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[88]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[92]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7005,7 +7650,7 @@ func (x *CompleteTaskRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CompleteTaskRequest.ProtoReflect.Descriptor instead.
 func (*CompleteTaskRequest) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{88}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{92}
 }
 
 func (x *CompleteTaskRequest) GetClaimId() uint64 {
@@ -7048,7 +7693,7 @@ type CompleteTaskResponse struct {
 
 func (x *CompleteTaskResponse) Reset() {
 	*x = CompleteTaskResponse{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[89]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[93]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7060,7 +7705,7 @@ func (x *CompleteTaskResponse) String() string {
 func (*CompleteTaskResponse) ProtoMessage() {}
 
 func (x *CompleteTaskResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[89]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[93]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7073,7 +7718,7 @@ func (x *CompleteTaskResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CompleteTaskResponse.ProtoReflect.Descriptor instead.
 func (*CompleteTaskResponse) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{89}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{93}
 }
 
 func (x *CompleteTaskResponse) GetRewardPoints() int32 {
@@ -7116,7 +7761,7 @@ type ListMyClaimedTasksRequest struct {
 
 func (x *ListMyClaimedTasksRequest) Reset() {
 	*x = ListMyClaimedTasksRequest{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[90]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[94]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7128,7 +7773,7 @@ func (x *ListMyClaimedTasksRequest) String() string {
 func (*ListMyClaimedTasksRequest) ProtoMessage() {}
 
 func (x *ListMyClaimedTasksRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[90]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[94]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7141,7 +7786,7 @@ func (x *ListMyClaimedTasksRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListMyClaimedTasksRequest.ProtoReflect.Descriptor instead.
 func (*ListMyClaimedTasksRequest) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{90}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{94}
 }
 
 func (x *ListMyClaimedTasksRequest) GetStatus() string {
@@ -7184,7 +7829,7 @@ type ListMyClaimedTasksResponse struct {
 
 func (x *ListMyClaimedTasksResponse) Reset() {
 	*x = ListMyClaimedTasksResponse{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[91]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[95]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7196,7 +7841,7 @@ func (x *ListMyClaimedTasksResponse) String() string {
 func (*ListMyClaimedTasksResponse) ProtoMessage() {}
 
 func (x *ListMyClaimedTasksResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[91]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[95]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7209,7 +7854,7 @@ func (x *ListMyClaimedTasksResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListMyClaimedTasksResponse.ProtoReflect.Descriptor instead.
 func (*ListMyClaimedTasksResponse) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{91}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{95}
 }
 
 func (x *ListMyClaimedTasksResponse) GetItems() []*ClaimItemVO {
@@ -7258,7 +7903,7 @@ type ClaimItemVO struct {
 
 func (x *ClaimItemVO) Reset() {
 	*x = ClaimItemVO{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[92]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[96]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7270,7 +7915,7 @@ func (x *ClaimItemVO) String() string {
 func (*ClaimItemVO) ProtoMessage() {}
 
 func (x *ClaimItemVO) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[92]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[96]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7283,7 +7928,7 @@ func (x *ClaimItemVO) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ClaimItemVO.ProtoReflect.Descriptor instead.
 func (*ClaimItemVO) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{92}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{96}
 }
 
 func (x *ClaimItemVO) GetClaimId() uint64 {
@@ -7367,7 +8012,7 @@ type ListMyCompletedTasksRequest struct {
 
 func (x *ListMyCompletedTasksRequest) Reset() {
 	*x = ListMyCompletedTasksRequest{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[93]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[97]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7379,7 +8024,7 @@ func (x *ListMyCompletedTasksRequest) String() string {
 func (*ListMyCompletedTasksRequest) ProtoMessage() {}
 
 func (x *ListMyCompletedTasksRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[93]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[97]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7392,7 +8037,7 @@ func (x *ListMyCompletedTasksRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListMyCompletedTasksRequest.ProtoReflect.Descriptor instead.
 func (*ListMyCompletedTasksRequest) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{93}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{97}
 }
 
 func (x *ListMyCompletedTasksRequest) GetPage() int32 {
@@ -7429,7 +8074,7 @@ type ListMyCompletedTasksResponse struct {
 
 func (x *ListMyCompletedTasksResponse) Reset() {
 	*x = ListMyCompletedTasksResponse{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[94]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[98]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7441,7 +8086,7 @@ func (x *ListMyCompletedTasksResponse) String() string {
 func (*ListMyCompletedTasksResponse) ProtoMessage() {}
 
 func (x *ListMyCompletedTasksResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[94]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[98]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7454,7 +8099,7 @@ func (x *ListMyCompletedTasksResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListMyCompletedTasksResponse.ProtoReflect.Descriptor instead.
 func (*ListMyCompletedTasksResponse) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{94}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{98}
 }
 
 func (x *ListMyCompletedTasksResponse) GetItems() []*ClaimItemVO {
@@ -7502,7 +8147,7 @@ type GetTaskFlowsRequest struct {
 
 func (x *GetTaskFlowsRequest) Reset() {
 	*x = GetTaskFlowsRequest{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[95]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[99]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7514,7 +8159,7 @@ func (x *GetTaskFlowsRequest) String() string {
 func (*GetTaskFlowsRequest) ProtoMessage() {}
 
 func (x *GetTaskFlowsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[95]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[99]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7527,7 +8172,7 @@ func (x *GetTaskFlowsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetTaskFlowsRequest.ProtoReflect.Descriptor instead.
 func (*GetTaskFlowsRequest) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{95}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{99}
 }
 
 func (x *GetTaskFlowsRequest) GetTaskId() uint64 {
@@ -7553,7 +8198,7 @@ type GetTaskFlowsResponse struct {
 
 func (x *GetTaskFlowsResponse) Reset() {
 	*x = GetTaskFlowsResponse{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[96]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[100]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7565,7 +8210,7 @@ func (x *GetTaskFlowsResponse) String() string {
 func (*GetTaskFlowsResponse) ProtoMessage() {}
 
 func (x *GetTaskFlowsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[96]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[100]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7578,7 +8223,7 @@ func (x *GetTaskFlowsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetTaskFlowsResponse.ProtoReflect.Descriptor instead.
 func (*GetTaskFlowsResponse) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{96}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{100}
 }
 
 func (x *GetTaskFlowsResponse) GetItems() []*TaskFlowVO {
@@ -7605,7 +8250,7 @@ type TaskFlowVO struct {
 
 func (x *TaskFlowVO) Reset() {
 	*x = TaskFlowVO{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[97]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[101]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7617,7 +8262,7 @@ func (x *TaskFlowVO) String() string {
 func (*TaskFlowVO) ProtoMessage() {}
 
 func (x *TaskFlowVO) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[97]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[101]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7630,7 +8275,7 @@ func (x *TaskFlowVO) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TaskFlowVO.ProtoReflect.Descriptor instead.
 func (*TaskFlowVO) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{97}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{101}
 }
 
 func (x *TaskFlowVO) GetId() uint64 {
@@ -7706,7 +8351,7 @@ type GetTaskLogsRequest struct {
 
 func (x *GetTaskLogsRequest) Reset() {
 	*x = GetTaskLogsRequest{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[98]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[102]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7718,7 +8363,7 @@ func (x *GetTaskLogsRequest) String() string {
 func (*GetTaskLogsRequest) ProtoMessage() {}
 
 func (x *GetTaskLogsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[98]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[102]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7731,7 +8376,7 @@ func (x *GetTaskLogsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetTaskLogsRequest.ProtoReflect.Descriptor instead.
 func (*GetTaskLogsRequest) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{98}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{102}
 }
 
 func (x *GetTaskLogsRequest) GetTaskId() uint64 {
@@ -7757,7 +8402,7 @@ type GetTaskLogsResponse struct {
 
 func (x *GetTaskLogsResponse) Reset() {
 	*x = GetTaskLogsResponse{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[99]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[103]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7769,7 +8414,7 @@ func (x *GetTaskLogsResponse) String() string {
 func (*GetTaskLogsResponse) ProtoMessage() {}
 
 func (x *GetTaskLogsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[99]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[103]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7782,7 +8427,7 @@ func (x *GetTaskLogsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetTaskLogsResponse.ProtoReflect.Descriptor instead.
 func (*GetTaskLogsResponse) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{99}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{103}
 }
 
 func (x *GetTaskLogsResponse) GetItems() []*TaskLogVO {
@@ -7807,7 +8452,7 @@ type TaskLogVO struct {
 
 func (x *TaskLogVO) Reset() {
 	*x = TaskLogVO{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[100]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[104]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7819,7 +8464,7 @@ func (x *TaskLogVO) String() string {
 func (*TaskLogVO) ProtoMessage() {}
 
 func (x *TaskLogVO) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[100]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[104]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7832,7 +8477,7 @@ func (x *TaskLogVO) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TaskLogVO.ProtoReflect.Descriptor instead.
 func (*TaskLogVO) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{100}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{104}
 }
 
 func (x *TaskLogVO) GetId() uint64 {
@@ -7896,7 +8541,7 @@ type TagVO struct {
 
 func (x *TagVO) Reset() {
 	*x = TagVO{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[101]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[105]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -7908,7 +8553,7 @@ func (x *TagVO) String() string {
 func (*TagVO) ProtoMessage() {}
 
 func (x *TagVO) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[101]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[105]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -7921,7 +8566,7 @@ func (x *TagVO) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TagVO.ProtoReflect.Descriptor instead.
 func (*TagVO) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{101}
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{105}
 }
 
 func (x *TagVO) GetId() uint64 {
@@ -7952,3562 +8597,6 @@ func (x *TagVO) GetTheme() string {
 	return ""
 }
 
-type ApplyUpdateCatInfoRequest struct {
-	state            protoimpl.MessageState `protogen:"open.v1"`
-	CatId            uint64                 `protobuf:"varint,1,opt,name=cat_id,json=catId,proto3" json:"cat_id,omitempty"`
-	Name             string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	Gender           string                 `protobuf:"bytes,3,opt,name=gender,proto3" json:"gender,omitempty"`
-	BodySize         string                 `protobuf:"bytes,4,opt,name=body_size,json=bodySize,proto3" json:"body_size,omitempty"`
-	AgeStage         string                 `protobuf:"bytes,5,opt,name=age_stage,json=ageStage,proto3" json:"age_stage,omitempty"`
-	Description      string                 `protobuf:"bytes,6,opt,name=description,proto3" json:"description,omitempty"`
-	DiscoveryAddress string                 `protobuf:"bytes,7,opt,name=discovery_address,json=discoveryAddress,proto3" json:"discovery_address,omitempty"`
-	Longitude        float64                `protobuf:"fixed64,8,opt,name=longitude,proto3" json:"longitude,omitempty"`
-	Latitude         float64                `protobuf:"fixed64,9,opt,name=latitude,proto3" json:"latitude,omitempty"`
-	ImageUrls        []string               `protobuf:"bytes,10,rep,name=image_urls,json=imageUrls,proto3" json:"image_urls,omitempty"`
-	ChangeReason     string                 `protobuf:"bytes,11,opt,name=change_reason,json=changeReason,proto3" json:"change_reason,omitempty"`
-	ApplicantUserId  uint64                 `protobuf:"varint,12,opt,name=applicant_user_id,json=applicantUserId,proto3" json:"applicant_user_id,omitempty"`
-	unknownFields    protoimpl.UnknownFields
-	sizeCache        protoimpl.SizeCache
-}
-
-func (x *ApplyUpdateCatInfoRequest) Reset() {
-	*x = ApplyUpdateCatInfoRequest{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[102]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ApplyUpdateCatInfoRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ApplyUpdateCatInfoRequest) ProtoMessage() {}
-
-func (x *ApplyUpdateCatInfoRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[102]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ApplyUpdateCatInfoRequest.ProtoReflect.Descriptor instead.
-func (*ApplyUpdateCatInfoRequest) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{102}
-}
-
-func (x *ApplyUpdateCatInfoRequest) GetCatId() uint64 {
-	if x != nil {
-		return x.CatId
-	}
-	return 0
-}
-
-func (x *ApplyUpdateCatInfoRequest) GetName() string {
-	if x != nil {
-		return x.Name
-	}
-	return ""
-}
-
-func (x *ApplyUpdateCatInfoRequest) GetGender() string {
-	if x != nil {
-		return x.Gender
-	}
-	return ""
-}
-
-func (x *ApplyUpdateCatInfoRequest) GetBodySize() string {
-	if x != nil {
-		return x.BodySize
-	}
-	return ""
-}
-
-func (x *ApplyUpdateCatInfoRequest) GetAgeStage() string {
-	if x != nil {
-		return x.AgeStage
-	}
-	return ""
-}
-
-func (x *ApplyUpdateCatInfoRequest) GetDescription() string {
-	if x != nil {
-		return x.Description
-	}
-	return ""
-}
-
-func (x *ApplyUpdateCatInfoRequest) GetDiscoveryAddress() string {
-	if x != nil {
-		return x.DiscoveryAddress
-	}
-	return ""
-}
-
-func (x *ApplyUpdateCatInfoRequest) GetLongitude() float64 {
-	if x != nil {
-		return x.Longitude
-	}
-	return 0
-}
-
-func (x *ApplyUpdateCatInfoRequest) GetLatitude() float64 {
-	if x != nil {
-		return x.Latitude
-	}
-	return 0
-}
-
-func (x *ApplyUpdateCatInfoRequest) GetImageUrls() []string {
-	if x != nil {
-		return x.ImageUrls
-	}
-	return nil
-}
-
-func (x *ApplyUpdateCatInfoRequest) GetChangeReason() string {
-	if x != nil {
-		return x.ChangeReason
-	}
-	return ""
-}
-
-func (x *ApplyUpdateCatInfoRequest) GetApplicantUserId() uint64 {
-	if x != nil {
-		return x.ApplicantUserId
-	}
-	return 0
-}
-
-type ApplyUpdateCatInfoResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	ApplyId       uint64                 `protobuf:"varint,1,opt,name=apply_id,json=applyId,proto3" json:"apply_id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ApplyUpdateCatInfoResponse) Reset() {
-	*x = ApplyUpdateCatInfoResponse{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[103]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ApplyUpdateCatInfoResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ApplyUpdateCatInfoResponse) ProtoMessage() {}
-
-func (x *ApplyUpdateCatInfoResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[103]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ApplyUpdateCatInfoResponse.ProtoReflect.Descriptor instead.
-func (*ApplyUpdateCatInfoResponse) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{103}
-}
-
-func (x *ApplyUpdateCatInfoResponse) GetApplyId() uint64 {
-	if x != nil {
-		return x.ApplyId
-	}
-	return 0
-}
-
-type GetMyUpdateCatApplyDetailRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	ApplyId       uint64                 `protobuf:"varint,1,opt,name=apply_id,json=applyId,proto3" json:"apply_id,omitempty"`
-	UserId        uint64                 `protobuf:"varint,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GetMyUpdateCatApplyDetailRequest) Reset() {
-	*x = GetMyUpdateCatApplyDetailRequest{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[104]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetMyUpdateCatApplyDetailRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetMyUpdateCatApplyDetailRequest) ProtoMessage() {}
-
-func (x *GetMyUpdateCatApplyDetailRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[104]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetMyUpdateCatApplyDetailRequest.ProtoReflect.Descriptor instead.
-func (*GetMyUpdateCatApplyDetailRequest) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{104}
-}
-
-func (x *GetMyUpdateCatApplyDetailRequest) GetApplyId() uint64 {
-	if x != nil {
-		return x.ApplyId
-	}
-	return 0
-}
-
-func (x *GetMyUpdateCatApplyDetailRequest) GetUserId() uint64 {
-	if x != nil {
-		return x.UserId
-	}
-	return 0
-}
-
-type GetMyUpdateCatApplyDetailResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	ApplyId       uint64                 `protobuf:"varint,1,opt,name=apply_id,json=applyId,proto3" json:"apply_id,omitempty"`
-	Status        string                 `protobuf:"bytes,2,opt,name=status,proto3" json:"status,omitempty"`
-	RejectReason  string                 `protobuf:"bytes,3,opt,name=reject_reason,json=rejectReason,proto3" json:"reject_reason,omitempty"`
-	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GetMyUpdateCatApplyDetailResponse) Reset() {
-	*x = GetMyUpdateCatApplyDetailResponse{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[105]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetMyUpdateCatApplyDetailResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetMyUpdateCatApplyDetailResponse) ProtoMessage() {}
-
-func (x *GetMyUpdateCatApplyDetailResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[105]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetMyUpdateCatApplyDetailResponse.ProtoReflect.Descriptor instead.
-func (*GetMyUpdateCatApplyDetailResponse) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{105}
-}
-
-func (x *GetMyUpdateCatApplyDetailResponse) GetApplyId() uint64 {
-	if x != nil {
-		return x.ApplyId
-	}
-	return 0
-}
-
-func (x *GetMyUpdateCatApplyDetailResponse) GetStatus() string {
-	if x != nil {
-		return x.Status
-	}
-	return ""
-}
-
-func (x *GetMyUpdateCatApplyDetailResponse) GetRejectReason() string {
-	if x != nil {
-		return x.RejectReason
-	}
-	return ""
-}
-
-func (x *GetMyUpdateCatApplyDetailResponse) GetCreatedAt() *timestamppb.Timestamp {
-	if x != nil {
-		return x.CreatedAt
-	}
-	return nil
-}
-
-func (x *GetMyUpdateCatApplyDetailResponse) GetUpdatedAt() *timestamppb.Timestamp {
-	if x != nil {
-		return x.UpdatedAt
-	}
-	return nil
-}
-
-type ApplyAddMedicalRecordRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	CatId         uint64                 `protobuf:"varint,1,opt,name=cat_id,json=catId,proto3" json:"cat_id,omitempty"`
-	MedicalType   string                 `protobuf:"bytes,2,opt,name=medical_type,json=medicalType,proto3" json:"medical_type,omitempty"` // vaccine/sterilization/check/treatment
-	Content       string                 `protobuf:"bytes,3,opt,name=content,proto3" json:"content,omitempty"`
-	OperatorId    uint64                 `protobuf:"varint,4,opt,name=operator_id,json=operatorId,proto3" json:"operator_id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ApplyAddMedicalRecordRequest) Reset() {
-	*x = ApplyAddMedicalRecordRequest{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[106]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ApplyAddMedicalRecordRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ApplyAddMedicalRecordRequest) ProtoMessage() {}
-
-func (x *ApplyAddMedicalRecordRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[106]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ApplyAddMedicalRecordRequest.ProtoReflect.Descriptor instead.
-func (*ApplyAddMedicalRecordRequest) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{106}
-}
-
-func (x *ApplyAddMedicalRecordRequest) GetCatId() uint64 {
-	if x != nil {
-		return x.CatId
-	}
-	return 0
-}
-
-func (x *ApplyAddMedicalRecordRequest) GetMedicalType() string {
-	if x != nil {
-		return x.MedicalType
-	}
-	return ""
-}
-
-func (x *ApplyAddMedicalRecordRequest) GetContent() string {
-	if x != nil {
-		return x.Content
-	}
-	return ""
-}
-
-func (x *ApplyAddMedicalRecordRequest) GetOperatorId() uint64 {
-	if x != nil {
-		return x.OperatorId
-	}
-	return 0
-}
-
-type ApplyAddMedicalRecordResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	RecordApplyId uint64                 `protobuf:"varint,1,opt,name=record_apply_id,json=recordApplyId,proto3" json:"record_apply_id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ApplyAddMedicalRecordResponse) Reset() {
-	*x = ApplyAddMedicalRecordResponse{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[107]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ApplyAddMedicalRecordResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ApplyAddMedicalRecordResponse) ProtoMessage() {}
-
-func (x *ApplyAddMedicalRecordResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[107]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ApplyAddMedicalRecordResponse.ProtoReflect.Descriptor instead.
-func (*ApplyAddMedicalRecordResponse) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{107}
-}
-
-func (x *ApplyAddMedicalRecordResponse) GetRecordApplyId() uint64 {
-	if x != nil {
-		return x.RecordApplyId
-	}
-	return 0
-}
-
-type ApplyAddRescueRecordRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	CatId         uint64                 `protobuf:"varint,1,opt,name=cat_id,json=catId,proto3" json:"cat_id,omitempty"`
-	RescueTime    *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=rescue_time,json=rescueTime,proto3" json:"rescue_time,omitempty"`
-	RescuerName   string                 `protobuf:"bytes,3,opt,name=rescuer_name,json=rescuerName,proto3" json:"rescuer_name,omitempty"`
-	RescueStatus  string                 `protobuf:"bytes,4,opt,name=rescue_status,json=rescueStatus,proto3" json:"rescue_status,omitempty"`
-	Description   string                 `protobuf:"bytes,5,opt,name=description,proto3" json:"description,omitempty"`
-	OperatorId    uint64                 `protobuf:"varint,6,opt,name=operator_id,json=operatorId,proto3" json:"operator_id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ApplyAddRescueRecordRequest) Reset() {
-	*x = ApplyAddRescueRecordRequest{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[108]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ApplyAddRescueRecordRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ApplyAddRescueRecordRequest) ProtoMessage() {}
-
-func (x *ApplyAddRescueRecordRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[108]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ApplyAddRescueRecordRequest.ProtoReflect.Descriptor instead.
-func (*ApplyAddRescueRecordRequest) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{108}
-}
-
-func (x *ApplyAddRescueRecordRequest) GetCatId() uint64 {
-	if x != nil {
-		return x.CatId
-	}
-	return 0
-}
-
-func (x *ApplyAddRescueRecordRequest) GetRescueTime() *timestamppb.Timestamp {
-	if x != nil {
-		return x.RescueTime
-	}
-	return nil
-}
-
-func (x *ApplyAddRescueRecordRequest) GetRescuerName() string {
-	if x != nil {
-		return x.RescuerName
-	}
-	return ""
-}
-
-func (x *ApplyAddRescueRecordRequest) GetRescueStatus() string {
-	if x != nil {
-		return x.RescueStatus
-	}
-	return ""
-}
-
-func (x *ApplyAddRescueRecordRequest) GetDescription() string {
-	if x != nil {
-		return x.Description
-	}
-	return ""
-}
-
-func (x *ApplyAddRescueRecordRequest) GetOperatorId() uint64 {
-	if x != nil {
-		return x.OperatorId
-	}
-	return 0
-}
-
-type ApplyAddRescueRecordResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	RescueApplyId uint64                 `protobuf:"varint,1,opt,name=rescue_apply_id,json=rescueApplyId,proto3" json:"rescue_apply_id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ApplyAddRescueRecordResponse) Reset() {
-	*x = ApplyAddRescueRecordResponse{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[109]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ApplyAddRescueRecordResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ApplyAddRescueRecordResponse) ProtoMessage() {}
-
-func (x *ApplyAddRescueRecordResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[109]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ApplyAddRescueRecordResponse.ProtoReflect.Descriptor instead.
-func (*ApplyAddRescueRecordResponse) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{109}
-}
-
-func (x *ApplyAddRescueRecordResponse) GetRescueApplyId() uint64 {
-	if x != nil {
-		return x.RescueApplyId
-	}
-	return 0
-}
-
-type ApplyCreateCatTaskRequest struct {
-	state           protoimpl.MessageState `protogen:"open.v1"`
-	CatId           uint64                 `protobuf:"varint,1,opt,name=cat_id,json=catId,proto3" json:"cat_id,omitempty"`
-	Title           string                 `protobuf:"bytes,2,opt,name=title,proto3" json:"title,omitempty"`
-	TaskType        string                 `protobuf:"bytes,3,opt,name=task_type,json=taskType,proto3" json:"task_type,omitempty"`
-	Summary         string                 `protobuf:"bytes,4,opt,name=summary,proto3" json:"summary,omitempty"`
-	Detail          string                 `protobuf:"bytes,5,opt,name=detail,proto3" json:"detail,omitempty"`
-	Deadline        *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=deadline,proto3" json:"deadline,omitempty"`
-	ApplicantUserId uint64                 `protobuf:"varint,7,opt,name=applicant_user_id,json=applicantUserId,proto3" json:"applicant_user_id,omitempty"`
-	unknownFields   protoimpl.UnknownFields
-	sizeCache       protoimpl.SizeCache
-}
-
-func (x *ApplyCreateCatTaskRequest) Reset() {
-	*x = ApplyCreateCatTaskRequest{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[110]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ApplyCreateCatTaskRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ApplyCreateCatTaskRequest) ProtoMessage() {}
-
-func (x *ApplyCreateCatTaskRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[110]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ApplyCreateCatTaskRequest.ProtoReflect.Descriptor instead.
-func (*ApplyCreateCatTaskRequest) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{110}
-}
-
-func (x *ApplyCreateCatTaskRequest) GetCatId() uint64 {
-	if x != nil {
-		return x.CatId
-	}
-	return 0
-}
-
-func (x *ApplyCreateCatTaskRequest) GetTitle() string {
-	if x != nil {
-		return x.Title
-	}
-	return ""
-}
-
-func (x *ApplyCreateCatTaskRequest) GetTaskType() string {
-	if x != nil {
-		return x.TaskType
-	}
-	return ""
-}
-
-func (x *ApplyCreateCatTaskRequest) GetSummary() string {
-	if x != nil {
-		return x.Summary
-	}
-	return ""
-}
-
-func (x *ApplyCreateCatTaskRequest) GetDetail() string {
-	if x != nil {
-		return x.Detail
-	}
-	return ""
-}
-
-func (x *ApplyCreateCatTaskRequest) GetDeadline() *timestamppb.Timestamp {
-	if x != nil {
-		return x.Deadline
-	}
-	return nil
-}
-
-func (x *ApplyCreateCatTaskRequest) GetApplicantUserId() uint64 {
-	if x != nil {
-		return x.ApplicantUserId
-	}
-	return 0
-}
-
-type ApplyCreateCatTaskResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	ApplyId       uint64                 `protobuf:"varint,1,opt,name=apply_id,json=applyId,proto3" json:"apply_id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ApplyCreateCatTaskResponse) Reset() {
-	*x = ApplyCreateCatTaskResponse{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[111]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ApplyCreateCatTaskResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ApplyCreateCatTaskResponse) ProtoMessage() {}
-
-func (x *ApplyCreateCatTaskResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[111]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ApplyCreateCatTaskResponse.ProtoReflect.Descriptor instead.
-func (*ApplyCreateCatTaskResponse) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{111}
-}
-
-func (x *ApplyCreateCatTaskResponse) GetApplyId() uint64 {
-	if x != nil {
-		return x.ApplyId
-	}
-	return 0
-}
-
-type ClaimCatTaskRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	TaskId        uint64                 `protobuf:"varint,1,opt,name=task_id,json=taskId,proto3" json:"task_id,omitempty"`
-	UserId        uint64                 `protobuf:"varint,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ClaimCatTaskRequest) Reset() {
-	*x = ClaimCatTaskRequest{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[112]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ClaimCatTaskRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ClaimCatTaskRequest) ProtoMessage() {}
-
-func (x *ClaimCatTaskRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[112]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ClaimCatTaskRequest.ProtoReflect.Descriptor instead.
-func (*ClaimCatTaskRequest) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{112}
-}
-
-func (x *ClaimCatTaskRequest) GetTaskId() uint64 {
-	if x != nil {
-		return x.TaskId
-	}
-	return 0
-}
-
-func (x *ClaimCatTaskRequest) GetUserId() uint64 {
-	if x != nil {
-		return x.UserId
-	}
-	return 0
-}
-
-type ClaimCatTaskResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ClaimCatTaskResponse) Reset() {
-	*x = ClaimCatTaskResponse{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[113]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ClaimCatTaskResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ClaimCatTaskResponse) ProtoMessage() {}
-
-func (x *ClaimCatTaskResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[113]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ClaimCatTaskResponse.ProtoReflect.Descriptor instead.
-func (*ClaimCatTaskResponse) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{113}
-}
-
-func (x *ClaimCatTaskResponse) GetSuccess() bool {
-	if x != nil {
-		return x.Success
-	}
-	return false
-}
-
-type AbandonCatTaskRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	TaskId        uint64                 `protobuf:"varint,1,opt,name=task_id,json=taskId,proto3" json:"task_id,omitempty"`
-	UserId        uint64                 `protobuf:"varint,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
-	Reason        string                 `protobuf:"bytes,3,opt,name=reason,proto3" json:"reason,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *AbandonCatTaskRequest) Reset() {
-	*x = AbandonCatTaskRequest{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[114]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *AbandonCatTaskRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*AbandonCatTaskRequest) ProtoMessage() {}
-
-func (x *AbandonCatTaskRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[114]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use AbandonCatTaskRequest.ProtoReflect.Descriptor instead.
-func (*AbandonCatTaskRequest) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{114}
-}
-
-func (x *AbandonCatTaskRequest) GetTaskId() uint64 {
-	if x != nil {
-		return x.TaskId
-	}
-	return 0
-}
-
-func (x *AbandonCatTaskRequest) GetUserId() uint64 {
-	if x != nil {
-		return x.UserId
-	}
-	return 0
-}
-
-func (x *AbandonCatTaskRequest) GetReason() string {
-	if x != nil {
-		return x.Reason
-	}
-	return ""
-}
-
-type AbandonCatTaskResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *AbandonCatTaskResponse) Reset() {
-	*x = AbandonCatTaskResponse{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[115]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *AbandonCatTaskResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*AbandonCatTaskResponse) ProtoMessage() {}
-
-func (x *AbandonCatTaskResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[115]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use AbandonCatTaskResponse.ProtoReflect.Descriptor instead.
-func (*AbandonCatTaskResponse) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{115}
-}
-
-func (x *AbandonCatTaskResponse) GetSuccess() bool {
-	if x != nil {
-		return x.Success
-	}
-	return false
-}
-
-type UploadTaskProgressRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	TaskId        uint64                 `protobuf:"varint,1,opt,name=task_id,json=taskId,proto3" json:"task_id,omitempty"`
-	UserId        uint64                 `protobuf:"varint,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
-	Content       string                 `protobuf:"bytes,3,opt,name=content,proto3" json:"content,omitempty"`
-	ImageUrls     []string               `protobuf:"bytes,4,rep,name=image_urls,json=imageUrls,proto3" json:"image_urls,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *UploadTaskProgressRequest) Reset() {
-	*x = UploadTaskProgressRequest{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[116]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *UploadTaskProgressRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*UploadTaskProgressRequest) ProtoMessage() {}
-
-func (x *UploadTaskProgressRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[116]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use UploadTaskProgressRequest.ProtoReflect.Descriptor instead.
-func (*UploadTaskProgressRequest) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{116}
-}
-
-func (x *UploadTaskProgressRequest) GetTaskId() uint64 {
-	if x != nil {
-		return x.TaskId
-	}
-	return 0
-}
-
-func (x *UploadTaskProgressRequest) GetUserId() uint64 {
-	if x != nil {
-		return x.UserId
-	}
-	return 0
-}
-
-func (x *UploadTaskProgressRequest) GetContent() string {
-	if x != nil {
-		return x.Content
-	}
-	return ""
-}
-
-func (x *UploadTaskProgressRequest) GetImageUrls() []string {
-	if x != nil {
-		return x.ImageUrls
-	}
-	return nil
-}
-
-type UploadTaskProgressResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *UploadTaskProgressResponse) Reset() {
-	*x = UploadTaskProgressResponse{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[117]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *UploadTaskProgressResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*UploadTaskProgressResponse) ProtoMessage() {}
-
-func (x *UploadTaskProgressResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[117]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use UploadTaskProgressResponse.ProtoReflect.Descriptor instead.
-func (*UploadTaskProgressResponse) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{117}
-}
-
-func (x *UploadTaskProgressResponse) GetSuccess() bool {
-	if x != nil {
-		return x.Success
-	}
-	return false
-}
-
-type CreateCatApplyItem struct {
-	state           protoimpl.MessageState `protogen:"open.v1"`
-	ApplyId         uint64                 `protobuf:"varint,1,opt,name=apply_id,json=applyId,proto3" json:"apply_id,omitempty"`
-	Name            string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	Gender          string                 `protobuf:"bytes,3,opt,name=gender,proto3" json:"gender,omitempty"`
-	AgeStage        string                 `protobuf:"bytes,4,opt,name=age_stage,json=ageStage,proto3" json:"age_stage,omitempty"`
-	ApplicantUserId uint64                 `protobuf:"varint,5,opt,name=applicant_user_id,json=applicantUserId,proto3" json:"applicant_user_id,omitempty"`
-	ApplicantName   string                 `protobuf:"bytes,6,opt,name=applicant_name,json=applicantName,proto3" json:"applicant_name,omitempty"`
-	Status          string                 `protobuf:"bytes,7,opt,name=status,proto3" json:"status,omitempty"`
-	CreatedAt       *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	unknownFields   protoimpl.UnknownFields
-	sizeCache       protoimpl.SizeCache
-}
-
-func (x *CreateCatApplyItem) Reset() {
-	*x = CreateCatApplyItem{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[118]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *CreateCatApplyItem) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CreateCatApplyItem) ProtoMessage() {}
-
-func (x *CreateCatApplyItem) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[118]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CreateCatApplyItem.ProtoReflect.Descriptor instead.
-func (*CreateCatApplyItem) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{118}
-}
-
-func (x *CreateCatApplyItem) GetApplyId() uint64 {
-	if x != nil {
-		return x.ApplyId
-	}
-	return 0
-}
-
-func (x *CreateCatApplyItem) GetName() string {
-	if x != nil {
-		return x.Name
-	}
-	return ""
-}
-
-func (x *CreateCatApplyItem) GetGender() string {
-	if x != nil {
-		return x.Gender
-	}
-	return ""
-}
-
-func (x *CreateCatApplyItem) GetAgeStage() string {
-	if x != nil {
-		return x.AgeStage
-	}
-	return ""
-}
-
-func (x *CreateCatApplyItem) GetApplicantUserId() uint64 {
-	if x != nil {
-		return x.ApplicantUserId
-	}
-	return 0
-}
-
-func (x *CreateCatApplyItem) GetApplicantName() string {
-	if x != nil {
-		return x.ApplicantName
-	}
-	return ""
-}
-
-func (x *CreateCatApplyItem) GetStatus() string {
-	if x != nil {
-		return x.Status
-	}
-	return ""
-}
-
-func (x *CreateCatApplyItem) GetCreatedAt() *timestamppb.Timestamp {
-	if x != nil {
-		return x.CreatedAt
-	}
-	return nil
-}
-
-type ApproveUpdateCatInfoRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	ApplyId       uint64                 `protobuf:"varint,1,opt,name=apply_id,json=applyId,proto3" json:"apply_id,omitempty"`
-	OperatorId    uint64                 `protobuf:"varint,2,opt,name=operator_id,json=operatorId,proto3" json:"operator_id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ApproveUpdateCatInfoRequest) Reset() {
-	*x = ApproveUpdateCatInfoRequest{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[119]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ApproveUpdateCatInfoRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ApproveUpdateCatInfoRequest) ProtoMessage() {}
-
-func (x *ApproveUpdateCatInfoRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[119]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ApproveUpdateCatInfoRequest.ProtoReflect.Descriptor instead.
-func (*ApproveUpdateCatInfoRequest) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{119}
-}
-
-func (x *ApproveUpdateCatInfoRequest) GetApplyId() uint64 {
-	if x != nil {
-		return x.ApplyId
-	}
-	return 0
-}
-
-func (x *ApproveUpdateCatInfoRequest) GetOperatorId() uint64 {
-	if x != nil {
-		return x.OperatorId
-	}
-	return 0
-}
-
-type ApproveUpdateCatInfoResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ApproveUpdateCatInfoResponse) Reset() {
-	*x = ApproveUpdateCatInfoResponse{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[120]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ApproveUpdateCatInfoResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ApproveUpdateCatInfoResponse) ProtoMessage() {}
-
-func (x *ApproveUpdateCatInfoResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[120]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ApproveUpdateCatInfoResponse.ProtoReflect.Descriptor instead.
-func (*ApproveUpdateCatInfoResponse) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{120}
-}
-
-func (x *ApproveUpdateCatInfoResponse) GetSuccess() bool {
-	if x != nil {
-		return x.Success
-	}
-	return false
-}
-
-type RejectUpdateCatInfoRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	ApplyId       uint64                 `protobuf:"varint,1,opt,name=apply_id,json=applyId,proto3" json:"apply_id,omitempty"`
-	Reason        string                 `protobuf:"bytes,2,opt,name=reason,proto3" json:"reason,omitempty"`
-	OperatorId    uint64                 `protobuf:"varint,3,opt,name=operator_id,json=operatorId,proto3" json:"operator_id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *RejectUpdateCatInfoRequest) Reset() {
-	*x = RejectUpdateCatInfoRequest{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[121]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *RejectUpdateCatInfoRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*RejectUpdateCatInfoRequest) ProtoMessage() {}
-
-func (x *RejectUpdateCatInfoRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[121]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use RejectUpdateCatInfoRequest.ProtoReflect.Descriptor instead.
-func (*RejectUpdateCatInfoRequest) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{121}
-}
-
-func (x *RejectUpdateCatInfoRequest) GetApplyId() uint64 {
-	if x != nil {
-		return x.ApplyId
-	}
-	return 0
-}
-
-func (x *RejectUpdateCatInfoRequest) GetReason() string {
-	if x != nil {
-		return x.Reason
-	}
-	return ""
-}
-
-func (x *RejectUpdateCatInfoRequest) GetOperatorId() uint64 {
-	if x != nil {
-		return x.OperatorId
-	}
-	return 0
-}
-
-type RejectUpdateCatInfoResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *RejectUpdateCatInfoResponse) Reset() {
-	*x = RejectUpdateCatInfoResponse{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[122]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *RejectUpdateCatInfoResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*RejectUpdateCatInfoResponse) ProtoMessage() {}
-
-func (x *RejectUpdateCatInfoResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[122]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use RejectUpdateCatInfoResponse.ProtoReflect.Descriptor instead.
-func (*RejectUpdateCatInfoResponse) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{122}
-}
-
-func (x *RejectUpdateCatInfoResponse) GetSuccess() bool {
-	if x != nil {
-		return x.Success
-	}
-	return false
-}
-
-type GetUpdateCatApplyDetailRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	ApplyId       uint64                 `protobuf:"varint,1,opt,name=apply_id,json=applyId,proto3" json:"apply_id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GetUpdateCatApplyDetailRequest) Reset() {
-	*x = GetUpdateCatApplyDetailRequest{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[123]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetUpdateCatApplyDetailRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetUpdateCatApplyDetailRequest) ProtoMessage() {}
-
-func (x *GetUpdateCatApplyDetailRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[123]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetUpdateCatApplyDetailRequest.ProtoReflect.Descriptor instead.
-func (*GetUpdateCatApplyDetailRequest) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{123}
-}
-
-func (x *GetUpdateCatApplyDetailRequest) GetApplyId() uint64 {
-	if x != nil {
-		return x.ApplyId
-	}
-	return 0
-}
-
-type GetUpdateCatApplyDetailResponse struct {
-	state            protoimpl.MessageState `protogen:"open.v1"`
-	ApplyId          uint64                 `protobuf:"varint,1,opt,name=apply_id,json=applyId,proto3" json:"apply_id,omitempty"`
-	CatId            uint64                 `protobuf:"varint,2,opt,name=cat_id,json=catId,proto3" json:"cat_id,omitempty"`
-	Name             string                 `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
-	Gender           string                 `protobuf:"bytes,4,opt,name=gender,proto3" json:"gender,omitempty"`
-	BodySize         string                 `protobuf:"bytes,5,opt,name=body_size,json=bodySize,proto3" json:"body_size,omitempty"`
-	AgeStage         string                 `protobuf:"bytes,6,opt,name=age_stage,json=ageStage,proto3" json:"age_stage,omitempty"`
-	Description      string                 `protobuf:"bytes,7,opt,name=description,proto3" json:"description,omitempty"`
-	DiscoveryAddress string                 `protobuf:"bytes,8,opt,name=discovery_address,json=discoveryAddress,proto3" json:"discovery_address,omitempty"`
-	Longitude        float64                `protobuf:"fixed64,9,opt,name=longitude,proto3" json:"longitude,omitempty"`
-	Latitude         float64                `protobuf:"fixed64,10,opt,name=latitude,proto3" json:"latitude,omitempty"`
-	ImageUrls        []string               `protobuf:"bytes,11,rep,name=image_urls,json=imageUrls,proto3" json:"image_urls,omitempty"`
-	ChangeReason     string                 `protobuf:"bytes,12,opt,name=change_reason,json=changeReason,proto3" json:"change_reason,omitempty"`
-	ApplicantUserId  uint64                 `protobuf:"varint,13,opt,name=applicant_user_id,json=applicantUserId,proto3" json:"applicant_user_id,omitempty"`
-	ApplicantName    string                 `protobuf:"bytes,14,opt,name=applicant_name,json=applicantName,proto3" json:"applicant_name,omitempty"`
-	Status           string                 `protobuf:"bytes,15,opt,name=status,proto3" json:"status,omitempty"`
-	RejectReason     string                 `protobuf:"bytes,16,opt,name=reject_reason,json=rejectReason,proto3" json:"reject_reason,omitempty"`
-	CreatedAt        *timestamppb.Timestamp `protobuf:"bytes,17,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	UpdatedAt        *timestamppb.Timestamp `protobuf:"bytes,18,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
-	unknownFields    protoimpl.UnknownFields
-	sizeCache        protoimpl.SizeCache
-}
-
-func (x *GetUpdateCatApplyDetailResponse) Reset() {
-	*x = GetUpdateCatApplyDetailResponse{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[124]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetUpdateCatApplyDetailResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetUpdateCatApplyDetailResponse) ProtoMessage() {}
-
-func (x *GetUpdateCatApplyDetailResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[124]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetUpdateCatApplyDetailResponse.ProtoReflect.Descriptor instead.
-func (*GetUpdateCatApplyDetailResponse) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{124}
-}
-
-func (x *GetUpdateCatApplyDetailResponse) GetApplyId() uint64 {
-	if x != nil {
-		return x.ApplyId
-	}
-	return 0
-}
-
-func (x *GetUpdateCatApplyDetailResponse) GetCatId() uint64 {
-	if x != nil {
-		return x.CatId
-	}
-	return 0
-}
-
-func (x *GetUpdateCatApplyDetailResponse) GetName() string {
-	if x != nil {
-		return x.Name
-	}
-	return ""
-}
-
-func (x *GetUpdateCatApplyDetailResponse) GetGender() string {
-	if x != nil {
-		return x.Gender
-	}
-	return ""
-}
-
-func (x *GetUpdateCatApplyDetailResponse) GetBodySize() string {
-	if x != nil {
-		return x.BodySize
-	}
-	return ""
-}
-
-func (x *GetUpdateCatApplyDetailResponse) GetAgeStage() string {
-	if x != nil {
-		return x.AgeStage
-	}
-	return ""
-}
-
-func (x *GetUpdateCatApplyDetailResponse) GetDescription() string {
-	if x != nil {
-		return x.Description
-	}
-	return ""
-}
-
-func (x *GetUpdateCatApplyDetailResponse) GetDiscoveryAddress() string {
-	if x != nil {
-		return x.DiscoveryAddress
-	}
-	return ""
-}
-
-func (x *GetUpdateCatApplyDetailResponse) GetLongitude() float64 {
-	if x != nil {
-		return x.Longitude
-	}
-	return 0
-}
-
-func (x *GetUpdateCatApplyDetailResponse) GetLatitude() float64 {
-	if x != nil {
-		return x.Latitude
-	}
-	return 0
-}
-
-func (x *GetUpdateCatApplyDetailResponse) GetImageUrls() []string {
-	if x != nil {
-		return x.ImageUrls
-	}
-	return nil
-}
-
-func (x *GetUpdateCatApplyDetailResponse) GetChangeReason() string {
-	if x != nil {
-		return x.ChangeReason
-	}
-	return ""
-}
-
-func (x *GetUpdateCatApplyDetailResponse) GetApplicantUserId() uint64 {
-	if x != nil {
-		return x.ApplicantUserId
-	}
-	return 0
-}
-
-func (x *GetUpdateCatApplyDetailResponse) GetApplicantName() string {
-	if x != nil {
-		return x.ApplicantName
-	}
-	return ""
-}
-
-func (x *GetUpdateCatApplyDetailResponse) GetStatus() string {
-	if x != nil {
-		return x.Status
-	}
-	return ""
-}
-
-func (x *GetUpdateCatApplyDetailResponse) GetRejectReason() string {
-	if x != nil {
-		return x.RejectReason
-	}
-	return ""
-}
-
-func (x *GetUpdateCatApplyDetailResponse) GetCreatedAt() *timestamppb.Timestamp {
-	if x != nil {
-		return x.CreatedAt
-	}
-	return nil
-}
-
-func (x *GetUpdateCatApplyDetailResponse) GetUpdatedAt() *timestamppb.Timestamp {
-	if x != nil {
-		return x.UpdatedAt
-	}
-	return nil
-}
-
-type ListUpdateCatApplyRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Cursor        string                 `protobuf:"bytes,1,opt,name=cursor,proto3" json:"cursor,omitempty"`
-	PageSize      int64                  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListUpdateCatApplyRequest) Reset() {
-	*x = ListUpdateCatApplyRequest{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[125]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListUpdateCatApplyRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListUpdateCatApplyRequest) ProtoMessage() {}
-
-func (x *ListUpdateCatApplyRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[125]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListUpdateCatApplyRequest.ProtoReflect.Descriptor instead.
-func (*ListUpdateCatApplyRequest) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{125}
-}
-
-func (x *ListUpdateCatApplyRequest) GetCursor() string {
-	if x != nil {
-		return x.Cursor
-	}
-	return ""
-}
-
-func (x *ListUpdateCatApplyRequest) GetPageSize() int64 {
-	if x != nil {
-		return x.PageSize
-	}
-	return 0
-}
-
-type UpdateCatApplyItem struct {
-	state           protoimpl.MessageState `protogen:"open.v1"`
-	ApplyId         uint64                 `protobuf:"varint,1,opt,name=apply_id,json=applyId,proto3" json:"apply_id,omitempty"`
-	CatId           uint64                 `protobuf:"varint,2,opt,name=cat_id,json=catId,proto3" json:"cat_id,omitempty"`
-	CatName         string                 `protobuf:"bytes,3,opt,name=cat_name,json=catName,proto3" json:"cat_name,omitempty"`
-	ApplicantUserId uint64                 `protobuf:"varint,4,opt,name=applicant_user_id,json=applicantUserId,proto3" json:"applicant_user_id,omitempty"`
-	ApplicantName   string                 `protobuf:"bytes,5,opt,name=applicant_name,json=applicantName,proto3" json:"applicant_name,omitempty"`
-	Status          string                 `protobuf:"bytes,6,opt,name=status,proto3" json:"status,omitempty"`
-	CreatedAt       *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	unknownFields   protoimpl.UnknownFields
-	sizeCache       protoimpl.SizeCache
-}
-
-func (x *UpdateCatApplyItem) Reset() {
-	*x = UpdateCatApplyItem{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[126]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *UpdateCatApplyItem) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*UpdateCatApplyItem) ProtoMessage() {}
-
-func (x *UpdateCatApplyItem) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[126]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use UpdateCatApplyItem.ProtoReflect.Descriptor instead.
-func (*UpdateCatApplyItem) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{126}
-}
-
-func (x *UpdateCatApplyItem) GetApplyId() uint64 {
-	if x != nil {
-		return x.ApplyId
-	}
-	return 0
-}
-
-func (x *UpdateCatApplyItem) GetCatId() uint64 {
-	if x != nil {
-		return x.CatId
-	}
-	return 0
-}
-
-func (x *UpdateCatApplyItem) GetCatName() string {
-	if x != nil {
-		return x.CatName
-	}
-	return ""
-}
-
-func (x *UpdateCatApplyItem) GetApplicantUserId() uint64 {
-	if x != nil {
-		return x.ApplicantUserId
-	}
-	return 0
-}
-
-func (x *UpdateCatApplyItem) GetApplicantName() string {
-	if x != nil {
-		return x.ApplicantName
-	}
-	return ""
-}
-
-func (x *UpdateCatApplyItem) GetStatus() string {
-	if x != nil {
-		return x.Status
-	}
-	return ""
-}
-
-func (x *UpdateCatApplyItem) GetCreatedAt() *timestamppb.Timestamp {
-	if x != nil {
-		return x.CreatedAt
-	}
-	return nil
-}
-
-type ListUpdateCatApplyResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	List          []*UpdateCatApplyItem  `protobuf:"bytes,2,rep,name=list,proto3" json:"list,omitempty"`
-	NextCursor    string                 `protobuf:"bytes,3,opt,name=next_cursor,json=nextCursor,proto3" json:"next_cursor,omitempty"`
-	HasMore       bool                   `protobuf:"varint,4,opt,name=has_more,json=hasMore,proto3" json:"has_more,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListUpdateCatApplyResponse) Reset() {
-	*x = ListUpdateCatApplyResponse{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[127]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListUpdateCatApplyResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListUpdateCatApplyResponse) ProtoMessage() {}
-
-func (x *ListUpdateCatApplyResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[127]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListUpdateCatApplyResponse.ProtoReflect.Descriptor instead.
-func (*ListUpdateCatApplyResponse) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{127}
-}
-
-func (x *ListUpdateCatApplyResponse) GetList() []*UpdateCatApplyItem {
-	if x != nil {
-		return x.List
-	}
-	return nil
-}
-
-func (x *ListUpdateCatApplyResponse) GetNextCursor() string {
-	if x != nil {
-		return x.NextCursor
-	}
-	return ""
-}
-
-func (x *ListUpdateCatApplyResponse) GetHasMore() bool {
-	if x != nil {
-		return x.HasMore
-	}
-	return false
-}
-
-type ApproveMedicalRecordRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	RecordApplyId uint64                 `protobuf:"varint,1,opt,name=record_apply_id,json=recordApplyId,proto3" json:"record_apply_id,omitempty"`
-	ReviewerId    uint64                 `protobuf:"varint,2,opt,name=reviewer_id,json=reviewerId,proto3" json:"reviewer_id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ApproveMedicalRecordRequest) Reset() {
-	*x = ApproveMedicalRecordRequest{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[128]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ApproveMedicalRecordRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ApproveMedicalRecordRequest) ProtoMessage() {}
-
-func (x *ApproveMedicalRecordRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[128]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ApproveMedicalRecordRequest.ProtoReflect.Descriptor instead.
-func (*ApproveMedicalRecordRequest) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{128}
-}
-
-func (x *ApproveMedicalRecordRequest) GetRecordApplyId() uint64 {
-	if x != nil {
-		return x.RecordApplyId
-	}
-	return 0
-}
-
-func (x *ApproveMedicalRecordRequest) GetReviewerId() uint64 {
-	if x != nil {
-		return x.ReviewerId
-	}
-	return 0
-}
-
-type ApproveMedicalRecordResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ApproveMedicalRecordResponse) Reset() {
-	*x = ApproveMedicalRecordResponse{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[129]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ApproveMedicalRecordResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ApproveMedicalRecordResponse) ProtoMessage() {}
-
-func (x *ApproveMedicalRecordResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[129]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ApproveMedicalRecordResponse.ProtoReflect.Descriptor instead.
-func (*ApproveMedicalRecordResponse) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{129}
-}
-
-func (x *ApproveMedicalRecordResponse) GetSuccess() bool {
-	if x != nil {
-		return x.Success
-	}
-	return false
-}
-
-type RejectMedicalRecordRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	RecordApplyId uint64                 `protobuf:"varint,1,opt,name=record_apply_id,json=recordApplyId,proto3" json:"record_apply_id,omitempty"`
-	Reason        string                 `protobuf:"bytes,2,opt,name=reason,proto3" json:"reason,omitempty"`
-	ReviewerId    uint64                 `protobuf:"varint,3,opt,name=reviewer_id,json=reviewerId,proto3" json:"reviewer_id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *RejectMedicalRecordRequest) Reset() {
-	*x = RejectMedicalRecordRequest{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[130]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *RejectMedicalRecordRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*RejectMedicalRecordRequest) ProtoMessage() {}
-
-func (x *RejectMedicalRecordRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[130]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use RejectMedicalRecordRequest.ProtoReflect.Descriptor instead.
-func (*RejectMedicalRecordRequest) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{130}
-}
-
-func (x *RejectMedicalRecordRequest) GetRecordApplyId() uint64 {
-	if x != nil {
-		return x.RecordApplyId
-	}
-	return 0
-}
-
-func (x *RejectMedicalRecordRequest) GetReason() string {
-	if x != nil {
-		return x.Reason
-	}
-	return ""
-}
-
-func (x *RejectMedicalRecordRequest) GetReviewerId() uint64 {
-	if x != nil {
-		return x.ReviewerId
-	}
-	return 0
-}
-
-type RejectMedicalRecordResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *RejectMedicalRecordResponse) Reset() {
-	*x = RejectMedicalRecordResponse{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[131]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *RejectMedicalRecordResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*RejectMedicalRecordResponse) ProtoMessage() {}
-
-func (x *RejectMedicalRecordResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[131]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use RejectMedicalRecordResponse.ProtoReflect.Descriptor instead.
-func (*RejectMedicalRecordResponse) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{131}
-}
-
-func (x *RejectMedicalRecordResponse) GetSuccess() bool {
-	if x != nil {
-		return x.Success
-	}
-	return false
-}
-
-type ApproveCreateCatTaskRequest struct {
-	state           protoimpl.MessageState `protogen:"open.v1"`
-	ApplyId         uint64                 `protobuf:"varint,1,opt,name=apply_id,json=applyId,proto3" json:"apply_id,omitempty"`
-	UrgencyLevel    string                 `protobuf:"bytes,2,opt,name=urgency_level,json=urgencyLevel,proto3" json:"urgency_level,omitempty"`           // high/urgent/normal
-	DifficultyLevel int32                  `protobuf:"varint,3,opt,name=difficulty_level,json=difficultyLevel,proto3" json:"difficulty_level,omitempty"` // 1-5
-	RewardPoints    int32                  `protobuf:"varint,4,opt,name=reward_points,json=rewardPoints,proto3" json:"reward_points,omitempty"`          // 审核时确定奖励积分
-	OperatorId      uint64                 `protobuf:"varint,5,opt,name=operator_id,json=operatorId,proto3" json:"operator_id,omitempty"`
-	unknownFields   protoimpl.UnknownFields
-	sizeCache       protoimpl.SizeCache
-}
-
-func (x *ApproveCreateCatTaskRequest) Reset() {
-	*x = ApproveCreateCatTaskRequest{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[132]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ApproveCreateCatTaskRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ApproveCreateCatTaskRequest) ProtoMessage() {}
-
-func (x *ApproveCreateCatTaskRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[132]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ApproveCreateCatTaskRequest.ProtoReflect.Descriptor instead.
-func (*ApproveCreateCatTaskRequest) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{132}
-}
-
-func (x *ApproveCreateCatTaskRequest) GetApplyId() uint64 {
-	if x != nil {
-		return x.ApplyId
-	}
-	return 0
-}
-
-func (x *ApproveCreateCatTaskRequest) GetUrgencyLevel() string {
-	if x != nil {
-		return x.UrgencyLevel
-	}
-	return ""
-}
-
-func (x *ApproveCreateCatTaskRequest) GetDifficultyLevel() int32 {
-	if x != nil {
-		return x.DifficultyLevel
-	}
-	return 0
-}
-
-func (x *ApproveCreateCatTaskRequest) GetRewardPoints() int32 {
-	if x != nil {
-		return x.RewardPoints
-	}
-	return 0
-}
-
-func (x *ApproveCreateCatTaskRequest) GetOperatorId() uint64 {
-	if x != nil {
-		return x.OperatorId
-	}
-	return 0
-}
-
-type ApproveCreateCatTaskResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	TaskId        uint64                 `protobuf:"varint,1,opt,name=task_id,json=taskId,proto3" json:"task_id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ApproveCreateCatTaskResponse) Reset() {
-	*x = ApproveCreateCatTaskResponse{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[133]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ApproveCreateCatTaskResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ApproveCreateCatTaskResponse) ProtoMessage() {}
-
-func (x *ApproveCreateCatTaskResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[133]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ApproveCreateCatTaskResponse.ProtoReflect.Descriptor instead.
-func (*ApproveCreateCatTaskResponse) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{133}
-}
-
-func (x *ApproveCreateCatTaskResponse) GetTaskId() uint64 {
-	if x != nil {
-		return x.TaskId
-	}
-	return 0
-}
-
-type RejectCreateCatTaskRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	ApplyId       uint64                 `protobuf:"varint,1,opt,name=apply_id,json=applyId,proto3" json:"apply_id,omitempty"`
-	Reason        string                 `protobuf:"bytes,2,opt,name=reason,proto3" json:"reason,omitempty"`
-	OperatorId    uint64                 `protobuf:"varint,3,opt,name=operator_id,json=operatorId,proto3" json:"operator_id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *RejectCreateCatTaskRequest) Reset() {
-	*x = RejectCreateCatTaskRequest{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[134]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *RejectCreateCatTaskRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*RejectCreateCatTaskRequest) ProtoMessage() {}
-
-func (x *RejectCreateCatTaskRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[134]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use RejectCreateCatTaskRequest.ProtoReflect.Descriptor instead.
-func (*RejectCreateCatTaskRequest) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{134}
-}
-
-func (x *RejectCreateCatTaskRequest) GetApplyId() uint64 {
-	if x != nil {
-		return x.ApplyId
-	}
-	return 0
-}
-
-func (x *RejectCreateCatTaskRequest) GetReason() string {
-	if x != nil {
-		return x.Reason
-	}
-	return ""
-}
-
-func (x *RejectCreateCatTaskRequest) GetOperatorId() uint64 {
-	if x != nil {
-		return x.OperatorId
-	}
-	return 0
-}
-
-type RejectCreateCatTaskResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *RejectCreateCatTaskResponse) Reset() {
-	*x = RejectCreateCatTaskResponse{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[135]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *RejectCreateCatTaskResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*RejectCreateCatTaskResponse) ProtoMessage() {}
-
-func (x *RejectCreateCatTaskResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[135]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use RejectCreateCatTaskResponse.ProtoReflect.Descriptor instead.
-func (*RejectCreateCatTaskResponse) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{135}
-}
-
-func (x *RejectCreateCatTaskResponse) GetSuccess() bool {
-	if x != nil {
-		return x.Success
-	}
-	return false
-}
-
-type GetCreateCatTaskApplyDetailRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	ApplyId       uint64                 `protobuf:"varint,1,opt,name=apply_id,json=applyId,proto3" json:"apply_id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GetCreateCatTaskApplyDetailRequest) Reset() {
-	*x = GetCreateCatTaskApplyDetailRequest{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[136]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetCreateCatTaskApplyDetailRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetCreateCatTaskApplyDetailRequest) ProtoMessage() {}
-
-func (x *GetCreateCatTaskApplyDetailRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[136]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetCreateCatTaskApplyDetailRequest.ProtoReflect.Descriptor instead.
-func (*GetCreateCatTaskApplyDetailRequest) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{136}
-}
-
-func (x *GetCreateCatTaskApplyDetailRequest) GetApplyId() uint64 {
-	if x != nil {
-		return x.ApplyId
-	}
-	return 0
-}
-
-type GetCreateCatTaskApplyDetailResponse struct {
-	state           protoimpl.MessageState `protogen:"open.v1"`
-	ApplyId         uint64                 `protobuf:"varint,1,opt,name=apply_id,json=applyId,proto3" json:"apply_id,omitempty"`
-	CatId           uint64                 `protobuf:"varint,2,opt,name=cat_id,json=catId,proto3" json:"cat_id,omitempty"`
-	CatName         string                 `protobuf:"bytes,3,opt,name=cat_name,json=catName,proto3" json:"cat_name,omitempty"`
-	Title           string                 `protobuf:"bytes,4,opt,name=title,proto3" json:"title,omitempty"`
-	TaskType        string                 `protobuf:"bytes,5,opt,name=task_type,json=taskType,proto3" json:"task_type,omitempty"`
-	Summary         string                 `protobuf:"bytes,6,opt,name=summary,proto3" json:"summary,omitempty"`
-	Detail          string                 `protobuf:"bytes,7,opt,name=detail,proto3" json:"detail,omitempty"`
-	Deadline        *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=deadline,proto3" json:"deadline,omitempty"`
-	ApplicantUserId uint64                 `protobuf:"varint,9,opt,name=applicant_user_id,json=applicantUserId,proto3" json:"applicant_user_id,omitempty"`
-	ApplicantName   string                 `protobuf:"bytes,10,opt,name=applicant_name,json=applicantName,proto3" json:"applicant_name,omitempty"`
-	Status          string                 `protobuf:"bytes,11,opt,name=status,proto3" json:"status,omitempty"`
-	RejectReason    string                 `protobuf:"bytes,12,opt,name=reject_reason,json=rejectReason,proto3" json:"reject_reason,omitempty"`
-	UrgencyLevel    string                 `protobuf:"bytes,13,opt,name=urgency_level,json=urgencyLevel,proto3" json:"urgency_level,omitempty"`
-	DifficultyLevel int32                  `protobuf:"varint,14,opt,name=difficulty_level,json=difficultyLevel,proto3" json:"difficulty_level,omitempty"`
-	RewardPoints    int32                  `protobuf:"varint,15,opt,name=reward_points,json=rewardPoints,proto3" json:"reward_points,omitempty"`
-	CreatedAt       *timestamppb.Timestamp `protobuf:"bytes,16,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	UpdatedAt       *timestamppb.Timestamp `protobuf:"bytes,17,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
-	unknownFields   protoimpl.UnknownFields
-	sizeCache       protoimpl.SizeCache
-}
-
-func (x *GetCreateCatTaskApplyDetailResponse) Reset() {
-	*x = GetCreateCatTaskApplyDetailResponse{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[137]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetCreateCatTaskApplyDetailResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetCreateCatTaskApplyDetailResponse) ProtoMessage() {}
-
-func (x *GetCreateCatTaskApplyDetailResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[137]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetCreateCatTaskApplyDetailResponse.ProtoReflect.Descriptor instead.
-func (*GetCreateCatTaskApplyDetailResponse) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{137}
-}
-
-func (x *GetCreateCatTaskApplyDetailResponse) GetApplyId() uint64 {
-	if x != nil {
-		return x.ApplyId
-	}
-	return 0
-}
-
-func (x *GetCreateCatTaskApplyDetailResponse) GetCatId() uint64 {
-	if x != nil {
-		return x.CatId
-	}
-	return 0
-}
-
-func (x *GetCreateCatTaskApplyDetailResponse) GetCatName() string {
-	if x != nil {
-		return x.CatName
-	}
-	return ""
-}
-
-func (x *GetCreateCatTaskApplyDetailResponse) GetTitle() string {
-	if x != nil {
-		return x.Title
-	}
-	return ""
-}
-
-func (x *GetCreateCatTaskApplyDetailResponse) GetTaskType() string {
-	if x != nil {
-		return x.TaskType
-	}
-	return ""
-}
-
-func (x *GetCreateCatTaskApplyDetailResponse) GetSummary() string {
-	if x != nil {
-		return x.Summary
-	}
-	return ""
-}
-
-func (x *GetCreateCatTaskApplyDetailResponse) GetDetail() string {
-	if x != nil {
-		return x.Detail
-	}
-	return ""
-}
-
-func (x *GetCreateCatTaskApplyDetailResponse) GetDeadline() *timestamppb.Timestamp {
-	if x != nil {
-		return x.Deadline
-	}
-	return nil
-}
-
-func (x *GetCreateCatTaskApplyDetailResponse) GetApplicantUserId() uint64 {
-	if x != nil {
-		return x.ApplicantUserId
-	}
-	return 0
-}
-
-func (x *GetCreateCatTaskApplyDetailResponse) GetApplicantName() string {
-	if x != nil {
-		return x.ApplicantName
-	}
-	return ""
-}
-
-func (x *GetCreateCatTaskApplyDetailResponse) GetStatus() string {
-	if x != nil {
-		return x.Status
-	}
-	return ""
-}
-
-func (x *GetCreateCatTaskApplyDetailResponse) GetRejectReason() string {
-	if x != nil {
-		return x.RejectReason
-	}
-	return ""
-}
-
-func (x *GetCreateCatTaskApplyDetailResponse) GetUrgencyLevel() string {
-	if x != nil {
-		return x.UrgencyLevel
-	}
-	return ""
-}
-
-func (x *GetCreateCatTaskApplyDetailResponse) GetDifficultyLevel() int32 {
-	if x != nil {
-		return x.DifficultyLevel
-	}
-	return 0
-}
-
-func (x *GetCreateCatTaskApplyDetailResponse) GetRewardPoints() int32 {
-	if x != nil {
-		return x.RewardPoints
-	}
-	return 0
-}
-
-func (x *GetCreateCatTaskApplyDetailResponse) GetCreatedAt() *timestamppb.Timestamp {
-	if x != nil {
-		return x.CreatedAt
-	}
-	return nil
-}
-
-func (x *GetCreateCatTaskApplyDetailResponse) GetUpdatedAt() *timestamppb.Timestamp {
-	if x != nil {
-		return x.UpdatedAt
-	}
-	return nil
-}
-
-type ListCreateCatTaskApplyRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Cursor        string                 `protobuf:"bytes,1,opt,name=cursor,proto3" json:"cursor,omitempty"`
-	PageSize      int64                  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListCreateCatTaskApplyRequest) Reset() {
-	*x = ListCreateCatTaskApplyRequest{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[138]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListCreateCatTaskApplyRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListCreateCatTaskApplyRequest) ProtoMessage() {}
-
-func (x *ListCreateCatTaskApplyRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[138]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListCreateCatTaskApplyRequest.ProtoReflect.Descriptor instead.
-func (*ListCreateCatTaskApplyRequest) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{138}
-}
-
-func (x *ListCreateCatTaskApplyRequest) GetCursor() string {
-	if x != nil {
-		return x.Cursor
-	}
-	return ""
-}
-
-func (x *ListCreateCatTaskApplyRequest) GetPageSize() int64 {
-	if x != nil {
-		return x.PageSize
-	}
-	return 0
-}
-
-type CreateCatTaskApplyItem struct {
-	state           protoimpl.MessageState `protogen:"open.v1"`
-	ApplyId         uint64                 `protobuf:"varint,1,opt,name=apply_id,json=applyId,proto3" json:"apply_id,omitempty"`
-	CatId           uint64                 `protobuf:"varint,2,opt,name=cat_id,json=catId,proto3" json:"cat_id,omitempty"`
-	CatName         string                 `protobuf:"bytes,3,opt,name=cat_name,json=catName,proto3" json:"cat_name,omitempty"`
-	Title           string                 `protobuf:"bytes,4,opt,name=title,proto3" json:"title,omitempty"`
-	TaskType        string                 `protobuf:"bytes,5,opt,name=task_type,json=taskType,proto3" json:"task_type,omitempty"`
-	ApplicantUserId uint64                 `protobuf:"varint,6,opt,name=applicant_user_id,json=applicantUserId,proto3" json:"applicant_user_id,omitempty"`
-	ApplicantName   string                 `protobuf:"bytes,7,opt,name=applicant_name,json=applicantName,proto3" json:"applicant_name,omitempty"`
-	Status          string                 `protobuf:"bytes,8,opt,name=status,proto3" json:"status,omitempty"`
-	CreatedAt       *timestamppb.Timestamp `protobuf:"bytes,9,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	unknownFields   protoimpl.UnknownFields
-	sizeCache       protoimpl.SizeCache
-}
-
-func (x *CreateCatTaskApplyItem) Reset() {
-	*x = CreateCatTaskApplyItem{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[139]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *CreateCatTaskApplyItem) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CreateCatTaskApplyItem) ProtoMessage() {}
-
-func (x *CreateCatTaskApplyItem) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[139]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CreateCatTaskApplyItem.ProtoReflect.Descriptor instead.
-func (*CreateCatTaskApplyItem) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{139}
-}
-
-func (x *CreateCatTaskApplyItem) GetApplyId() uint64 {
-	if x != nil {
-		return x.ApplyId
-	}
-	return 0
-}
-
-func (x *CreateCatTaskApplyItem) GetCatId() uint64 {
-	if x != nil {
-		return x.CatId
-	}
-	return 0
-}
-
-func (x *CreateCatTaskApplyItem) GetCatName() string {
-	if x != nil {
-		return x.CatName
-	}
-	return ""
-}
-
-func (x *CreateCatTaskApplyItem) GetTitle() string {
-	if x != nil {
-		return x.Title
-	}
-	return ""
-}
-
-func (x *CreateCatTaskApplyItem) GetTaskType() string {
-	if x != nil {
-		return x.TaskType
-	}
-	return ""
-}
-
-func (x *CreateCatTaskApplyItem) GetApplicantUserId() uint64 {
-	if x != nil {
-		return x.ApplicantUserId
-	}
-	return 0
-}
-
-func (x *CreateCatTaskApplyItem) GetApplicantName() string {
-	if x != nil {
-		return x.ApplicantName
-	}
-	return ""
-}
-
-func (x *CreateCatTaskApplyItem) GetStatus() string {
-	if x != nil {
-		return x.Status
-	}
-	return ""
-}
-
-func (x *CreateCatTaskApplyItem) GetCreatedAt() *timestamppb.Timestamp {
-	if x != nil {
-		return x.CreatedAt
-	}
-	return nil
-}
-
-type ListCreateCatTaskApplyResponse struct {
-	state         protoimpl.MessageState    `protogen:"open.v1"`
-	List          []*CreateCatTaskApplyItem `protobuf:"bytes,1,rep,name=list,proto3" json:"list,omitempty"`
-	NextCursor    string                    `protobuf:"bytes,2,opt,name=next_cursor,json=nextCursor,proto3" json:"next_cursor,omitempty"`
-	HasMore       bool                      `protobuf:"varint,3,opt,name=has_more,json=hasMore,proto3" json:"has_more,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListCreateCatTaskApplyResponse) Reset() {
-	*x = ListCreateCatTaskApplyResponse{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[140]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListCreateCatTaskApplyResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListCreateCatTaskApplyResponse) ProtoMessage() {}
-
-func (x *ListCreateCatTaskApplyResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[140]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListCreateCatTaskApplyResponse.ProtoReflect.Descriptor instead.
-func (*ListCreateCatTaskApplyResponse) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{140}
-}
-
-func (x *ListCreateCatTaskApplyResponse) GetList() []*CreateCatTaskApplyItem {
-	if x != nil {
-		return x.List
-	}
-	return nil
-}
-
-func (x *ListCreateCatTaskApplyResponse) GetNextCursor() string {
-	if x != nil {
-		return x.NextCursor
-	}
-	return ""
-}
-
-func (x *ListCreateCatTaskApplyResponse) GetHasMore() bool {
-	if x != nil {
-		return x.HasMore
-	}
-	return false
-}
-
-type CreateCatTaskRequest struct {
-	state           protoimpl.MessageState `protogen:"open.v1"`
-	CatId           uint64                 `protobuf:"varint,1,opt,name=cat_id,json=catId,proto3" json:"cat_id,omitempty"`
-	Title           string                 `protobuf:"bytes,2,opt,name=title,proto3" json:"title,omitempty"`
-	TaskType        string                 `protobuf:"bytes,3,opt,name=task_type,json=taskType,proto3" json:"task_type,omitempty"`
-	UrgencyLevel    string                 `protobuf:"bytes,4,opt,name=urgency_level,json=urgencyLevel,proto3" json:"urgency_level,omitempty"`
-	DifficultyLevel int32                  `protobuf:"varint,5,opt,name=difficulty_level,json=difficultyLevel,proto3" json:"difficulty_level,omitempty"`
-	RewardPoints    int32                  `protobuf:"varint,6,opt,name=reward_points,json=rewardPoints,proto3" json:"reward_points,omitempty"`
-	Summary         string                 `protobuf:"bytes,7,opt,name=summary,proto3" json:"summary,omitempty"`
-	Detail          string                 `protobuf:"bytes,8,opt,name=detail,proto3" json:"detail,omitempty"`
-	Deadline        *timestamppb.Timestamp `protobuf:"bytes,9,opt,name=deadline,proto3" json:"deadline,omitempty"`
-	OperatorId      uint64                 `protobuf:"varint,10,opt,name=operator_id,json=operatorId,proto3" json:"operator_id,omitempty"`
-	unknownFields   protoimpl.UnknownFields
-	sizeCache       protoimpl.SizeCache
-}
-
-func (x *CreateCatTaskRequest) Reset() {
-	*x = CreateCatTaskRequest{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[141]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *CreateCatTaskRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CreateCatTaskRequest) ProtoMessage() {}
-
-func (x *CreateCatTaskRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[141]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CreateCatTaskRequest.ProtoReflect.Descriptor instead.
-func (*CreateCatTaskRequest) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{141}
-}
-
-func (x *CreateCatTaskRequest) GetCatId() uint64 {
-	if x != nil {
-		return x.CatId
-	}
-	return 0
-}
-
-func (x *CreateCatTaskRequest) GetTitle() string {
-	if x != nil {
-		return x.Title
-	}
-	return ""
-}
-
-func (x *CreateCatTaskRequest) GetTaskType() string {
-	if x != nil {
-		return x.TaskType
-	}
-	return ""
-}
-
-func (x *CreateCatTaskRequest) GetUrgencyLevel() string {
-	if x != nil {
-		return x.UrgencyLevel
-	}
-	return ""
-}
-
-func (x *CreateCatTaskRequest) GetDifficultyLevel() int32 {
-	if x != nil {
-		return x.DifficultyLevel
-	}
-	return 0
-}
-
-func (x *CreateCatTaskRequest) GetRewardPoints() int32 {
-	if x != nil {
-		return x.RewardPoints
-	}
-	return 0
-}
-
-func (x *CreateCatTaskRequest) GetSummary() string {
-	if x != nil {
-		return x.Summary
-	}
-	return ""
-}
-
-func (x *CreateCatTaskRequest) GetDetail() string {
-	if x != nil {
-		return x.Detail
-	}
-	return ""
-}
-
-func (x *CreateCatTaskRequest) GetDeadline() *timestamppb.Timestamp {
-	if x != nil {
-		return x.Deadline
-	}
-	return nil
-}
-
-func (x *CreateCatTaskRequest) GetOperatorId() uint64 {
-	if x != nil {
-		return x.OperatorId
-	}
-	return 0
-}
-
-type CreateCatTaskResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	TaskId        uint64                 `protobuf:"varint,1,opt,name=task_id,json=taskId,proto3" json:"task_id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *CreateCatTaskResponse) Reset() {
-	*x = CreateCatTaskResponse{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[142]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *CreateCatTaskResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CreateCatTaskResponse) ProtoMessage() {}
-
-func (x *CreateCatTaskResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[142]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CreateCatTaskResponse.ProtoReflect.Descriptor instead.
-func (*CreateCatTaskResponse) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{142}
-}
-
-func (x *CreateCatTaskResponse) GetTaskId() uint64 {
-	if x != nil {
-		return x.TaskId
-	}
-	return 0
-}
-
-type UpdateCatTaskStatusRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	TaskId        uint64                 `protobuf:"varint,1,opt,name=task_id,json=taskId,proto3" json:"task_id,omitempty"`
-	Status        string                 `protobuf:"bytes,2,opt,name=status,proto3" json:"status,omitempty"` // pending/processing/completed/cancelled
-	Remark        string                 `protobuf:"bytes,3,opt,name=remark,proto3" json:"remark,omitempty"`
-	OperatorId    uint64                 `protobuf:"varint,4,opt,name=operator_id,json=operatorId,proto3" json:"operator_id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *UpdateCatTaskStatusRequest) Reset() {
-	*x = UpdateCatTaskStatusRequest{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[143]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *UpdateCatTaskStatusRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*UpdateCatTaskStatusRequest) ProtoMessage() {}
-
-func (x *UpdateCatTaskStatusRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[143]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use UpdateCatTaskStatusRequest.ProtoReflect.Descriptor instead.
-func (*UpdateCatTaskStatusRequest) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{143}
-}
-
-func (x *UpdateCatTaskStatusRequest) GetTaskId() uint64 {
-	if x != nil {
-		return x.TaskId
-	}
-	return 0
-}
-
-func (x *UpdateCatTaskStatusRequest) GetStatus() string {
-	if x != nil {
-		return x.Status
-	}
-	return ""
-}
-
-func (x *UpdateCatTaskStatusRequest) GetRemark() string {
-	if x != nil {
-		return x.Remark
-	}
-	return ""
-}
-
-func (x *UpdateCatTaskStatusRequest) GetOperatorId() uint64 {
-	if x != nil {
-		return x.OperatorId
-	}
-	return 0
-}
-
-type UpdateCatTaskStatusResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *UpdateCatTaskStatusResponse) Reset() {
-	*x = UpdateCatTaskStatusResponse{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[144]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *UpdateCatTaskStatusResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*UpdateCatTaskStatusResponse) ProtoMessage() {}
-
-func (x *UpdateCatTaskStatusResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[144]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use UpdateCatTaskStatusResponse.ProtoReflect.Descriptor instead.
-func (*UpdateCatTaskStatusResponse) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{144}
-}
-
-func (x *UpdateCatTaskStatusResponse) GetSuccess() bool {
-	if x != nil {
-		return x.Success
-	}
-	return false
-}
-
-type UpdateAdoptionStatusRequest struct {
-	state          protoimpl.MessageState `protogen:"open.v1"`
-	CatId          uint64                 `protobuf:"varint,1,opt,name=cat_id,json=catId,proto3" json:"cat_id,omitempty"`
-	AdoptionStatus string                 `protobuf:"bytes,2,opt,name=adoption_status,json=adoptionStatus,proto3" json:"adoption_status,omitempty"` // pending/adopted/unavailable
-	OperatorId     uint64                 `protobuf:"varint,3,opt,name=operator_id,json=operatorId,proto3" json:"operator_id,omitempty"`
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
-}
-
-func (x *UpdateAdoptionStatusRequest) Reset() {
-	*x = UpdateAdoptionStatusRequest{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[145]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *UpdateAdoptionStatusRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*UpdateAdoptionStatusRequest) ProtoMessage() {}
-
-func (x *UpdateAdoptionStatusRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[145]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use UpdateAdoptionStatusRequest.ProtoReflect.Descriptor instead.
-func (*UpdateAdoptionStatusRequest) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{145}
-}
-
-func (x *UpdateAdoptionStatusRequest) GetCatId() uint64 {
-	if x != nil {
-		return x.CatId
-	}
-	return 0
-}
-
-func (x *UpdateAdoptionStatusRequest) GetAdoptionStatus() string {
-	if x != nil {
-		return x.AdoptionStatus
-	}
-	return ""
-}
-
-func (x *UpdateAdoptionStatusRequest) GetOperatorId() uint64 {
-	if x != nil {
-		return x.OperatorId
-	}
-	return 0
-}
-
-type UpdateAdoptionStatusResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *UpdateAdoptionStatusResponse) Reset() {
-	*x = UpdateAdoptionStatusResponse{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[146]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *UpdateAdoptionStatusResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*UpdateAdoptionStatusResponse) ProtoMessage() {}
-
-func (x *UpdateAdoptionStatusResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[146]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use UpdateAdoptionStatusResponse.ProtoReflect.Descriptor instead.
-func (*UpdateAdoptionStatusResponse) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{146}
-}
-
-func (x *UpdateAdoptionStatusResponse) GetSuccess() bool {
-	if x != nil {
-		return x.Success
-	}
-	return false
-}
-
-type GetCatDetailRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	CatId         uint64                 `protobuf:"varint,1,opt,name=cat_id,json=catId,proto3" json:"cat_id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GetCatDetailRequest) Reset() {
-	*x = GetCatDetailRequest{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[147]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetCatDetailRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetCatDetailRequest) ProtoMessage() {}
-
-func (x *GetCatDetailRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[147]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetCatDetailRequest.ProtoReflect.Descriptor instead.
-func (*GetCatDetailRequest) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{147}
-}
-
-func (x *GetCatDetailRequest) GetCatId() uint64 {
-	if x != nil {
-		return x.CatId
-	}
-	return 0
-}
-
-type GetCatDetailResponse struct {
-	state               protoimpl.MessageState `protogen:"open.v1"`
-	CatId               uint64                 `protobuf:"varint,1,opt,name=cat_id,json=catId,proto3" json:"cat_id,omitempty"`
-	CatCode             string                 `protobuf:"bytes,2,opt,name=cat_code,json=catCode,proto3" json:"cat_code,omitempty"`
-	Name                string                 `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
-	Gender              string                 `protobuf:"bytes,4,opt,name=gender,proto3" json:"gender,omitempty"`
-	BodySize            string                 `protobuf:"bytes,5,opt,name=body_size,json=bodySize,proto3" json:"body_size,omitempty"`
-	AgeStage            string                 `protobuf:"bytes,6,opt,name=age_stage,json=ageStage,proto3" json:"age_stage,omitempty"`
-	SterilizationStatus string                 `protobuf:"bytes,7,opt,name=sterilization_status,json=sterilizationStatus,proto3" json:"sterilization_status,omitempty"`
-	AdoptionStatus      string                 `protobuf:"bytes,8,opt,name=adoption_status,json=adoptionStatus,proto3" json:"adoption_status,omitempty"`
-	Avatar              string                 `protobuf:"bytes,9,opt,name=avatar,proto3" json:"avatar,omitempty"`
-	Description         string                 `protobuf:"bytes,10,opt,name=description,proto3" json:"description,omitempty"`
-	DiscoveryAddress    string                 `protobuf:"bytes,11,opt,name=discovery_address,json=discoveryAddress,proto3" json:"discovery_address,omitempty"`
-	Longitude           float64                `protobuf:"fixed64,12,opt,name=longitude,proto3" json:"longitude,omitempty"`
-	Latitude            float64                `protobuf:"fixed64,13,opt,name=latitude,proto3" json:"latitude,omitempty"`
-	unknownFields       protoimpl.UnknownFields
-	sizeCache           protoimpl.SizeCache
-}
-
-func (x *GetCatDetailResponse) Reset() {
-	*x = GetCatDetailResponse{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[148]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetCatDetailResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetCatDetailResponse) ProtoMessage() {}
-
-func (x *GetCatDetailResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[148]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetCatDetailResponse.ProtoReflect.Descriptor instead.
-func (*GetCatDetailResponse) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{148}
-}
-
-func (x *GetCatDetailResponse) GetCatId() uint64 {
-	if x != nil {
-		return x.CatId
-	}
-	return 0
-}
-
-func (x *GetCatDetailResponse) GetCatCode() string {
-	if x != nil {
-		return x.CatCode
-	}
-	return ""
-}
-
-func (x *GetCatDetailResponse) GetName() string {
-	if x != nil {
-		return x.Name
-	}
-	return ""
-}
-
-func (x *GetCatDetailResponse) GetGender() string {
-	if x != nil {
-		return x.Gender
-	}
-	return ""
-}
-
-func (x *GetCatDetailResponse) GetBodySize() string {
-	if x != nil {
-		return x.BodySize
-	}
-	return ""
-}
-
-func (x *GetCatDetailResponse) GetAgeStage() string {
-	if x != nil {
-		return x.AgeStage
-	}
-	return ""
-}
-
-func (x *GetCatDetailResponse) GetSterilizationStatus() string {
-	if x != nil {
-		return x.SterilizationStatus
-	}
-	return ""
-}
-
-func (x *GetCatDetailResponse) GetAdoptionStatus() string {
-	if x != nil {
-		return x.AdoptionStatus
-	}
-	return ""
-}
-
-func (x *GetCatDetailResponse) GetAvatar() string {
-	if x != nil {
-		return x.Avatar
-	}
-	return ""
-}
-
-func (x *GetCatDetailResponse) GetDescription() string {
-	if x != nil {
-		return x.Description
-	}
-	return ""
-}
-
-func (x *GetCatDetailResponse) GetDiscoveryAddress() string {
-	if x != nil {
-		return x.DiscoveryAddress
-	}
-	return ""
-}
-
-func (x *GetCatDetailResponse) GetLongitude() float64 {
-	if x != nil {
-		return x.Longitude
-	}
-	return 0
-}
-
-func (x *GetCatDetailResponse) GetLatitude() float64 {
-	if x != nil {
-		return x.Latitude
-	}
-	return 0
-}
-
-type ListCatsRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Cursor        string                 `protobuf:"bytes,1,opt,name=cursor,proto3" json:"cursor,omitempty"`
-	PageSize      int64                  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListCatsRequest) Reset() {
-	*x = ListCatsRequest{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[149]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListCatsRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListCatsRequest) ProtoMessage() {}
-
-func (x *ListCatsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[149]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListCatsRequest.ProtoReflect.Descriptor instead.
-func (*ListCatsRequest) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{149}
-}
-
-func (x *ListCatsRequest) GetCursor() string {
-	if x != nil {
-		return x.Cursor
-	}
-	return ""
-}
-
-func (x *ListCatsRequest) GetPageSize() int64 {
-	if x != nil {
-		return x.PageSize
-	}
-	return 0
-}
-
-type CatItem struct {
-	state          protoimpl.MessageState `protogen:"open.v1"`
-	CatId          uint64                 `protobuf:"varint,1,opt,name=cat_id,json=catId,proto3" json:"cat_id,omitempty"`
-	Name           string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	Gender         string                 `protobuf:"bytes,3,opt,name=gender,proto3" json:"gender,omitempty"`
-	Avatar         string                 `protobuf:"bytes,4,opt,name=avatar,proto3" json:"avatar,omitempty"`
-	AgeStage       string                 `protobuf:"bytes,5,opt,name=age_stage,json=ageStage,proto3" json:"age_stage,omitempty"`
-	AdoptionStatus string                 `protobuf:"bytes,6,opt,name=adoption_status,json=adoptionStatus,proto3" json:"adoption_status,omitempty"`
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
-}
-
-func (x *CatItem) Reset() {
-	*x = CatItem{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[150]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *CatItem) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CatItem) ProtoMessage() {}
-
-func (x *CatItem) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[150]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CatItem.ProtoReflect.Descriptor instead.
-func (*CatItem) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{150}
-}
-
-func (x *CatItem) GetCatId() uint64 {
-	if x != nil {
-		return x.CatId
-	}
-	return 0
-}
-
-func (x *CatItem) GetName() string {
-	if x != nil {
-		return x.Name
-	}
-	return ""
-}
-
-func (x *CatItem) GetGender() string {
-	if x != nil {
-		return x.Gender
-	}
-	return ""
-}
-
-func (x *CatItem) GetAvatar() string {
-	if x != nil {
-		return x.Avatar
-	}
-	return ""
-}
-
-func (x *CatItem) GetAgeStage() string {
-	if x != nil {
-		return x.AgeStage
-	}
-	return ""
-}
-
-func (x *CatItem) GetAdoptionStatus() string {
-	if x != nil {
-		return x.AdoptionStatus
-	}
-	return ""
-}
-
-type ListCatsResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	List          []*CatItem             `protobuf:"bytes,1,rep,name=list,proto3" json:"list,omitempty"`
-	NextCursor    string                 `protobuf:"bytes,2,opt,name=next_cursor,json=nextCursor,proto3" json:"next_cursor,omitempty"`
-	HasMore       bool                   `protobuf:"varint,3,opt,name=has_more,json=hasMore,proto3" json:"has_more,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListCatsResponse) Reset() {
-	*x = ListCatsResponse{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[151]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListCatsResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListCatsResponse) ProtoMessage() {}
-
-func (x *ListCatsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[151]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListCatsResponse.ProtoReflect.Descriptor instead.
-func (*ListCatsResponse) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{151}
-}
-
-func (x *ListCatsResponse) GetList() []*CatItem {
-	if x != nil {
-		return x.List
-	}
-	return nil
-}
-
-func (x *ListCatsResponse) GetNextCursor() string {
-	if x != nil {
-		return x.NextCursor
-	}
-	return ""
-}
-
-func (x *ListCatsResponse) GetHasMore() bool {
-	if x != nil {
-		return x.HasMore
-	}
-	return false
-}
-
-type ListCatTasksRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Cursor        string                 `protobuf:"bytes,2,opt,name=cursor,proto3" json:"cursor,omitempty"`
-	PageSize      int64                  `protobuf:"varint,3,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListCatTasksRequest) Reset() {
-	*x = ListCatTasksRequest{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[152]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListCatTasksRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListCatTasksRequest) ProtoMessage() {}
-
-func (x *ListCatTasksRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[152]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListCatTasksRequest.ProtoReflect.Descriptor instead.
-func (*ListCatTasksRequest) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{152}
-}
-
-func (x *ListCatTasksRequest) GetCursor() string {
-	if x != nil {
-		return x.Cursor
-	}
-	return ""
-}
-
-func (x *ListCatTasksRequest) GetPageSize() int64 {
-	if x != nil {
-		return x.PageSize
-	}
-	return 0
-}
-
-type CatTaskItem struct {
-	state           protoimpl.MessageState `protogen:"open.v1"`
-	TaskId          uint64                 `protobuf:"varint,1,opt,name=task_id,json=taskId,proto3" json:"task_id,omitempty"`
-	Title           string                 `protobuf:"bytes,2,opt,name=title,proto3" json:"title,omitempty"`
-	TaskType        string                 `protobuf:"bytes,3,opt,name=task_type,json=taskType,proto3" json:"task_type,omitempty"`
-	UrgencyLevel    string                 `protobuf:"bytes,4,opt,name=urgency_level,json=urgencyLevel,proto3" json:"urgency_level,omitempty"`
-	DifficultyLevel int32                  `protobuf:"varint,5,opt,name=difficulty_level,json=difficultyLevel,proto3" json:"difficulty_level,omitempty"`
-	RewardPoints    int32                  `protobuf:"varint,6,opt,name=reward_points,json=rewardPoints,proto3" json:"reward_points,omitempty"`
-	Status          string                 `protobuf:"bytes,7,opt,name=status,proto3" json:"status,omitempty"`
-	Deadline        *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=deadline,proto3" json:"deadline,omitempty"`
-	CreatedAt       *timestamppb.Timestamp `protobuf:"bytes,9,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	unknownFields   protoimpl.UnknownFields
-	sizeCache       protoimpl.SizeCache
-}
-
-func (x *CatTaskItem) Reset() {
-	*x = CatTaskItem{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[153]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *CatTaskItem) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CatTaskItem) ProtoMessage() {}
-
-func (x *CatTaskItem) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[153]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CatTaskItem.ProtoReflect.Descriptor instead.
-func (*CatTaskItem) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{153}
-}
-
-func (x *CatTaskItem) GetTaskId() uint64 {
-	if x != nil {
-		return x.TaskId
-	}
-	return 0
-}
-
-func (x *CatTaskItem) GetTitle() string {
-	if x != nil {
-		return x.Title
-	}
-	return ""
-}
-
-func (x *CatTaskItem) GetTaskType() string {
-	if x != nil {
-		return x.TaskType
-	}
-	return ""
-}
-
-func (x *CatTaskItem) GetUrgencyLevel() string {
-	if x != nil {
-		return x.UrgencyLevel
-	}
-	return ""
-}
-
-func (x *CatTaskItem) GetDifficultyLevel() int32 {
-	if x != nil {
-		return x.DifficultyLevel
-	}
-	return 0
-}
-
-func (x *CatTaskItem) GetRewardPoints() int32 {
-	if x != nil {
-		return x.RewardPoints
-	}
-	return 0
-}
-
-func (x *CatTaskItem) GetStatus() string {
-	if x != nil {
-		return x.Status
-	}
-	return ""
-}
-
-func (x *CatTaskItem) GetDeadline() *timestamppb.Timestamp {
-	if x != nil {
-		return x.Deadline
-	}
-	return nil
-}
-
-func (x *CatTaskItem) GetCreatedAt() *timestamppb.Timestamp {
-	if x != nil {
-		return x.CreatedAt
-	}
-	return nil
-}
-
-type ListCatTasksResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	List          []*CatTaskItem         `protobuf:"bytes,1,rep,name=list,proto3" json:"list,omitempty"`
-	NextCursor    string                 `protobuf:"bytes,2,opt,name=next_cursor,json=nextCursor,proto3" json:"next_cursor,omitempty"`
-	HasMore       bool                   `protobuf:"varint,3,opt,name=has_more,json=hasMore,proto3" json:"has_more,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListCatTasksResponse) Reset() {
-	*x = ListCatTasksResponse{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[154]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListCatTasksResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListCatTasksResponse) ProtoMessage() {}
-
-func (x *ListCatTasksResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[154]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListCatTasksResponse.ProtoReflect.Descriptor instead.
-func (*ListCatTasksResponse) Descriptor() ([]byte, []int) {
-	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{154}
-}
-
-func (x *ListCatTasksResponse) GetList() []*CatTaskItem {
-	if x != nil {
-		return x.List
-	}
-	return nil
-}
-
-func (x *ListCatTasksResponse) GetNextCursor() string {
-	if x != nil {
-		return x.NextCursor
-	}
-	return ""
-}
-
-func (x *ListCatTasksResponse) GetHasMore() bool {
-	if x != nil {
-		return x.HasMore
-	}
-	return false
-}
-
 type ListMyAppliesResponse_ApplyItem struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	ApplyId       uint64                 `protobuf:"varint,1,opt,name=apply_id,json=applyId,proto3" json:"apply_id,omitempty"`
@@ -11521,7 +8610,7 @@ type ListMyAppliesResponse_ApplyItem struct {
 
 func (x *ListMyAppliesResponse_ApplyItem) Reset() {
 	*x = ListMyAppliesResponse_ApplyItem{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[155]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[106]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -11533,7 +8622,7 @@ func (x *ListMyAppliesResponse_ApplyItem) String() string {
 func (*ListMyAppliesResponse_ApplyItem) ProtoMessage() {}
 
 func (x *ListMyAppliesResponse_ApplyItem) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[155]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[106]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -11599,7 +8688,7 @@ type ListPendingAppliesResponse_ApplyItem struct {
 
 func (x *ListPendingAppliesResponse_ApplyItem) Reset() {
 	*x = ListPendingAppliesResponse_ApplyItem{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[156]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[107]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -11611,7 +8700,7 @@ func (x *ListPendingAppliesResponse_ApplyItem) String() string {
 func (*ListPendingAppliesResponse_ApplyItem) ProtoMessage() {}
 
 func (x *ListPendingAppliesResponse_ApplyItem) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[156]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[107]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -11812,7 +8901,88 @@ const file_pb_cat_v1_cat_proto_rawDesc = "" +
 	"\x11discovery_address\x18\x05 \x01(\tR\x10discoveryAddress\x12*\n" +
 	"\x11applicant_user_id\x18\x06 \x01(\x04R\x0fapplicantUserId\x129\n" +
 	"\n" +
-	"created_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\"\xbc\x01\n" +
+	"created_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\"\x83\a\n" +
+	"\vListCatsReq\x12\x18\n" +
+	"\akeyword\x18\x01 \x01(\tR\akeyword\x12\x12\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\x12\x19\n" +
+	"\bcat_code\x18\x03 \x01(\tR\acatCode\x12\x14\n" +
+	"\x05breed\x18\x04 \x01(\tR\x05breed\x12\x14\n" +
+	"\x05color\x18\x05 \x01(\tR\x05color\x12\x16\n" +
+	"\x06gender\x18\x06 \x01(\tR\x06gender\x12\x1b\n" +
+	"\tbody_size\x18\a \x01(\tR\bbodySize\x12\x1b\n" +
+	"\tage_stage\x18\b \x01(\tR\bageStage\x121\n" +
+	"\x14sterilization_status\x18\t \x01(\tR\x13sterilizationStatus\x12'\n" +
+	"\x0fadoption_status\x18\n" +
+	" \x01(\tR\x0eadoptionStatus\x12(\n" +
+	"\ris_vaccinated\x18\v \x01(\bH\x00R\fisVaccinated\x88\x01\x01\x12\"\n" +
+	"\n" +
+	"is_healthy\x18\f \x01(\bH\x01R\tisHealthy\x88\x01\x01\x12?\n" +
+	"\x19need_medical_intervention\x18\r \x01(\bH\x02R\x17needMedicalIntervention\x88\x01\x01\x12)\n" +
+	"\x06nearby\x18\x0e \x01(\v2\x11.cat.NearbyFilterR\x06nearby\x12\x1d\n" +
+	"\n" +
+	"adopter_id\x18\x0f \x01(\x04R\tadopterId\x12\x1d\n" +
+	"\n" +
+	"creator_id\x18\x10 \x01(\x04R\tcreatorId\x12\x19\n" +
+	"\bapply_id\x18\x11 \x01(\x04R\aapplyId\x12$\n" +
+	"\x0efound_at_start\x18\x12 \x01(\tR\ffoundAtStart\x12 \n" +
+	"\ffound_at_end\x18\x13 \x01(\tR\n" +
+	"foundAtEnd\x12(\n" +
+	"\x10created_at_start\x18\x14 \x01(\tR\x0ecreatedAtStart\x12$\n" +
+	"\x0ecreated_at_end\x18\x15 \x01(\tR\fcreatedAtEnd\x12\x12\n" +
+	"\x04page\x18\x16 \x01(\x05R\x04page\x12\x1b\n" +
+	"\tpage_size\x18\x17 \x01(\x05R\bpageSize\x12\x17\n" +
+	"\asort_by\x18\x18 \x01(\tR\x06sortBy\x12\x1d\n" +
+	"\n" +
+	"sort_order\x18\x19 \x01(\tR\tsortOrderB\x10\n" +
+	"\x0e_is_vaccinatedB\r\n" +
+	"\v_is_healthyB\x1c\n" +
+	"\x1a_need_medical_intervention\"`\n" +
+	"\fNearbyFilter\x12\x1a\n" +
+	"\blatitude\x18\x01 \x01(\x01R\blatitude\x12\x1c\n" +
+	"\tlongitude\x18\x02 \x01(\x01R\tlongitude\x12\x16\n" +
+	"\x06radius\x18\x03 \x01(\x01R\x06radius\"F\n" +
+	"\fListCatsResp\x12\x14\n" +
+	"\x05total\x18\x01 \x01(\x03R\x05total\x12 \n" +
+	"\x04list\x18\x02 \x03(\v2\f.cat.CatInfoR\x04list\"\xb8\a\n" +
+	"\aCatInfo\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x04R\x02id\x12\x19\n" +
+	"\bcat_code\x18\x02 \x01(\tR\acatCode\x12\x12\n" +
+	"\x04name\x18\x03 \x01(\tR\x04name\x12\x14\n" +
+	"\x05breed\x18\x04 \x01(\tR\x05breed\x12\x14\n" +
+	"\x05color\x18\x05 \x01(\tR\x05color\x12\x16\n" +
+	"\x06gender\x18\x06 \x01(\tR\x06gender\x12\x1b\n" +
+	"\tbody_size\x18\a \x01(\tR\bbodySize\x12\x1b\n" +
+	"\tage_stage\x18\b \x01(\tR\bageStage\x12\x16\n" +
+	"\x06weight\x18\t \x01(\x02R\x06weight\x12\x1c\n" +
+	"\tcharacter\x18\n" +
+	" \x01(\tR\tcharacter\x12\x1d\n" +
+	"\n" +
+	"birth_date\x18\v \x01(\tR\tbirthDate\x12\x16\n" +
+	"\x06avatar\x18\f \x01(\tR\x06avatar\x12 \n" +
+	"\vdescription\x18\r \x01(\tR\vdescription\x12\x19\n" +
+	"\bfound_at\x18\x0e \x01(\tR\afoundAt\x12+\n" +
+	"\x11discovery_address\x18\x0f \x01(\tR\x10discoveryAddress\x12\x1c\n" +
+	"\tlongitude\x18\x10 \x01(\x01R\tlongitude\x12\x1a\n" +
+	"\blatitude\x18\x11 \x01(\x01R\blatitude\x12#\n" +
+	"\ris_vaccinated\x18\x12 \x01(\bR\fisVaccinated\x12\x1d\n" +
+	"\n" +
+	"is_healthy\x18\x13 \x01(\bR\tisHealthy\x12:\n" +
+	"\x19need_medical_intervention\x18\x14 \x01(\bR\x17needMedicalIntervention\x121\n" +
+	"\x14sterilization_status\x18\x15 \x01(\tR\x13sterilizationStatus\x121\n" +
+	"\x15last_medical_check_at\x18\x16 \x01(\tR\x12lastMedicalCheckAt\x12'\n" +
+	"\x0fadoption_status\x18\x17 \x01(\tR\x0eadoptionStatus\x12\x1d\n" +
+	"\n" +
+	"adopter_id\x18\x18 \x01(\x04R\tadopterId\x12\x1d\n" +
+	"\n" +
+	"adopted_at\x18\x19 \x01(\tR\tadoptedAt\x12\x19\n" +
+	"\bapply_id\x18\x1a \x01(\x04R\aapplyId\x12\x1d\n" +
+	"\n" +
+	"creator_id\x18\x1b \x01(\x04R\tcreatorId\x12\x1d\n" +
+	"\n" +
+	"created_at\x18\x1c \x01(\tR\tcreatedAt\x12\x1d\n" +
+	"\n" +
+	"updated_at\x18\x1d \x01(\tR\tupdatedAt\x12\x1a\n" +
+	"\bdistance\x18\x1e \x01(\x01R\bdistance\"\xbc\x01\n" +
 	"\x11ApplyAdoptRequest\x12\x15\n" +
 	"\x06cat_id\x18\x01 \x01(\x04R\x05catId\x12!\n" +
 	"\fapply_reason\x18\x02 \x01(\tR\vapplyReason\x12#\n" +
@@ -12444,300 +9614,7 @@ const file_pb_cat_v1_cat_proto_rawDesc = "" +
 	"\x02id\x18\x01 \x01(\x04R\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x12\n" +
 	"\x04type\x18\x03 \x01(\tR\x04type\x12\x14\n" +
-	"\x05theme\x18\x04 \x01(\tR\x05theme\"\x91\x03\n" +
-	"\x19ApplyUpdateCatInfoRequest\x12\x15\n" +
-	"\x06cat_id\x18\x01 \x01(\x04R\x05catId\x12\x12\n" +
-	"\x04name\x18\x02 \x01(\tR\x04name\x12\x16\n" +
-	"\x06gender\x18\x03 \x01(\tR\x06gender\x12\x1b\n" +
-	"\tbody_size\x18\x04 \x01(\tR\bbodySize\x12\x1b\n" +
-	"\tage_stage\x18\x05 \x01(\tR\bageStage\x12 \n" +
-	"\vdescription\x18\x06 \x01(\tR\vdescription\x12+\n" +
-	"\x11discovery_address\x18\a \x01(\tR\x10discoveryAddress\x12\x1c\n" +
-	"\tlongitude\x18\b \x01(\x01R\tlongitude\x12\x1a\n" +
-	"\blatitude\x18\t \x01(\x01R\blatitude\x12\x1d\n" +
-	"\n" +
-	"image_urls\x18\n" +
-	" \x03(\tR\timageUrls\x12#\n" +
-	"\rchange_reason\x18\v \x01(\tR\fchangeReason\x12*\n" +
-	"\x11applicant_user_id\x18\f \x01(\x04R\x0fapplicantUserId\"7\n" +
-	"\x1aApplyUpdateCatInfoResponse\x12\x19\n" +
-	"\bapply_id\x18\x01 \x01(\x04R\aapplyId\"V\n" +
-	" GetMyUpdateCatApplyDetailRequest\x12\x19\n" +
-	"\bapply_id\x18\x01 \x01(\x04R\aapplyId\x12\x17\n" +
-	"\auser_id\x18\x02 \x01(\x04R\x06userId\"\xf1\x01\n" +
-	"!GetMyUpdateCatApplyDetailResponse\x12\x19\n" +
-	"\bapply_id\x18\x01 \x01(\x04R\aapplyId\x12\x16\n" +
-	"\x06status\x18\x02 \x01(\tR\x06status\x12#\n" +
-	"\rreject_reason\x18\x03 \x01(\tR\frejectReason\x129\n" +
-	"\n" +
-	"created_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
-	"\n" +
-	"updated_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\"\x93\x01\n" +
-	"\x1cApplyAddMedicalRecordRequest\x12\x15\n" +
-	"\x06cat_id\x18\x01 \x01(\x04R\x05catId\x12!\n" +
-	"\fmedical_type\x18\x02 \x01(\tR\vmedicalType\x12\x18\n" +
-	"\acontent\x18\x03 \x01(\tR\acontent\x12\x1f\n" +
-	"\voperator_id\x18\x04 \x01(\x04R\n" +
-	"operatorId\"G\n" +
-	"\x1dApplyAddMedicalRecordResponse\x12&\n" +
-	"\x0frecord_apply_id\x18\x01 \x01(\x04R\rrecordApplyId\"\xfc\x01\n" +
-	"\x1bApplyAddRescueRecordRequest\x12\x15\n" +
-	"\x06cat_id\x18\x01 \x01(\x04R\x05catId\x12;\n" +
-	"\vrescue_time\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\n" +
-	"rescueTime\x12!\n" +
-	"\frescuer_name\x18\x03 \x01(\tR\vrescuerName\x12#\n" +
-	"\rrescue_status\x18\x04 \x01(\tR\frescueStatus\x12 \n" +
-	"\vdescription\x18\x05 \x01(\tR\vdescription\x12\x1f\n" +
-	"\voperator_id\x18\x06 \x01(\x04R\n" +
-	"operatorId\"F\n" +
-	"\x1cApplyAddRescueRecordResponse\x12&\n" +
-	"\x0frescue_apply_id\x18\x01 \x01(\x04R\rrescueApplyId\"\xfb\x01\n" +
-	"\x19ApplyCreateCatTaskRequest\x12\x15\n" +
-	"\x06cat_id\x18\x01 \x01(\x04R\x05catId\x12\x14\n" +
-	"\x05title\x18\x02 \x01(\tR\x05title\x12\x1b\n" +
-	"\ttask_type\x18\x03 \x01(\tR\btaskType\x12\x18\n" +
-	"\asummary\x18\x04 \x01(\tR\asummary\x12\x16\n" +
-	"\x06detail\x18\x05 \x01(\tR\x06detail\x126\n" +
-	"\bdeadline\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\bdeadline\x12*\n" +
-	"\x11applicant_user_id\x18\a \x01(\x04R\x0fapplicantUserId\"7\n" +
-	"\x1aApplyCreateCatTaskResponse\x12\x19\n" +
-	"\bapply_id\x18\x01 \x01(\x04R\aapplyId\"G\n" +
-	"\x13ClaimCatTaskRequest\x12\x17\n" +
-	"\atask_id\x18\x01 \x01(\x04R\x06taskId\x12\x17\n" +
-	"\auser_id\x18\x02 \x01(\x04R\x06userId\"0\n" +
-	"\x14ClaimCatTaskResponse\x12\x18\n" +
-	"\asuccess\x18\x01 \x01(\bR\asuccess\"a\n" +
-	"\x15AbandonCatTaskRequest\x12\x17\n" +
-	"\atask_id\x18\x01 \x01(\x04R\x06taskId\x12\x17\n" +
-	"\auser_id\x18\x02 \x01(\x04R\x06userId\x12\x16\n" +
-	"\x06reason\x18\x03 \x01(\tR\x06reason\"2\n" +
-	"\x16AbandonCatTaskResponse\x12\x18\n" +
-	"\asuccess\x18\x01 \x01(\bR\asuccess\"\x86\x01\n" +
-	"\x19UploadTaskProgressRequest\x12\x17\n" +
-	"\atask_id\x18\x01 \x01(\x04R\x06taskId\x12\x17\n" +
-	"\auser_id\x18\x02 \x01(\x04R\x06userId\x12\x18\n" +
-	"\acontent\x18\x03 \x01(\tR\acontent\x12\x1d\n" +
-	"\n" +
-	"image_urls\x18\x04 \x03(\tR\timageUrls\"6\n" +
-	"\x1aUploadTaskProgressResponse\x12\x18\n" +
-	"\asuccess\x18\x01 \x01(\bR\asuccess\"\x9e\x02\n" +
-	"\x12CreateCatApplyItem\x12\x19\n" +
-	"\bapply_id\x18\x01 \x01(\x04R\aapplyId\x12\x12\n" +
-	"\x04name\x18\x02 \x01(\tR\x04name\x12\x16\n" +
-	"\x06gender\x18\x03 \x01(\tR\x06gender\x12\x1b\n" +
-	"\tage_stage\x18\x04 \x01(\tR\bageStage\x12*\n" +
-	"\x11applicant_user_id\x18\x05 \x01(\x04R\x0fapplicantUserId\x12%\n" +
-	"\x0eapplicant_name\x18\x06 \x01(\tR\rapplicantName\x12\x16\n" +
-	"\x06status\x18\a \x01(\tR\x06status\x129\n" +
-	"\n" +
-	"created_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\"Y\n" +
-	"\x1bApproveUpdateCatInfoRequest\x12\x19\n" +
-	"\bapply_id\x18\x01 \x01(\x04R\aapplyId\x12\x1f\n" +
-	"\voperator_id\x18\x02 \x01(\x04R\n" +
-	"operatorId\"8\n" +
-	"\x1cApproveUpdateCatInfoResponse\x12\x18\n" +
-	"\asuccess\x18\x01 \x01(\bR\asuccess\"p\n" +
-	"\x1aRejectUpdateCatInfoRequest\x12\x19\n" +
-	"\bapply_id\x18\x01 \x01(\x04R\aapplyId\x12\x16\n" +
-	"\x06reason\x18\x02 \x01(\tR\x06reason\x12\x1f\n" +
-	"\voperator_id\x18\x03 \x01(\x04R\n" +
-	"operatorId\"7\n" +
-	"\x1bRejectUpdateCatInfoResponse\x12\x18\n" +
-	"\asuccess\x18\x01 \x01(\bR\asuccess\";\n" +
-	"\x1eGetUpdateCatApplyDetailRequest\x12\x19\n" +
-	"\bapply_id\x18\x01 \x01(\x04R\aapplyId\"\x8c\x05\n" +
-	"\x1fGetUpdateCatApplyDetailResponse\x12\x19\n" +
-	"\bapply_id\x18\x01 \x01(\x04R\aapplyId\x12\x15\n" +
-	"\x06cat_id\x18\x02 \x01(\x04R\x05catId\x12\x12\n" +
-	"\x04name\x18\x03 \x01(\tR\x04name\x12\x16\n" +
-	"\x06gender\x18\x04 \x01(\tR\x06gender\x12\x1b\n" +
-	"\tbody_size\x18\x05 \x01(\tR\bbodySize\x12\x1b\n" +
-	"\tage_stage\x18\x06 \x01(\tR\bageStage\x12 \n" +
-	"\vdescription\x18\a \x01(\tR\vdescription\x12+\n" +
-	"\x11discovery_address\x18\b \x01(\tR\x10discoveryAddress\x12\x1c\n" +
-	"\tlongitude\x18\t \x01(\x01R\tlongitude\x12\x1a\n" +
-	"\blatitude\x18\n" +
-	" \x01(\x01R\blatitude\x12\x1d\n" +
-	"\n" +
-	"image_urls\x18\v \x03(\tR\timageUrls\x12#\n" +
-	"\rchange_reason\x18\f \x01(\tR\fchangeReason\x12*\n" +
-	"\x11applicant_user_id\x18\r \x01(\x04R\x0fapplicantUserId\x12%\n" +
-	"\x0eapplicant_name\x18\x0e \x01(\tR\rapplicantName\x12\x16\n" +
-	"\x06status\x18\x0f \x01(\tR\x06status\x12#\n" +
-	"\rreject_reason\x18\x10 \x01(\tR\frejectReason\x129\n" +
-	"\n" +
-	"created_at\x18\x11 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
-	"\n" +
-	"updated_at\x18\x12 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\"P\n" +
-	"\x19ListUpdateCatApplyRequest\x12\x16\n" +
-	"\x06cursor\x18\x01 \x01(\tR\x06cursor\x12\x1b\n" +
-	"\tpage_size\x18\x02 \x01(\x03R\bpageSize\"\x87\x02\n" +
-	"\x12UpdateCatApplyItem\x12\x19\n" +
-	"\bapply_id\x18\x01 \x01(\x04R\aapplyId\x12\x15\n" +
-	"\x06cat_id\x18\x02 \x01(\x04R\x05catId\x12\x19\n" +
-	"\bcat_name\x18\x03 \x01(\tR\acatName\x12*\n" +
-	"\x11applicant_user_id\x18\x04 \x01(\x04R\x0fapplicantUserId\x12%\n" +
-	"\x0eapplicant_name\x18\x05 \x01(\tR\rapplicantName\x12\x16\n" +
-	"\x06status\x18\x06 \x01(\tR\x06status\x129\n" +
-	"\n" +
-	"created_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\"\x85\x01\n" +
-	"\x1aListUpdateCatApplyResponse\x12+\n" +
-	"\x04list\x18\x02 \x03(\v2\x17.cat.UpdateCatApplyItemR\x04list\x12\x1f\n" +
-	"\vnext_cursor\x18\x03 \x01(\tR\n" +
-	"nextCursor\x12\x19\n" +
-	"\bhas_more\x18\x04 \x01(\bR\ahasMore\"f\n" +
-	"\x1bApproveMedicalRecordRequest\x12&\n" +
-	"\x0frecord_apply_id\x18\x01 \x01(\x04R\rrecordApplyId\x12\x1f\n" +
-	"\vreviewer_id\x18\x02 \x01(\x04R\n" +
-	"reviewerId\"8\n" +
-	"\x1cApproveMedicalRecordResponse\x12\x18\n" +
-	"\asuccess\x18\x01 \x01(\bR\asuccess\"}\n" +
-	"\x1aRejectMedicalRecordRequest\x12&\n" +
-	"\x0frecord_apply_id\x18\x01 \x01(\x04R\rrecordApplyId\x12\x16\n" +
-	"\x06reason\x18\x02 \x01(\tR\x06reason\x12\x1f\n" +
-	"\vreviewer_id\x18\x03 \x01(\x04R\n" +
-	"reviewerId\"7\n" +
-	"\x1bRejectMedicalRecordResponse\x12\x18\n" +
-	"\asuccess\x18\x01 \x01(\bR\asuccess\"\xce\x01\n" +
-	"\x1bApproveCreateCatTaskRequest\x12\x19\n" +
-	"\bapply_id\x18\x01 \x01(\x04R\aapplyId\x12#\n" +
-	"\rurgency_level\x18\x02 \x01(\tR\furgencyLevel\x12)\n" +
-	"\x10difficulty_level\x18\x03 \x01(\x05R\x0fdifficultyLevel\x12#\n" +
-	"\rreward_points\x18\x04 \x01(\x05R\frewardPoints\x12\x1f\n" +
-	"\voperator_id\x18\x05 \x01(\x04R\n" +
-	"operatorId\"7\n" +
-	"\x1cApproveCreateCatTaskResponse\x12\x17\n" +
-	"\atask_id\x18\x01 \x01(\x04R\x06taskId\"p\n" +
-	"\x1aRejectCreateCatTaskRequest\x12\x19\n" +
-	"\bapply_id\x18\x01 \x01(\x04R\aapplyId\x12\x16\n" +
-	"\x06reason\x18\x02 \x01(\tR\x06reason\x12\x1f\n" +
-	"\voperator_id\x18\x03 \x01(\x04R\n" +
-	"operatorId\"7\n" +
-	"\x1bRejectCreateCatTaskResponse\x12\x18\n" +
-	"\asuccess\x18\x01 \x01(\bR\asuccess\"?\n" +
-	"\"GetCreateCatTaskApplyDetailRequest\x12\x19\n" +
-	"\bapply_id\x18\x01 \x01(\x04R\aapplyId\"\x8a\x05\n" +
-	"#GetCreateCatTaskApplyDetailResponse\x12\x19\n" +
-	"\bapply_id\x18\x01 \x01(\x04R\aapplyId\x12\x15\n" +
-	"\x06cat_id\x18\x02 \x01(\x04R\x05catId\x12\x19\n" +
-	"\bcat_name\x18\x03 \x01(\tR\acatName\x12\x14\n" +
-	"\x05title\x18\x04 \x01(\tR\x05title\x12\x1b\n" +
-	"\ttask_type\x18\x05 \x01(\tR\btaskType\x12\x18\n" +
-	"\asummary\x18\x06 \x01(\tR\asummary\x12\x16\n" +
-	"\x06detail\x18\a \x01(\tR\x06detail\x126\n" +
-	"\bdeadline\x18\b \x01(\v2\x1a.google.protobuf.TimestampR\bdeadline\x12*\n" +
-	"\x11applicant_user_id\x18\t \x01(\x04R\x0fapplicantUserId\x12%\n" +
-	"\x0eapplicant_name\x18\n" +
-	" \x01(\tR\rapplicantName\x12\x16\n" +
-	"\x06status\x18\v \x01(\tR\x06status\x12#\n" +
-	"\rreject_reason\x18\f \x01(\tR\frejectReason\x12#\n" +
-	"\rurgency_level\x18\r \x01(\tR\furgencyLevel\x12)\n" +
-	"\x10difficulty_level\x18\x0e \x01(\x05R\x0fdifficultyLevel\x12#\n" +
-	"\rreward_points\x18\x0f \x01(\x05R\frewardPoints\x129\n" +
-	"\n" +
-	"created_at\x18\x10 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
-	"\n" +
-	"updated_at\x18\x11 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\"T\n" +
-	"\x1dListCreateCatTaskApplyRequest\x12\x16\n" +
-	"\x06cursor\x18\x01 \x01(\tR\x06cursor\x12\x1b\n" +
-	"\tpage_size\x18\x02 \x01(\x03R\bpageSize\"\xbe\x02\n" +
-	"\x16CreateCatTaskApplyItem\x12\x19\n" +
-	"\bapply_id\x18\x01 \x01(\x04R\aapplyId\x12\x15\n" +
-	"\x06cat_id\x18\x02 \x01(\x04R\x05catId\x12\x19\n" +
-	"\bcat_name\x18\x03 \x01(\tR\acatName\x12\x14\n" +
-	"\x05title\x18\x04 \x01(\tR\x05title\x12\x1b\n" +
-	"\ttask_type\x18\x05 \x01(\tR\btaskType\x12*\n" +
-	"\x11applicant_user_id\x18\x06 \x01(\x04R\x0fapplicantUserId\x12%\n" +
-	"\x0eapplicant_name\x18\a \x01(\tR\rapplicantName\x12\x16\n" +
-	"\x06status\x18\b \x01(\tR\x06status\x129\n" +
-	"\n" +
-	"created_at\x18\t \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\"\x8d\x01\n" +
-	"\x1eListCreateCatTaskApplyResponse\x12/\n" +
-	"\x04list\x18\x01 \x03(\v2\x1b.cat.CreateCatTaskApplyItemR\x04list\x12\x1f\n" +
-	"\vnext_cursor\x18\x02 \x01(\tR\n" +
-	"nextCursor\x12\x19\n" +
-	"\bhas_more\x18\x03 \x01(\bR\ahasMore\"\xe0\x02\n" +
-	"\x14CreateCatTaskRequest\x12\x15\n" +
-	"\x06cat_id\x18\x01 \x01(\x04R\x05catId\x12\x14\n" +
-	"\x05title\x18\x02 \x01(\tR\x05title\x12\x1b\n" +
-	"\ttask_type\x18\x03 \x01(\tR\btaskType\x12#\n" +
-	"\rurgency_level\x18\x04 \x01(\tR\furgencyLevel\x12)\n" +
-	"\x10difficulty_level\x18\x05 \x01(\x05R\x0fdifficultyLevel\x12#\n" +
-	"\rreward_points\x18\x06 \x01(\x05R\frewardPoints\x12\x18\n" +
-	"\asummary\x18\a \x01(\tR\asummary\x12\x16\n" +
-	"\x06detail\x18\b \x01(\tR\x06detail\x126\n" +
-	"\bdeadline\x18\t \x01(\v2\x1a.google.protobuf.TimestampR\bdeadline\x12\x1f\n" +
-	"\voperator_id\x18\n" +
-	" \x01(\x04R\n" +
-	"operatorId\"0\n" +
-	"\x15CreateCatTaskResponse\x12\x17\n" +
-	"\atask_id\x18\x01 \x01(\x04R\x06taskId\"\x86\x01\n" +
-	"\x1aUpdateCatTaskStatusRequest\x12\x17\n" +
-	"\atask_id\x18\x01 \x01(\x04R\x06taskId\x12\x16\n" +
-	"\x06status\x18\x02 \x01(\tR\x06status\x12\x16\n" +
-	"\x06remark\x18\x03 \x01(\tR\x06remark\x12\x1f\n" +
-	"\voperator_id\x18\x04 \x01(\x04R\n" +
-	"operatorId\"7\n" +
-	"\x1bUpdateCatTaskStatusResponse\x12\x18\n" +
-	"\asuccess\x18\x01 \x01(\bR\asuccess\"~\n" +
-	"\x1bUpdateAdoptionStatusRequest\x12\x15\n" +
-	"\x06cat_id\x18\x01 \x01(\x04R\x05catId\x12'\n" +
-	"\x0fadoption_status\x18\x02 \x01(\tR\x0eadoptionStatus\x12\x1f\n" +
-	"\voperator_id\x18\x03 \x01(\x04R\n" +
-	"operatorId\"8\n" +
-	"\x1cUpdateAdoptionStatusResponse\x12\x18\n" +
-	"\asuccess\x18\x01 \x01(\bR\asuccess\",\n" +
-	"\x13GetCatDetailRequest\x12\x15\n" +
-	"\x06cat_id\x18\x01 \x01(\x04R\x05catId\"\xab\x03\n" +
-	"\x14GetCatDetailResponse\x12\x15\n" +
-	"\x06cat_id\x18\x01 \x01(\x04R\x05catId\x12\x19\n" +
-	"\bcat_code\x18\x02 \x01(\tR\acatCode\x12\x12\n" +
-	"\x04name\x18\x03 \x01(\tR\x04name\x12\x16\n" +
-	"\x06gender\x18\x04 \x01(\tR\x06gender\x12\x1b\n" +
-	"\tbody_size\x18\x05 \x01(\tR\bbodySize\x12\x1b\n" +
-	"\tage_stage\x18\x06 \x01(\tR\bageStage\x121\n" +
-	"\x14sterilization_status\x18\a \x01(\tR\x13sterilizationStatus\x12'\n" +
-	"\x0fadoption_status\x18\b \x01(\tR\x0eadoptionStatus\x12\x16\n" +
-	"\x06avatar\x18\t \x01(\tR\x06avatar\x12 \n" +
-	"\vdescription\x18\n" +
-	" \x01(\tR\vdescription\x12+\n" +
-	"\x11discovery_address\x18\v \x01(\tR\x10discoveryAddress\x12\x1c\n" +
-	"\tlongitude\x18\f \x01(\x01R\tlongitude\x12\x1a\n" +
-	"\blatitude\x18\r \x01(\x01R\blatitude\"F\n" +
-	"\x0fListCatsRequest\x12\x16\n" +
-	"\x06cursor\x18\x01 \x01(\tR\x06cursor\x12\x1b\n" +
-	"\tpage_size\x18\x02 \x01(\x03R\bpageSize\"\xaa\x01\n" +
-	"\aCatItem\x12\x15\n" +
-	"\x06cat_id\x18\x01 \x01(\x04R\x05catId\x12\x12\n" +
-	"\x04name\x18\x02 \x01(\tR\x04name\x12\x16\n" +
-	"\x06gender\x18\x03 \x01(\tR\x06gender\x12\x16\n" +
-	"\x06avatar\x18\x04 \x01(\tR\x06avatar\x12\x1b\n" +
-	"\tage_stage\x18\x05 \x01(\tR\bageStage\x12'\n" +
-	"\x0fadoption_status\x18\x06 \x01(\tR\x0eadoptionStatus\"p\n" +
-	"\x10ListCatsResponse\x12 \n" +
-	"\x04list\x18\x01 \x03(\v2\f.cat.CatItemR\x04list\x12\x1f\n" +
-	"\vnext_cursor\x18\x02 \x01(\tR\n" +
-	"nextCursor\x12\x19\n" +
-	"\bhas_more\x18\x03 \x01(\bR\ahasMore\"J\n" +
-	"\x13ListCatTasksRequest\x12\x16\n" +
-	"\x06cursor\x18\x02 \x01(\tR\x06cursor\x12\x1b\n" +
-	"\tpage_size\x18\x03 \x01(\x03R\bpageSize\"\xd9\x02\n" +
-	"\vCatTaskItem\x12\x17\n" +
-	"\atask_id\x18\x01 \x01(\x04R\x06taskId\x12\x14\n" +
-	"\x05title\x18\x02 \x01(\tR\x05title\x12\x1b\n" +
-	"\ttask_type\x18\x03 \x01(\tR\btaskType\x12#\n" +
-	"\rurgency_level\x18\x04 \x01(\tR\furgencyLevel\x12)\n" +
-	"\x10difficulty_level\x18\x05 \x01(\x05R\x0fdifficultyLevel\x12#\n" +
-	"\rreward_points\x18\x06 \x01(\x05R\frewardPoints\x12\x16\n" +
-	"\x06status\x18\a \x01(\tR\x06status\x126\n" +
-	"\bdeadline\x18\b \x01(\v2\x1a.google.protobuf.TimestampR\bdeadline\x129\n" +
-	"\n" +
-	"created_at\x18\t \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\"x\n" +
-	"\x14ListCatTasksResponse\x12$\n" +
-	"\x04list\x18\x01 \x03(\v2\x10.cat.CatTaskItemR\x04list\x12\x1f\n" +
-	"\vnext_cursor\x18\x02 \x01(\tR\n" +
-	"nextCursor\x12\x19\n" +
-	"\bhas_more\x18\x03 \x01(\bR\ahasMore2\xf7$\n" +
+	"\x05theme\x18\x04 \x01(\tR\x05theme2\xce\x1b\n" +
 	"\n" +
 	"CatService\x12I\n" +
 	"\x0eApplyCreateCat\x12\x1a.cat.ApplyCreateCatRequest\x1a\x1b.cat.ApplyCreateCatResponse\x12G\n" +
@@ -12747,7 +9624,8 @@ const file_pb_cat_v1_cat_proto_rawDesc = "" +
 	"\x10ApproveCreateCat\x12\x1c.cat.ApproveCreateCatRequest\x1a\x1d.cat.ApproveCreateCatResponse\x12=\n" +
 	"\x0fRejectCreateCat\x12\x1b.cat.RejectCreateCatRequest\x1a\r.cat.Response\x12L\n" +
 	"\x0fDirectCreateCat\x12\x1b.cat.DirectCreateCatRequest\x1a\x1c.cat.DirectCreateCatResponse\x12U\n" +
-	"\x12ListPendingApplies\x12\x1e.cat.ListPendingAppliesRequest\x1a\x1f.cat.ListPendingAppliesResponse\x12=\n" +
+	"\x12ListPendingApplies\x12\x1e.cat.ListPendingAppliesRequest\x1a\x1f.cat.ListPendingAppliesResponse\x12/\n" +
+	"\bListCats\x12\x10.cat.ListCatsReq\x1a\x11.cat.ListCatsResp\x12=\n" +
 	"\n" +
 	"ApplyAdopt\x12\x16.cat.ApplyAdoptRequest\x1a\x17.cat.ApplyAdoptResponse\x12O\n" +
 	"\x10CancelAdoptApply\x12\x1c.cat.CancelAdoptApplyRequest\x1a\x1d.cat.CancelAdoptApplyResponse\x12X\n" +
@@ -12787,21 +9665,7 @@ const file_pb_cat_v1_cat_proto_rawDesc = "" +
 	"CancelTask\x12\x16.cat.CancelTaskRequest\x1a\x17.cat.CancelTaskResponse\x12X\n" +
 	"\x13EscalateTaskUrgency\x12\x1f.cat.EscalateTaskUrgencyRequest\x1a .cat.EscalateTaskUrgencyResponse\x12C\n" +
 	"\fGetTaskFlows\x12\x18.cat.GetTaskFlowsRequest\x1a\x19.cat.GetTaskFlowsResponse\x12@\n" +
-	"\vGetTaskLogs\x12\x17.cat.GetTaskLogsRequest\x1a\x18.cat.GetTaskLogsResponse\x12U\n" +
-	"\x12ApplyUpdateCatInfo\x12\x1e.cat.ApplyUpdateCatInfoRequest\x1a\x1f.cat.ApplyUpdateCatInfoResponse\x12j\n" +
-	"\x19GetMyUpdateCatApplyDetail\x12%.cat.GetMyUpdateCatApplyDetailRequest\x1a&.cat.GetMyUpdateCatApplyDetailResponse\x12^\n" +
-	"\x15ApplyAddMedicalRecord\x12!.cat.ApplyAddMedicalRecordRequest\x1a\".cat.ApplyAddMedicalRecordResponse\x12[\n" +
-	"\x14ApplyAddRescueRecord\x12 .cat.ApplyAddRescueRecordRequest\x1a!.cat.ApplyAddRescueRecordResponse\x12U\n" +
-	"\x12UploadTaskProgress\x12\x1e.cat.UploadTaskProgressRequest\x1a\x1f.cat.UploadTaskProgressResponse\x12[\n" +
-	"\x14ApproveUpdateCatInfo\x12 .cat.ApproveUpdateCatInfoRequest\x1a!.cat.ApproveUpdateCatInfoResponse\x12X\n" +
-	"\x13RejectUpdateCatInfo\x12\x1f.cat.RejectUpdateCatInfoRequest\x1a .cat.RejectUpdateCatInfoResponse\x12d\n" +
-	"\x17GetUpdateCatApplyDetail\x12#.cat.GetUpdateCatApplyDetailRequest\x1a$.cat.GetUpdateCatApplyDetailResponse\x12U\n" +
-	"\x12ListUpdateCatApply\x12\x1e.cat.ListUpdateCatApplyRequest\x1a\x1f.cat.ListUpdateCatApplyResponse\x12[\n" +
-	"\x14ApproveMedicalRecord\x12 .cat.ApproveMedicalRecordRequest\x1a!.cat.ApproveMedicalRecordResponse\x12X\n" +
-	"\x13RejectMedicalRecord\x12\x1f.cat.RejectMedicalRecordRequest\x1a .cat.RejectMedicalRecordResponse\x12X\n" +
-	"\x13UpdateCatTaskStatus\x12\x1f.cat.UpdateCatTaskStatusRequest\x1a .cat.UpdateCatTaskStatusResponse\x12C\n" +
-	"\fGetCatDetail\x12\x18.cat.GetCatDetailRequest\x1a\x19.cat.GetCatDetailResponse\x127\n" +
-	"\bListCats\x12\x14.cat.ListCatsRequest\x1a\x15.cat.ListCatsResponseB\rZ\v./pb/cat/v1b\x06proto3"
+	"\vGetTaskLogs\x12\x17.cat.GetTaskLogsRequest\x1a\x18.cat.GetTaskLogsResponseB\rZ\v./pb/cat/v1b\x06proto3"
 
 var (
 	file_pb_cat_v1_cat_proto_rawDescOnce sync.Once
@@ -12815,7 +9679,7 @@ func file_pb_cat_v1_cat_proto_rawDescGZIP() []byte {
 	return file_pb_cat_v1_cat_proto_rawDescData
 }
 
-var file_pb_cat_v1_cat_proto_msgTypes = make([]protoimpl.MessageInfo, 157)
+var file_pb_cat_v1_cat_proto_msgTypes = make([]protoimpl.MessageInfo, 108)
 var file_pb_cat_v1_cat_proto_goTypes = []any{
 	(*Response)(nil),                             // 0: cat.Response
 	(*ImageItem)(nil),                            // 1: cat.ImageItem
@@ -12833,362 +9697,270 @@ var file_pb_cat_v1_cat_proto_goTypes = []any{
 	(*ListMyAppliesResponse)(nil),                // 13: cat.ListMyAppliesResponse
 	(*ListPendingAppliesRequest)(nil),            // 14: cat.ListPendingAppliesRequest
 	(*ListPendingAppliesResponse)(nil),           // 15: cat.ListPendingAppliesResponse
-	(*ApplyAdoptRequest)(nil),                    // 16: cat.ApplyAdoptRequest
-	(*ApplyAdoptResponse)(nil),                   // 17: cat.ApplyAdoptResponse
-	(*CancelAdoptApplyRequest)(nil),              // 18: cat.CancelAdoptApplyRequest
-	(*CancelAdoptApplyResponse)(nil),             // 19: cat.CancelAdoptApplyResponse
-	(*GetAdoptApplyDetailRequest)(nil),           // 20: cat.GetAdoptApplyDetailRequest
-	(*AdoptApplicationVO)(nil),                   // 21: cat.AdoptApplicationVO
-	(*GetAdoptApplyDetailResponse)(nil),          // 22: cat.GetAdoptApplyDetailResponse
-	(*ListMyAdoptAppliesRequest)(nil),            // 23: cat.ListMyAdoptAppliesRequest
-	(*ListMyAdoptionsRequest)(nil),               // 24: cat.ListMyAdoptionsRequest
-	(*AdoptApplyItemVO)(nil),                     // 25: cat.AdoptApplyItemVO
-	(*ListMyAdoptAppliesResponse)(nil),           // 26: cat.ListMyAdoptAppliesResponse
-	(*ApproveAdoptRequest)(nil),                  // 27: cat.ApproveAdoptRequest
-	(*ApproveAdoptResponse)(nil),                 // 28: cat.ApproveAdoptResponse
-	(*RejectAdoptRequest)(nil),                   // 29: cat.RejectAdoptRequest
-	(*RejectAdoptResponse)(nil),                  // 30: cat.RejectAdoptResponse
-	(*ListPendingAdoptAppliesRequest)(nil),       // 31: cat.ListPendingAdoptAppliesRequest
-	(*PendingApplyVO)(nil),                       // 32: cat.PendingApplyVO
-	(*ListPendingAdoptAppliesResponse)(nil),      // 33: cat.ListPendingAdoptAppliesResponse
-	(*CreateAdoptionRequest)(nil),                // 34: cat.CreateAdoptionRequest
-	(*CreateAdoptionResponse)(nil),               // 35: cat.CreateAdoptionResponse
-	(*DirectAdoptRequest)(nil),                   // 36: cat.DirectAdoptRequest
-	(*DirectAdoptResponse)(nil),                  // 37: cat.DirectAdoptResponse
-	(*GetAdoptionDetailRequest)(nil),             // 38: cat.GetAdoptionDetailRequest
-	(*AdoptionVO)(nil),                           // 39: cat.AdoptionVO
-	(*GetAdoptionDetailResponse)(nil),            // 40: cat.GetAdoptionDetailResponse
-	(*ListAdoptionsRequest)(nil),                 // 41: cat.ListAdoptionsRequest
-	(*AdoptionItemVO)(nil),                       // 42: cat.AdoptionItemVO
-	(*ListAdoptionsResponse)(nil),                // 43: cat.ListAdoptionsResponse
-	(*UpdateAdoptionRequest)(nil),                // 44: cat.UpdateAdoptionRequest
-	(*UpdateAdoptionResponse)(nil),               // 45: cat.UpdateAdoptionResponse
-	(*RecordHomeVisitRequest)(nil),               // 46: cat.RecordHomeVisitRequest
-	(*RecordHomeVisitResponse)(nil),              // 47: cat.RecordHomeVisitResponse
-	(*RecordFollowUpVisitRequest)(nil),           // 48: cat.RecordFollowUpVisitRequest
-	(*RecordFollowUpVisitResponse)(nil),          // 49: cat.RecordFollowUpVisitResponse
-	(*UpdateReturnStatusRequest)(nil),            // 50: cat.UpdateReturnStatusRequest
-	(*UpdateReturnStatusResponse)(nil),           // 51: cat.UpdateReturnStatusResponse
-	(*CatBriefVO)(nil),                           // 52: cat.CatBriefVO
-	(*UserBriefVO)(nil),                          // 53: cat.UserBriefVO
-	(*ApplyCreateTaskRequest)(nil),               // 54: cat.ApplyCreateTaskRequest
-	(*ApplyCreateTaskResponse)(nil),              // 55: cat.ApplyCreateTaskResponse
-	(*CancelTaskApplyRequest)(nil),               // 56: cat.CancelTaskApplyRequest
-	(*CancelTaskApplyResponse)(nil),              // 57: cat.CancelTaskApplyResponse
-	(*GetTaskApplyDetailRequest)(nil),            // 58: cat.GetTaskApplyDetailRequest
-	(*TaskApplyVO)(nil),                          // 59: cat.TaskApplyVO
-	(*GetTaskApplyDetailResponse)(nil),           // 60: cat.GetTaskApplyDetailResponse
-	(*ListMyTaskAppliesRequest)(nil),             // 61: cat.ListMyTaskAppliesRequest
-	(*ListMyTaskAppliesResponse)(nil),            // 62: cat.ListMyTaskAppliesResponse
-	(*TaskApplyItemVO)(nil),                      // 63: cat.TaskApplyItemVO
-	(*ApproveTaskApplyRequest)(nil),              // 64: cat.ApproveTaskApplyRequest
-	(*ApproveTaskApplyResponse)(nil),             // 65: cat.ApproveTaskApplyResponse
-	(*RejectTaskApplyRequest)(nil),               // 66: cat.RejectTaskApplyRequest
-	(*RejectTaskApplyResponse)(nil),              // 67: cat.RejectTaskApplyResponse
-	(*ListPendingTaskAppliesRequest)(nil),        // 68: cat.ListPendingTaskAppliesRequest
-	(*ListPendingTaskAppliesResponse)(nil),       // 69: cat.ListPendingTaskAppliesResponse
-	(*DirectCreateTaskRequest)(nil),              // 70: cat.DirectCreateTaskRequest
-	(*DirectCreateTaskResponse)(nil),             // 71: cat.DirectCreateTaskResponse
-	(*GetTaskDetailRequest)(nil),                 // 72: cat.GetTaskDetailRequest
-	(*TaskVO)(nil),                               // 73: cat.TaskVO
-	(*GetTaskDetailResponse)(nil),                // 74: cat.GetTaskDetailResponse
-	(*ListTasksRequest)(nil),                     // 75: cat.ListTasksRequest
-	(*ListTasksResponse)(nil),                    // 76: cat.ListTasksResponse
-	(*TaskItemVO)(nil),                           // 77: cat.TaskItemVO
-	(*UpdateTaskRequest)(nil),                    // 78: cat.UpdateTaskRequest
-	(*UpdateTaskResponse)(nil),                   // 79: cat.UpdateTaskResponse
-	(*CancelTaskRequest)(nil),                    // 80: cat.CancelTaskRequest
-	(*CancelTaskResponse)(nil),                   // 81: cat.CancelTaskResponse
-	(*EscalateTaskUrgencyRequest)(nil),           // 82: cat.EscalateTaskUrgencyRequest
-	(*EscalateTaskUrgencyResponse)(nil),          // 83: cat.EscalateTaskUrgencyResponse
-	(*ClaimTaskRequest)(nil),                     // 84: cat.ClaimTaskRequest
-	(*ClaimTaskResponse)(nil),                    // 85: cat.ClaimTaskResponse
-	(*AbandonTaskRequest)(nil),                   // 86: cat.AbandonTaskRequest
-	(*AbandonTaskResponse)(nil),                  // 87: cat.AbandonTaskResponse
-	(*CompleteTaskRequest)(nil),                  // 88: cat.CompleteTaskRequest
-	(*CompleteTaskResponse)(nil),                 // 89: cat.CompleteTaskResponse
-	(*ListMyClaimedTasksRequest)(nil),            // 90: cat.ListMyClaimedTasksRequest
-	(*ListMyClaimedTasksResponse)(nil),           // 91: cat.ListMyClaimedTasksResponse
-	(*ClaimItemVO)(nil),                          // 92: cat.ClaimItemVO
-	(*ListMyCompletedTasksRequest)(nil),          // 93: cat.ListMyCompletedTasksRequest
-	(*ListMyCompletedTasksResponse)(nil),         // 94: cat.ListMyCompletedTasksResponse
-	(*GetTaskFlowsRequest)(nil),                  // 95: cat.GetTaskFlowsRequest
-	(*GetTaskFlowsResponse)(nil),                 // 96: cat.GetTaskFlowsResponse
-	(*TaskFlowVO)(nil),                           // 97: cat.TaskFlowVO
-	(*GetTaskLogsRequest)(nil),                   // 98: cat.GetTaskLogsRequest
-	(*GetTaskLogsResponse)(nil),                  // 99: cat.GetTaskLogsResponse
-	(*TaskLogVO)(nil),                            // 100: cat.TaskLogVO
-	(*TagVO)(nil),                                // 101: cat.TagVO
-	(*ApplyUpdateCatInfoRequest)(nil),            // 102: cat.ApplyUpdateCatInfoRequest
-	(*ApplyUpdateCatInfoResponse)(nil),           // 103: cat.ApplyUpdateCatInfoResponse
-	(*GetMyUpdateCatApplyDetailRequest)(nil),     // 104: cat.GetMyUpdateCatApplyDetailRequest
-	(*GetMyUpdateCatApplyDetailResponse)(nil),    // 105: cat.GetMyUpdateCatApplyDetailResponse
-	(*ApplyAddMedicalRecordRequest)(nil),         // 106: cat.ApplyAddMedicalRecordRequest
-	(*ApplyAddMedicalRecordResponse)(nil),        // 107: cat.ApplyAddMedicalRecordResponse
-	(*ApplyAddRescueRecordRequest)(nil),          // 108: cat.ApplyAddRescueRecordRequest
-	(*ApplyAddRescueRecordResponse)(nil),         // 109: cat.ApplyAddRescueRecordResponse
-	(*ApplyCreateCatTaskRequest)(nil),            // 110: cat.ApplyCreateCatTaskRequest
-	(*ApplyCreateCatTaskResponse)(nil),           // 111: cat.ApplyCreateCatTaskResponse
-	(*ClaimCatTaskRequest)(nil),                  // 112: cat.ClaimCatTaskRequest
-	(*ClaimCatTaskResponse)(nil),                 // 113: cat.ClaimCatTaskResponse
-	(*AbandonCatTaskRequest)(nil),                // 114: cat.AbandonCatTaskRequest
-	(*AbandonCatTaskResponse)(nil),               // 115: cat.AbandonCatTaskResponse
-	(*UploadTaskProgressRequest)(nil),            // 116: cat.UploadTaskProgressRequest
-	(*UploadTaskProgressResponse)(nil),           // 117: cat.UploadTaskProgressResponse
-	(*CreateCatApplyItem)(nil),                   // 118: cat.CreateCatApplyItem
-	(*ApproveUpdateCatInfoRequest)(nil),          // 119: cat.ApproveUpdateCatInfoRequest
-	(*ApproveUpdateCatInfoResponse)(nil),         // 120: cat.ApproveUpdateCatInfoResponse
-	(*RejectUpdateCatInfoRequest)(nil),           // 121: cat.RejectUpdateCatInfoRequest
-	(*RejectUpdateCatInfoResponse)(nil),          // 122: cat.RejectUpdateCatInfoResponse
-	(*GetUpdateCatApplyDetailRequest)(nil),       // 123: cat.GetUpdateCatApplyDetailRequest
-	(*GetUpdateCatApplyDetailResponse)(nil),      // 124: cat.GetUpdateCatApplyDetailResponse
-	(*ListUpdateCatApplyRequest)(nil),            // 125: cat.ListUpdateCatApplyRequest
-	(*UpdateCatApplyItem)(nil),                   // 126: cat.UpdateCatApplyItem
-	(*ListUpdateCatApplyResponse)(nil),           // 127: cat.ListUpdateCatApplyResponse
-	(*ApproveMedicalRecordRequest)(nil),          // 128: cat.ApproveMedicalRecordRequest
-	(*ApproveMedicalRecordResponse)(nil),         // 129: cat.ApproveMedicalRecordResponse
-	(*RejectMedicalRecordRequest)(nil),           // 130: cat.RejectMedicalRecordRequest
-	(*RejectMedicalRecordResponse)(nil),          // 131: cat.RejectMedicalRecordResponse
-	(*ApproveCreateCatTaskRequest)(nil),          // 132: cat.ApproveCreateCatTaskRequest
-	(*ApproveCreateCatTaskResponse)(nil),         // 133: cat.ApproveCreateCatTaskResponse
-	(*RejectCreateCatTaskRequest)(nil),           // 134: cat.RejectCreateCatTaskRequest
-	(*RejectCreateCatTaskResponse)(nil),          // 135: cat.RejectCreateCatTaskResponse
-	(*GetCreateCatTaskApplyDetailRequest)(nil),   // 136: cat.GetCreateCatTaskApplyDetailRequest
-	(*GetCreateCatTaskApplyDetailResponse)(nil),  // 137: cat.GetCreateCatTaskApplyDetailResponse
-	(*ListCreateCatTaskApplyRequest)(nil),        // 138: cat.ListCreateCatTaskApplyRequest
-	(*CreateCatTaskApplyItem)(nil),               // 139: cat.CreateCatTaskApplyItem
-	(*ListCreateCatTaskApplyResponse)(nil),       // 140: cat.ListCreateCatTaskApplyResponse
-	(*CreateCatTaskRequest)(nil),                 // 141: cat.CreateCatTaskRequest
-	(*CreateCatTaskResponse)(nil),                // 142: cat.CreateCatTaskResponse
-	(*UpdateCatTaskStatusRequest)(nil),           // 143: cat.UpdateCatTaskStatusRequest
-	(*UpdateCatTaskStatusResponse)(nil),          // 144: cat.UpdateCatTaskStatusResponse
-	(*UpdateAdoptionStatusRequest)(nil),          // 145: cat.UpdateAdoptionStatusRequest
-	(*UpdateAdoptionStatusResponse)(nil),         // 146: cat.UpdateAdoptionStatusResponse
-	(*GetCatDetailRequest)(nil),                  // 147: cat.GetCatDetailRequest
-	(*GetCatDetailResponse)(nil),                 // 148: cat.GetCatDetailResponse
-	(*ListCatsRequest)(nil),                      // 149: cat.ListCatsRequest
-	(*CatItem)(nil),                              // 150: cat.CatItem
-	(*ListCatsResponse)(nil),                     // 151: cat.ListCatsResponse
-	(*ListCatTasksRequest)(nil),                  // 152: cat.ListCatTasksRequest
-	(*CatTaskItem)(nil),                          // 153: cat.CatTaskItem
-	(*ListCatTasksResponse)(nil),                 // 154: cat.ListCatTasksResponse
-	(*ListMyAppliesResponse_ApplyItem)(nil),      // 155: cat.ListMyAppliesResponse.ApplyItem
-	(*ListPendingAppliesResponse_ApplyItem)(nil), // 156: cat.ListPendingAppliesResponse.ApplyItem
-	(*timestamppb.Timestamp)(nil),                // 157: google.protobuf.Timestamp
+	(*ListCatsReq)(nil),                          // 16: cat.ListCatsReq
+	(*NearbyFilter)(nil),                         // 17: cat.NearbyFilter
+	(*ListCatsResp)(nil),                         // 18: cat.ListCatsResp
+	(*CatInfo)(nil),                              // 19: cat.CatInfo
+	(*ApplyAdoptRequest)(nil),                    // 20: cat.ApplyAdoptRequest
+	(*ApplyAdoptResponse)(nil),                   // 21: cat.ApplyAdoptResponse
+	(*CancelAdoptApplyRequest)(nil),              // 22: cat.CancelAdoptApplyRequest
+	(*CancelAdoptApplyResponse)(nil),             // 23: cat.CancelAdoptApplyResponse
+	(*GetAdoptApplyDetailRequest)(nil),           // 24: cat.GetAdoptApplyDetailRequest
+	(*AdoptApplicationVO)(nil),                   // 25: cat.AdoptApplicationVO
+	(*GetAdoptApplyDetailResponse)(nil),          // 26: cat.GetAdoptApplyDetailResponse
+	(*ListMyAdoptAppliesRequest)(nil),            // 27: cat.ListMyAdoptAppliesRequest
+	(*ListMyAdoptionsRequest)(nil),               // 28: cat.ListMyAdoptionsRequest
+	(*AdoptApplyItemVO)(nil),                     // 29: cat.AdoptApplyItemVO
+	(*ListMyAdoptAppliesResponse)(nil),           // 30: cat.ListMyAdoptAppliesResponse
+	(*ApproveAdoptRequest)(nil),                  // 31: cat.ApproveAdoptRequest
+	(*ApproveAdoptResponse)(nil),                 // 32: cat.ApproveAdoptResponse
+	(*RejectAdoptRequest)(nil),                   // 33: cat.RejectAdoptRequest
+	(*RejectAdoptResponse)(nil),                  // 34: cat.RejectAdoptResponse
+	(*ListPendingAdoptAppliesRequest)(nil),       // 35: cat.ListPendingAdoptAppliesRequest
+	(*PendingApplyVO)(nil),                       // 36: cat.PendingApplyVO
+	(*ListPendingAdoptAppliesResponse)(nil),      // 37: cat.ListPendingAdoptAppliesResponse
+	(*CreateAdoptionRequest)(nil),                // 38: cat.CreateAdoptionRequest
+	(*CreateAdoptionResponse)(nil),               // 39: cat.CreateAdoptionResponse
+	(*DirectAdoptRequest)(nil),                   // 40: cat.DirectAdoptRequest
+	(*DirectAdoptResponse)(nil),                  // 41: cat.DirectAdoptResponse
+	(*GetAdoptionDetailRequest)(nil),             // 42: cat.GetAdoptionDetailRequest
+	(*AdoptionVO)(nil),                           // 43: cat.AdoptionVO
+	(*GetAdoptionDetailResponse)(nil),            // 44: cat.GetAdoptionDetailResponse
+	(*ListAdoptionsRequest)(nil),                 // 45: cat.ListAdoptionsRequest
+	(*AdoptionItemVO)(nil),                       // 46: cat.AdoptionItemVO
+	(*ListAdoptionsResponse)(nil),                // 47: cat.ListAdoptionsResponse
+	(*UpdateAdoptionRequest)(nil),                // 48: cat.UpdateAdoptionRequest
+	(*UpdateAdoptionResponse)(nil),               // 49: cat.UpdateAdoptionResponse
+	(*RecordHomeVisitRequest)(nil),               // 50: cat.RecordHomeVisitRequest
+	(*RecordHomeVisitResponse)(nil),              // 51: cat.RecordHomeVisitResponse
+	(*RecordFollowUpVisitRequest)(nil),           // 52: cat.RecordFollowUpVisitRequest
+	(*RecordFollowUpVisitResponse)(nil),          // 53: cat.RecordFollowUpVisitResponse
+	(*UpdateReturnStatusRequest)(nil),            // 54: cat.UpdateReturnStatusRequest
+	(*UpdateReturnStatusResponse)(nil),           // 55: cat.UpdateReturnStatusResponse
+	(*CatBriefVO)(nil),                           // 56: cat.CatBriefVO
+	(*UserBriefVO)(nil),                          // 57: cat.UserBriefVO
+	(*ApplyCreateTaskRequest)(nil),               // 58: cat.ApplyCreateTaskRequest
+	(*ApplyCreateTaskResponse)(nil),              // 59: cat.ApplyCreateTaskResponse
+	(*CancelTaskApplyRequest)(nil),               // 60: cat.CancelTaskApplyRequest
+	(*CancelTaskApplyResponse)(nil),              // 61: cat.CancelTaskApplyResponse
+	(*GetTaskApplyDetailRequest)(nil),            // 62: cat.GetTaskApplyDetailRequest
+	(*TaskApplyVO)(nil),                          // 63: cat.TaskApplyVO
+	(*GetTaskApplyDetailResponse)(nil),           // 64: cat.GetTaskApplyDetailResponse
+	(*ListMyTaskAppliesRequest)(nil),             // 65: cat.ListMyTaskAppliesRequest
+	(*ListMyTaskAppliesResponse)(nil),            // 66: cat.ListMyTaskAppliesResponse
+	(*TaskApplyItemVO)(nil),                      // 67: cat.TaskApplyItemVO
+	(*ApproveTaskApplyRequest)(nil),              // 68: cat.ApproveTaskApplyRequest
+	(*ApproveTaskApplyResponse)(nil),             // 69: cat.ApproveTaskApplyResponse
+	(*RejectTaskApplyRequest)(nil),               // 70: cat.RejectTaskApplyRequest
+	(*RejectTaskApplyResponse)(nil),              // 71: cat.RejectTaskApplyResponse
+	(*ListPendingTaskAppliesRequest)(nil),        // 72: cat.ListPendingTaskAppliesRequest
+	(*ListPendingTaskAppliesResponse)(nil),       // 73: cat.ListPendingTaskAppliesResponse
+	(*DirectCreateTaskRequest)(nil),              // 74: cat.DirectCreateTaskRequest
+	(*DirectCreateTaskResponse)(nil),             // 75: cat.DirectCreateTaskResponse
+	(*GetTaskDetailRequest)(nil),                 // 76: cat.GetTaskDetailRequest
+	(*TaskVO)(nil),                               // 77: cat.TaskVO
+	(*GetTaskDetailResponse)(nil),                // 78: cat.GetTaskDetailResponse
+	(*ListTasksRequest)(nil),                     // 79: cat.ListTasksRequest
+	(*ListTasksResponse)(nil),                    // 80: cat.ListTasksResponse
+	(*TaskItemVO)(nil),                           // 81: cat.TaskItemVO
+	(*UpdateTaskRequest)(nil),                    // 82: cat.UpdateTaskRequest
+	(*UpdateTaskResponse)(nil),                   // 83: cat.UpdateTaskResponse
+	(*CancelTaskRequest)(nil),                    // 84: cat.CancelTaskRequest
+	(*CancelTaskResponse)(nil),                   // 85: cat.CancelTaskResponse
+	(*EscalateTaskUrgencyRequest)(nil),           // 86: cat.EscalateTaskUrgencyRequest
+	(*EscalateTaskUrgencyResponse)(nil),          // 87: cat.EscalateTaskUrgencyResponse
+	(*ClaimTaskRequest)(nil),                     // 88: cat.ClaimTaskRequest
+	(*ClaimTaskResponse)(nil),                    // 89: cat.ClaimTaskResponse
+	(*AbandonTaskRequest)(nil),                   // 90: cat.AbandonTaskRequest
+	(*AbandonTaskResponse)(nil),                  // 91: cat.AbandonTaskResponse
+	(*CompleteTaskRequest)(nil),                  // 92: cat.CompleteTaskRequest
+	(*CompleteTaskResponse)(nil),                 // 93: cat.CompleteTaskResponse
+	(*ListMyClaimedTasksRequest)(nil),            // 94: cat.ListMyClaimedTasksRequest
+	(*ListMyClaimedTasksResponse)(nil),           // 95: cat.ListMyClaimedTasksResponse
+	(*ClaimItemVO)(nil),                          // 96: cat.ClaimItemVO
+	(*ListMyCompletedTasksRequest)(nil),          // 97: cat.ListMyCompletedTasksRequest
+	(*ListMyCompletedTasksResponse)(nil),         // 98: cat.ListMyCompletedTasksResponse
+	(*GetTaskFlowsRequest)(nil),                  // 99: cat.GetTaskFlowsRequest
+	(*GetTaskFlowsResponse)(nil),                 // 100: cat.GetTaskFlowsResponse
+	(*TaskFlowVO)(nil),                           // 101: cat.TaskFlowVO
+	(*GetTaskLogsRequest)(nil),                   // 102: cat.GetTaskLogsRequest
+	(*GetTaskLogsResponse)(nil),                  // 103: cat.GetTaskLogsResponse
+	(*TaskLogVO)(nil),                            // 104: cat.TaskLogVO
+	(*TagVO)(nil),                                // 105: cat.TagVO
+	(*ListMyAppliesResponse_ApplyItem)(nil),      // 106: cat.ListMyAppliesResponse.ApplyItem
+	(*ListPendingAppliesResponse_ApplyItem)(nil), // 107: cat.ListPendingAppliesResponse.ApplyItem
+	(*timestamppb.Timestamp)(nil),                // 108: google.protobuf.Timestamp
 }
 var file_pb_cat_v1_cat_proto_depIdxs = []int32{
 	1,   // 0: cat.ApplyCreateCatRequest.images:type_name -> cat.ImageItem
-	157, // 1: cat.ApplyCreateCatResponse.created_at:type_name -> google.protobuf.Timestamp
+	108, // 1: cat.ApplyCreateCatResponse.created_at:type_name -> google.protobuf.Timestamp
 	1,   // 2: cat.DirectCreateCatRequest.images:type_name -> cat.ImageItem
 	1,   // 3: cat.GetApplyDetailResponse.images:type_name -> cat.ImageItem
-	157, // 4: cat.GetApplyDetailResponse.created_at:type_name -> google.protobuf.Timestamp
-	157, // 5: cat.GetApplyDetailResponse.updated_at:type_name -> google.protobuf.Timestamp
-	155, // 6: cat.ListMyAppliesResponse.list:type_name -> cat.ListMyAppliesResponse.ApplyItem
-	156, // 7: cat.ListPendingAppliesResponse.list:type_name -> cat.ListPendingAppliesResponse.ApplyItem
-	157, // 8: cat.AdoptApplicationVO.reviewed_at:type_name -> google.protobuf.Timestamp
-	157, // 9: cat.AdoptApplicationVO.approved_at:type_name -> google.protobuf.Timestamp
-	157, // 10: cat.AdoptApplicationVO.expires_at:type_name -> google.protobuf.Timestamp
-	157, // 11: cat.AdoptApplicationVO.created_at:type_name -> google.protobuf.Timestamp
-	157, // 12: cat.AdoptApplicationVO.updated_at:type_name -> google.protobuf.Timestamp
-	21,  // 13: cat.GetAdoptApplyDetailResponse.apply:type_name -> cat.AdoptApplicationVO
-	52,  // 14: cat.GetAdoptApplyDetailResponse.cat:type_name -> cat.CatBriefVO
-	157, // 15: cat.AdoptApplyItemVO.created_at:type_name -> google.protobuf.Timestamp
-	157, // 16: cat.AdoptApplyItemVO.expires_at:type_name -> google.protobuf.Timestamp
-	25,  // 17: cat.ListMyAdoptAppliesResponse.items:type_name -> cat.AdoptApplyItemVO
-	157, // 18: cat.ApproveAdoptResponse.expires_at:type_name -> google.protobuf.Timestamp
-	157, // 19: cat.PendingApplyVO.created_at:type_name -> google.protobuf.Timestamp
-	32,  // 20: cat.ListPendingAdoptAppliesResponse.items:type_name -> cat.PendingApplyVO
-	157, // 21: cat.AdoptionVO.agreed_at:type_name -> google.protobuf.Timestamp
-	157, // 22: cat.AdoptionVO.adopted_at:type_name -> google.protobuf.Timestamp
-	157, // 23: cat.AdoptionVO.home_visit_at:type_name -> google.protobuf.Timestamp
-	157, // 24: cat.AdoptionVO.visit_one_week_at:type_name -> google.protobuf.Timestamp
-	157, // 25: cat.AdoptionVO.visit_one_month_at:type_name -> google.protobuf.Timestamp
-	157, // 26: cat.AdoptionVO.visit_three_month_at:type_name -> google.protobuf.Timestamp
-	157, // 27: cat.AdoptionVO.visit_six_month_at:type_name -> google.protobuf.Timestamp
-	157, // 28: cat.AdoptionVO.returned_at:type_name -> google.protobuf.Timestamp
-	157, // 29: cat.AdoptionVO.created_at:type_name -> google.protobuf.Timestamp
-	157, // 30: cat.AdoptionVO.updated_at:type_name -> google.protobuf.Timestamp
-	39,  // 31: cat.GetAdoptionDetailResponse.adoption:type_name -> cat.AdoptionVO
-	52,  // 32: cat.GetAdoptionDetailResponse.cat:type_name -> cat.CatBriefVO
-	53,  // 33: cat.GetAdoptionDetailResponse.adopter:type_name -> cat.UserBriefVO
-	157, // 34: cat.AdoptionItemVO.adopted_at:type_name -> google.protobuf.Timestamp
-	42,  // 35: cat.ListAdoptionsResponse.items:type_name -> cat.AdoptionItemVO
-	157, // 36: cat.UpdateReturnStatusRequest.returned_at:type_name -> google.protobuf.Timestamp
-	157, // 37: cat.ApplyCreateTaskRequest.deadline_at:type_name -> google.protobuf.Timestamp
-	157, // 38: cat.TaskApplyVO.reviewed_at:type_name -> google.protobuf.Timestamp
-	157, // 39: cat.TaskApplyVO.deadline_at:type_name -> google.protobuf.Timestamp
-	157, // 40: cat.TaskApplyVO.created_at:type_name -> google.protobuf.Timestamp
-	157, // 41: cat.TaskApplyVO.updated_at:type_name -> google.protobuf.Timestamp
-	101, // 42: cat.TaskApplyVO.tags:type_name -> cat.TagVO
-	59,  // 43: cat.GetTaskApplyDetailResponse.apply:type_name -> cat.TaskApplyVO
-	52,  // 44: cat.GetTaskApplyDetailResponse.cat:type_name -> cat.CatBriefVO
-	63,  // 45: cat.ListMyTaskAppliesResponse.items:type_name -> cat.TaskApplyItemVO
-	157, // 46: cat.TaskApplyItemVO.created_at:type_name -> google.protobuf.Timestamp
-	59,  // 47: cat.ListPendingTaskAppliesResponse.items:type_name -> cat.TaskApplyVO
-	157, // 48: cat.DirectCreateTaskRequest.deadline_at:type_name -> google.protobuf.Timestamp
-	157, // 49: cat.TaskVO.deadline_at:type_name -> google.protobuf.Timestamp
-	157, // 50: cat.TaskVO.last_escalated_at:type_name -> google.protobuf.Timestamp
-	157, // 51: cat.TaskVO.created_at:type_name -> google.protobuf.Timestamp
-	157, // 52: cat.TaskVO.updated_at:type_name -> google.protobuf.Timestamp
-	101, // 53: cat.TaskVO.tags:type_name -> cat.TagVO
-	73,  // 54: cat.GetTaskDetailResponse.task:type_name -> cat.TaskVO
-	52,  // 55: cat.GetTaskDetailResponse.cat:type_name -> cat.CatBriefVO
-	77,  // 56: cat.ListTasksResponse.items:type_name -> cat.TaskItemVO
-	157, // 57: cat.TaskItemVO.deadline_at:type_name -> google.protobuf.Timestamp
-	157, // 58: cat.TaskItemVO.created_at:type_name -> google.protobuf.Timestamp
-	157, // 59: cat.UpdateTaskRequest.deadline_at:type_name -> google.protobuf.Timestamp
-	92,  // 60: cat.ListMyClaimedTasksResponse.items:type_name -> cat.ClaimItemVO
-	157, // 61: cat.ClaimItemVO.claimed_at:type_name -> google.protobuf.Timestamp
-	157, // 62: cat.ClaimItemVO.deadline_at:type_name -> google.protobuf.Timestamp
-	92,  // 63: cat.ListMyCompletedTasksResponse.items:type_name -> cat.ClaimItemVO
-	97,  // 64: cat.GetTaskFlowsResponse.items:type_name -> cat.TaskFlowVO
-	157, // 65: cat.TaskFlowVO.created_at:type_name -> google.protobuf.Timestamp
-	100, // 66: cat.GetTaskLogsResponse.items:type_name -> cat.TaskLogVO
-	157, // 67: cat.TaskLogVO.created_at:type_name -> google.protobuf.Timestamp
-	157, // 68: cat.GetMyUpdateCatApplyDetailResponse.created_at:type_name -> google.protobuf.Timestamp
-	157, // 69: cat.GetMyUpdateCatApplyDetailResponse.updated_at:type_name -> google.protobuf.Timestamp
-	157, // 70: cat.ApplyAddRescueRecordRequest.rescue_time:type_name -> google.protobuf.Timestamp
-	157, // 71: cat.ApplyCreateCatTaskRequest.deadline:type_name -> google.protobuf.Timestamp
-	157, // 72: cat.CreateCatApplyItem.created_at:type_name -> google.protobuf.Timestamp
-	157, // 73: cat.GetUpdateCatApplyDetailResponse.created_at:type_name -> google.protobuf.Timestamp
-	157, // 74: cat.GetUpdateCatApplyDetailResponse.updated_at:type_name -> google.protobuf.Timestamp
-	157, // 75: cat.UpdateCatApplyItem.created_at:type_name -> google.protobuf.Timestamp
-	126, // 76: cat.ListUpdateCatApplyResponse.list:type_name -> cat.UpdateCatApplyItem
-	157, // 77: cat.GetCreateCatTaskApplyDetailResponse.deadline:type_name -> google.protobuf.Timestamp
-	157, // 78: cat.GetCreateCatTaskApplyDetailResponse.created_at:type_name -> google.protobuf.Timestamp
-	157, // 79: cat.GetCreateCatTaskApplyDetailResponse.updated_at:type_name -> google.protobuf.Timestamp
-	157, // 80: cat.CreateCatTaskApplyItem.created_at:type_name -> google.protobuf.Timestamp
-	139, // 81: cat.ListCreateCatTaskApplyResponse.list:type_name -> cat.CreateCatTaskApplyItem
-	157, // 82: cat.CreateCatTaskRequest.deadline:type_name -> google.protobuf.Timestamp
-	150, // 83: cat.ListCatsResponse.list:type_name -> cat.CatItem
-	157, // 84: cat.CatTaskItem.deadline:type_name -> google.protobuf.Timestamp
-	157, // 85: cat.CatTaskItem.created_at:type_name -> google.protobuf.Timestamp
-	153, // 86: cat.ListCatTasksResponse.list:type_name -> cat.CatTaskItem
-	157, // 87: cat.ListMyAppliesResponse.ApplyItem.created_at:type_name -> google.protobuf.Timestamp
-	157, // 88: cat.ListPendingAppliesResponse.ApplyItem.created_at:type_name -> google.protobuf.Timestamp
-	2,   // 89: cat.CatService.ApplyCreateCat:input_type -> cat.ApplyCreateCatRequest
-	4,   // 90: cat.CatService.CancelApplyCreateCat:input_type -> cat.CancelApplyCreateCatRequest
-	10,  // 91: cat.CatService.GetApplyDetail:input_type -> cat.GetApplyDetailRequest
-	12,  // 92: cat.CatService.ListMyApplies:input_type -> cat.ListMyAppliesRequest
-	5,   // 93: cat.CatService.ApproveCreateCat:input_type -> cat.ApproveCreateCatRequest
-	7,   // 94: cat.CatService.RejectCreateCat:input_type -> cat.RejectCreateCatRequest
-	8,   // 95: cat.CatService.DirectCreateCat:input_type -> cat.DirectCreateCatRequest
-	14,  // 96: cat.CatService.ListPendingApplies:input_type -> cat.ListPendingAppliesRequest
-	16,  // 97: cat.CatService.ApplyAdopt:input_type -> cat.ApplyAdoptRequest
-	18,  // 98: cat.CatService.CancelAdoptApply:input_type -> cat.CancelAdoptApplyRequest
-	20,  // 99: cat.CatService.GetAdoptApplyDetail:input_type -> cat.GetAdoptApplyDetailRequest
-	23,  // 100: cat.CatService.ListMyAdoptApplies:input_type -> cat.ListMyAdoptAppliesRequest
-	24,  // 101: cat.CatService.ListMyAdoptions:input_type -> cat.ListMyAdoptionsRequest
-	48,  // 102: cat.CatService.CompleteVisit:input_type -> cat.RecordFollowUpVisitRequest
-	27,  // 103: cat.CatService.ApproveAdopt:input_type -> cat.ApproveAdoptRequest
-	29,  // 104: cat.CatService.RejectAdopt:input_type -> cat.RejectAdoptRequest
-	31,  // 105: cat.CatService.ListPendingAdoptApplies:input_type -> cat.ListPendingAdoptAppliesRequest
-	34,  // 106: cat.CatService.CreateAdoption:input_type -> cat.CreateAdoptionRequest
-	36,  // 107: cat.CatService.DirectAdopt:input_type -> cat.DirectAdoptRequest
-	38,  // 108: cat.CatService.GetAdoptionDetail:input_type -> cat.GetAdoptionDetailRequest
-	41,  // 109: cat.CatService.ListAdoptions:input_type -> cat.ListAdoptionsRequest
-	44,  // 110: cat.CatService.UpdateAdoption:input_type -> cat.UpdateAdoptionRequest
-	46,  // 111: cat.CatService.RecordHomeVisit:input_type -> cat.RecordHomeVisitRequest
-	48,  // 112: cat.CatService.RecordFollowUpVisit:input_type -> cat.RecordFollowUpVisitRequest
-	50,  // 113: cat.CatService.UpdateReturnStatus:input_type -> cat.UpdateReturnStatusRequest
-	54,  // 114: cat.CatService.ApplyCreateTask:input_type -> cat.ApplyCreateTaskRequest
-	56,  // 115: cat.CatService.CancelTaskApply:input_type -> cat.CancelTaskApplyRequest
-	58,  // 116: cat.CatService.GetTaskApplyDetail:input_type -> cat.GetTaskApplyDetailRequest
-	61,  // 117: cat.CatService.ListMyTaskApplies:input_type -> cat.ListMyTaskAppliesRequest
-	84,  // 118: cat.CatService.ClaimTask:input_type -> cat.ClaimTaskRequest
-	86,  // 119: cat.CatService.AbandonTask:input_type -> cat.AbandonTaskRequest
-	88,  // 120: cat.CatService.CompleteTask:input_type -> cat.CompleteTaskRequest
-	72,  // 121: cat.CatService.GetTaskDetail:input_type -> cat.GetTaskDetailRequest
-	75,  // 122: cat.CatService.ListTasks:input_type -> cat.ListTasksRequest
-	90,  // 123: cat.CatService.ListMyClaimedTasks:input_type -> cat.ListMyClaimedTasksRequest
-	93,  // 124: cat.CatService.ListMyCompletedTasks:input_type -> cat.ListMyCompletedTasksRequest
-	64,  // 125: cat.CatService.ApproveTaskApply:input_type -> cat.ApproveTaskApplyRequest
-	66,  // 126: cat.CatService.RejectTaskApply:input_type -> cat.RejectTaskApplyRequest
-	68,  // 127: cat.CatService.ListPendingTaskApplies:input_type -> cat.ListPendingTaskAppliesRequest
-	70,  // 128: cat.CatService.DirectCreateTask:input_type -> cat.DirectCreateTaskRequest
-	78,  // 129: cat.CatService.UpdateTask:input_type -> cat.UpdateTaskRequest
-	80,  // 130: cat.CatService.CancelTask:input_type -> cat.CancelTaskRequest
-	82,  // 131: cat.CatService.EscalateTaskUrgency:input_type -> cat.EscalateTaskUrgencyRequest
-	95,  // 132: cat.CatService.GetTaskFlows:input_type -> cat.GetTaskFlowsRequest
-	98,  // 133: cat.CatService.GetTaskLogs:input_type -> cat.GetTaskLogsRequest
-	102, // 134: cat.CatService.ApplyUpdateCatInfo:input_type -> cat.ApplyUpdateCatInfoRequest
-	104, // 135: cat.CatService.GetMyUpdateCatApplyDetail:input_type -> cat.GetMyUpdateCatApplyDetailRequest
-	106, // 136: cat.CatService.ApplyAddMedicalRecord:input_type -> cat.ApplyAddMedicalRecordRequest
-	108, // 137: cat.CatService.ApplyAddRescueRecord:input_type -> cat.ApplyAddRescueRecordRequest
-	116, // 138: cat.CatService.UploadTaskProgress:input_type -> cat.UploadTaskProgressRequest
-	119, // 139: cat.CatService.ApproveUpdateCatInfo:input_type -> cat.ApproveUpdateCatInfoRequest
-	121, // 140: cat.CatService.RejectUpdateCatInfo:input_type -> cat.RejectUpdateCatInfoRequest
-	123, // 141: cat.CatService.GetUpdateCatApplyDetail:input_type -> cat.GetUpdateCatApplyDetailRequest
-	125, // 142: cat.CatService.ListUpdateCatApply:input_type -> cat.ListUpdateCatApplyRequest
-	128, // 143: cat.CatService.ApproveMedicalRecord:input_type -> cat.ApproveMedicalRecordRequest
-	130, // 144: cat.CatService.RejectMedicalRecord:input_type -> cat.RejectMedicalRecordRequest
-	143, // 145: cat.CatService.UpdateCatTaskStatus:input_type -> cat.UpdateCatTaskStatusRequest
-	147, // 146: cat.CatService.GetCatDetail:input_type -> cat.GetCatDetailRequest
-	149, // 147: cat.CatService.ListCats:input_type -> cat.ListCatsRequest
-	3,   // 148: cat.CatService.ApplyCreateCat:output_type -> cat.ApplyCreateCatResponse
-	0,   // 149: cat.CatService.CancelApplyCreateCat:output_type -> cat.Response
-	11,  // 150: cat.CatService.GetApplyDetail:output_type -> cat.GetApplyDetailResponse
-	13,  // 151: cat.CatService.ListMyApplies:output_type -> cat.ListMyAppliesResponse
-	6,   // 152: cat.CatService.ApproveCreateCat:output_type -> cat.ApproveCreateCatResponse
-	0,   // 153: cat.CatService.RejectCreateCat:output_type -> cat.Response
-	9,   // 154: cat.CatService.DirectCreateCat:output_type -> cat.DirectCreateCatResponse
-	15,  // 155: cat.CatService.ListPendingApplies:output_type -> cat.ListPendingAppliesResponse
-	17,  // 156: cat.CatService.ApplyAdopt:output_type -> cat.ApplyAdoptResponse
-	19,  // 157: cat.CatService.CancelAdoptApply:output_type -> cat.CancelAdoptApplyResponse
-	22,  // 158: cat.CatService.GetAdoptApplyDetail:output_type -> cat.GetAdoptApplyDetailResponse
-	26,  // 159: cat.CatService.ListMyAdoptApplies:output_type -> cat.ListMyAdoptAppliesResponse
-	43,  // 160: cat.CatService.ListMyAdoptions:output_type -> cat.ListAdoptionsResponse
-	49,  // 161: cat.CatService.CompleteVisit:output_type -> cat.RecordFollowUpVisitResponse
-	28,  // 162: cat.CatService.ApproveAdopt:output_type -> cat.ApproveAdoptResponse
-	30,  // 163: cat.CatService.RejectAdopt:output_type -> cat.RejectAdoptResponse
-	33,  // 164: cat.CatService.ListPendingAdoptApplies:output_type -> cat.ListPendingAdoptAppliesResponse
-	35,  // 165: cat.CatService.CreateAdoption:output_type -> cat.CreateAdoptionResponse
-	37,  // 166: cat.CatService.DirectAdopt:output_type -> cat.DirectAdoptResponse
-	40,  // 167: cat.CatService.GetAdoptionDetail:output_type -> cat.GetAdoptionDetailResponse
-	43,  // 168: cat.CatService.ListAdoptions:output_type -> cat.ListAdoptionsResponse
-	45,  // 169: cat.CatService.UpdateAdoption:output_type -> cat.UpdateAdoptionResponse
-	47,  // 170: cat.CatService.RecordHomeVisit:output_type -> cat.RecordHomeVisitResponse
-	49,  // 171: cat.CatService.RecordFollowUpVisit:output_type -> cat.RecordFollowUpVisitResponse
-	51,  // 172: cat.CatService.UpdateReturnStatus:output_type -> cat.UpdateReturnStatusResponse
-	55,  // 173: cat.CatService.ApplyCreateTask:output_type -> cat.ApplyCreateTaskResponse
-	57,  // 174: cat.CatService.CancelTaskApply:output_type -> cat.CancelTaskApplyResponse
-	60,  // 175: cat.CatService.GetTaskApplyDetail:output_type -> cat.GetTaskApplyDetailResponse
-	62,  // 176: cat.CatService.ListMyTaskApplies:output_type -> cat.ListMyTaskAppliesResponse
-	85,  // 177: cat.CatService.ClaimTask:output_type -> cat.ClaimTaskResponse
-	87,  // 178: cat.CatService.AbandonTask:output_type -> cat.AbandonTaskResponse
-	89,  // 179: cat.CatService.CompleteTask:output_type -> cat.CompleteTaskResponse
-	74,  // 180: cat.CatService.GetTaskDetail:output_type -> cat.GetTaskDetailResponse
-	76,  // 181: cat.CatService.ListTasks:output_type -> cat.ListTasksResponse
-	91,  // 182: cat.CatService.ListMyClaimedTasks:output_type -> cat.ListMyClaimedTasksResponse
-	94,  // 183: cat.CatService.ListMyCompletedTasks:output_type -> cat.ListMyCompletedTasksResponse
-	65,  // 184: cat.CatService.ApproveTaskApply:output_type -> cat.ApproveTaskApplyResponse
-	67,  // 185: cat.CatService.RejectTaskApply:output_type -> cat.RejectTaskApplyResponse
-	69,  // 186: cat.CatService.ListPendingTaskApplies:output_type -> cat.ListPendingTaskAppliesResponse
-	71,  // 187: cat.CatService.DirectCreateTask:output_type -> cat.DirectCreateTaskResponse
-	79,  // 188: cat.CatService.UpdateTask:output_type -> cat.UpdateTaskResponse
-	81,  // 189: cat.CatService.CancelTask:output_type -> cat.CancelTaskResponse
-	83,  // 190: cat.CatService.EscalateTaskUrgency:output_type -> cat.EscalateTaskUrgencyResponse
-	96,  // 191: cat.CatService.GetTaskFlows:output_type -> cat.GetTaskFlowsResponse
-	99,  // 192: cat.CatService.GetTaskLogs:output_type -> cat.GetTaskLogsResponse
-	103, // 193: cat.CatService.ApplyUpdateCatInfo:output_type -> cat.ApplyUpdateCatInfoResponse
-	105, // 194: cat.CatService.GetMyUpdateCatApplyDetail:output_type -> cat.GetMyUpdateCatApplyDetailResponse
-	107, // 195: cat.CatService.ApplyAddMedicalRecord:output_type -> cat.ApplyAddMedicalRecordResponse
-	109, // 196: cat.CatService.ApplyAddRescueRecord:output_type -> cat.ApplyAddRescueRecordResponse
-	117, // 197: cat.CatService.UploadTaskProgress:output_type -> cat.UploadTaskProgressResponse
-	120, // 198: cat.CatService.ApproveUpdateCatInfo:output_type -> cat.ApproveUpdateCatInfoResponse
-	122, // 199: cat.CatService.RejectUpdateCatInfo:output_type -> cat.RejectUpdateCatInfoResponse
-	124, // 200: cat.CatService.GetUpdateCatApplyDetail:output_type -> cat.GetUpdateCatApplyDetailResponse
-	127, // 201: cat.CatService.ListUpdateCatApply:output_type -> cat.ListUpdateCatApplyResponse
-	129, // 202: cat.CatService.ApproveMedicalRecord:output_type -> cat.ApproveMedicalRecordResponse
-	131, // 203: cat.CatService.RejectMedicalRecord:output_type -> cat.RejectMedicalRecordResponse
-	144, // 204: cat.CatService.UpdateCatTaskStatus:output_type -> cat.UpdateCatTaskStatusResponse
-	148, // 205: cat.CatService.GetCatDetail:output_type -> cat.GetCatDetailResponse
-	151, // 206: cat.CatService.ListCats:output_type -> cat.ListCatsResponse
-	148, // [148:207] is the sub-list for method output_type
-	89,  // [89:148] is the sub-list for method input_type
-	89,  // [89:89] is the sub-list for extension type_name
-	89,  // [89:89] is the sub-list for extension extendee
-	0,   // [0:89] is the sub-list for field type_name
+	108, // 4: cat.GetApplyDetailResponse.created_at:type_name -> google.protobuf.Timestamp
+	108, // 5: cat.GetApplyDetailResponse.updated_at:type_name -> google.protobuf.Timestamp
+	106, // 6: cat.ListMyAppliesResponse.list:type_name -> cat.ListMyAppliesResponse.ApplyItem
+	107, // 7: cat.ListPendingAppliesResponse.list:type_name -> cat.ListPendingAppliesResponse.ApplyItem
+	17,  // 8: cat.ListCatsReq.nearby:type_name -> cat.NearbyFilter
+	19,  // 9: cat.ListCatsResp.list:type_name -> cat.CatInfo
+	108, // 10: cat.AdoptApplicationVO.reviewed_at:type_name -> google.protobuf.Timestamp
+	108, // 11: cat.AdoptApplicationVO.approved_at:type_name -> google.protobuf.Timestamp
+	108, // 12: cat.AdoptApplicationVO.expires_at:type_name -> google.protobuf.Timestamp
+	108, // 13: cat.AdoptApplicationVO.created_at:type_name -> google.protobuf.Timestamp
+	108, // 14: cat.AdoptApplicationVO.updated_at:type_name -> google.protobuf.Timestamp
+	25,  // 15: cat.GetAdoptApplyDetailResponse.apply:type_name -> cat.AdoptApplicationVO
+	56,  // 16: cat.GetAdoptApplyDetailResponse.cat:type_name -> cat.CatBriefVO
+	108, // 17: cat.AdoptApplyItemVO.created_at:type_name -> google.protobuf.Timestamp
+	108, // 18: cat.AdoptApplyItemVO.expires_at:type_name -> google.protobuf.Timestamp
+	29,  // 19: cat.ListMyAdoptAppliesResponse.items:type_name -> cat.AdoptApplyItemVO
+	108, // 20: cat.ApproveAdoptResponse.expires_at:type_name -> google.protobuf.Timestamp
+	108, // 21: cat.PendingApplyVO.created_at:type_name -> google.protobuf.Timestamp
+	36,  // 22: cat.ListPendingAdoptAppliesResponse.items:type_name -> cat.PendingApplyVO
+	108, // 23: cat.AdoptionVO.agreed_at:type_name -> google.protobuf.Timestamp
+	108, // 24: cat.AdoptionVO.adopted_at:type_name -> google.protobuf.Timestamp
+	108, // 25: cat.AdoptionVO.home_visit_at:type_name -> google.protobuf.Timestamp
+	108, // 26: cat.AdoptionVO.visit_one_week_at:type_name -> google.protobuf.Timestamp
+	108, // 27: cat.AdoptionVO.visit_one_month_at:type_name -> google.protobuf.Timestamp
+	108, // 28: cat.AdoptionVO.visit_three_month_at:type_name -> google.protobuf.Timestamp
+	108, // 29: cat.AdoptionVO.visit_six_month_at:type_name -> google.protobuf.Timestamp
+	108, // 30: cat.AdoptionVO.returned_at:type_name -> google.protobuf.Timestamp
+	108, // 31: cat.AdoptionVO.created_at:type_name -> google.protobuf.Timestamp
+	108, // 32: cat.AdoptionVO.updated_at:type_name -> google.protobuf.Timestamp
+	43,  // 33: cat.GetAdoptionDetailResponse.adoption:type_name -> cat.AdoptionVO
+	56,  // 34: cat.GetAdoptionDetailResponse.cat:type_name -> cat.CatBriefVO
+	57,  // 35: cat.GetAdoptionDetailResponse.adopter:type_name -> cat.UserBriefVO
+	108, // 36: cat.AdoptionItemVO.adopted_at:type_name -> google.protobuf.Timestamp
+	46,  // 37: cat.ListAdoptionsResponse.items:type_name -> cat.AdoptionItemVO
+	108, // 38: cat.UpdateReturnStatusRequest.returned_at:type_name -> google.protobuf.Timestamp
+	108, // 39: cat.ApplyCreateTaskRequest.deadline_at:type_name -> google.protobuf.Timestamp
+	108, // 40: cat.TaskApplyVO.reviewed_at:type_name -> google.protobuf.Timestamp
+	108, // 41: cat.TaskApplyVO.deadline_at:type_name -> google.protobuf.Timestamp
+	108, // 42: cat.TaskApplyVO.created_at:type_name -> google.protobuf.Timestamp
+	108, // 43: cat.TaskApplyVO.updated_at:type_name -> google.protobuf.Timestamp
+	105, // 44: cat.TaskApplyVO.tags:type_name -> cat.TagVO
+	63,  // 45: cat.GetTaskApplyDetailResponse.apply:type_name -> cat.TaskApplyVO
+	56,  // 46: cat.GetTaskApplyDetailResponse.cat:type_name -> cat.CatBriefVO
+	67,  // 47: cat.ListMyTaskAppliesResponse.items:type_name -> cat.TaskApplyItemVO
+	108, // 48: cat.TaskApplyItemVO.created_at:type_name -> google.protobuf.Timestamp
+	63,  // 49: cat.ListPendingTaskAppliesResponse.items:type_name -> cat.TaskApplyVO
+	108, // 50: cat.DirectCreateTaskRequest.deadline_at:type_name -> google.protobuf.Timestamp
+	108, // 51: cat.TaskVO.deadline_at:type_name -> google.protobuf.Timestamp
+	108, // 52: cat.TaskVO.last_escalated_at:type_name -> google.protobuf.Timestamp
+	108, // 53: cat.TaskVO.created_at:type_name -> google.protobuf.Timestamp
+	108, // 54: cat.TaskVO.updated_at:type_name -> google.protobuf.Timestamp
+	105, // 55: cat.TaskVO.tags:type_name -> cat.TagVO
+	77,  // 56: cat.GetTaskDetailResponse.task:type_name -> cat.TaskVO
+	56,  // 57: cat.GetTaskDetailResponse.cat:type_name -> cat.CatBriefVO
+	81,  // 58: cat.ListTasksResponse.items:type_name -> cat.TaskItemVO
+	108, // 59: cat.TaskItemVO.deadline_at:type_name -> google.protobuf.Timestamp
+	108, // 60: cat.TaskItemVO.created_at:type_name -> google.protobuf.Timestamp
+	108, // 61: cat.UpdateTaskRequest.deadline_at:type_name -> google.protobuf.Timestamp
+	96,  // 62: cat.ListMyClaimedTasksResponse.items:type_name -> cat.ClaimItemVO
+	108, // 63: cat.ClaimItemVO.claimed_at:type_name -> google.protobuf.Timestamp
+	108, // 64: cat.ClaimItemVO.deadline_at:type_name -> google.protobuf.Timestamp
+	96,  // 65: cat.ListMyCompletedTasksResponse.items:type_name -> cat.ClaimItemVO
+	101, // 66: cat.GetTaskFlowsResponse.items:type_name -> cat.TaskFlowVO
+	108, // 67: cat.TaskFlowVO.created_at:type_name -> google.protobuf.Timestamp
+	104, // 68: cat.GetTaskLogsResponse.items:type_name -> cat.TaskLogVO
+	108, // 69: cat.TaskLogVO.created_at:type_name -> google.protobuf.Timestamp
+	108, // 70: cat.ListMyAppliesResponse.ApplyItem.created_at:type_name -> google.protobuf.Timestamp
+	108, // 71: cat.ListPendingAppliesResponse.ApplyItem.created_at:type_name -> google.protobuf.Timestamp
+	2,   // 72: cat.CatService.ApplyCreateCat:input_type -> cat.ApplyCreateCatRequest
+	4,   // 73: cat.CatService.CancelApplyCreateCat:input_type -> cat.CancelApplyCreateCatRequest
+	10,  // 74: cat.CatService.GetApplyDetail:input_type -> cat.GetApplyDetailRequest
+	12,  // 75: cat.CatService.ListMyApplies:input_type -> cat.ListMyAppliesRequest
+	5,   // 76: cat.CatService.ApproveCreateCat:input_type -> cat.ApproveCreateCatRequest
+	7,   // 77: cat.CatService.RejectCreateCat:input_type -> cat.RejectCreateCatRequest
+	8,   // 78: cat.CatService.DirectCreateCat:input_type -> cat.DirectCreateCatRequest
+	14,  // 79: cat.CatService.ListPendingApplies:input_type -> cat.ListPendingAppliesRequest
+	16,  // 80: cat.CatService.ListCats:input_type -> cat.ListCatsReq
+	20,  // 81: cat.CatService.ApplyAdopt:input_type -> cat.ApplyAdoptRequest
+	22,  // 82: cat.CatService.CancelAdoptApply:input_type -> cat.CancelAdoptApplyRequest
+	24,  // 83: cat.CatService.GetAdoptApplyDetail:input_type -> cat.GetAdoptApplyDetailRequest
+	27,  // 84: cat.CatService.ListMyAdoptApplies:input_type -> cat.ListMyAdoptAppliesRequest
+	28,  // 85: cat.CatService.ListMyAdoptions:input_type -> cat.ListMyAdoptionsRequest
+	52,  // 86: cat.CatService.CompleteVisit:input_type -> cat.RecordFollowUpVisitRequest
+	31,  // 87: cat.CatService.ApproveAdopt:input_type -> cat.ApproveAdoptRequest
+	33,  // 88: cat.CatService.RejectAdopt:input_type -> cat.RejectAdoptRequest
+	35,  // 89: cat.CatService.ListPendingAdoptApplies:input_type -> cat.ListPendingAdoptAppliesRequest
+	38,  // 90: cat.CatService.CreateAdoption:input_type -> cat.CreateAdoptionRequest
+	40,  // 91: cat.CatService.DirectAdopt:input_type -> cat.DirectAdoptRequest
+	42,  // 92: cat.CatService.GetAdoptionDetail:input_type -> cat.GetAdoptionDetailRequest
+	45,  // 93: cat.CatService.ListAdoptions:input_type -> cat.ListAdoptionsRequest
+	48,  // 94: cat.CatService.UpdateAdoption:input_type -> cat.UpdateAdoptionRequest
+	50,  // 95: cat.CatService.RecordHomeVisit:input_type -> cat.RecordHomeVisitRequest
+	52,  // 96: cat.CatService.RecordFollowUpVisit:input_type -> cat.RecordFollowUpVisitRequest
+	54,  // 97: cat.CatService.UpdateReturnStatus:input_type -> cat.UpdateReturnStatusRequest
+	58,  // 98: cat.CatService.ApplyCreateTask:input_type -> cat.ApplyCreateTaskRequest
+	60,  // 99: cat.CatService.CancelTaskApply:input_type -> cat.CancelTaskApplyRequest
+	62,  // 100: cat.CatService.GetTaskApplyDetail:input_type -> cat.GetTaskApplyDetailRequest
+	65,  // 101: cat.CatService.ListMyTaskApplies:input_type -> cat.ListMyTaskAppliesRequest
+	88,  // 102: cat.CatService.ClaimTask:input_type -> cat.ClaimTaskRequest
+	90,  // 103: cat.CatService.AbandonTask:input_type -> cat.AbandonTaskRequest
+	92,  // 104: cat.CatService.CompleteTask:input_type -> cat.CompleteTaskRequest
+	76,  // 105: cat.CatService.GetTaskDetail:input_type -> cat.GetTaskDetailRequest
+	79,  // 106: cat.CatService.ListTasks:input_type -> cat.ListTasksRequest
+	94,  // 107: cat.CatService.ListMyClaimedTasks:input_type -> cat.ListMyClaimedTasksRequest
+	97,  // 108: cat.CatService.ListMyCompletedTasks:input_type -> cat.ListMyCompletedTasksRequest
+	68,  // 109: cat.CatService.ApproveTaskApply:input_type -> cat.ApproveTaskApplyRequest
+	70,  // 110: cat.CatService.RejectTaskApply:input_type -> cat.RejectTaskApplyRequest
+	72,  // 111: cat.CatService.ListPendingTaskApplies:input_type -> cat.ListPendingTaskAppliesRequest
+	74,  // 112: cat.CatService.DirectCreateTask:input_type -> cat.DirectCreateTaskRequest
+	82,  // 113: cat.CatService.UpdateTask:input_type -> cat.UpdateTaskRequest
+	84,  // 114: cat.CatService.CancelTask:input_type -> cat.CancelTaskRequest
+	86,  // 115: cat.CatService.EscalateTaskUrgency:input_type -> cat.EscalateTaskUrgencyRequest
+	99,  // 116: cat.CatService.GetTaskFlows:input_type -> cat.GetTaskFlowsRequest
+	102, // 117: cat.CatService.GetTaskLogs:input_type -> cat.GetTaskLogsRequest
+	3,   // 118: cat.CatService.ApplyCreateCat:output_type -> cat.ApplyCreateCatResponse
+	0,   // 119: cat.CatService.CancelApplyCreateCat:output_type -> cat.Response
+	11,  // 120: cat.CatService.GetApplyDetail:output_type -> cat.GetApplyDetailResponse
+	13,  // 121: cat.CatService.ListMyApplies:output_type -> cat.ListMyAppliesResponse
+	6,   // 122: cat.CatService.ApproveCreateCat:output_type -> cat.ApproveCreateCatResponse
+	0,   // 123: cat.CatService.RejectCreateCat:output_type -> cat.Response
+	9,   // 124: cat.CatService.DirectCreateCat:output_type -> cat.DirectCreateCatResponse
+	15,  // 125: cat.CatService.ListPendingApplies:output_type -> cat.ListPendingAppliesResponse
+	18,  // 126: cat.CatService.ListCats:output_type -> cat.ListCatsResp
+	21,  // 127: cat.CatService.ApplyAdopt:output_type -> cat.ApplyAdoptResponse
+	23,  // 128: cat.CatService.CancelAdoptApply:output_type -> cat.CancelAdoptApplyResponse
+	26,  // 129: cat.CatService.GetAdoptApplyDetail:output_type -> cat.GetAdoptApplyDetailResponse
+	30,  // 130: cat.CatService.ListMyAdoptApplies:output_type -> cat.ListMyAdoptAppliesResponse
+	47,  // 131: cat.CatService.ListMyAdoptions:output_type -> cat.ListAdoptionsResponse
+	53,  // 132: cat.CatService.CompleteVisit:output_type -> cat.RecordFollowUpVisitResponse
+	32,  // 133: cat.CatService.ApproveAdopt:output_type -> cat.ApproveAdoptResponse
+	34,  // 134: cat.CatService.RejectAdopt:output_type -> cat.RejectAdoptResponse
+	37,  // 135: cat.CatService.ListPendingAdoptApplies:output_type -> cat.ListPendingAdoptAppliesResponse
+	39,  // 136: cat.CatService.CreateAdoption:output_type -> cat.CreateAdoptionResponse
+	41,  // 137: cat.CatService.DirectAdopt:output_type -> cat.DirectAdoptResponse
+	44,  // 138: cat.CatService.GetAdoptionDetail:output_type -> cat.GetAdoptionDetailResponse
+	47,  // 139: cat.CatService.ListAdoptions:output_type -> cat.ListAdoptionsResponse
+	49,  // 140: cat.CatService.UpdateAdoption:output_type -> cat.UpdateAdoptionResponse
+	51,  // 141: cat.CatService.RecordHomeVisit:output_type -> cat.RecordHomeVisitResponse
+	53,  // 142: cat.CatService.RecordFollowUpVisit:output_type -> cat.RecordFollowUpVisitResponse
+	55,  // 143: cat.CatService.UpdateReturnStatus:output_type -> cat.UpdateReturnStatusResponse
+	59,  // 144: cat.CatService.ApplyCreateTask:output_type -> cat.ApplyCreateTaskResponse
+	61,  // 145: cat.CatService.CancelTaskApply:output_type -> cat.CancelTaskApplyResponse
+	64,  // 146: cat.CatService.GetTaskApplyDetail:output_type -> cat.GetTaskApplyDetailResponse
+	66,  // 147: cat.CatService.ListMyTaskApplies:output_type -> cat.ListMyTaskAppliesResponse
+	89,  // 148: cat.CatService.ClaimTask:output_type -> cat.ClaimTaskResponse
+	91,  // 149: cat.CatService.AbandonTask:output_type -> cat.AbandonTaskResponse
+	93,  // 150: cat.CatService.CompleteTask:output_type -> cat.CompleteTaskResponse
+	78,  // 151: cat.CatService.GetTaskDetail:output_type -> cat.GetTaskDetailResponse
+	80,  // 152: cat.CatService.ListTasks:output_type -> cat.ListTasksResponse
+	95,  // 153: cat.CatService.ListMyClaimedTasks:output_type -> cat.ListMyClaimedTasksResponse
+	98,  // 154: cat.CatService.ListMyCompletedTasks:output_type -> cat.ListMyCompletedTasksResponse
+	69,  // 155: cat.CatService.ApproveTaskApply:output_type -> cat.ApproveTaskApplyResponse
+	71,  // 156: cat.CatService.RejectTaskApply:output_type -> cat.RejectTaskApplyResponse
+	73,  // 157: cat.CatService.ListPendingTaskApplies:output_type -> cat.ListPendingTaskAppliesResponse
+	75,  // 158: cat.CatService.DirectCreateTask:output_type -> cat.DirectCreateTaskResponse
+	83,  // 159: cat.CatService.UpdateTask:output_type -> cat.UpdateTaskResponse
+	85,  // 160: cat.CatService.CancelTask:output_type -> cat.CancelTaskResponse
+	87,  // 161: cat.CatService.EscalateTaskUrgency:output_type -> cat.EscalateTaskUrgencyResponse
+	100, // 162: cat.CatService.GetTaskFlows:output_type -> cat.GetTaskFlowsResponse
+	103, // 163: cat.CatService.GetTaskLogs:output_type -> cat.GetTaskLogsResponse
+	118, // [118:164] is the sub-list for method output_type
+	72,  // [72:118] is the sub-list for method input_type
+	72,  // [72:72] is the sub-list for extension type_name
+	72,  // [72:72] is the sub-list for extension extendee
+	0,   // [0:72] is the sub-list for field type_name
 }
 
 func init() { file_pb_cat_v1_cat_proto_init() }
@@ -13196,13 +9968,14 @@ func file_pb_cat_v1_cat_proto_init() {
 	if File_pb_cat_v1_cat_proto != nil {
 		return
 	}
+	file_pb_cat_v1_cat_proto_msgTypes[16].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_pb_cat_v1_cat_proto_rawDesc), len(file_pb_cat_v1_cat_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   157,
+			NumMessages:   108,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

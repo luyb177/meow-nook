@@ -20,6 +20,7 @@ service CatService {
     rpc DirectCreateCat(DirectCreateCatRequest) returns (DirectCreateCatResponse);
     rpc ListPendingApplies(ListPendingAppliesRequest) returns (ListPendingAppliesResponse);
 
+    rpc ListCats(ListCatsReq) returns (ListCatsResp);
 
     // ==================== 志愿者端 ====================
 
@@ -146,86 +147,6 @@ service CatService {
 
     // 查看任务操作日志
     rpc GetTaskLogs(GetTaskLogsRequest) returns (GetTaskLogsResponse);
-
-    // todo: 以下接口还未实现
-
-    // 申请修改猫咪档案信息
-    rpc ApplyUpdateCatInfo(ApplyUpdateCatInfoRequest) returns (ApplyUpdateCatInfoResponse);
-
-    // 查看自己提交的修改申请详情
-    rpc GetMyUpdateCatApplyDetail(GetMyUpdateCatApplyDetailRequest) returns (GetMyUpdateCatApplyDetailResponse);
-
-
-    // ---------- 医疗记录 ----------
-
-    // 申请新增医疗记录
-    rpc ApplyAddMedicalRecord(ApplyAddMedicalRecordRequest)
-        returns (ApplyAddMedicalRecordResponse);
-
-
-    // ---------- 救助记录 ----------
-
-    // 申请新增救助记录
-    rpc ApplyAddRescueRecord(ApplyAddRescueRecordRequest)
-        returns (ApplyAddRescueRecordResponse);
-
-
-    // ---------- 猫咪任务 ----------
-
-    // 上传任务进度（图片/备注）
-    rpc UploadTaskProgress(UploadTaskProgressRequest)
-        returns (UploadTaskProgressResponse);
-
-
-    /*
-     * =========================================================
-     * 管理员侧接口（Admin）
-     * =========================================================
-     */
-
-    // ---------- 修改猫咪档案审核 ----------
-
-    rpc ApproveUpdateCatInfo(ApproveUpdateCatInfoRequest)
-        returns (ApproveUpdateCatInfoResponse);
-
-    rpc RejectUpdateCatInfo(RejectUpdateCatInfoRequest)
-        returns (RejectUpdateCatInfoResponse);
-
-    rpc GetUpdateCatApplyDetail(GetUpdateCatApplyDetailRequest)
-        returns (GetUpdateCatApplyDetailResponse);
-
-    rpc ListUpdateCatApply(ListUpdateCatApplyRequest)
-        returns (ListUpdateCatApplyResponse);
-
-
-    // ---------- 医疗记录审核 ----------
-
-    rpc ApproveMedicalRecord(ApproveMedicalRecordRequest)
-        returns (ApproveMedicalRecordResponse);
-
-    rpc RejectMedicalRecord(RejectMedicalRecordRequest)
-        returns (RejectMedicalRecordResponse);
-
-
-    // ---------- 任务审核 ----------
-
-    // 管理员更新任务状态
-    rpc UpdateCatTaskStatus(UpdateCatTaskStatusRequest)
-        returns (UpdateCatTaskStatusResponse);
-
-    /*
-     * =========================================================
-     * 公共查询接口（所有人可访问）
-     * =========================================================
-     */
-
-    // 猫咪详情
-    rpc GetCatDetail(GetCatDetailRequest)
-        returns (GetCatDetailResponse);
-
-    // 猫咪列表
-    rpc ListCats(ListCatsRequest)
-        returns (ListCatsResponse);
 }
 
 // ==================== 通用响应 ====================
@@ -417,6 +338,114 @@ message ListPendingAppliesResponse {
     repeated ApplyItem list = 1;
     int64 total = 2;
 }
+
+// ==================== 查询：猫咪列表 ====================
+// 获取小猫列表请求
+message ListCatsReq {
+    // 基础筛选
+    string keyword = 1;        // 关键词搜索（name/cat_code/breed/color）
+    string name = 2;           // 名称模糊搜索
+    string cat_code = 3;       // 猫咪编号精确搜索
+    string breed = 4;          // 品种
+    string color = 5;          // 毛色
+    string gender = 6;         // 性别（male/female/unknown）
+
+    // 体态筛选
+    string body_size = 7;      // 体型（small/medium/large）
+    string age_stage = 8;      // 年龄阶段（kitten/young/adult/old）
+
+    // 健康筛选
+    string sterilization_status = 9;   // 绝育状态（sterilized/unsterilized）
+    string adoption_status = 10;        // 领养状态（pending/adopted/unavailable）
+    optional bool is_vaccinated = 11;   // 是否已接种疫苗
+    optional bool is_healthy = 12;      // 是否健康
+    optional bool need_medical_intervention = 13; // 是否需要医疗干预
+
+    // 附近筛选
+    NearbyFilter nearby = 14;   // 附近查找条件
+
+    // 其他筛选
+    uint64 adopter_id = 15;      // 领养人ID
+    uint64 creator_id = 16;      // 创建人ID
+    uint64 apply_id = 17;        // 申请单ID
+
+    // 时间范围
+    string found_at_start = 18;   // 发现开始时间（RFC3339格式）
+    string found_at_end = 19;     // 发现结束时间
+    string created_at_start = 20; // 创建开始时间
+    string created_at_end = 21;   // 创建结束时间
+
+    // 分页排序
+    int32 page = 22;               // 页码（默认1）
+    int32 page_size = 23;         // 每页数量（默认20，最大100）
+    string sort_by = 24;          // 排序字段（id/created_at/found_at/updated_at/distance）
+    string sort_order = 25;       // 排序方向（asc/desc）
+}
+
+// 附近筛选条件
+message NearbyFilter {
+    double latitude = 1;   // 纬度
+    double longitude = 2;  // 经度
+    double radius = 3;     // 半径（公里，默认5km，最大50km）
+}
+
+// 获取小猫列表响应
+message ListCatsResp {
+    int64 total = 1;               // 总数
+    repeated CatInfo list = 2;     // 小猫列表
+}
+
+// 小猫信息（含距离）
+message CatInfo {
+    // 基础信息
+    uint64 id = 1;
+    string cat_code = 2;
+    string name = 3;
+    string breed = 4;
+    string color = 5;
+    string gender = 6;
+
+    // 体态信息
+    string body_size = 7;
+    string age_stage = 8;
+    float weight = 9;
+    string character = 10;
+    string birth_date = 11;
+
+    // 展示信息
+    string avatar = 12;
+    string description = 13;
+
+    // 发现信息
+    string found_at = 14;
+    string discovery_address = 15;
+    double longitude = 16;
+    double latitude = 17;
+
+    // 健康信息
+    bool is_vaccinated = 18;
+    bool is_healthy = 19;
+    bool need_medical_intervention = 20;
+    string sterilization_status = 21;
+    string last_medical_check_at = 22;
+
+    // 领养信息
+    string adoption_status = 23;
+    uint64 adopter_id = 24;
+    string adopted_at = 25;
+
+    // 来源信息
+    uint64 apply_id = 26;
+    uint64 creator_id = 27;
+
+    // 时间信息
+    string created_at = 28;
+    string updated_at = 29;
+
+    // 距离（公里，仅在附近搜索时有值）
+    double distance = 30;
+}
+
 
 // ==================== 领养申请表相关 ====================
 
@@ -1210,499 +1239,3 @@ message TagVO {
     string theme = 4;
 }
 
-// todo: 以下消息体在已实现的接口中没有使用
-
-message ApplyUpdateCatInfoRequest {
-    uint64 cat_id = 1;
-
-    string name = 2;
-    string gender = 3;
-    string body_size = 4;
-    string age_stage = 5;
-    string description = 6;
-
-    string discovery_address = 7;
-    double longitude = 8;
-    double latitude = 9;
-
-    repeated string image_urls = 10;
-
-    string change_reason = 11;
-    uint64 applicant_user_id = 12;
-}
-
-message ApplyUpdateCatInfoResponse {
-    uint64 apply_id = 1;
-}
-
-message GetMyUpdateCatApplyDetailRequest {
-    uint64 apply_id = 1;
-    uint64 user_id = 2;
-}
-
-message GetMyUpdateCatApplyDetailResponse {
-    uint64 apply_id = 1;
-    string status = 2;
-    string reject_reason = 3;
-
-    google.protobuf.Timestamp created_at = 4;
-    google.protobuf.Timestamp updated_at = 5;
-}
-
-
-/*
- * =========================================================
- * 志愿者侧 - 医疗记录
- * =========================================================
- */
-
-message ApplyAddMedicalRecordRequest {
-    uint64 cat_id = 1;
-
-    string medical_type = 2; // vaccine/sterilization/check/treatment
-    string content = 3;
-
-    uint64 operator_id = 4;
-}
-
-message ApplyAddMedicalRecordResponse {
-    uint64 record_apply_id = 1;
-}
-
-
-/*
- * =========================================================
- * 志愿者侧 - 救助记录
- * =========================================================
- */
-
-message ApplyAddRescueRecordRequest {
-    uint64 cat_id = 1;
-
-    google.protobuf.Timestamp rescue_time = 2;
-    string rescuer_name = 3;
-    string rescue_status = 4;
-    string description = 5;
-
-    uint64 operator_id = 6;
-}
-
-message ApplyAddRescueRecordResponse {
-    uint64 rescue_apply_id = 1;
-}
-
-
-/*
- * =========================================================
- * 志愿者侧 - 猫咪任务
- * =========================================================
- */
-
-message ApplyCreateCatTaskRequest {
-    uint64 cat_id = 1;
-
-    string title = 2;
-    string task_type = 3;
-    string summary = 4;
-    string detail = 5;
-
-    google.protobuf.Timestamp deadline = 6;
-
-    uint64 applicant_user_id = 7;
-}
-
-message ApplyCreateCatTaskResponse {
-    uint64 apply_id = 1;
-}
-
-message ClaimCatTaskRequest {
-    uint64 task_id = 1;
-    uint64 user_id = 2;
-}
-
-message ClaimCatTaskResponse {
-    bool success = 1;
-}
-
-message AbandonCatTaskRequest {
-    uint64 task_id = 1;
-    uint64 user_id = 2;
-    string reason = 3;
-}
-
-message AbandonCatTaskResponse {
-    bool success = 1;
-}
-
-message UploadTaskProgressRequest {
-    uint64 task_id = 1;
-    uint64 user_id = 2;
-
-    string content = 3;
-    repeated string image_urls = 4;
-}
-
-message UploadTaskProgressResponse {
-    bool success = 1;
-}
-
-
-/*
- * =========================================================
- * 管理员侧 - 创建猫咪档案审核
- * =========================================================
- */
-
-message CreateCatApplyItem {
-    uint64 apply_id = 1;
-    string name = 2;
-    string gender = 3;
-    string age_stage = 4;
-
-    uint64 applicant_user_id = 5;
-    string applicant_name = 6;
-
-    string status = 7;
-    google.protobuf.Timestamp created_at = 8;
-}
-
-
-/*
- * =========================================================
- * 管理员侧 - 修改猫咪档案审核
- * =========================================================
- */
-
-message ApproveUpdateCatInfoRequest {
-    uint64 apply_id = 1;
-    uint64 operator_id = 2;
-}
-
-message ApproveUpdateCatInfoResponse {
-    bool success = 1;
-}
-
-message RejectUpdateCatInfoRequest {
-    uint64 apply_id = 1;
-    string reason = 2;
-    uint64 operator_id = 3;
-}
-
-message RejectUpdateCatInfoResponse {
-    bool success = 1;
-}
-
-message GetUpdateCatApplyDetailRequest {
-    uint64 apply_id = 1;
-}
-
-message GetUpdateCatApplyDetailResponse {
-    uint64 apply_id = 1;
-    uint64 cat_id = 2;
-
-    string name = 3;
-    string gender = 4;
-    string body_size = 5;
-    string age_stage = 6;
-    string description = 7;
-
-    string discovery_address = 8;
-    double longitude = 9;
-    double latitude = 10;
-
-    repeated string image_urls = 11;
-
-    string change_reason = 12;
-
-    uint64 applicant_user_id = 13;
-    string applicant_name = 14;
-
-    string status = 15;
-    string reject_reason = 16;
-
-    google.protobuf.Timestamp created_at = 17;
-    google.protobuf.Timestamp updated_at = 18;
-}
-
-message ListUpdateCatApplyRequest {
-    string cursor = 1;
-    int64 page_size = 2;
-
-//    string status = 3;
-//    uint64 cat_id = 4;
-//    string keyword = 5;
-}
-
-message UpdateCatApplyItem {
-    uint64 apply_id = 1;
-    uint64 cat_id = 2;
-    string cat_name = 3;
-
-    uint64 applicant_user_id = 4;
-    string applicant_name = 5;
-
-    string status = 6;
-    google.protobuf.Timestamp created_at = 7;
-}
-
-message ListUpdateCatApplyResponse {
-    repeated UpdateCatApplyItem list = 2;
-    string next_cursor = 3;
-    bool has_more = 4;
-}
-
-
-/*
- * =========================================================
- * 管理员侧 - 医疗记录审核
- * =========================================================
- */
-
-message ApproveMedicalRecordRequest {
-    uint64 record_apply_id = 1;
-    uint64 reviewer_id = 2;
-}
-
-message ApproveMedicalRecordResponse {
-    bool success = 1;
-}
-
-message RejectMedicalRecordRequest {
-    uint64 record_apply_id = 1;
-    string reason = 2;
-    uint64 reviewer_id = 3;
-}
-
-message RejectMedicalRecordResponse {
-    bool success = 1;
-}
-
-
-/*
- * =========================================================
- * 管理员侧 - 猫咪任务审核
- * =========================================================
- */
-
-message ApproveCreateCatTaskRequest {
-    uint64 apply_id = 1;
-
-    string urgency_level = 2;   // high/urgent/normal
-    int32 difficulty_level = 3; // 1-5
-    int32 reward_points = 4;    // 审核时确定奖励积分
-
-    uint64 operator_id = 5;
-}
-
-message ApproveCreateCatTaskResponse {
-    uint64 task_id = 1;
-}
-
-message RejectCreateCatTaskRequest {
-    uint64 apply_id = 1;
-    string reason = 2;
-    uint64 operator_id = 3;
-}
-
-message RejectCreateCatTaskResponse {
-    bool success = 1;
-}
-
-message GetCreateCatTaskApplyDetailRequest {
-    uint64 apply_id = 1;
-}
-
-message GetCreateCatTaskApplyDetailResponse {
-    uint64 apply_id = 1;
-
-    uint64 cat_id = 2;
-    string cat_name = 3;
-
-    string title = 4;
-    string task_type = 5;
-    string summary = 6;
-    string detail = 7;
-
-    google.protobuf.Timestamp deadline = 8;
-
-    uint64 applicant_user_id = 9;
-    string applicant_name = 10;
-
-    string status = 11;
-    string reject_reason = 12;
-
-    string urgency_level = 13;
-    int32 difficulty_level = 14;
-    int32 reward_points = 15;
-
-    google.protobuf.Timestamp created_at = 16;
-    google.protobuf.Timestamp updated_at = 17;
-}
-
-message ListCreateCatTaskApplyRequest {
-    string cursor = 1;
-    int64 page_size = 2;
-
-//    string status = 3;
-//    uint64 cat_id = 4;
-//    string keyword = 5;
-}
-
-message CreateCatTaskApplyItem {
-    uint64 apply_id = 1;
-
-    uint64 cat_id = 2;
-    string cat_name = 3;
-
-    string title = 4;
-    string task_type = 5;
-
-    uint64 applicant_user_id = 6;
-    string applicant_name = 7;
-
-    string status = 8;
-
-    google.protobuf.Timestamp created_at = 9;
-}
-
-message ListCreateCatTaskApplyResponse {
-    repeated CreateCatTaskApplyItem list = 1;
-    string next_cursor = 2;
-    bool has_more = 3;
-}
-
-
-/*
- * =========================================================
- * 管理员侧 - 直接创建正式任务
- * =========================================================
- */
-
-message CreateCatTaskRequest {
-    uint64 cat_id = 1;
-
-    string title = 2;
-    string task_type = 3;
-
-    string urgency_level = 4;
-    int32 difficulty_level = 5;
-    int32 reward_points = 6;
-
-    string summary = 7;
-    string detail = 8;
-
-    google.protobuf.Timestamp deadline = 9;
-
-    uint64 operator_id = 10;
-}
-
-message CreateCatTaskResponse {
-    uint64 task_id = 1;
-}
-
-message UpdateCatTaskStatusRequest {
-    uint64 task_id = 1;
-
-    string status = 2; // pending/processing/completed/cancelled
-    string remark = 3;
-
-    uint64 operator_id = 4;
-}
-
-message UpdateCatTaskStatusResponse {
-    bool success = 1;
-}
-
-
-/*
- * =========================================================
- * 管理员侧 - 领养状态
- * =========================================================
- */
-
-message UpdateAdoptionStatusRequest {
-    uint64 cat_id = 1;
-    string adoption_status = 2; // pending/adopted/unavailable
-    uint64 operator_id = 3;
-}
-
-message UpdateAdoptionStatusResponse {
-    bool success = 1;
-}
-
-
-/*
- * =========================================================
- * 公共查询接口
- * =========================================================
- */
-
-message GetCatDetailRequest {
-    uint64 cat_id = 1;
-}
-
-message GetCatDetailResponse {
-    uint64 cat_id = 1;
-    string cat_code = 2;
-
-    string name = 3;
-    string gender = 4;
-    string body_size = 5;
-    string age_stage = 6;
-
-    string sterilization_status = 7;
-    string adoption_status = 8;
-
-    string avatar = 9;
-    string description = 10;
-
-    string discovery_address = 11;
-    double longitude = 12;
-    double latitude = 13;
-}
-
-message ListCatsRequest {
-    string cursor = 1;
-    int64 page_size = 2;
-}
-
-message CatItem {
-    uint64 cat_id = 1;
-    string name = 2;
-    string gender = 3;
-    string avatar = 4;
-    string age_stage = 5;
-    string adoption_status = 6;
-}
-
-message ListCatsResponse {
-    repeated CatItem list = 1;
-    string next_cursor = 2;
-    bool has_more = 3;
-}
-
-message ListCatTasksRequest {
-    string cursor = 2;
-    int64 page_size = 3;
-}
-
-message CatTaskItem {
-    uint64 task_id = 1;
-    string title = 2;
-    string task_type = 3;
-
-    string urgency_level = 4;
-    int32 difficulty_level = 5;
-    int32 reward_points = 6;
-
-    string status = 7;
-
-    google.protobuf.Timestamp deadline = 8;
-    google.protobuf.Timestamp created_at = 9;
-}
-
-message ListCatTasksResponse {
-    repeated CatTaskItem list = 1;
-    string next_cursor = 2;
-    bool has_more = 3;
-}

@@ -233,6 +233,39 @@ type CatBriefVO struct {
 	CreditScoreRequired int32  `json:"credit_score_required"`
 }
 
+type CatInfo struct {
+	Id                      uint64  `json:"id"`
+	CatCode                 string  `json:"cat_code"`
+	Name                    string  `json:"name"`
+	Breed                   string  `json:"breed"`
+	Color                   string  `json:"color"`
+	Gender                  string  `json:"gender"`
+	BodySize                string  `json:"body_size"`
+	AgeStage                string  `json:"age_stage"`
+	Weight                  float32 `json:"weight"`
+	Character               string  `json:"character"`
+	BirthDate               string  `json:"birth_date,optional"`
+	Avatar                  string  `json:"avatar"`
+	Description             string  `json:"description"`
+	FoundAt                 string  `json:"found_at,optional"`
+	DiscoveryAddress        string  `json:"discovery_address"`
+	Longitude               float64 `json:"longitude"`
+	Latitude                float64 `json:"latitude"`
+	IsVaccinated            bool    `json:"is_vaccinated"`
+	IsHealthy               bool    `json:"is_healthy"`
+	NeedMedicalIntervention bool    `json:"need_medical_intervention"`
+	SterilizationStatus     string  `json:"sterilization_status"`
+	LastMedicalCheckAt      string  `json:"last_medical_check_at,optional"`
+	AdoptionStatus          string  `json:"adoption_status"`
+	AdopterId               uint64  `json:"adopter_id"`
+	AdoptedAt               string  `json:"adopted_at,optional"`
+	ApplyId                 uint64  `json:"apply_id"`
+	CreatorId               uint64  `json:"creator_id"`
+	CreatedAt               string  `json:"created_at"`
+	UpdatedAt               string  `json:"updated_at"`
+	Distance                float64 `json:"distance,optional"`
+}
+
 type ClaimItemVO struct {
 	ClaimId      uint64 `json:"claim_id"`
 	TaskId       uint64 `json:"task_id"`
@@ -451,6 +484,39 @@ type ListAdoptionsResp struct {
 	PageSize int32            `json:"page_size"`
 }
 
+type ListCatsReq struct {
+	Keyword                 string        `json:"keyword,optional"`                    // 关键词搜索（name/cat_code/breed/color）
+	Name                    string        `json:"name,optional"`                       // 名称模糊搜索
+	CatCode                 string        `json:"cat_code,optional"`                   // 猫咪编号精确搜索
+	Breed                   string        `json:"breed,optional"`                      // 品种
+	Color                   string        `json:"color,optional"`                      // 毛色
+	Gender                  string        `json:"gender,optional"`                     // 性别（male/female/unknown）
+	BodySize                string        `json:"body_size,optional"`                  // 体型（small/medium/large）
+	AgeStage                string        `json:"age_stage,optional"`                  // 年龄阶段（kitten/young/adult/old）
+	SterilizationStatus     string        `json:"sterilization_status,optional"`       // 绝育状态（sterilized/unsterilized）
+	AdoptionStatus          string        `json:"adoption_status,optional"`            // 领养状态（pending/adopted/unavailable）
+	IsVaccinated            *bool         `json:"is_vaccinated,optional"`              // 是否已接种疫苗
+	IsHealthy               *bool         `json:"is_healthy,optional"`                 // 是否健康
+	NeedMedicalIntervention *bool         `json:"need_medical_intervention,optional"`  // 是否需要医疗干预
+	Nearby                  *NearbyFilter `json:"nearby,optional"`                     // 附近查找条件
+	AdopterID               uint64        `json:"adopter_id,optional"`                 // 领养人ID
+	CreatorID               uint64        `json:"creator_id,optional"`                 // 创建人ID
+	ApplyID                 uint64        `json:"apply_id,optional"`                   // 申请单ID
+	FoundAtStart            string        `json:"found_at_start,optional"`             // 发现开始时间
+	FoundAtEnd              string        `json:"found_at_end,optional"`               // 发现结束时间
+	CreatedAtStart          string        `json:"created_at_start,optional"`           // 创建开始时间
+	CreatedAtEnd            string        `json:"created_at_end,optional"`             // 创建结束时间
+	Page                    int32         `json:"page,optional,default=1"`             // 页码（默认1）
+	PageSize                int32         `json:"page_size,optional,default=20"`       // 每页数量（默认20，最大100）
+	SortBy                  string        `json:"sort_by,optional,default=created_at"` // 排序字段（id/created_at/found_at/updated_at/distance）
+	SortOrder               string        `json:"sort_order,optional,default=desc"`    // 排序方向（asc/desc）
+}
+
+type ListCatsResp struct {
+	Total int64     `json:"total"` // 总数
+	List  []CatInfo `json:"list"`  // 小猫列表
+}
+
 type ListMyAdoptAppliesReq struct {
 	Status   string `form:"status,optional"`
 	Page     int32  `form:"page,optional"`
@@ -571,6 +637,12 @@ type ListTasksResp struct {
 	Total    int64        `json:"total"`
 	Page     int32        `json:"page"`
 	PageSize int32        `json:"page_size"`
+}
+
+type NearbyFilter struct {
+	Latitude  float64 `json:"latitude"`  // 纬度
+	Longitude float64 `json:"longitude"` // 经度
+	Radius    float64 `json:"radius"`    // 半径（公里，默认5km，最大50km）
 }
 
 type PendingApplyItem struct {

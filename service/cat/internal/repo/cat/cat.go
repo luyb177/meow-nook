@@ -3,6 +3,7 @@ package cat
 import (
 	"context"
 	"errors"
+	"math"
 	"time"
 
 	"gorm.io/gorm"
@@ -402,6 +403,197 @@ func (r *repository) DeleteCat(ctx context.Context, catID uint64, tx ...*gorm.DB
 
 	return nil
 }
+
+// NearFilter 附近筛选参数
+type NearFilter struct {
+	Latitude  float64 // 纬度
+	Longitude float64 // 经度
+	Radius    float64 // 半径（公里）
+}
+
+// ListCatsWithNearby 支持附近查找的小猫列表（带距离）
+func (r *repository) ListCatsWithNearby(ctx context.Context, filter CatListFilter, near *NearFilter, tx ...*gorm.DB) ([]*Cat, []float64, int64, error) {
+	db := r.getDB(ctx, tx...).Model(&Cat{})
+
+	// 应用基础筛选
+	db = r.applyCatFilters(db, filter)
+
+	// 只筛选有位置信息的猫咪
+	if near != nil && near.Latitude != 0 && near.Longitude != 0 {
+		db = db.Where("latitude != 0 AND longitude != 0")
+	}
+
+	// 先查询总数（不带距离计算）
+	var total int64
+	countDB := r.getDB(ctx, tx...).Model(&Cat{})
+	countDB = r.applyCatFilters(countDB, filter)
+	if near != nil && near.Latitude != 0 && near.Longitude != 0 {
+		countDB = countDB.Where("latitude != 0 AND longitude != 0")
+	}
+	if err := countDB.Count(&total).Error; err != nil {
+		return nil, nil, 0, err
+	}
+
+	// 分页
+	limit, offset := normalizePage(filter.Page, filter.PageSize)
+	order := buildCatOrder(filter.SortBy, filter.SortOrder)
+
+	// 查询基础数据
+	var cats []*Cat
+	err := db.
+		Order(order).
+		Limit(limit).
+		Offset(offset).
+		Find(&cats).Error
+	if err != nil {
+		return nil, nil, 0, err
+	}
+
+	// 计算距离（如果有 near 参数）
+	var distances []float64
+	if near != nil && near.Latitude != 0 && near.Longitude != 0 {
+		distances = make([]float64, len(cats))
+		for i, cat := range cats {
+			distances[i] = calculateDistance(
+				near.Latitude, near.Longitude,
+				cat.Latitude, cat.Longitude,
+			)
+		}
+
+		// 如果需要按距离筛选（半径内）
+		if near.Radius > 0 {
+			filteredCats := make([]*Cat, 0)
+			filteredDistances := make([]float64, 0)
+			for i, cat := range cats {
+				if distances[i] <= near.Radius {
+					filteredCats = append(filteredCats, cat)
+					filteredDistances = append(filteredDistances, distances[i])
+				}
+			}
+			cats = filteredCats
+			distances = filteredDistances
+			total = int64(len(filteredCats)) // 重新计算总数
+		}
+
+		// 如果按距离排序
+		if filter.SortBy == "distance" {
+			// 按距离排序
+			for i := 0; i < len(cats)-1; i++ {
+				for j := i + 1; j < len(cats); j++ {
+					if (filter.SortOrder == "asc" && distances[i] > distances[j]) ||
+						(filter.SortOrder == "desc" && distances[i] < distances[j]) {
+						cats[i], cats[j] = cats[j], cats[i]
+						distances[i], distances[j] = distances[j], distances[i]
+					}
+				}
+			}
+		}
+	}
+
+	return cats, distances, total, nil
+}
+
+// applyCatFilters 应用筛选条件（提取公共逻辑）
+func (r *repository) applyCatFilters(db *gorm.DB, filter CatListFilter) *gorm.DB {
+	// 关键词搜索
+	if filter.Keyword != "" {
+		keyword := "%" + filter.Keyword + "%"
+		db = db.Where(
+			"name LIKE ? OR cat_code LIKE ? OR breed LIKE ? OR color LIKE ?",
+			keyword, keyword, keyword, keyword,
+		)
+	}
+
+	// 精确匹配
+	if filter.CatCode != "" {
+		db = db.Where("cat_code = ?", filter.CatCode)
+	}
+	if filter.Name != "" {
+		db = db.Where("name LIKE ?", "%"+filter.Name+"%")
+	}
+	if filter.Breed != "" {
+		db = db.Where("breed = ?", filter.Breed)
+	}
+	if filter.Color != "" {
+		db = db.Where("color = ?", filter.Color)
+	}
+	if filter.Gender != "" {
+		db = db.Where("gender = ?", filter.Gender)
+	}
+
+	// 体态信息
+	if filter.BodySize != "" {
+		db = db.Where("body_size = ?", filter.BodySize)
+	}
+	if filter.AgeStage != "" {
+		db = db.Where("age_stage = ?", filter.AgeStage)
+	}
+
+	// 健康信息
+	if filter.SterilizationStatus != "" {
+		db = db.Where("sterilization_status = ?", filter.SterilizationStatus)
+	}
+	if filter.AdoptionStatus != "" {
+		db = db.Where("adoption_status = ?", filter.AdoptionStatus)
+	}
+	if filter.IsVaccinated != nil {
+		db = db.Where("is_vaccinated = ?", *filter.IsVaccinated)
+	}
+	if filter.IsHealthy != nil {
+		db = db.Where("is_healthy = ?", *filter.IsHealthy)
+	}
+	if filter.NeedMedicalIntervention != nil {
+		db = db.Where("need_medical_intervention = ?", *filter.NeedMedicalIntervention)
+	}
+
+	// 关联ID
+	if filter.AdopterID > 0 {
+		db = db.Where("adopter_id = ?", filter.AdopterID)
+	}
+	if filter.CreatorID > 0 {
+		db = db.Where("creator_id = ?", filter.CreatorID)
+	}
+	if filter.ApplyID > 0 {
+		db = db.Where("apply_id = ?", filter.ApplyID)
+	}
+
+	// 时间范围
+	if filter.FoundAtStart != nil {
+		db = db.Where("found_at >= ?", *filter.FoundAtStart)
+	}
+	if filter.FoundAtEnd != nil {
+		db = db.Where("found_at <= ?", *filter.FoundAtEnd)
+	}
+	if filter.CreatedAtStart != nil {
+		db = db.Where("created_at >= ?", *filter.CreatedAtStart)
+	}
+	if filter.CreatedAtEnd != nil {
+		db = db.Where("created_at <= ?", *filter.CreatedAtEnd)
+	}
+
+	return db
+}
+
+// calculateDistance 计算两点距离（公里）- Haversine公式
+func calculateDistance(lat1, lng1, lat2, lng2 float64) float64 {
+	const earthRadius = 6371 // 地球半径（公里）
+
+	// 转换为弧度
+	lat1Rad := lat1 * math.Pi / 180
+	lat2Rad := lat2 * math.Pi / 180
+	deltaLat := (lat2 - lat1) * math.Pi / 180
+	deltaLng := (lng2 - lng1) * math.Pi / 180
+
+	// Haversine公式
+	a := math.Sin(deltaLat/2)*math.Sin(deltaLat/2) +
+		math.Cos(lat1Rad)*math.Cos(lat2Rad)*
+			math.Sin(deltaLng/2)*math.Sin(deltaLng/2)
+	c := 2 * math.Atan2(math.Sqrt(a), math.Sqrt(1-a))
+
+	return earthRadius * c
+}
+
+// todo 以下表结构暂时没有用到
 
 // CatRescueRecord 救助历程表
 type CatRescueRecord struct {
