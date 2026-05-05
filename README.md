@@ -212,6 +212,35 @@ httpresp.JsonBaseResponseCtx(r.Context(), w, resp)
 
 ---
 
+## 5) mac构建镜像
+- gateway
+```bash
+docker buildx build \
+  --platform linux/amd64 \
+  -t crpi-u5azhs6neq326bz0.cn-hangzhou.personal.cr.aliyuncs.com/yub_lu/memo-nook-gateway:0.0.1 \
+  -f service/gateway/Dockerfile \
+  . \
+  --push
+```
+- cat
+```bash
+docker buildx build \
+  --platform linux/amd64 \
+  -t crpi-u5azhs6neq326bz0.cn-hangzhou.personal.cr.aliyuncs.com/yub_lu/memo-nook-cat:0.0.1 \
+  -f service/cat/Dockerfile \
+  . \
+  --push
+```
+-user
+```bash
+docker buildx build \
+  --platform linux/amd64 \
+  -t crpi-u5azhs6neq326bz0.cn-hangzhou.personal.cr.aliyuncs.com/yub_lu/memo-nook-user:0.0.1 \
+  -f service/user/Dockerfile \
+  . \
+  --push
+```
+
 # TODO
 - [ ] casbin 的引入
 - [ ] 消息队列的err使用处理

@@ -15,6 +15,1436 @@
   },
   "basePath": "/",
   "paths": {
+    "/api/v1/adoption/admin/adoption/approve": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "领养模块"
+        ],
+        "summary": "审核通过领养申请",
+        "operationId": "adoptionApproveAdopt",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "apply_id",
+                "note"
+              ],
+              "properties": {
+                "apply_id": {
+                  "type": "integer"
+                },
+                "note": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "apply_id": {
+                  "type": "integer"
+                },
+                "expires_at": {
+                  "type": "string"
+                },
+                "message": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/adoption/admin/adoption/create": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "领养模块"
+        ],
+        "summary": "创建领养记录（管理员直接创建）",
+        "operationId": "adoptionCreateAdoption",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "apply_id",
+                "agreement_no",
+                "note"
+              ],
+              "properties": {
+                "agreement_no": {
+                  "type": "string"
+                },
+                "apply_id": {
+                  "type": "integer"
+                },
+                "note": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "adoption_id": {
+                  "type": "integer"
+                },
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/adoption/admin/adoption/direct": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "领养模块"
+        ],
+        "summary": "管理员直接审核通过领养申请（快捷通过）",
+        "operationId": "adoptionDirectAdopt",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "cat_id",
+                "adopter_id",
+                "agreement_no",
+                "note"
+              ],
+              "properties": {
+                "adopter_id": {
+                  "type": "integer"
+                },
+                "agreement_no": {
+                  "type": "string"
+                },
+                "cat_id": {
+                  "type": "integer"
+                },
+                "note": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "adoption_id": {
+                  "type": "integer"
+                },
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/adoption/admin/adoption/home-visit": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "领养模块"
+        ],
+        "summary": "记录家访信息",
+        "operationId": "adoptionRecordHomeVisit",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "adoption_id",
+                "remark",
+                "photos"
+              ],
+              "properties": {
+                "adoption_id": {
+                  "type": "integer"
+                },
+                "photos": {
+                  "type": "string"
+                },
+                "remark": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/adoption/admin/adoption/list": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "领养模块"
+        ],
+        "summary": "查询所有领养记录列表（管理员专用）",
+        "operationId": "adoptionListAdoptions",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "adopter_id",
+            "in": "query",
+            "allowEmptyValue": true
+          },
+          {
+            "type": "integer",
+            "name": "cat_id",
+            "in": "query",
+            "allowEmptyValue": true
+          },
+          {
+            "type": "string",
+            "name": "status",
+            "in": "query",
+            "allowEmptyValue": true
+          },
+          {
+            "type": "integer",
+            "name": "page",
+            "in": "query",
+            "allowEmptyValue": true
+          },
+          {
+            "type": "integer",
+            "name": "page_size",
+            "in": "query",
+            "allowEmptyValue": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "adoption_id",
+                      "cat_id",
+                      "cat_name",
+                      "cat_avatar",
+                      "adopter_id",
+                      "adopter_name",
+                      "status",
+                      "agreement_no",
+                      "adopted_at",
+                      "is_returned"
+                    ],
+                    "properties": {
+                      "adopted_at": {
+                        "type": "string"
+                      },
+                      "adopter_id": {
+                        "type": "integer"
+                      },
+                      "adopter_name": {
+                        "type": "string"
+                      },
+                      "adoption_id": {
+                        "type": "integer"
+                      },
+                      "agreement_no": {
+                        "type": "string"
+                      },
+                      "cat_avatar": {
+                        "type": "string"
+                      },
+                      "cat_id": {
+                        "type": "integer"
+                      },
+                      "cat_name": {
+                        "type": "string"
+                      },
+                      "is_returned": {
+                        "type": "boolean"
+                      },
+                      "status": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "page": {
+                  "type": "integer"
+                },
+                "page_size": {
+                  "type": "integer"
+                },
+                "total": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/adoption/admin/adoption/pending": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "领养模块"
+        ],
+        "summary": "查询待审核的领养申请列表",
+        "operationId": "adoptionListPendingAdoptApplies",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "cat_id",
+            "in": "query",
+            "allowEmptyValue": true
+          },
+          {
+            "type": "integer",
+            "name": "page",
+            "in": "query",
+            "allowEmptyValue": true
+          },
+          {
+            "type": "integer",
+            "name": "page_size",
+            "in": "query",
+            "allowEmptyValue": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "apply_id",
+                      "cat_id",
+                      "cat_name",
+                      "cat_avatar",
+                      "cat_gender",
+                      "credit_score_required",
+                      "applicant_id",
+                      "applicant_name",
+                      "applicant_avatar",
+                      "applicant_credit_score",
+                      "apply_reason",
+                      "contact_phone",
+                      "contact_wechat",
+                      "created_at"
+                    ],
+                    "properties": {
+                      "applicant_avatar": {
+                        "type": "string"
+                      },
+                      "applicant_credit_score": {
+                        "type": "integer"
+                      },
+                      "applicant_id": {
+                        "type": "integer"
+                      },
+                      "applicant_name": {
+                        "type": "string"
+                      },
+                      "apply_id": {
+                        "type": "integer"
+                      },
+                      "apply_reason": {
+                        "type": "string"
+                      },
+                      "cat_avatar": {
+                        "type": "string"
+                      },
+                      "cat_gender": {
+                        "type": "string"
+                      },
+                      "cat_id": {
+                        "type": "integer"
+                      },
+                      "cat_name": {
+                        "type": "string"
+                      },
+                      "contact_phone": {
+                        "type": "string"
+                      },
+                      "contact_wechat": {
+                        "type": "string"
+                      },
+                      "created_at": {
+                        "type": "string"
+                      },
+                      "credit_score_required": {
+                        "type": "integer"
+                      }
+                    }
+                  }
+                },
+                "page": {
+                  "type": "integer"
+                },
+                "page_size": {
+                  "type": "integer"
+                },
+                "total": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/adoption/admin/adoption/reject": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "领养模块"
+        ],
+        "summary": "驳回领养申请",
+        "operationId": "adoptionRejectAdopt",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "apply_id",
+                "reject_reason"
+              ],
+              "properties": {
+                "apply_id": {
+                  "type": "integer"
+                },
+                "reject_reason": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/adoption/admin/adoption/return": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "领养模块"
+        ],
+        "summary": "更新退养状态",
+        "operationId": "adoptionUpdateReturnStatus",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "adoption_id",
+                "returned",
+                "returned_to_user_id",
+                "return_reason",
+                "photos"
+              ],
+              "properties": {
+                "adoption_id": {
+                  "type": "integer"
+                },
+                "photos": {
+                  "type": "string"
+                },
+                "return_reason": {
+                  "type": "string"
+                },
+                "returned": {
+                  "type": "boolean"
+                },
+                "returned_to_user_id": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/adoption/admin/adoption/update": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "领养模块"
+        ],
+        "summary": "更新领养记录信息",
+        "operationId": "adoptionUpdateAdoption",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "adoption_id",
+                "agreement_no",
+                "note"
+              ],
+              "properties": {
+                "adoption_id": {
+                  "type": "integer"
+                },
+                "agreement_no": {
+                  "type": "string"
+                },
+                "note": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/adoption/admin/adoption/visit": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "领养模块"
+        ],
+        "summary": "记录回访信息",
+        "operationId": "adoptionRecordFollowUpVisit",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "adoption_id",
+                "visit_type",
+                "remark",
+                "photos"
+              ],
+              "properties": {
+                "adoption_id": {
+                  "type": "integer"
+                },
+                "photos": {
+                  "type": "string"
+                },
+                "remark": {
+                  "type": "string"
+                },
+                "visit_type": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/adoption/adoption/apply": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "领养模块"
+        ],
+        "summary": "提交领养申请（志愿者提交领养意向）",
+        "operationId": "adoptionApplyAdopt",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "cat_id",
+                "apply_reason",
+                "contact_phone",
+                "contact_wechat"
+              ],
+              "properties": {
+                "apply_reason": {
+                  "type": "string"
+                },
+                "cat_id": {
+                  "type": "integer"
+                },
+                "contact_phone": {
+                  "type": "string"
+                },
+                "contact_wechat": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "applicant_credit_score": {
+                  "type": "integer"
+                },
+                "apply_id": {
+                  "type": "integer"
+                },
+                "message": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/adoption/adoption/apply/{apply_id}": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "领养模块"
+        ],
+        "summary": "获取领养申请详情",
+        "operationId": "adoptionGetAdoptApplyDetail",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "apply_id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "apply": {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "cat_id",
+                    "cat_name",
+                    "cat_avatar",
+                    "applicant_id",
+                    "applicant_name",
+                    "apply_reason",
+                    "contact_phone",
+                    "contact_wechat",
+                    "applicant_credit_score",
+                    "status",
+                    "reject_reason",
+                    "reviewer_id",
+                    "reviewer_name",
+                    "reviewed_at",
+                    "approved_at",
+                    "expires_at",
+                    "created_at",
+                    "updated_at",
+                    "adoption_id"
+                  ],
+                  "properties": {
+                    "adoption_id": {
+                      "type": "integer"
+                    },
+                    "applicant_credit_score": {
+                      "type": "integer"
+                    },
+                    "applicant_id": {
+                      "type": "integer"
+                    },
+                    "applicant_name": {
+                      "type": "string"
+                    },
+                    "apply_reason": {
+                      "type": "string"
+                    },
+                    "approved_at": {
+                      "type": "string"
+                    },
+                    "cat_avatar": {
+                      "type": "string"
+                    },
+                    "cat_id": {
+                      "type": "integer"
+                    },
+                    "cat_name": {
+                      "type": "string"
+                    },
+                    "contact_phone": {
+                      "type": "string"
+                    },
+                    "contact_wechat": {
+                      "type": "string"
+                    },
+                    "created_at": {
+                      "type": "string"
+                    },
+                    "expires_at": {
+                      "type": "string"
+                    },
+                    "id": {
+                      "type": "integer"
+                    },
+                    "reject_reason": {
+                      "type": "string"
+                    },
+                    "reviewed_at": {
+                      "type": "string"
+                    },
+                    "reviewer_id": {
+                      "type": "integer"
+                    },
+                    "reviewer_name": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "string"
+                    },
+                    "updated_at": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "cat": {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "name",
+                    "avatar",
+                    "gender",
+                    "credit_score_required"
+                  ],
+                  "properties": {
+                    "avatar": {
+                      "type": "string"
+                    },
+                    "credit_score_required": {
+                      "type": "integer"
+                    },
+                    "gender": {
+                      "type": "string"
+                    },
+                    "id": {
+                      "type": "integer"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/adoption/adoption/cancel": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "领养模块"
+        ],
+        "summary": "取消待审核的领养申请",
+        "operationId": "adoptionCancelAdoptApply",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "apply_id",
+                "reason"
+              ],
+              "properties": {
+                "apply_id": {
+                  "type": "integer"
+                },
+                "reason": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/adoption/adoption/detail/{adoption_id}": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "领养模块"
+        ],
+        "summary": "查询领养记录详情",
+        "operationId": "adoptionGetAdoptionDetail",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "adoption_id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "adopter": {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "name",
+                    "avatar"
+                  ],
+                  "properties": {
+                    "avatar": {
+                      "type": "string"
+                    },
+                    "id": {
+                      "type": "integer"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "adoption": {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "cat_id",
+                    "cat_name",
+                    "cat_avatar",
+                    "adopter_id",
+                    "adopter_name",
+                    "status",
+                    "agreement_no",
+                    "agreed_at",
+                    "adopted_at",
+                    "home_visit_at",
+                    "home_visit_user_id",
+                    "home_visit_remark",
+                    "visit_one_week_at",
+                    "visit_one_month_at",
+                    "visit_three_month_at",
+                    "visit_six_month_at",
+                    "is_returned",
+                    "return_reason",
+                    "returned_at",
+                    "note",
+                    "created_at",
+                    "updated_at"
+                  ],
+                  "properties": {
+                    "adopted_at": {
+                      "type": "string"
+                    },
+                    "adopter_id": {
+                      "type": "integer"
+                    },
+                    "adopter_name": {
+                      "type": "string"
+                    },
+                    "agreed_at": {
+                      "type": "string"
+                    },
+                    "agreement_no": {
+                      "type": "string"
+                    },
+                    "cat_avatar": {
+                      "type": "string"
+                    },
+                    "cat_id": {
+                      "type": "integer"
+                    },
+                    "cat_name": {
+                      "type": "string"
+                    },
+                    "created_at": {
+                      "type": "string"
+                    },
+                    "home_visit_at": {
+                      "type": "string"
+                    },
+                    "home_visit_remark": {
+                      "type": "string"
+                    },
+                    "home_visit_user_id": {
+                      "type": "integer"
+                    },
+                    "id": {
+                      "type": "integer"
+                    },
+                    "is_returned": {
+                      "type": "boolean"
+                    },
+                    "note": {
+                      "type": "string"
+                    },
+                    "return_reason": {
+                      "type": "string"
+                    },
+                    "returned_at": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "string"
+                    },
+                    "updated_at": {
+                      "type": "string"
+                    },
+                    "visit_one_month_at": {
+                      "type": "string"
+                    },
+                    "visit_one_week_at": {
+                      "type": "string"
+                    },
+                    "visit_six_month_at": {
+                      "type": "string"
+                    },
+                    "visit_three_month_at": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "cat": {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "name",
+                    "avatar",
+                    "gender",
+                    "credit_score_required"
+                  ],
+                  "properties": {
+                    "avatar": {
+                      "type": "string"
+                    },
+                    "credit_score_required": {
+                      "type": "integer"
+                    },
+                    "gender": {
+                      "type": "string"
+                    },
+                    "id": {
+                      "type": "integer"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/adoption/adoption/my-adoptions": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "领养模块"
+        ],
+        "summary": "查询我的领养记录列表（志愿者已成功领养的记录）",
+        "operationId": "adoptionListMyAdoptions",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "page",
+            "in": "query",
+            "allowEmptyValue": true
+          },
+          {
+            "type": "integer",
+            "name": "page_size",
+            "in": "query",
+            "allowEmptyValue": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "adoption_id",
+                      "cat_id",
+                      "cat_name",
+                      "cat_avatar",
+                      "adopter_id",
+                      "adopter_name",
+                      "status",
+                      "agreement_no",
+                      "adopted_at",
+                      "is_returned"
+                    ],
+                    "properties": {
+                      "adopted_at": {
+                        "type": "string"
+                      },
+                      "adopter_id": {
+                        "type": "integer"
+                      },
+                      "adopter_name": {
+                        "type": "string"
+                      },
+                      "adoption_id": {
+                        "type": "integer"
+                      },
+                      "agreement_no": {
+                        "type": "string"
+                      },
+                      "cat_avatar": {
+                        "type": "string"
+                      },
+                      "cat_id": {
+                        "type": "integer"
+                      },
+                      "cat_name": {
+                        "type": "string"
+                      },
+                      "is_returned": {
+                        "type": "boolean"
+                      },
+                      "status": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "page": {
+                  "type": "integer"
+                },
+                "page_size": {
+                  "type": "integer"
+                },
+                "total": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/adoption/adoption/my-applies": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "领养模块"
+        ],
+        "summary": "查询我的领养申请列表（志愿者查询自己提交的申请）",
+        "operationId": "adoptionListMyAdoptApplies",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "status",
+            "in": "query",
+            "allowEmptyValue": true
+          },
+          {
+            "type": "integer",
+            "name": "page",
+            "in": "query",
+            "allowEmptyValue": true
+          },
+          {
+            "type": "integer",
+            "name": "page_size",
+            "in": "query",
+            "allowEmptyValue": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "apply_id",
+                      "cat_id",
+                      "cat_name",
+                      "cat_avatar",
+                      "cat_gender",
+                      "credit_score_required",
+                      "apply_reason",
+                      "status",
+                      "reject_reason",
+                      "created_at",
+                      "expires_at"
+                    ],
+                    "properties": {
+                      "apply_id": {
+                        "type": "integer"
+                      },
+                      "apply_reason": {
+                        "type": "string"
+                      },
+                      "cat_avatar": {
+                        "type": "string"
+                      },
+                      "cat_gender": {
+                        "type": "string"
+                      },
+                      "cat_id": {
+                        "type": "integer"
+                      },
+                      "cat_name": {
+                        "type": "string"
+                      },
+                      "created_at": {
+                        "type": "string"
+                      },
+                      "credit_score_required": {
+                        "type": "integer"
+                      },
+                      "expires_at": {
+                        "type": "string"
+                      },
+                      "reject_reason": {
+                        "type": "string"
+                      },
+                      "status": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "page": {
+                  "type": "integer"
+                },
+                "page_size": {
+                  "type": "integer"
+                },
+                "total": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/adoption/adoption/visit/complete": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "领养模块"
+        ],
+        "summary": "完成回访（志愿者提交回访完成状态）",
+        "operationId": "adoptionCompleteVisit",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "adoption_id",
+                "visit_type",
+                "remark",
+                "photos"
+              ],
+              "properties": {
+                "adoption_id": {
+                  "type": "integer"
+                },
+                "photos": {
+                  "type": "string"
+                },
+                "remark": {
+                  "type": "string"
+                },
+                "visit_type": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/auth/send_code": {
       "post": {
         "consumes": [
@@ -29,7 +1459,7 @@
         "tags": [
           "认证模块"
         ],
-        "summary": "SendVerificationCode",
+        "summary": "发送验证码，支持邮件",
         "operationId": "authSendVerificationCode",
         "parameters": [
           {
@@ -79,7 +1509,7 @@
         "tags": [
           "认证模块"
         ],
-        "summary": "Test",
+        "summary": "测试接口，验证网关是否正常工作",
         "operationId": "authTest",
         "responses": {
           "200": {
@@ -90,9 +1520,3019 @@
           }
         }
       }
+    },
+    "/api/v1/cats/applies": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "猫咪模块"
+        ],
+        "summary": "志愿者申请创建猫咪档案",
+        "operationId": "catApplyCreateCat",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "name",
+                "gender",
+                "body_size",
+                "age_stage",
+                "description",
+                "discovery_address",
+                "longitude",
+                "latitude",
+                "images",
+                "tag_ids"
+              ],
+              "properties": {
+                "age_stage": {
+                  "type": "string"
+                },
+                "body_size": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "discovery_address": {
+                  "type": "string"
+                },
+                "gender": {
+                  "type": "string"
+                },
+                "images": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "url",
+                      "description",
+                      "sort",
+                      "is_cover"
+                    ],
+                    "properties": {
+                      "description": {
+                        "type": "string"
+                      },
+                      "is_cover": {
+                        "type": "boolean"
+                      },
+                      "sort": {
+                        "type": "integer"
+                      },
+                      "url": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "latitude": {
+                  "type": "number"
+                },
+                "longitude": {
+                  "type": "number"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "tag_ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "apply_id": {
+                  "type": "integer"
+                },
+                "created_at": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/cats/applies/my": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "猫咪模块"
+        ],
+        "summary": "我的申请列表",
+        "operationId": "catListMyApplies",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "status",
+            "in": "query",
+            "allowEmptyValue": true
+          },
+          {
+            "type": "integer",
+            "default": 1,
+            "example": 1,
+            "name": "page",
+            "in": "query",
+            "required": true
+          },
+          {
+            "type": "integer",
+            "default": 20,
+            "example": 20,
+            "name": "page_size",
+            "in": "query",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "list": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "apply_id",
+                      "name",
+                      "status",
+                      "cat_id",
+                      "created_at"
+                    ],
+                    "properties": {
+                      "apply_id": {
+                        "type": "integer"
+                      },
+                      "cat_id": {
+                        "type": "integer"
+                      },
+                      "created_at": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "status": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "total": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/cats/applies/pending": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "猫咪模块"
+        ],
+        "summary": "管理员查询待审核列表",
+        "operationId": "catListPendingApplies",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "keyword",
+            "in": "query",
+            "allowEmptyValue": true
+          },
+          {
+            "type": "integer",
+            "default": 1,
+            "example": 1,
+            "name": "page",
+            "in": "query",
+            "required": true
+          },
+          {
+            "type": "integer",
+            "default": 20,
+            "example": 20,
+            "name": "page_size",
+            "in": "query",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "list": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "apply_id",
+                      "name",
+                      "gender",
+                      "age_stage",
+                      "discovery_address",
+                      "applicant_user_id",
+                      "created_at"
+                    ],
+                    "properties": {
+                      "age_stage": {
+                        "type": "string"
+                      },
+                      "applicant_user_id": {
+                        "type": "integer"
+                      },
+                      "apply_id": {
+                        "type": "integer"
+                      },
+                      "created_at": {
+                        "type": "string"
+                      },
+                      "discovery_address": {
+                        "type": "string"
+                      },
+                      "gender": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "total": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/cats/applies/{id}": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "猫咪模块"
+        ],
+        "summary": "查询申请详情",
+        "operationId": "catGetApplyDetail",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "age_stage": {
+                  "type": "string"
+                },
+                "applicant_user_id": {
+                  "type": "integer"
+                },
+                "apply_id": {
+                  "type": "integer"
+                },
+                "body_size": {
+                  "type": "string"
+                },
+                "cancel_reason": {
+                  "type": "string"
+                },
+                "cat_id": {
+                  "type": "integer"
+                },
+                "created_at": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "discovery_address": {
+                  "type": "string"
+                },
+                "gender": {
+                  "type": "string"
+                },
+                "images": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "url",
+                      "description",
+                      "sort",
+                      "is_cover"
+                    ],
+                    "properties": {
+                      "description": {
+                        "type": "string"
+                      },
+                      "is_cover": {
+                        "type": "boolean"
+                      },
+                      "sort": {
+                        "type": "integer"
+                      },
+                      "url": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "latitude": {
+                  "type": "number"
+                },
+                "longitude": {
+                  "type": "number"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "reject_reason": {
+                  "type": "string"
+                },
+                "reviewer_id": {
+                  "type": "integer"
+                },
+                "status": {
+                  "type": "string"
+                },
+                "updated_at": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/cats/applies/{id}/approve": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "猫咪模块"
+        ],
+        "summary": "管理员审核通过",
+        "operationId": "catApproveCreateCat",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "cat_code",
+                "breed",
+                "color",
+                "is_vaccinated",
+                "is_healthy",
+                "need_medical_intervention",
+                "sterilization_status",
+                "extra_tag_ids"
+              ],
+              "properties": {
+                "breed": {
+                  "type": "string"
+                },
+                "cat_code": {
+                  "type": "string"
+                },
+                "color": {
+                  "type": "string"
+                },
+                "extra_tag_ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer"
+                  }
+                },
+                "is_healthy": {
+                  "type": "boolean"
+                },
+                "is_vaccinated": {
+                  "type": "boolean"
+                },
+                "need_medical_intervention": {
+                  "type": "boolean"
+                },
+                "sterilization_status": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "cat_code": {
+                  "type": "string"
+                },
+                "cat_id": {
+                  "type": "integer"
+                },
+                "status": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/cats/applies/{id}/cancel": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "猫咪模块"
+        ],
+        "summary": "志愿者取消申请",
+        "operationId": "catCancelApplyCreateCat",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "reason"
+              ],
+              "properties": {
+                "reason": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object"
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/cats/applies/{id}/reject": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "猫咪模块"
+        ],
+        "summary": "管理员驳回申请",
+        "operationId": "catRejectCreateCat",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "reason"
+              ],
+              "properties": {
+                "reason": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object"
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/cats/cats/list": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "猫咪模块"
+        ],
+        "summary": "获取小猫列表（支持筛选、分页、附近查找）",
+        "operationId": "catListCats",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "adopter_id": {
+                  "description": "领养人ID",
+                  "type": "integer"
+                },
+                "adoption_status": {
+                  "description": "领养状态（pending/adopted/unavailable）",
+                  "type": "string"
+                },
+                "age_stage": {
+                  "description": "年龄阶段（kitten/young/adult/old）",
+                  "type": "string"
+                },
+                "apply_id": {
+                  "description": "申请单ID",
+                  "type": "integer"
+                },
+                "body_size": {
+                  "description": "体型（small/medium/large）",
+                  "type": "string"
+                },
+                "breed": {
+                  "description": "品种",
+                  "type": "string"
+                },
+                "cat_code": {
+                  "description": "猫咪编号精确搜索",
+                  "type": "string"
+                },
+                "color": {
+                  "description": "毛色",
+                  "type": "string"
+                },
+                "created_at_end": {
+                  "description": "创建结束时间",
+                  "type": "string"
+                },
+                "created_at_start": {
+                  "description": "创建开始时间",
+                  "type": "string"
+                },
+                "creator_id": {
+                  "description": "创建人ID",
+                  "type": "integer"
+                },
+                "found_at_end": {
+                  "description": "发现结束时间",
+                  "type": "string"
+                },
+                "found_at_start": {
+                  "description": "发现开始时间",
+                  "type": "string"
+                },
+                "gender": {
+                  "description": "性别（male/female/unknown）",
+                  "type": "string"
+                },
+                "is_healthy": {
+                  "description": "是否健康",
+                  "type": "boolean"
+                },
+                "is_vaccinated": {
+                  "description": "是否已接种疫苗",
+                  "type": "boolean"
+                },
+                "keyword": {
+                  "description": "关键词搜索（name/cat_code/breed/color）",
+                  "type": "string"
+                },
+                "name": {
+                  "description": "名称模糊搜索",
+                  "type": "string"
+                },
+                "nearby": {
+                  "description": "附近查找条件",
+                  "type": "object",
+                  "required": [
+                    "latitude",
+                    "longitude",
+                    "radius"
+                  ],
+                  "properties": {
+                    "latitude": {
+                      "description": "纬度",
+                      "type": "number"
+                    },
+                    "longitude": {
+                      "description": "经度",
+                      "type": "number"
+                    },
+                    "radius": {
+                      "description": "半径（公里，默认5km，最大50km）",
+                      "type": "number"
+                    }
+                  }
+                },
+                "need_medical_intervention": {
+                  "description": "是否需要医疗干预",
+                  "type": "boolean"
+                },
+                "page": {
+                  "description": "页码（默认1）",
+                  "type": "integer",
+                  "default": 1,
+                  "example": 1
+                },
+                "page_size": {
+                  "description": "每页数量（默认20，最大100）",
+                  "type": "integer",
+                  "default": 20,
+                  "example": 20
+                },
+                "sort_by": {
+                  "description": "排序字段（id/created_at/found_at/updated_at/distance）",
+                  "type": "string",
+                  "default": "created_at",
+                  "example": "created_at"
+                },
+                "sort_order": {
+                  "description": "排序方向（asc/desc）",
+                  "type": "string",
+                  "default": "desc",
+                  "example": "desc"
+                },
+                "sterilization_status": {
+                  "description": "绝育状态（sterilized/unsterilized）",
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "list": {
+                  "description": "小猫列表",
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "cat_code",
+                      "name",
+                      "breed",
+                      "color",
+                      "gender",
+                      "body_size",
+                      "age_stage",
+                      "weight",
+                      "character",
+                      "avatar",
+                      "description",
+                      "discovery_address",
+                      "longitude",
+                      "latitude",
+                      "is_vaccinated",
+                      "is_healthy",
+                      "need_medical_intervention",
+                      "sterilization_status",
+                      "adoption_status",
+                      "adopter_id",
+                      "apply_id",
+                      "creator_id",
+                      "created_at",
+                      "updated_at"
+                    ],
+                    "properties": {
+                      "adopted_at": {
+                        "type": "string"
+                      },
+                      "adopter_id": {
+                        "type": "integer"
+                      },
+                      "adoption_status": {
+                        "type": "string"
+                      },
+                      "age_stage": {
+                        "type": "string"
+                      },
+                      "apply_id": {
+                        "type": "integer"
+                      },
+                      "avatar": {
+                        "type": "string"
+                      },
+                      "birth_date": {
+                        "type": "string"
+                      },
+                      "body_size": {
+                        "type": "string"
+                      },
+                      "breed": {
+                        "type": "string"
+                      },
+                      "cat_code": {
+                        "type": "string"
+                      },
+                      "character": {
+                        "type": "string"
+                      },
+                      "color": {
+                        "type": "string"
+                      },
+                      "created_at": {
+                        "type": "string"
+                      },
+                      "creator_id": {
+                        "type": "integer"
+                      },
+                      "description": {
+                        "type": "string"
+                      },
+                      "discovery_address": {
+                        "type": "string"
+                      },
+                      "distance": {
+                        "type": "number"
+                      },
+                      "found_at": {
+                        "type": "string"
+                      },
+                      "gender": {
+                        "type": "string"
+                      },
+                      "id": {
+                        "type": "integer"
+                      },
+                      "is_healthy": {
+                        "type": "boolean"
+                      },
+                      "is_vaccinated": {
+                        "type": "boolean"
+                      },
+                      "last_medical_check_at": {
+                        "type": "string"
+                      },
+                      "latitude": {
+                        "type": "number"
+                      },
+                      "longitude": {
+                        "type": "number"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "need_medical_intervention": {
+                        "type": "boolean"
+                      },
+                      "sterilization_status": {
+                        "type": "string"
+                      },
+                      "updated_at": {
+                        "type": "string"
+                      },
+                      "weight": {
+                        "type": "number"
+                      }
+                    }
+                  }
+                },
+                "total": {
+                  "description": "总数",
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/cats/direct": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "猫咪模块"
+        ],
+        "summary": "管理员直接创建猫咪档案",
+        "operationId": "catDirectCreateCat",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "cat_code",
+                "name",
+                "breed",
+                "color",
+                "gender",
+                "body_size",
+                "age_stage",
+                "description",
+                "discovery_address",
+                "longitude",
+                "latitude",
+                "is_vaccinated",
+                "is_healthy",
+                "need_medical_intervention",
+                "sterilization_status",
+                "images",
+                "tag_ids"
+              ],
+              "properties": {
+                "age_stage": {
+                  "type": "string"
+                },
+                "body_size": {
+                  "type": "string"
+                },
+                "breed": {
+                  "type": "string"
+                },
+                "cat_code": {
+                  "type": "string"
+                },
+                "color": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "discovery_address": {
+                  "type": "string"
+                },
+                "gender": {
+                  "type": "string"
+                },
+                "images": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "url",
+                      "description",
+                      "sort",
+                      "is_cover"
+                    ],
+                    "properties": {
+                      "description": {
+                        "type": "string"
+                      },
+                      "is_cover": {
+                        "type": "boolean"
+                      },
+                      "sort": {
+                        "type": "integer"
+                      },
+                      "url": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "is_healthy": {
+                  "type": "boolean"
+                },
+                "is_vaccinated": {
+                  "type": "boolean"
+                },
+                "latitude": {
+                  "type": "number"
+                },
+                "longitude": {
+                  "type": "number"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "need_medical_intervention": {
+                  "type": "boolean"
+                },
+                "sterilization_status": {
+                  "type": "string"
+                },
+                "tag_ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "cat_code": {
+                  "type": "string"
+                },
+                "cat_id": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/task/admin/task/apply/pending": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "任务模块"
+        ],
+        "summary": "查询待审核的任务申请列表",
+        "operationId": "taskListPendingTaskApplies",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "cat_id",
+            "in": "query",
+            "allowEmptyValue": true
+          },
+          {
+            "type": "integer",
+            "name": "page",
+            "in": "query",
+            "allowEmptyValue": true
+          },
+          {
+            "type": "integer",
+            "name": "page_size",
+            "in": "query",
+            "allowEmptyValue": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "cat_id",
+                      "cat_name",
+                      "cat_avatar",
+                      "applicant_user_id",
+                      "applicant_name",
+                      "applicant_avatar",
+                      "title",
+                      "task_type",
+                      "summary",
+                      "detail",
+                      "location",
+                      "longitude",
+                      "latitude",
+                      "status",
+                      "reviewer_id",
+                      "reviewer_name",
+                      "reviewed_at",
+                      "reject_reason",
+                      "urgency_level",
+                      "difficulty_level",
+                      "reward_points",
+                      "task_id",
+                      "deadline_at",
+                      "created_at",
+                      "updated_at",
+                      "image_urls",
+                      "tags"
+                    ],
+                    "properties": {
+                      "applicant_avatar": {
+                        "type": "string"
+                      },
+                      "applicant_name": {
+                        "type": "string"
+                      },
+                      "applicant_user_id": {
+                        "type": "integer"
+                      },
+                      "cat_avatar": {
+                        "type": "string"
+                      },
+                      "cat_id": {
+                        "type": "integer"
+                      },
+                      "cat_name": {
+                        "type": "string"
+                      },
+                      "created_at": {
+                        "type": "string"
+                      },
+                      "deadline_at": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "difficulty_level": {
+                        "type": "integer"
+                      },
+                      "id": {
+                        "type": "integer"
+                      },
+                      "image_urls": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "latitude": {
+                        "type": "number"
+                      },
+                      "location": {
+                        "type": "string"
+                      },
+                      "longitude": {
+                        "type": "number"
+                      },
+                      "reject_reason": {
+                        "type": "string"
+                      },
+                      "reviewed_at": {
+                        "type": "string"
+                      },
+                      "reviewer_id": {
+                        "type": "integer"
+                      },
+                      "reviewer_name": {
+                        "type": "string"
+                      },
+                      "reward_points": {
+                        "type": "integer"
+                      },
+                      "status": {
+                        "type": "string"
+                      },
+                      "summary": {
+                        "type": "string"
+                      },
+                      "tags": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "required": [
+                            "id",
+                            "name",
+                            "type",
+                            "theme"
+                          ],
+                          "properties": {
+                            "id": {
+                              "type": "integer"
+                            },
+                            "name": {
+                              "type": "string"
+                            },
+                            "theme": {
+                              "type": "string"
+                            },
+                            "type": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      },
+                      "task_id": {
+                        "type": "integer"
+                      },
+                      "task_type": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "updated_at": {
+                        "type": "string"
+                      },
+                      "urgency_level": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "page": {
+                  "type": "integer"
+                },
+                "page_size": {
+                  "type": "integer"
+                },
+                "total": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/task/admin/task/apply/{apply_id}/approve": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "任务模块"
+        ],
+        "summary": "审核通过任务申请",
+        "operationId": "taskApproveTaskApply",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "apply_id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "urgency_level",
+                "difficulty_level",
+                "reward_points",
+                "max_claimers",
+                "area",
+                "remark"
+              ],
+              "properties": {
+                "area": {
+                  "type": "string"
+                },
+                "difficulty_level": {
+                  "type": "integer"
+                },
+                "max_claimers": {
+                  "type": "integer"
+                },
+                "remark": {
+                  "type": "string"
+                },
+                "reward_points": {
+                  "type": "integer"
+                },
+                "urgency_level": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                },
+                "task_id": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/task/admin/task/apply/{apply_id}/reject": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "任务模块"
+        ],
+        "summary": "驳回任务申请",
+        "operationId": "taskRejectTaskApply",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "apply_id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "reject_reason"
+              ],
+              "properties": {
+                "reject_reason": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/task/admin/task/create": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "任务模块"
+        ],
+        "summary": "直接创建任务（管理员直接发布任务，无需申请）",
+        "operationId": "taskDirectCreateTask",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "cat_id",
+                "title",
+                "task_type",
+                "summary",
+                "detail",
+                "location",
+                "longitude",
+                "latitude",
+                "area",
+                "urgency_level",
+                "difficulty_level",
+                "reward_points",
+                "max_claimers",
+                "deadline_at",
+                "remark",
+                "image_urls",
+                "tag_ids"
+              ],
+              "properties": {
+                "area": {
+                  "type": "string"
+                },
+                "cat_id": {
+                  "type": "integer"
+                },
+                "deadline_at": {
+                  "type": "string"
+                },
+                "detail": {
+                  "type": "string"
+                },
+                "difficulty_level": {
+                  "type": "integer"
+                },
+                "image_urls": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "latitude": {
+                  "type": "number"
+                },
+                "location": {
+                  "type": "string"
+                },
+                "longitude": {
+                  "type": "number"
+                },
+                "max_claimers": {
+                  "type": "integer"
+                },
+                "remark": {
+                  "type": "string"
+                },
+                "reward_points": {
+                  "type": "integer"
+                },
+                "summary": {
+                  "type": "string"
+                },
+                "tag_ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer"
+                  }
+                },
+                "task_type": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "urgency_level": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                },
+                "task_id": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/task/admin/task/{task_id}/cancel": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "任务模块"
+        ],
+        "summary": "取消任务",
+        "operationId": "taskCancelTask",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "task_id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "reason"
+              ],
+              "properties": {
+                "reason": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/task/admin/task/{task_id}/escalate": {
+      "post": {
+        "consumes": [
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "任务模块"
+        ],
+        "summary": "提升任务紧急程度",
+        "operationId": "taskEscalateTaskUrgency",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "task_id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "escalation_count": {
+                  "type": "integer"
+                },
+                "message": {
+                  "type": "string"
+                },
+                "new_urgency_level": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/task/admin/task/{task_id}/update": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "任务模块"
+        ],
+        "summary": "更新任务信息",
+        "operationId": "taskUpdateTask",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "task_id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "title",
+                "summary",
+                "detail",
+                "difficulty_level",
+                "reward_points",
+                "deadline_at",
+                "remark"
+              ],
+              "properties": {
+                "deadline_at": {
+                  "type": "string"
+                },
+                "detail": {
+                  "type": "string"
+                },
+                "difficulty_level": {
+                  "type": "integer"
+                },
+                "remark": {
+                  "type": "string"
+                },
+                "reward_points": {
+                  "type": "integer"
+                },
+                "summary": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/task/task/apply": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "任务模块"
+        ],
+        "summary": "提交任务创建申请（志愿者申请创建新任务）",
+        "operationId": "taskApplyCreateTask",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "cat_id",
+                "title",
+                "task_type",
+                "summary",
+                "detail",
+                "location",
+                "longitude",
+                "latitude",
+                "deadline_at",
+                "image_urls",
+                "tag_ids"
+              ],
+              "properties": {
+                "cat_id": {
+                  "type": "integer"
+                },
+                "deadline_at": {
+                  "type": "string"
+                },
+                "detail": {
+                  "type": "string"
+                },
+                "image_urls": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "latitude": {
+                  "type": "number"
+                },
+                "location": {
+                  "type": "string"
+                },
+                "longitude": {
+                  "type": "number"
+                },
+                "summary": {
+                  "type": "string"
+                },
+                "tag_ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer"
+                  }
+                },
+                "task_type": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "apply_id": {
+                  "type": "integer"
+                },
+                "message": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/task/task/apply/cancel": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "任务模块"
+        ],
+        "summary": "取消待审核的任务申请",
+        "operationId": "taskCancelTaskApply",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "apply_id",
+                "reason"
+              ],
+              "properties": {
+                "apply_id": {
+                  "type": "integer"
+                },
+                "reason": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/task/task/apply/{apply_id}": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "任务模块"
+        ],
+        "summary": "获取任务申请详情",
+        "operationId": "taskGetTaskApplyDetail",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "apply_id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "apply": {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "cat_id",
+                    "cat_name",
+                    "cat_avatar",
+                    "applicant_user_id",
+                    "applicant_name",
+                    "applicant_avatar",
+                    "title",
+                    "task_type",
+                    "summary",
+                    "detail",
+                    "location",
+                    "longitude",
+                    "latitude",
+                    "status",
+                    "reviewer_id",
+                    "reviewer_name",
+                    "reviewed_at",
+                    "reject_reason",
+                    "urgency_level",
+                    "difficulty_level",
+                    "reward_points",
+                    "task_id",
+                    "deadline_at",
+                    "created_at",
+                    "updated_at",
+                    "image_urls",
+                    "tags"
+                  ],
+                  "properties": {
+                    "applicant_avatar": {
+                      "type": "string"
+                    },
+                    "applicant_name": {
+                      "type": "string"
+                    },
+                    "applicant_user_id": {
+                      "type": "integer"
+                    },
+                    "cat_avatar": {
+                      "type": "string"
+                    },
+                    "cat_id": {
+                      "type": "integer"
+                    },
+                    "cat_name": {
+                      "type": "string"
+                    },
+                    "created_at": {
+                      "type": "string"
+                    },
+                    "deadline_at": {
+                      "type": "string"
+                    },
+                    "detail": {
+                      "type": "string"
+                    },
+                    "difficulty_level": {
+                      "type": "integer"
+                    },
+                    "id": {
+                      "type": "integer"
+                    },
+                    "image_urls": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "latitude": {
+                      "type": "number"
+                    },
+                    "location": {
+                      "type": "string"
+                    },
+                    "longitude": {
+                      "type": "number"
+                    },
+                    "reject_reason": {
+                      "type": "string"
+                    },
+                    "reviewed_at": {
+                      "type": "string"
+                    },
+                    "reviewer_id": {
+                      "type": "integer"
+                    },
+                    "reviewer_name": {
+                      "type": "string"
+                    },
+                    "reward_points": {
+                      "type": "integer"
+                    },
+                    "status": {
+                      "type": "string"
+                    },
+                    "summary": {
+                      "type": "string"
+                    },
+                    "tags": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "id",
+                          "name",
+                          "type",
+                          "theme"
+                        ],
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "theme": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "task_id": {
+                      "type": "integer"
+                    },
+                    "task_type": {
+                      "type": "string"
+                    },
+                    "title": {
+                      "type": "string"
+                    },
+                    "updated_at": {
+                      "type": "string"
+                    },
+                    "urgency_level": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "cat": {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "name",
+                    "avatar",
+                    "gender",
+                    "credit_score_required"
+                  ],
+                  "properties": {
+                    "avatar": {
+                      "type": "string"
+                    },
+                    "credit_score_required": {
+                      "type": "integer"
+                    },
+                    "gender": {
+                      "type": "string"
+                    },
+                    "id": {
+                      "type": "integer"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/task/task/claim/{claim_id}/abandon": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "任务模块"
+        ],
+        "summary": "放弃已领取的任务",
+        "operationId": "taskAbandonTask",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "claim_id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "reason"
+              ],
+              "properties": {
+                "reason": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/task/task/claim/{claim_id}/complete": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "任务模块"
+        ],
+        "summary": "完成任务（提交完成状态）",
+        "operationId": "taskCompleteTask",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "claim_id",
+            "in": "path",
+            "required": true
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "content",
+                "image_urls"
+              ],
+              "properties": {
+                "content": {
+                  "type": "string"
+                },
+                "image_urls": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "is_overdue": {
+                  "type": "boolean"
+                },
+                "message": {
+                  "type": "string"
+                },
+                "reputation_deduction": {
+                  "type": "integer"
+                },
+                "reward_points": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/task/task/list": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "任务模块"
+        ],
+        "summary": "查询任务列表（所有可领取的任务）",
+        "operationId": "taskListTasks",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "cat_id",
+            "in": "query",
+            "allowEmptyValue": true
+          },
+          {
+            "type": "string",
+            "name": "status",
+            "in": "query",
+            "allowEmptyValue": true
+          },
+          {
+            "type": "string",
+            "name": "urgency_level",
+            "in": "query",
+            "allowEmptyValue": true
+          },
+          {
+            "type": "integer",
+            "name": "difficulty_level",
+            "in": "query",
+            "allowEmptyValue": true
+          },
+          {
+            "type": "string",
+            "name": "area",
+            "in": "query",
+            "allowEmptyValue": true
+          },
+          {
+            "type": "integer",
+            "name": "page",
+            "in": "query",
+            "allowEmptyValue": true
+          },
+          {
+            "type": "integer",
+            "name": "page_size",
+            "in": "query",
+            "allowEmptyValue": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "task_id",
+                      "cat_id",
+                      "cat_name",
+                      "cat_avatar",
+                      "title",
+                      "task_type",
+                      "summary",
+                      "location",
+                      "urgency_level",
+                      "difficulty_level",
+                      "reward_points",
+                      "current_claimers",
+                      "max_claimers",
+                      "status",
+                      "deadline_at",
+                      "created_at"
+                    ],
+                    "properties": {
+                      "cat_avatar": {
+                        "type": "string"
+                      },
+                      "cat_id": {
+                        "type": "integer"
+                      },
+                      "cat_name": {
+                        "type": "string"
+                      },
+                      "created_at": {
+                        "type": "string"
+                      },
+                      "current_claimers": {
+                        "type": "integer"
+                      },
+                      "deadline_at": {
+                        "type": "string"
+                      },
+                      "difficulty_level": {
+                        "type": "integer"
+                      },
+                      "location": {
+                        "type": "string"
+                      },
+                      "max_claimers": {
+                        "type": "integer"
+                      },
+                      "reward_points": {
+                        "type": "integer"
+                      },
+                      "status": {
+                        "type": "string"
+                      },
+                      "summary": {
+                        "type": "string"
+                      },
+                      "task_id": {
+                        "type": "integer"
+                      },
+                      "task_type": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "urgency_level": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "page": {
+                  "type": "integer"
+                },
+                "page_size": {
+                  "type": "integer"
+                },
+                "total": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/task/task/my-applies": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "任务模块"
+        ],
+        "summary": "查询我的任务申请列表",
+        "operationId": "taskListMyTaskApplies",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "status",
+            "in": "query",
+            "allowEmptyValue": true
+          },
+          {
+            "type": "integer",
+            "name": "page",
+            "in": "query",
+            "allowEmptyValue": true
+          },
+          {
+            "type": "integer",
+            "name": "page_size",
+            "in": "query",
+            "allowEmptyValue": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "apply_id",
+                      "cat_id",
+                      "cat_name",
+                      "cat_avatar",
+                      "title",
+                      "task_type",
+                      "status",
+                      "reject_reason",
+                      "created_at"
+                    ],
+                    "properties": {
+                      "apply_id": {
+                        "type": "integer"
+                      },
+                      "cat_avatar": {
+                        "type": "string"
+                      },
+                      "cat_id": {
+                        "type": "integer"
+                      },
+                      "cat_name": {
+                        "type": "string"
+                      },
+                      "created_at": {
+                        "type": "string"
+                      },
+                      "reject_reason": {
+                        "type": "string"
+                      },
+                      "status": {
+                        "type": "string"
+                      },
+                      "task_type": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "page": {
+                  "type": "integer"
+                },
+                "page_size": {
+                  "type": "integer"
+                },
+                "total": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/task/task/my-claimed": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "任务模块"
+        ],
+        "summary": "查询我已领取的任务列表",
+        "operationId": "taskListMyClaimedTasks",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "status",
+            "in": "query",
+            "allowEmptyValue": true
+          },
+          {
+            "type": "integer",
+            "name": "page",
+            "in": "query",
+            "allowEmptyValue": true
+          },
+          {
+            "type": "integer",
+            "name": "page_size",
+            "in": "query",
+            "allowEmptyValue": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "claim_id",
+                      "task_id",
+                      "task_title",
+                      "task_type",
+                      "cat_name",
+                      "status",
+                      "reward_points",
+                      "is_overdue",
+                      "claimed_at",
+                      "deadline_at"
+                    ],
+                    "properties": {
+                      "cat_name": {
+                        "type": "string"
+                      },
+                      "claim_id": {
+                        "type": "integer"
+                      },
+                      "claimed_at": {
+                        "type": "string"
+                      },
+                      "deadline_at": {
+                        "type": "string"
+                      },
+                      "is_overdue": {
+                        "type": "boolean"
+                      },
+                      "reward_points": {
+                        "type": "integer"
+                      },
+                      "status": {
+                        "type": "string"
+                      },
+                      "task_id": {
+                        "type": "integer"
+                      },
+                      "task_title": {
+                        "type": "string"
+                      },
+                      "task_type": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "page": {
+                  "type": "integer"
+                },
+                "page_size": {
+                  "type": "integer"
+                },
+                "total": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/task/task/my-completed": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "任务模块"
+        ],
+        "summary": "查询我已完成的任务列表",
+        "operationId": "taskListMyCompletedTasks",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "page",
+            "in": "query",
+            "allowEmptyValue": true
+          },
+          {
+            "type": "integer",
+            "name": "page_size",
+            "in": "query",
+            "allowEmptyValue": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "claim_id",
+                      "task_id",
+                      "task_title",
+                      "task_type",
+                      "cat_name",
+                      "status",
+                      "reward_points",
+                      "is_overdue",
+                      "claimed_at",
+                      "deadline_at"
+                    ],
+                    "properties": {
+                      "cat_name": {
+                        "type": "string"
+                      },
+                      "claim_id": {
+                        "type": "integer"
+                      },
+                      "claimed_at": {
+                        "type": "string"
+                      },
+                      "deadline_at": {
+                        "type": "string"
+                      },
+                      "is_overdue": {
+                        "type": "boolean"
+                      },
+                      "reward_points": {
+                        "type": "integer"
+                      },
+                      "status": {
+                        "type": "string"
+                      },
+                      "task_id": {
+                        "type": "integer"
+                      },
+                      "task_title": {
+                        "type": "string"
+                      },
+                      "task_type": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "page": {
+                  "type": "integer"
+                },
+                "page_size": {
+                  "type": "integer"
+                },
+                "total": {
+                  "type": "integer"
+                },
+                "total_points": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/task/task/{task_id}": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "任务模块"
+        ],
+        "summary": "获取任务详情",
+        "operationId": "taskGetTaskDetail",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "task_id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "cat": {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "name",
+                    "avatar",
+                    "gender",
+                    "credit_score_required"
+                  ],
+                  "properties": {
+                    "avatar": {
+                      "type": "string"
+                    },
+                    "credit_score_required": {
+                      "type": "integer"
+                    },
+                    "gender": {
+                      "type": "string"
+                    },
+                    "id": {
+                      "type": "integer"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "task": {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "cat_id",
+                    "cat_name",
+                    "cat_avatar",
+                    "apply_id",
+                    "creator_id",
+                    "creator_name",
+                    "title",
+                    "task_type",
+                    "summary",
+                    "detail",
+                    "location",
+                    "longitude",
+                    "latitude",
+                    "area",
+                    "urgency_level",
+                    "difficulty_level",
+                    "reward_points",
+                    "final_reward_points",
+                    "max_claimers",
+                    "current_claimers",
+                    "status",
+                    "remark",
+                    "deadline_at",
+                    "last_escalated_at",
+                    "escalation_count",
+                    "created_at",
+                    "updated_at",
+                    "image_urls",
+                    "tags"
+                  ],
+                  "properties": {
+                    "apply_id": {
+                      "type": "integer"
+                    },
+                    "area": {
+                      "type": "string"
+                    },
+                    "cat_avatar": {
+                      "type": "string"
+                    },
+                    "cat_id": {
+                      "type": "integer"
+                    },
+                    "cat_name": {
+                      "type": "string"
+                    },
+                    "created_at": {
+                      "type": "string"
+                    },
+                    "creator_id": {
+                      "type": "integer"
+                    },
+                    "creator_name": {
+                      "type": "string"
+                    },
+                    "current_claimers": {
+                      "type": "integer"
+                    },
+                    "deadline_at": {
+                      "type": "string"
+                    },
+                    "detail": {
+                      "type": "string"
+                    },
+                    "difficulty_level": {
+                      "type": "integer"
+                    },
+                    "escalation_count": {
+                      "type": "integer"
+                    },
+                    "final_reward_points": {
+                      "type": "integer"
+                    },
+                    "id": {
+                      "type": "integer"
+                    },
+                    "image_urls": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "last_escalated_at": {
+                      "type": "string"
+                    },
+                    "latitude": {
+                      "type": "number"
+                    },
+                    "location": {
+                      "type": "string"
+                    },
+                    "longitude": {
+                      "type": "number"
+                    },
+                    "max_claimers": {
+                      "type": "integer"
+                    },
+                    "remark": {
+                      "type": "string"
+                    },
+                    "reward_points": {
+                      "type": "integer"
+                    },
+                    "status": {
+                      "type": "string"
+                    },
+                    "summary": {
+                      "type": "string"
+                    },
+                    "tags": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "id",
+                          "name",
+                          "type",
+                          "theme"
+                        ],
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "theme": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "task_type": {
+                      "type": "string"
+                    },
+                    "title": {
+                      "type": "string"
+                    },
+                    "updated_at": {
+                      "type": "string"
+                    },
+                    "urgency_level": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/task/task/{task_id}/claim": {
+      "post": {
+        "consumes": [
+          "application/x-www-form-urlencoded"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "任务模块"
+        ],
+        "summary": "领取/认领任务",
+        "operationId": "taskClaimTask",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "task_id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "claim_id": {
+                  "type": "integer"
+                },
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/task/task/{task_id}/flows": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "任务模块"
+        ],
+        "summary": "查询任务流转记录（状态变更历史）",
+        "operationId": "taskGetTaskFlows",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "task_id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "task_id",
+                      "user_id",
+                      "user_name",
+                      "action",
+                      "from_status",
+                      "to_status",
+                      "remark",
+                      "created_at"
+                    ],
+                    "properties": {
+                      "action": {
+                        "type": "string"
+                      },
+                      "created_at": {
+                        "type": "string"
+                      },
+                      "from_status": {
+                        "type": "string"
+                      },
+                      "id": {
+                        "type": "integer"
+                      },
+                      "remark": {
+                        "type": "string"
+                      },
+                      "task_id": {
+                        "type": "integer"
+                      },
+                      "to_status": {
+                        "type": "string"
+                      },
+                      "user_id": {
+                        "type": "integer"
+                      },
+                      "user_name": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/task/task/{task_id}/logs": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "任务模块"
+        ],
+        "summary": "查询任务操作日志",
+        "operationId": "taskGetTaskLogs",
+        "parameters": [
+          {
+            "type": "integer",
+            "name": "task_id",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "task_id",
+                      "user_id",
+                      "user_name",
+                      "action",
+                      "content",
+                      "created_at"
+                    ],
+                    "properties": {
+                      "action": {
+                        "type": "string"
+                      },
+                      "content": {
+                        "type": "string"
+                      },
+                      "created_at": {
+                        "type": "string"
+                      },
+                      "id": {
+                        "type": "integer"
+                      },
+                      "task_id": {
+                        "type": "integer"
+                      },
+                      "user_id": {
+                        "type": "integer"
+                      },
+                      "user_name": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
-  "x-date": "2026-04-24 16:37:59",
+  "x-date": "2026-05-02 17:07:54",
   "x-description": "This is a goctl generated swagger file.",
   "x-github": "https://github.com/zeromicro/go-zero",
   "x-go-zero-doc": "https://go-zero.dev/",

@@ -4,6 +4,721 @@
 package types
 
 type Response struct{}
+type AbandonTaskReq struct {
+	ClaimId uint64 `path:"claim_id"`
+	Reason  string `json:"reason"`
+}
+
+type AbandonTaskResp struct {
+	Message string `json:"message"`
+}
+
+type AdoptApplicationVO struct {
+	Id                   uint64 `json:"id"`
+	CatId                uint64 `json:"cat_id"`
+	CatName              string `json:"cat_name"`
+	CatAvatar            string `json:"cat_avatar"`
+	ApplicantId          uint64 `json:"applicant_id"`
+	ApplicantName        string `json:"applicant_name"`
+	ApplyReason          string `json:"apply_reason"`
+	ContactPhone         string `json:"contact_phone"`
+	ContactWechat        string `json:"contact_wechat"`
+	ApplicantCreditScore int32  `json:"applicant_credit_score"`
+	Status               string `json:"status"`
+	RejectReason         string `json:"reject_reason"`
+	ReviewerId           uint64 `json:"reviewer_id"`
+	ReviewerName         string `json:"reviewer_name"`
+	ReviewedAt           string `json:"reviewed_at,omitempty"`
+	ApprovedAt           string `json:"approved_at,omitempty"`
+	ExpiresAt            string `json:"expires_at,omitempty"`
+	CreatedAt            string `json:"created_at"`
+	UpdatedAt            string `json:"updated_at"`
+	AdoptionId           uint64 `json:"adoption_id"`
+}
+
+type AdoptApplyItemVO struct {
+	ApplyId             uint64 `json:"apply_id"`
+	CatId               uint64 `json:"cat_id"`
+	CatName             string `json:"cat_name"`
+	CatAvatar           string `json:"cat_avatar"`
+	CatGender           string `json:"cat_gender"`
+	CreditScoreRequired int32  `json:"credit_score_required"`
+	ApplyReason         string `json:"apply_reason"`
+	Status              string `json:"status"`
+	RejectReason        string `json:"reject_reason"`
+	CreatedAt           string `json:"created_at"`
+	ExpiresAt           string `json:"expires_at,omitempty"`
+}
+
+type AdoptionItemVO struct {
+	AdoptionId  uint64 `json:"adoption_id"`
+	CatId       uint64 `json:"cat_id"`
+	CatName     string `json:"cat_name"`
+	CatAvatar   string `json:"cat_avatar"`
+	AdopterId   uint64 `json:"adopter_id"`
+	AdopterName string `json:"adopter_name"`
+	Status      string `json:"status"`
+	AgreementNo string `json:"agreement_no"`
+	AdoptedAt   string `json:"adopted_at,omitempty"`
+	IsReturned  bool   `json:"is_returned"`
+}
+
+type AdoptionVO struct {
+	Id                uint64 `json:"id"`
+	CatId             uint64 `json:"cat_id"`
+	CatName           string `json:"cat_name"`
+	CatAvatar         string `json:"cat_avatar"`
+	AdopterId         uint64 `json:"adopter_id"`
+	AdopterName       string `json:"adopter_name"`
+	Status            string `json:"status"`
+	AgreementNo       string `json:"agreement_no"`
+	AgreedAt          string `json:"agreed_at,omitempty"`
+	AdoptedAt         string `json:"adopted_at,omitempty"`
+	HomeVisitAt       string `json:"home_visit_at,omitempty"`
+	HomeVisitUserId   uint64 `json:"home_visit_user_id,omitempty"`
+	HomeVisitRemark   string `json:"home_visit_remark,omitempty"`
+	VisitOneWeekAt    string `json:"visit_one_week_at,omitempty"`
+	VisitOneMonthAt   string `json:"visit_one_month_at,omitempty"`
+	VisitThreeMonthAt string `json:"visit_three_month_at,omitempty"`
+	VisitSixMonthAt   string `json:"visit_six_month_at,omitempty"`
+	IsReturned        bool   `json:"is_returned"`
+	ReturnReason      string `json:"return_reason,omitempty"`
+	ReturnedAt        string `json:"returned_at,omitempty"`
+	Note              string `json:"note,omitempty"`
+	CreatedAt         string `json:"created_at"`
+	UpdatedAt         string `json:"updated_at"`
+}
+
+type ApplyAdoptReq struct {
+	CatId         uint64 `json:"cat_id"`
+	ApplyReason   string `json:"apply_reason"`
+	ContactPhone  string `json:"contact_phone"`
+	ContactWechat string `json:"contact_wechat"`
+}
+
+type ApplyAdoptResp struct {
+	ApplyId              uint64 `json:"apply_id"`
+	Status               string `json:"status"`
+	Message              string `json:"message"`
+	ApplicantCreditScore int32  `json:"applicant_credit_score"`
+}
+
+type ApplyCreateCatReq struct {
+	Name             string      `json:"name"`
+	Gender           string      `json:"gender"`
+	BodySize         string      `json:"body_size"`
+	AgeStage         string      `json:"age_stage"`
+	Description      string      `json:"description"`
+	DiscoveryAddress string      `json:"discovery_address"`
+	Longitude        float64     `json:"longitude"`
+	Latitude         float64     `json:"latitude"`
+	Images           []ImageItem `json:"images"`
+	TagIds           []uint64    `json:"tag_ids"`
+}
+
+type ApplyCreateCatResp struct {
+	ApplyId   uint64 `json:"apply_id"`
+	CreatedAt string `json:"created_at"`
+}
+
+type ApplyCreateTaskReq struct {
+	CatId      uint64   `json:"cat_id"`
+	Title      string   `json:"title"`
+	TaskType   string   `json:"task_type"`
+	Summary    string   `json:"summary"`
+	Detail     string   `json:"detail"`
+	Location   string   `json:"location"`
+	Longitude  float64  `json:"longitude"`
+	Latitude   float64  `json:"latitude"`
+	DeadlineAt string   `json:"deadline_at,omitempty"`
+	ImageUrls  []string `json:"image_urls"`
+	TagIds     []uint64 `json:"tag_ids"`
+}
+
+type ApplyCreateTaskResp struct {
+	ApplyId uint64 `json:"apply_id"`
+	Status  string `json:"status"`
+	Message string `json:"message"`
+}
+
+type ApplyItem struct {
+	ApplyId   uint64 `json:"apply_id"`
+	Name      string `json:"name"`
+	Status    string `json:"status"`
+	CatId     uint64 `json:"cat_id"`
+	CreatedAt string `json:"created_at"`
+}
+
+type ApproveAdoptReq struct {
+	ApplyId uint64 `json:"apply_id"`
+	Note    string `json:"note"`
+}
+
+type ApproveAdoptResp struct {
+	ApplyId   uint64 `json:"apply_id"`
+	Status    string `json:"status"`
+	Message   string `json:"message"`
+	ExpiresAt string `json:"expires_at,omitempty"`
+}
+
+type ApproveCreateCatReq struct {
+	Id                      uint64   `path:"id"`
+	CatCode                 string   `json:"cat_code"`
+	Breed                   string   `json:"breed"`
+	Color                   string   `json:"color"`
+	IsVaccinated            bool     `json:"is_vaccinated"`
+	IsHealthy               bool     `json:"is_healthy"`
+	NeedMedicalIntervention bool     `json:"need_medical_intervention"`
+	SterilizationStatus     string   `json:"sterilization_status"`
+	ExtraTagIds             []uint64 `json:"extra_tag_ids"`
+}
+
+type ApproveCreateCatResp struct {
+	CatId   uint64 `json:"cat_id"`
+	CatCode string `json:"cat_code"`
+	Status  string `json:"status"`
+}
+
+type ApproveTaskApplyReq struct {
+	ApplyId         uint64 `path:"apply_id"`
+	UrgencyLevel    string `json:"urgency_level"`
+	DifficultyLevel int32  `json:"difficulty_level"`
+	RewardPoints    int32  `json:"reward_points"`
+	MaxClaimers     int32  `json:"max_claimers"`
+	Area            string `json:"area"`
+	Remark          string `json:"remark"`
+}
+
+type ApproveTaskApplyResp struct {
+	TaskId  uint64 `json:"task_id"`
+	Message string `json:"message"`
+}
+
+type CancelAdoptApplyReq struct {
+	ApplyId uint64 `json:"apply_id"`
+	Reason  string `json:"reason"`
+}
+
+type CancelAdoptApplyResp struct {
+	Message string `json:"message"`
+}
+
+type CancelApplyCreateCatReq struct {
+	Id     uint64 `path:"id"`
+	Reason string `json:"reason"`
+}
+
+type CancelTaskApplyReq struct {
+	ApplyId uint64 `json:"apply_id"`
+	Reason  string `json:"reason"`
+}
+
+type CancelTaskApplyResp struct {
+	Message string `json:"message"`
+}
+
+type CancelTaskReq struct {
+	TaskId uint64 `path:"task_id"`
+	Reason string `json:"reason"`
+}
+
+type CancelTaskResp struct {
+	Message string `json:"message"`
+}
+
+type CatBriefVO struct {
+	Id                  uint64 `json:"id"`
+	Name                string `json:"name"`
+	Avatar              string `json:"avatar"`
+	Gender              string `json:"gender"`
+	CreditScoreRequired int32  `json:"credit_score_required"`
+}
+
+type CatInfo struct {
+	Id                      uint64  `json:"id"`
+	CatCode                 string  `json:"cat_code"`
+	Name                    string  `json:"name"`
+	Breed                   string  `json:"breed"`
+	Color                   string  `json:"color"`
+	Gender                  string  `json:"gender"`
+	BodySize                string  `json:"body_size"`
+	AgeStage                string  `json:"age_stage"`
+	Weight                  float32 `json:"weight"`
+	Character               string  `json:"character"`
+	BirthDate               string  `json:"birth_date,optional"`
+	Avatar                  string  `json:"avatar"`
+	Description             string  `json:"description"`
+	FoundAt                 string  `json:"found_at,optional"`
+	DiscoveryAddress        string  `json:"discovery_address"`
+	Longitude               float64 `json:"longitude"`
+	Latitude                float64 `json:"latitude"`
+	IsVaccinated            bool    `json:"is_vaccinated"`
+	IsHealthy               bool    `json:"is_healthy"`
+	NeedMedicalIntervention bool    `json:"need_medical_intervention"`
+	SterilizationStatus     string  `json:"sterilization_status"`
+	LastMedicalCheckAt      string  `json:"last_medical_check_at,optional"`
+	AdoptionStatus          string  `json:"adoption_status"`
+	AdopterId               uint64  `json:"adopter_id"`
+	AdoptedAt               string  `json:"adopted_at,optional"`
+	ApplyId                 uint64  `json:"apply_id"`
+	CreatorId               uint64  `json:"creator_id"`
+	CreatedAt               string  `json:"created_at"`
+	UpdatedAt               string  `json:"updated_at"`
+	Distance                float64 `json:"distance,optional"`
+}
+
+type ClaimItemVO struct {
+	ClaimId      uint64 `json:"claim_id"`
+	TaskId       uint64 `json:"task_id"`
+	TaskTitle    string `json:"task_title"`
+	TaskType     string `json:"task_type"`
+	CatName      string `json:"cat_name"`
+	Status       string `json:"status"`
+	RewardPoints int32  `json:"reward_points"`
+	IsOverdue    bool   `json:"is_overdue"`
+	ClaimedAt    string `json:"claimed_at"`
+	DeadlineAt   string `json:"deadline_at,omitempty"`
+}
+
+type ClaimTaskReq struct {
+	TaskId uint64 `path:"task_id"`
+}
+
+type ClaimTaskResp struct {
+	ClaimId uint64 `json:"claim_id"`
+	Message string `json:"message"`
+}
+
+type CompleteTaskReq struct {
+	ClaimId   uint64   `path:"claim_id"`
+	Content   string   `json:"content"`
+	ImageUrls []string `json:"image_urls"`
+}
+
+type CompleteTaskResp struct {
+	RewardPoints        int32  `json:"reward_points"`
+	IsOverdue           bool   `json:"is_overdue"`
+	ReputationDeduction int32  `json:"reputation_deduction"`
+	Message             string `json:"message"`
+}
+
+type CreateAdoptionReq struct {
+	ApplyId     uint64 `json:"apply_id"`
+	AgreementNo string `json:"agreement_no"`
+	Note        string `json:"note"`
+}
+
+type CreateAdoptionResp struct {
+	AdoptionId uint64 `json:"adoption_id"`
+	Message    string `json:"message"`
+}
+
+type DirectAdoptReq struct {
+	CatId       uint64 `json:"cat_id"`
+	AdopterId   uint64 `json:"adopter_id"`
+	AgreementNo string `json:"agreement_no"`
+	Note        string `json:"note"`
+}
+
+type DirectAdoptResp struct {
+	AdoptionId uint64 `json:"adoption_id"`
+	Message    string `json:"message"`
+}
+
+type DirectCreateCatReq struct {
+	CatCode                 string      `json:"cat_code"`
+	Name                    string      `json:"name"`
+	Breed                   string      `json:"breed"`
+	Color                   string      `json:"color"`
+	Gender                  string      `json:"gender"`
+	BodySize                string      `json:"body_size"`
+	AgeStage                string      `json:"age_stage"`
+	Description             string      `json:"description"`
+	DiscoveryAddress        string      `json:"discovery_address"`
+	Longitude               float64     `json:"longitude"`
+	Latitude                float64     `json:"latitude"`
+	IsVaccinated            bool        `json:"is_vaccinated"`
+	IsHealthy               bool        `json:"is_healthy"`
+	NeedMedicalIntervention bool        `json:"need_medical_intervention"`
+	SterilizationStatus     string      `json:"sterilization_status"`
+	Images                  []ImageItem `json:"images"`
+	TagIds                  []uint64    `json:"tag_ids"`
+}
+
+type DirectCreateCatResp struct {
+	CatId   uint64 `json:"cat_id"`
+	CatCode string `json:"cat_code"`
+}
+
+type DirectCreateTaskReq struct {
+	CatId           uint64   `json:"cat_id"`
+	Title           string   `json:"title"`
+	TaskType        string   `json:"task_type"`
+	Summary         string   `json:"summary"`
+	Detail          string   `json:"detail"`
+	Location        string   `json:"location"`
+	Longitude       float64  `json:"longitude"`
+	Latitude        float64  `json:"latitude"`
+	Area            string   `json:"area"`
+	UrgencyLevel    string   `json:"urgency_level"`
+	DifficultyLevel int32    `json:"difficulty_level"`
+	RewardPoints    int32    `json:"reward_points"`
+	MaxClaimers     int32    `json:"max_claimers"`
+	DeadlineAt      string   `json:"deadline_at,omitempty"`
+	Remark          string   `json:"remark"`
+	ImageUrls       []string `json:"image_urls"`
+	TagIds          []uint64 `json:"tag_ids"`
+}
+
+type DirectCreateTaskResp struct {
+	TaskId  uint64 `json:"task_id"`
+	Message string `json:"message"`
+}
+
+type EscalateTaskUrgencyReq struct {
+	TaskId uint64 `path:"task_id"`
+}
+
+type EscalateTaskUrgencyResp struct {
+	NewUrgencyLevel string `json:"new_urgency_level"`
+	EscalationCount int32  `json:"escalation_count"`
+	Message         string `json:"message"`
+}
+
+type GetAdoptApplyDetailReq struct {
+	ApplyId uint64 `path:"apply_id"`
+}
+
+type GetAdoptApplyDetailResp struct {
+	Apply AdoptApplicationVO `json:"apply"`
+	Cat   CatBriefVO         `json:"cat"`
+}
+
+type GetAdoptionDetailReq struct {
+	AdoptionId uint64 `path:"adoption_id"`
+}
+
+type GetAdoptionDetailResp struct {
+	Adoption AdoptionVO  `json:"adoption"`
+	Cat      CatBriefVO  `json:"cat"`
+	Adopter  UserBriefVO `json:"adopter"`
+}
+
+type GetApplyDetailReq struct {
+	Id uint64 `path:"id"`
+}
+
+type GetApplyDetailResp struct {
+	ApplyId          uint64      `json:"apply_id"`
+	CatId            uint64      `json:"cat_id"`
+	Name             string      `json:"name"`
+	Gender           string      `json:"gender"`
+	BodySize         string      `json:"body_size"`
+	AgeStage         string      `json:"age_stage"`
+	Description      string      `json:"description"`
+	DiscoveryAddress string      `json:"discovery_address"`
+	Longitude        float64     `json:"longitude"`
+	Latitude         float64     `json:"latitude"`
+	ApplicantUserId  uint64      `json:"applicant_user_id"`
+	Status           string      `json:"status"`
+	RejectReason     string      `json:"reject_reason"`
+	CancelReason     string      `json:"cancel_reason"`
+	ReviewerId       uint64      `json:"reviewer_id"`
+	Images           []ImageItem `json:"images"`
+	CreatedAt        string      `json:"created_at"`
+	UpdatedAt        string      `json:"updated_at"`
+}
+
+type GetTaskApplyDetailReq struct {
+	ApplyId uint64 `path:"apply_id"`
+}
+
+type GetTaskApplyDetailResp struct {
+	Apply TaskApplyVO `json:"apply"`
+	Cat   CatBriefVO  `json:"cat"`
+}
+
+type GetTaskDetailReq struct {
+	TaskId uint64 `path:"task_id"`
+}
+
+type GetTaskDetailResp struct {
+	Task TaskVO     `json:"task"`
+	Cat  CatBriefVO `json:"cat"`
+}
+
+type GetTaskFlowsReq struct {
+	TaskId uint64 `path:"task_id"`
+}
+
+type GetTaskFlowsResp struct {
+	Items []TaskFlowVO `json:"items"`
+}
+
+type GetTaskLogsReq struct {
+	TaskId uint64 `path:"task_id"`
+}
+
+type GetTaskLogsResp struct {
+	Items []TaskLogVO `json:"items"`
+}
+
+type ImageItem struct {
+	Url         string `json:"url"`
+	Description string `json:"description"`
+	Sort        int32  `json:"sort"`
+	IsCover     bool   `json:"is_cover"`
+}
+
+type ListAdoptionsReq struct {
+	AdopterId uint64 `form:"adopter_id,optional"`
+	CatId     uint64 `form:"cat_id,optional"`
+	Status    string `form:"status,optional"`
+	Page      int32  `form:"page,optional"`
+	PageSize  int32  `form:"page_size,optional"`
+}
+
+type ListAdoptionsResp struct {
+	Items    []AdoptionItemVO `json:"items"`
+	Total    int64            `json:"total"`
+	Page     int32            `json:"page"`
+	PageSize int32            `json:"page_size"`
+}
+
+type ListCatsReq struct {
+	Keyword                 string        `json:"keyword,optional"`                    // 关键词搜索（name/cat_code/breed/color）
+	Name                    string        `json:"name,optional"`                       // 名称模糊搜索
+	CatCode                 string        `json:"cat_code,optional"`                   // 猫咪编号精确搜索
+	Breed                   string        `json:"breed,optional"`                      // 品种
+	Color                   string        `json:"color,optional"`                      // 毛色
+	Gender                  string        `json:"gender,optional"`                     // 性别（male/female/unknown）
+	BodySize                string        `json:"body_size,optional"`                  // 体型（small/medium/large）
+	AgeStage                string        `json:"age_stage,optional"`                  // 年龄阶段（kitten/young/adult/old）
+	SterilizationStatus     string        `json:"sterilization_status,optional"`       // 绝育状态（sterilized/unsterilized）
+	AdoptionStatus          string        `json:"adoption_status,optional"`            // 领养状态（pending/adopted/unavailable）
+	IsVaccinated            *bool         `json:"is_vaccinated,optional"`              // 是否已接种疫苗
+	IsHealthy               *bool         `json:"is_healthy,optional"`                 // 是否健康
+	NeedMedicalIntervention *bool         `json:"need_medical_intervention,optional"`  // 是否需要医疗干预
+	Nearby                  *NearbyFilter `json:"nearby,optional"`                     // 附近查找条件
+	AdopterID               uint64        `json:"adopter_id,optional"`                 // 领养人ID
+	CreatorID               uint64        `json:"creator_id,optional"`                 // 创建人ID
+	ApplyID                 uint64        `json:"apply_id,optional"`                   // 申请单ID
+	FoundAtStart            string        `json:"found_at_start,optional"`             // 发现开始时间
+	FoundAtEnd              string        `json:"found_at_end,optional"`               // 发现结束时间
+	CreatedAtStart          string        `json:"created_at_start,optional"`           // 创建开始时间
+	CreatedAtEnd            string        `json:"created_at_end,optional"`             // 创建结束时间
+	Page                    int32         `json:"page,optional,default=1"`             // 页码（默认1）
+	PageSize                int32         `json:"page_size,optional,default=20"`       // 每页数量（默认20，最大100）
+	SortBy                  string        `json:"sort_by,optional,default=created_at"` // 排序字段（id/created_at/found_at/updated_at/distance）
+	SortOrder               string        `json:"sort_order,optional,default=desc"`    // 排序方向（asc/desc）
+}
+
+type ListCatsResp struct {
+	Total int64     `json:"total"` // 总数
+	List  []CatInfo `json:"list"`  // 小猫列表
+}
+
+type ListMyAdoptAppliesReq struct {
+	Status   string `form:"status,optional"`
+	Page     int32  `form:"page,optional"`
+	PageSize int32  `form:"page_size,optional"`
+}
+
+type ListMyAdoptAppliesResp struct {
+	Items    []AdoptApplyItemVO `json:"items"`
+	Total    int64              `json:"total"`
+	Page     int32              `json:"page"`
+	PageSize int32              `json:"page_size"`
+}
+
+type ListMyAdoptionsReq struct {
+	Page     int32 `form:"page,optional"`
+	PageSize int32 `form:"page_size,optional"`
+}
+
+type ListMyAppliesReq struct {
+	Status   string `form:"status,optional"`
+	Page     int32  `form:"page,default=1"`
+	PageSize int32  `form:"page_size,default=20"`
+}
+
+type ListMyAppliesResp struct {
+	List  []ApplyItem `json:"list"`
+	Total int64       `json:"total"`
+}
+
+type ListMyClaimedTasksReq struct {
+	Status   string `form:"status,optional"`
+	Page     int32  `form:"page,optional"`
+	PageSize int32  `form:"page_size,optional"`
+}
+
+type ListMyClaimedTasksResp struct {
+	Items    []ClaimItemVO `json:"items"`
+	Total    int64         `json:"total"`
+	Page     int32         `json:"page"`
+	PageSize int32         `json:"page_size"`
+}
+
+type ListMyCompletedTasksReq struct {
+	Page     int32 `form:"page,optional"`
+	PageSize int32 `form:"page_size,optional"`
+}
+
+type ListMyCompletedTasksResp struct {
+	Items       []ClaimItemVO `json:"items"`
+	Total       int64         `json:"total"`
+	TotalPoints int32         `json:"total_points"`
+	Page        int32         `json:"page"`
+	PageSize    int32         `json:"page_size"`
+}
+
+type ListMyTaskAppliesReq struct {
+	Status   string `form:"status,optional"`
+	Page     int32  `form:"page,optional"`
+	PageSize int32  `form:"page_size,optional"`
+}
+
+type ListMyTaskAppliesResp struct {
+	Items    []TaskApplyItemVO `json:"items"`
+	Total    int64             `json:"total"`
+	Page     int32             `json:"page"`
+	PageSize int32             `json:"page_size"`
+}
+
+type ListPendingAdoptAppliesReq struct {
+	CatId    uint64 `form:"cat_id,optional"`
+	Page     int32  `form:"page,optional"`
+	PageSize int32  `form:"page_size,optional"`
+}
+
+type ListPendingAdoptAppliesResp struct {
+	Items    []PendingApplyVO `json:"items"`
+	Total    int64            `json:"total"`
+	Page     int32            `json:"page"`
+	PageSize int32            `json:"page_size"`
+}
+
+type ListPendingAppliesReq struct {
+	Keyword  string `form:"keyword,optional"`
+	Page     int32  `form:"page,default=1"`
+	PageSize int32  `form:"page_size,default=20"`
+}
+
+type ListPendingAppliesResp struct {
+	List  []PendingApplyItem `json:"list"`
+	Total int64              `json:"total"`
+}
+
+type ListPendingTaskAppliesReq struct {
+	CatId    uint64 `form:"cat_id,optional"`
+	Page     int32  `form:"page,optional"`
+	PageSize int32  `form:"page_size,optional"`
+}
+
+type ListPendingTaskAppliesResp struct {
+	Items    []TaskApplyVO `json:"items"`
+	Total    int64         `json:"total"`
+	Page     int32         `json:"page"`
+	PageSize int32         `json:"page_size"`
+}
+
+type ListTasksReq struct {
+	CatId           uint64 `form:"cat_id,optional"`
+	Status          string `form:"status,optional"`
+	UrgencyLevel    string `form:"urgency_level,optional"`
+	DifficultyLevel int32  `form:"difficulty_level,optional"`
+	Area            string `form:"area,optional"`
+	Page            int32  `form:"page,optional"`
+	PageSize        int32  `form:"page_size,optional"`
+}
+
+type ListTasksResp struct {
+	Items    []TaskItemVO `json:"items"`
+	Total    int64        `json:"total"`
+	Page     int32        `json:"page"`
+	PageSize int32        `json:"page_size"`
+}
+
+type NearbyFilter struct {
+	Latitude  float64 `json:"latitude"`  // 纬度
+	Longitude float64 `json:"longitude"` // 经度
+	Radius    float64 `json:"radius"`    // 半径（公里，默认5km，最大50km）
+}
+
+type PendingApplyItem struct {
+	ApplyId          uint64 `json:"apply_id"`
+	Name             string `json:"name"`
+	Gender           string `json:"gender"`
+	AgeStage         string `json:"age_stage"`
+	DiscoveryAddress string `json:"discovery_address"`
+	ApplicantUserId  uint64 `json:"applicant_user_id"`
+	CreatedAt        string `json:"created_at"`
+}
+
+type PendingApplyVO struct {
+	ApplyId              uint64 `json:"apply_id"`
+	CatId                uint64 `json:"cat_id"`
+	CatName              string `json:"cat_name"`
+	CatAvatar            string `json:"cat_avatar"`
+	CatGender            string `json:"cat_gender"`
+	CreditScoreRequired  int32  `json:"credit_score_required"`
+	ApplicantId          uint64 `json:"applicant_id"`
+	ApplicantName        string `json:"applicant_name"`
+	ApplicantAvatar      string `json:"applicant_avatar"`
+	ApplicantCreditScore int32  `json:"applicant_credit_score"`
+	ApplyReason          string `json:"apply_reason"`
+	ContactPhone         string `json:"contact_phone"`
+	ContactWechat        string `json:"contact_wechat"`
+	CreatedAt            string `json:"created_at"`
+}
+
+type RecordFollowUpVisitReq struct {
+	AdoptionId uint64 `json:"adoption_id"`
+	VisitType  int32  `json:"visit_type"`
+	Remark     string `json:"remark"`
+	Photos     string `json:"photos"`
+}
+
+type RecordFollowUpVisitResp struct {
+	Message string `json:"message"`
+}
+
+type RecordHomeVisitReq struct {
+	AdoptionId uint64 `json:"adoption_id"`
+	Remark     string `json:"remark"`
+	Photos     string `json:"photos"`
+}
+
+type RecordHomeVisitResp struct {
+	Message string `json:"message"`
+}
+
+type RejectAdoptReq struct {
+	ApplyId      uint64 `json:"apply_id"`
+	RejectReason string `json:"reject_reason"`
+}
+
+type RejectAdoptResp struct {
+	Message string `json:"message"`
+}
+
+type RejectCreateCatReq struct {
+	Id     uint64 `path:"id"`
+	Reason string `json:"reason"`
+}
+
+type RejectTaskApplyReq struct {
+	ApplyId      uint64 `path:"apply_id"`
+	RejectReason string `json:"reject_reason"`
+}
+
+type RejectTaskApplyResp struct {
+	Message string `json:"message"`
+}
+
+type Response struct {
+}
 
 type SendVerificationCodeReq struct {
 	Target  string `json:"target"` // phone or email
@@ -75,9 +790,177 @@ type UpdateUserInfoReq struct {
 	Avatar   *string `json:"avatar,omitempty"`
 	Phone    *string `json:"phone,omitempty"`
 	Area     *string `json:"area,omitempty"`
+type TagVO struct {
+	Id    uint64 `json:"id"`
+	Name  string `json:"name"`
+	Type  string `json:"type"`
+	Theme string `json:"theme"`
+}
+
+type TaskApplyItemVO struct {
+	ApplyId      uint64 `json:"apply_id"`
+	CatId        uint64 `json:"cat_id"`
+	CatName      string `json:"cat_name"`
+	CatAvatar    string `json:"cat_avatar"`
+	Title        string `json:"title"`
+	TaskType     string `json:"task_type"`
+	Status       string `json:"status"`
+	RejectReason string `json:"reject_reason"`
+	CreatedAt    string `json:"created_at"`
+}
+
+type TaskApplyVO struct {
+	Id              uint64   `json:"id"`
+	CatId           uint64   `json:"cat_id"`
+	CatName         string   `json:"cat_name"`
+	CatAvatar       string   `json:"cat_avatar"`
+	ApplicantUserId uint64   `json:"applicant_user_id"`
+	ApplicantName   string   `json:"applicant_name"`
+	ApplicantAvatar string   `json:"applicant_avatar"`
+	Title           string   `json:"title"`
+	TaskType        string   `json:"task_type"`
+	Summary         string   `json:"summary"`
+	Detail          string   `json:"detail"`
+	Location        string   `json:"location"`
+	Longitude       float64  `json:"longitude"`
+	Latitude        float64  `json:"latitude"`
+	Status          string   `json:"status"`
+	ReviewerId      uint64   `json:"reviewer_id"`
+	ReviewerName    string   `json:"reviewer_name"`
+	ReviewedAt      string   `json:"reviewed_at,omitempty"`
+	RejectReason    string   `json:"reject_reason"`
+	UrgencyLevel    string   `json:"urgency_level"`
+	DifficultyLevel int32    `json:"difficulty_level"`
+	RewardPoints    int32    `json:"reward_points"`
+	TaskId          uint64   `json:"task_id"`
+	DeadlineAt      string   `json:"deadline_at,omitempty"`
+	CreatedAt       string   `json:"created_at"`
+	UpdatedAt       string   `json:"updated_at"`
+	ImageUrls       []string `json:"image_urls"`
+	Tags            []TagVO  `json:"tags"`
+}
+
+type TaskFlowVO struct {
+	Id         uint64 `json:"id"`
+	TaskId     uint64 `json:"task_id"`
+	UserId     uint64 `json:"user_id"`
+	UserName   string `json:"user_name"`
+	Action     string `json:"action"`
+	FromStatus string `json:"from_status"`
+	ToStatus   string `json:"to_status"`
+	Remark     string `json:"remark"`
+	CreatedAt  string `json:"created_at"`
+}
+
+type TaskItemVO struct {
+	TaskId          uint64 `json:"task_id"`
+	CatId           uint64 `json:"cat_id"`
+	CatName         string `json:"cat_name"`
+	CatAvatar       string `json:"cat_avatar"`
+	Title           string `json:"title"`
+	TaskType        string `json:"task_type"`
+	Summary         string `json:"summary"`
+	Location        string `json:"location"`
+	UrgencyLevel    string `json:"urgency_level"`
+	DifficultyLevel int32  `json:"difficulty_level"`
+	RewardPoints    int32  `json:"reward_points"`
+	CurrentClaimers int32  `json:"current_claimers"`
+	MaxClaimers     int32  `json:"max_claimers"`
+	Status          string `json:"status"`
+	DeadlineAt      string `json:"deadline_at,omitempty"`
+	CreatedAt       string `json:"created_at"`
+}
+
+type TaskLogVO struct {
+	Id        uint64 `json:"id"`
+	TaskId    uint64 `json:"task_id"`
+	UserId    uint64 `json:"user_id"`
+	UserName  string `json:"user_name"`
+	Action    string `json:"action"`
+	Content   string `json:"content"`
+	CreatedAt string `json:"created_at"`
+}
+
+type TaskVO struct {
+	Id                uint64   `json:"id"`
+	CatId             uint64   `json:"cat_id"`
+	CatName           string   `json:"cat_name"`
+	CatAvatar         string   `json:"cat_avatar"`
+	ApplyId           uint64   `json:"apply_id"`
+	CreatorId         uint64   `json:"creator_id"`
+	CreatorName       string   `json:"creator_name"`
+	Title             string   `json:"title"`
+	TaskType          string   `json:"task_type"`
+	Summary           string   `json:"summary"`
+	Detail            string   `json:"detail"`
+	Location          string   `json:"location"`
+	Longitude         float64  `json:"longitude"`
+	Latitude          float64  `json:"latitude"`
+	Area              string   `json:"area"`
+	UrgencyLevel      string   `json:"urgency_level"`
+	DifficultyLevel   int32    `json:"difficulty_level"`
+	RewardPoints      int32    `json:"reward_points"`
+	FinalRewardPoints int32    `json:"final_reward_points"`
+	MaxClaimers       int32    `json:"max_claimers"`
+	CurrentClaimers   int32    `json:"current_claimers"`
+	Status            string   `json:"status"`
+	Remark            string   `json:"remark"`
+	DeadlineAt        string   `json:"deadline_at,omitempty"`
+	LastEscalatedAt   string   `json:"last_escalated_at,omitempty"`
+	EscalationCount   int32    `json:"escalation_count"`
+	CreatedAt         string   `json:"created_at"`
+	UpdatedAt         string   `json:"updated_at"`
+	ImageUrls         []string `json:"image_urls"`
+	Tags              []TagVO  `json:"tags"`
+}
+
+type TestReq struct {
 }
 
 type AdminUpdateUserServiceTypesReq struct {
 	UserId       int64    `path:"userId"`
 	ServiceTypes []string `json:"serviceTypes"`
+}
+
+type UpdateAdoptionReq struct {
+	AdoptionId  uint64 `json:"adoption_id"`
+	AgreementNo string `json:"agreement_no"`
+	Note        string `json:"note"`
+}
+
+type UpdateAdoptionResp struct {
+	Message string `json:"message"`
+}
+
+type UpdateReturnStatusReq struct {
+	AdoptionId       uint64 `json:"adoption_id"`
+	Returned         bool   `json:"returned"`
+	ReturnedToUserId uint64 `json:"returned_to_user_id"`
+	ReturnReason     string `json:"return_reason"`
+	Photos           string `json:"photos"`
+}
+
+type UpdateReturnStatusResp struct {
+	Message string `json:"message"`
+}
+
+type UpdateTaskReq struct {
+	TaskId          uint64 `path:"task_id"`
+	Title           string `json:"title"`
+	Summary         string `json:"summary"`
+	Detail          string `json:"detail"`
+	DifficultyLevel int32  `json:"difficulty_level"`
+	RewardPoints    int32  `json:"reward_points"`
+	DeadlineAt      string `json:"deadline_at,omitempty"`
+	Remark          string `json:"remark"`
+}
+
+type UpdateTaskResp struct {
+	Message string `json:"message"`
+}
+
+type UserBriefVO struct {
+	Id     uint64 `json:"id"`
+	Name   string `json:"name"`
+	Avatar string `json:"avatar"`
 }
