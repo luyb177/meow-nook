@@ -68,7 +68,6 @@ const (
 	CatService_DetectHotspots_FullMethodName          = "/cat.CatService/DetectHotspots"
 	CatService_PlanRoute_FullMethodName               = "/cat.CatService/PlanRoute"
 	CatService_GetPriorityCats_FullMethodName         = "/cat.CatService/GetPriorityCats"
-	CatService_DispatchTasks_FullMethodName           = "/cat.CatService/DispatchTasks"
 )
 
 // CatServiceClient is the client API for CatService service.
@@ -166,8 +165,6 @@ type CatServiceClient interface {
 	PlanRoute(ctx context.Context, in *PlanRouteRequest, opts ...grpc.CallOption) (*PlanRouteResponse, error)
 	// 优先级评分
 	GetPriorityCats(ctx context.Context, in *GetPriorityCatsRequest, opts ...grpc.CallOption) (*GetPriorityCatsResponse, error)
-	// 多志愿者任务分配
-	DispatchTasks(ctx context.Context, in *DispatchTasksRequest, opts ...grpc.CallOption) (*DispatchTasksResponse, error)
 }
 
 type catServiceClient struct {
@@ -668,16 +665,6 @@ func (c *catServiceClient) GetPriorityCats(ctx context.Context, in *GetPriorityC
 	return out, nil
 }
 
-func (c *catServiceClient) DispatchTasks(ctx context.Context, in *DispatchTasksRequest, opts ...grpc.CallOption) (*DispatchTasksResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(DispatchTasksResponse)
-	err := c.cc.Invoke(ctx, CatService_DispatchTasks_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 // CatServiceServer is the server API for CatService service.
 // All implementations must embed UnimplementedCatServiceServer
 // for forward compatibility.
@@ -773,8 +760,6 @@ type CatServiceServer interface {
 	PlanRoute(context.Context, *PlanRouteRequest) (*PlanRouteResponse, error)
 	// 优先级评分
 	GetPriorityCats(context.Context, *GetPriorityCatsRequest) (*GetPriorityCatsResponse, error)
-	// 多志愿者任务分配
-	DispatchTasks(context.Context, *DispatchTasksRequest) (*DispatchTasksResponse, error)
 	mustEmbedUnimplementedCatServiceServer()
 }
 
@@ -931,9 +916,6 @@ func (UnimplementedCatServiceServer) PlanRoute(context.Context, *PlanRouteReques
 }
 func (UnimplementedCatServiceServer) GetPriorityCats(context.Context, *GetPriorityCatsRequest) (*GetPriorityCatsResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method GetPriorityCats not implemented")
-}
-func (UnimplementedCatServiceServer) DispatchTasks(context.Context, *DispatchTasksRequest) (*DispatchTasksResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method DispatchTasks not implemented")
 }
 func (UnimplementedCatServiceServer) mustEmbedUnimplementedCatServiceServer() {}
 func (UnimplementedCatServiceServer) testEmbeddedByValue()                    {}
@@ -1838,24 +1820,6 @@ func _CatService_GetPriorityCats_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
-func _CatService_DispatchTasks_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(DispatchTasksRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(CatServiceServer).DispatchTasks(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: CatService_DispatchTasks_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CatServiceServer).DispatchTasks(ctx, req.(*DispatchTasksRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 // CatService_ServiceDesc is the grpc.ServiceDesc for CatService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -2058,10 +2022,6 @@ var CatService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetPriorityCats",
 			Handler:    _CatService_GetPriorityCats_Handler,
-		},
-		{
-			MethodName: "DispatchTasks",
-			Handler:    _CatService_DispatchTasks_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

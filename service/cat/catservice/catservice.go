@@ -228,8 +228,6 @@ type (
 		PlanRoute(ctx context.Context, in *PlanRouteRequest, opts ...grpc.CallOption) (*PlanRouteResponse, error)
 		// 优先级评分
 		GetPriorityCats(ctx context.Context, in *GetPriorityCatsRequest, opts ...grpc.CallOption) (*GetPriorityCatsResponse, error)
-		// 多志愿者任务分配
-		DispatchTasks(ctx context.Context, in *DispatchTasksRequest, opts ...grpc.CallOption) (*DispatchTasksResponse, error)
 	}
 
 	defaultCatService struct {
@@ -528,10 +526,4 @@ func (m *defaultCatService) PlanRoute(ctx context.Context, in *PlanRouteRequest,
 func (m *defaultCatService) GetPriorityCats(ctx context.Context, in *GetPriorityCatsRequest, opts ...grpc.CallOption) (*GetPriorityCatsResponse, error) {
 	client := v1.NewCatServiceClient(m.cli.Conn())
 	return client.GetPriorityCats(ctx, in, opts...)
-}
-
-// 多志愿者任务分配
-func (m *defaultCatService) DispatchTasks(ctx context.Context, in *DispatchTasksRequest, opts ...grpc.CallOption) (*DispatchTasksResponse, error) {
-	client := v1.NewCatServiceClient(m.cli.Conn())
-	return client.DispatchTasks(ctx, in, opts...)
 }

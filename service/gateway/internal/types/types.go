@@ -12,6 +12,11 @@ type AbandonTaskResp struct {
 	Message string `json:"message"`
 }
 
+type AdminUpdateUserServiceTypesReq struct {
+	UserId       int64    `path:"userId"`
+	ServiceTypes []string `json:"serviceTypes"`
+}
+
 type AdoptApplicationVO struct {
 	Id                   uint64 `json:"id"`
 	CatId                uint64 `json:"cat_id"`
@@ -86,6 +91,17 @@ type AdoptionVO struct {
 	Note              string `json:"note,omitempty"`
 	CreatedAt         string `json:"created_at"`
 	UpdatedAt         string `json:"updated_at"`
+}
+
+type AiReviewTaskReq struct {
+	TaskId  string `json:"taskId"`
+	Content string `json:"content,omitempty"`
+}
+
+type AiReviewTaskResp struct {
+	StatusCode int32       `json:"statusCode"`
+	Result     interface{} `json:"result,omitempty"`
+	Raw        string      `json:"raw,omitempty"`
 }
 
 type ApplyAdoptReq struct {
@@ -758,7 +774,8 @@ type RegisterReq struct {
 }
 
 type RegisterResp struct {
-	UserId int64 `json:"userId"`
+	UserId int64  `json:"userId"`
+	Token  string `json:"token"`
 }
 
 type RejectAdoptReq struct {
@@ -958,6 +975,13 @@ type UpdateTaskReq struct {
 
 type UpdateTaskResp struct {
 	Message string `json:"message"`
+}
+
+type UpdateUserInfoReq struct {
+	Username *string `json:"username,omitempty"`
+	Avatar   *string `json:"avatar,omitempty"`
+	Phone    *string `json:"phone,omitempty"`
+	Area     *string `json:"area,omitempty"`
 }
 
 type UserBriefVO struct {

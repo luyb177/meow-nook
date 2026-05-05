@@ -11,16 +11,16 @@ import (
 	"github.com/zeromicro/go-zero/rest/httpx"
 )
 
-func AIReviewTaskHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
+func AiReviewTaskHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var req types.AIReviewTaskReq
+		var req types.AiReviewTaskReq
 		if err := httpx.Parse(r, &req); err != nil {
 			httpresp.JsonBaseResponseCtx(r.Context(), w, errorx.Wrap(errorx.CodeBadRequest, "请求参数错误", err))
 			return
 		}
 
 		l := admin.NewAIReviewTaskLogic(r.Context(), svcCtx)
-		resp, err := l.AIReviewTask(&req)
+		resp, err := l.AiReviewTask(&req)
 		if err != nil {
 			httpresp.JsonBaseResponseCtx(r.Context(), w, err)
 		} else {

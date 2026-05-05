@@ -42,7 +42,8 @@ type (
 		Password string `json:"password"`
 	}
 	RegisterResp {
-		UserId int64 `json:"userId"`
+		UserId int64  `json:"userId"`
+		Token  string `json:"token"`
 	}
 	LoginReq {
 		Email    string `json:"email"`
@@ -1242,5 +1243,43 @@ service gateway {
 	@doc "获取需要优先救助的猫咪列表"
 	@handler GetPriorityCats
 	post /priority/cats (GetPriorityCatsReq) returns (GetPriorityCatsResp)
+}
+
+type AiReviewTaskReq {
+	TaskId  string `json:"taskId"`
+	Content string `json:"content,omitempty"`
+}
+
+type AiReviewTaskResp {
+	StatusCode int32       `json:"statusCode"`
+	Result     interface{} `json:"result,omitempty"`
+	Raw        string      `json:"raw,omitempty"`
+}
+
+type UpdateUserInfoReq {
+	Username *string `json:"username,omitempty"`
+	Avatar   *string `json:"avatar,omitempty"`
+	Phone    *string `json:"phone,omitempty"`
+	Area     *string `json:"area,omitempty"`
+}
+
+type AdminUpdateUserServiceTypesReq {
+	UserId       int64    `path:"userId"`
+	ServiceTypes []string `json:"serviceTypes"`
+}
+
+@server (
+	prefix: /api/v1/admin
+	tags:   "管理员相关"
+	group:  admin
+)
+service gateway {
+	@doc "AI辅助审核任务申请"
+	@handler AiReviewTask
+	post /task/apply/:apply_id/ai-review (AiReviewTaskReq) returns (AiReviewTaskResp)
+
+	@doc "更新用户服务类型"
+	@handler UpdateUserServiceTypes
+	post /user/:user_id/service-types (UpdateUserInfoReq) returns (AdminUpdateUserServiceTypesReq)
 }
 

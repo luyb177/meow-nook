@@ -10494,7 +10494,7 @@ const file_pb_cat_v1_cat_proto_rawDesc = "" +
 	"\x0funassigned_cats\x18\x03 \x01(\x05R\x0eunassignedCats\x1aX\n" +
 	"\x10AssignmentsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\x04R\x03key\x12.\n" +
-	"\x05value\x18\x02 \x01(\v2\x18.cat.VolunteerAssignmentR\x05value:\x028\x012\xeb\x1d\n" +
+	"\x05value\x18\x02 \x01(\v2\x18.cat.VolunteerAssignmentR\x05value:\x028\x012\xa3\x1d\n" +
 	"\n" +
 	"CatService\x12I\n" +
 	"\x0eApplyCreateCat\x12\x1a.cat.ApplyCreateCatRequest\x1a\x1b.cat.ApplyCreateCatResponse\x12G\n" +
@@ -10548,8 +10548,7 @@ const file_pb_cat_v1_cat_proto_rawDesc = "" +
 	"\vGetTaskLogs\x12\x17.cat.GetTaskLogsRequest\x1a\x18.cat.GetTaskLogsResponse\x12I\n" +
 	"\x0eDetectHotspots\x12\x1a.cat.DetectHotspotsRequest\x1a\x1b.cat.DetectHotspotsResponse\x12:\n" +
 	"\tPlanRoute\x12\x15.cat.PlanRouteRequest\x1a\x16.cat.PlanRouteResponse\x12L\n" +
-	"\x0fGetPriorityCats\x12\x1b.cat.GetPriorityCatsRequest\x1a\x1c.cat.GetPriorityCatsResponse\x12F\n" +
-	"\rDispatchTasks\x12\x19.cat.DispatchTasksRequest\x1a\x1a.cat.DispatchTasksResponseB\rZ\v./pb/cat/v1b\x06proto3"
+	"\x0fGetPriorityCats\x12\x1b.cat.GetPriorityCatsRequest\x1a\x1c.cat.GetPriorityCatsResponseB\rZ\v./pb/cat/v1b\x06proto3"
 
 var (
 	file_pb_cat_v1_cat_proto_rawDescOnce sync.Once
@@ -10820,59 +10819,57 @@ var file_pb_cat_v1_cat_proto_depIdxs = []int32{
 	106, // 126: cat.CatService.DetectHotspots:input_type -> cat.DetectHotspotsRequest
 	109, // 127: cat.CatService.PlanRoute:input_type -> cat.PlanRouteRequest
 	112, // 128: cat.CatService.GetPriorityCats:input_type -> cat.GetPriorityCatsRequest
-	116, // 129: cat.CatService.DispatchTasks:input_type -> cat.DispatchTasksRequest
-	3,   // 130: cat.CatService.ApplyCreateCat:output_type -> cat.ApplyCreateCatResponse
-	0,   // 131: cat.CatService.CancelApplyCreateCat:output_type -> cat.Response
-	11,  // 132: cat.CatService.GetApplyDetail:output_type -> cat.GetApplyDetailResponse
-	13,  // 133: cat.CatService.ListMyApplies:output_type -> cat.ListMyAppliesResponse
-	6,   // 134: cat.CatService.ApproveCreateCat:output_type -> cat.ApproveCreateCatResponse
-	0,   // 135: cat.CatService.RejectCreateCat:output_type -> cat.Response
-	9,   // 136: cat.CatService.DirectCreateCat:output_type -> cat.DirectCreateCatResponse
-	15,  // 137: cat.CatService.ListPendingApplies:output_type -> cat.ListPendingAppliesResponse
-	18,  // 138: cat.CatService.ListCats:output_type -> cat.ListCatsResp
-	21,  // 139: cat.CatService.ApplyAdopt:output_type -> cat.ApplyAdoptResponse
-	23,  // 140: cat.CatService.CancelAdoptApply:output_type -> cat.CancelAdoptApplyResponse
-	26,  // 141: cat.CatService.GetAdoptApplyDetail:output_type -> cat.GetAdoptApplyDetailResponse
-	30,  // 142: cat.CatService.ListMyAdoptApplies:output_type -> cat.ListMyAdoptAppliesResponse
-	47,  // 143: cat.CatService.ListMyAdoptions:output_type -> cat.ListAdoptionsResponse
-	53,  // 144: cat.CatService.CompleteVisit:output_type -> cat.RecordFollowUpVisitResponse
-	32,  // 145: cat.CatService.ApproveAdopt:output_type -> cat.ApproveAdoptResponse
-	34,  // 146: cat.CatService.RejectAdopt:output_type -> cat.RejectAdoptResponse
-	37,  // 147: cat.CatService.ListPendingAdoptApplies:output_type -> cat.ListPendingAdoptAppliesResponse
-	39,  // 148: cat.CatService.CreateAdoption:output_type -> cat.CreateAdoptionResponse
-	41,  // 149: cat.CatService.DirectAdopt:output_type -> cat.DirectAdoptResponse
-	44,  // 150: cat.CatService.GetAdoptionDetail:output_type -> cat.GetAdoptionDetailResponse
-	47,  // 151: cat.CatService.ListAdoptions:output_type -> cat.ListAdoptionsResponse
-	49,  // 152: cat.CatService.UpdateAdoption:output_type -> cat.UpdateAdoptionResponse
-	51,  // 153: cat.CatService.RecordHomeVisit:output_type -> cat.RecordHomeVisitResponse
-	53,  // 154: cat.CatService.RecordFollowUpVisit:output_type -> cat.RecordFollowUpVisitResponse
-	55,  // 155: cat.CatService.UpdateReturnStatus:output_type -> cat.UpdateReturnStatusResponse
-	59,  // 156: cat.CatService.ApplyCreateTask:output_type -> cat.ApplyCreateTaskResponse
-	61,  // 157: cat.CatService.CancelTaskApply:output_type -> cat.CancelTaskApplyResponse
-	64,  // 158: cat.CatService.GetTaskApplyDetail:output_type -> cat.GetTaskApplyDetailResponse
-	66,  // 159: cat.CatService.ListMyTaskApplies:output_type -> cat.ListMyTaskAppliesResponse
-	89,  // 160: cat.CatService.ClaimTask:output_type -> cat.ClaimTaskResponse
-	91,  // 161: cat.CatService.AbandonTask:output_type -> cat.AbandonTaskResponse
-	93,  // 162: cat.CatService.CompleteTask:output_type -> cat.CompleteTaskResponse
-	78,  // 163: cat.CatService.GetTaskDetail:output_type -> cat.GetTaskDetailResponse
-	80,  // 164: cat.CatService.ListTasks:output_type -> cat.ListTasksResponse
-	95,  // 165: cat.CatService.ListMyClaimedTasks:output_type -> cat.ListMyClaimedTasksResponse
-	98,  // 166: cat.CatService.ListMyCompletedTasks:output_type -> cat.ListMyCompletedTasksResponse
-	69,  // 167: cat.CatService.ApproveTaskApply:output_type -> cat.ApproveTaskApplyResponse
-	71,  // 168: cat.CatService.RejectTaskApply:output_type -> cat.RejectTaskApplyResponse
-	73,  // 169: cat.CatService.ListPendingTaskApplies:output_type -> cat.ListPendingTaskAppliesResponse
-	75,  // 170: cat.CatService.DirectCreateTask:output_type -> cat.DirectCreateTaskResponse
-	83,  // 171: cat.CatService.UpdateTask:output_type -> cat.UpdateTaskResponse
-	85,  // 172: cat.CatService.CancelTask:output_type -> cat.CancelTaskResponse
-	87,  // 173: cat.CatService.EscalateTaskUrgency:output_type -> cat.EscalateTaskUrgencyResponse
-	100, // 174: cat.CatService.GetTaskFlows:output_type -> cat.GetTaskFlowsResponse
-	103, // 175: cat.CatService.GetTaskLogs:output_type -> cat.GetTaskLogsResponse
-	108, // 176: cat.CatService.DetectHotspots:output_type -> cat.DetectHotspotsResponse
-	111, // 177: cat.CatService.PlanRoute:output_type -> cat.PlanRouteResponse
-	114, // 178: cat.CatService.GetPriorityCats:output_type -> cat.GetPriorityCatsResponse
-	118, // 179: cat.CatService.DispatchTasks:output_type -> cat.DispatchTasksResponse
-	130, // [130:180] is the sub-list for method output_type
-	80,  // [80:130] is the sub-list for method input_type
+	3,   // 129: cat.CatService.ApplyCreateCat:output_type -> cat.ApplyCreateCatResponse
+	0,   // 130: cat.CatService.CancelApplyCreateCat:output_type -> cat.Response
+	11,  // 131: cat.CatService.GetApplyDetail:output_type -> cat.GetApplyDetailResponse
+	13,  // 132: cat.CatService.ListMyApplies:output_type -> cat.ListMyAppliesResponse
+	6,   // 133: cat.CatService.ApproveCreateCat:output_type -> cat.ApproveCreateCatResponse
+	0,   // 134: cat.CatService.RejectCreateCat:output_type -> cat.Response
+	9,   // 135: cat.CatService.DirectCreateCat:output_type -> cat.DirectCreateCatResponse
+	15,  // 136: cat.CatService.ListPendingApplies:output_type -> cat.ListPendingAppliesResponse
+	18,  // 137: cat.CatService.ListCats:output_type -> cat.ListCatsResp
+	21,  // 138: cat.CatService.ApplyAdopt:output_type -> cat.ApplyAdoptResponse
+	23,  // 139: cat.CatService.CancelAdoptApply:output_type -> cat.CancelAdoptApplyResponse
+	26,  // 140: cat.CatService.GetAdoptApplyDetail:output_type -> cat.GetAdoptApplyDetailResponse
+	30,  // 141: cat.CatService.ListMyAdoptApplies:output_type -> cat.ListMyAdoptAppliesResponse
+	47,  // 142: cat.CatService.ListMyAdoptions:output_type -> cat.ListAdoptionsResponse
+	53,  // 143: cat.CatService.CompleteVisit:output_type -> cat.RecordFollowUpVisitResponse
+	32,  // 144: cat.CatService.ApproveAdopt:output_type -> cat.ApproveAdoptResponse
+	34,  // 145: cat.CatService.RejectAdopt:output_type -> cat.RejectAdoptResponse
+	37,  // 146: cat.CatService.ListPendingAdoptApplies:output_type -> cat.ListPendingAdoptAppliesResponse
+	39,  // 147: cat.CatService.CreateAdoption:output_type -> cat.CreateAdoptionResponse
+	41,  // 148: cat.CatService.DirectAdopt:output_type -> cat.DirectAdoptResponse
+	44,  // 149: cat.CatService.GetAdoptionDetail:output_type -> cat.GetAdoptionDetailResponse
+	47,  // 150: cat.CatService.ListAdoptions:output_type -> cat.ListAdoptionsResponse
+	49,  // 151: cat.CatService.UpdateAdoption:output_type -> cat.UpdateAdoptionResponse
+	51,  // 152: cat.CatService.RecordHomeVisit:output_type -> cat.RecordHomeVisitResponse
+	53,  // 153: cat.CatService.RecordFollowUpVisit:output_type -> cat.RecordFollowUpVisitResponse
+	55,  // 154: cat.CatService.UpdateReturnStatus:output_type -> cat.UpdateReturnStatusResponse
+	59,  // 155: cat.CatService.ApplyCreateTask:output_type -> cat.ApplyCreateTaskResponse
+	61,  // 156: cat.CatService.CancelTaskApply:output_type -> cat.CancelTaskApplyResponse
+	64,  // 157: cat.CatService.GetTaskApplyDetail:output_type -> cat.GetTaskApplyDetailResponse
+	66,  // 158: cat.CatService.ListMyTaskApplies:output_type -> cat.ListMyTaskAppliesResponse
+	89,  // 159: cat.CatService.ClaimTask:output_type -> cat.ClaimTaskResponse
+	91,  // 160: cat.CatService.AbandonTask:output_type -> cat.AbandonTaskResponse
+	93,  // 161: cat.CatService.CompleteTask:output_type -> cat.CompleteTaskResponse
+	78,  // 162: cat.CatService.GetTaskDetail:output_type -> cat.GetTaskDetailResponse
+	80,  // 163: cat.CatService.ListTasks:output_type -> cat.ListTasksResponse
+	95,  // 164: cat.CatService.ListMyClaimedTasks:output_type -> cat.ListMyClaimedTasksResponse
+	98,  // 165: cat.CatService.ListMyCompletedTasks:output_type -> cat.ListMyCompletedTasksResponse
+	69,  // 166: cat.CatService.ApproveTaskApply:output_type -> cat.ApproveTaskApplyResponse
+	71,  // 167: cat.CatService.RejectTaskApply:output_type -> cat.RejectTaskApplyResponse
+	73,  // 168: cat.CatService.ListPendingTaskApplies:output_type -> cat.ListPendingTaskAppliesResponse
+	75,  // 169: cat.CatService.DirectCreateTask:output_type -> cat.DirectCreateTaskResponse
+	83,  // 170: cat.CatService.UpdateTask:output_type -> cat.UpdateTaskResponse
+	85,  // 171: cat.CatService.CancelTask:output_type -> cat.CancelTaskResponse
+	87,  // 172: cat.CatService.EscalateTaskUrgency:output_type -> cat.EscalateTaskUrgencyResponse
+	100, // 173: cat.CatService.GetTaskFlows:output_type -> cat.GetTaskFlowsResponse
+	103, // 174: cat.CatService.GetTaskLogs:output_type -> cat.GetTaskLogsResponse
+	108, // 175: cat.CatService.DetectHotspots:output_type -> cat.DetectHotspotsResponse
+	111, // 176: cat.CatService.PlanRoute:output_type -> cat.PlanRouteResponse
+	114, // 177: cat.CatService.GetPriorityCats:output_type -> cat.GetPriorityCatsResponse
+	129, // [129:178] is the sub-list for method output_type
+	80,  // [80:129] is the sub-list for method input_type
 	80,  // [80:80] is the sub-list for extension type_name
 	80,  // [80:80] is the sub-list for extension extendee
 	0,   // [0:80] is the sub-list for field type_name

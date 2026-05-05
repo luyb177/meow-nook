@@ -309,9 +309,3 @@ func (s *CatServiceServer) GetPriorityCats(ctx context.Context, in *v1.GetPriori
 	l := logic.NewGetPriorityCatsLogic(ctx, s.svcCtx)
 	return l.GetPriorityCats(in)
 }
-
-// 多志愿者任务分配
-func (s *CatServiceServer) DispatchTasks(ctx context.Context, in *v1.DispatchTasksRequest) (*v1.DispatchTasksResponse, error) {
-	l := logic.NewDispatchTasksLogic(ctx, s.svcCtx)
-	return l.DispatchTasks(in)
-}

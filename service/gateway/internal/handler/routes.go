@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"time"
 
+	admin "github.com/luyb177/meow-nook/service/gateway/internal/handler/admin"
 	adoption "github.com/luyb177/meow-nook/service/gateway/internal/handler/adoption"
 	algorithm "github.com/luyb177/meow-nook/service/gateway/internal/handler/algorithm"
 	auth "github.com/luyb177/meow-nook/service/gateway/internal/handler/auth"
@@ -18,6 +19,24 @@ import (
 )
 
 func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
+	server.AddRoutes(
+		[]rest.Route{
+			{
+				// AI辅助审核任务申请
+				Method:  http.MethodPost,
+				Path:    "/task/apply/:apply_id/ai-review",
+				Handler: admin.AiReviewTaskHandler(serverCtx),
+			},
+			{
+				// 更新用户服务类型
+				Method:  http.MethodPost,
+				Path:    "/user/:user_id/service-types",
+				Handler: admin.UpdateUserServiceTypesHandler(serverCtx),
+			},
+		},
+		rest.WithPrefix("/api/v1/admin"),
+	)
+
 	server.AddRoutes(
 		[]rest.Route{
 			{

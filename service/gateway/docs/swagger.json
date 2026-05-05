@@ -15,6 +15,127 @@
   },
   "basePath": "/",
   "paths": {
+    "/api/v1/admin/task/apply/{apply_id}/ai-review": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "管理员相关"
+        ],
+        "summary": "AI辅助审核任务申请",
+        "operationId": "adminAiReviewTask",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "taskId",
+                "content"
+              ],
+              "properties": {
+                "content": {
+                  "type": "string"
+                },
+                "taskId": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "raw": {
+                  "type": "string"
+                },
+                "result": {},
+                "statusCode": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/user/{user_id}/service-types": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "管理员相关"
+        ],
+        "summary": "更新用户服务类型",
+        "operationId": "adminUpdateUserServiceTypes",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "username",
+                "avatar",
+                "phone",
+                "area"
+              ],
+              "properties": {
+                "area": {
+                  "type": "string"
+                },
+                "avatar": {
+                  "type": "string"
+                },
+                "phone": {
+                  "type": "string"
+                },
+                "username": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "serviceTypes": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/adoption/admin/adoption/approve": {
       "post": {
         "consumes": [
@@ -1818,6 +1939,9 @@
             "schema": {
               "type": "object",
               "properties": {
+                "token": {
+                  "type": "string"
+                },
                 "userId": {
                   "type": "integer"
                 }
@@ -4970,7 +5094,7 @@
       }
     }
   },
-  "x-date": "2026-05-05 21:31:39",
+  "x-date": "2026-05-05 22:22:48",
   "x-description": "This is a goctl generated swagger file.",
   "x-github": "https://github.com/zeromicro/go-zero",
   "x-go-zero-doc": "https://go-zero.dev/",
