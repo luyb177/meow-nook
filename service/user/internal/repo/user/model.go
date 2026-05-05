@@ -2,7 +2,6 @@ package user
 
 import "time"
 
-// User is the GORM model for the users table.
 type User struct {
 	ID           int64     `gorm:"primaryKey;autoIncrement" json:"id"`
 	Email        string    `gorm:"uniqueIndex;size:254;not null" json:"email"`

@@ -9,9 +9,7 @@ import (
 )
 
 // GenerateCatCode 生成猫咪编号
-//
-// 格式：
-// CAT-20260426-000001
+// 格式： CAT-20260426-000001
 func (r *repository) GenerateCatCode(ctx context.Context) (string, error) {
 	date := time.Now().Format("20060102")
 	key := fmt.Sprintf("cat_code:%s", date)

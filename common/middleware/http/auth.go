@@ -12,15 +12,11 @@ import (
 
 type claimsKey struct{}
 
-// ClaimsFromContext retrieves the parsed JWT claims injected by AuthMiddleware.
 func ClaimsFromContext(ctx context.Context) (*jwtx.Claims, bool) {
 	c, ok := ctx.Value(claimsKey{}).(*jwtx.Claims)
 	return c, ok
 }
 
-// AuthMiddleware validates the Bearer token in Authorization header.
-// On success it injects *jwtx.Claims into the request context.
-// On failure it returns 401 immediately.
 func AuthMiddleware(secret string) func(http.HandlerFunc) http.HandlerFunc {
 	return func(next http.HandlerFunc) http.HandlerFunc {
 		return func(w http.ResponseWriter, r *http.Request) {
@@ -42,8 +38,6 @@ func AuthMiddleware(secret string) func(http.HandlerFunc) http.HandlerFunc {
 	}
 }
 
-// AdminMiddleware must be chained AFTER AuthMiddleware.
-// It rejects requests whose token role is not "admin".
 func AdminMiddleware(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		claims, ok := ClaimsFromContext(r.Context())
@@ -55,7 +49,6 @@ func AdminMiddleware(next http.HandlerFunc) http.HandlerFunc {
 	}
 }
 
-// extractBearer pulls the token from "Authorization: Bearer <token>".
 func extractBearer(r *http.Request) string {
 	h := strings.TrimSpace(r.Header.Get("Authorization"))
 	if strings.HasPrefix(h, "Bearer ") {

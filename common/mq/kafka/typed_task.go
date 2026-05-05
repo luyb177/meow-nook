@@ -5,7 +5,6 @@ import (
 	"errors"
 )
 
-// TypedTask wraps any payload and turns it into a kafka.Task by providing Type/Biz.
 type TypedTask[T any] struct {
 	TaskType string
 	BizKey   string

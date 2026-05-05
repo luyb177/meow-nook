@@ -45,7 +45,6 @@ func AccessLog(next http.HandlerFunc) http.HandlerFunc {
 
 		ctx := logger.WithRequestID(r.Context(), rid)
 
-		// inject trace_id from otel
 		if tid := logger.TraceIDFromOTel(ctx); tid != "" {
 			ctx = logger.WithTraceID(ctx, tid)
 		}

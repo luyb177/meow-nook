@@ -5,7 +5,7 @@ ENV GOPROXY=https://goproxy.cn,direct
 
 RUN apk add --no-cache tzdata
 
-# ✅ 在项目根目录构建（最稳）
+# 在项目根目录构建（最稳）
 WORKDIR /build
 
 # 拷贝整个项目（支持 go.work）
@@ -14,7 +14,7 @@ COPY . .
 # 下载依赖
 RUN go mod download
 
-# ✅ 用包路径构建（关键）
+# 用包路径构建（关键）
 RUN go build -ldflags="-s -w" -o /app/user ./service/user
 
 

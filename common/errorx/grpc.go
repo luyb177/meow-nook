@@ -9,10 +9,8 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-// metadata key
 const mdBizCode = "biz_code"
 
-// ToGRPC converts an error to a gRPC status error with business code in details.
 func ToGRPC(err error) error {
 	if err == nil {
 		return nil
@@ -60,10 +58,6 @@ func grpcCodeFromBiz(bizCode int) codes.Code {
 	case CodeUnavailable:
 		return codes.Unavailable
 	default:
-		// 业务码（1000+）一般按语义映射：
-		// - NotFound 类：NotFound
-		// - AlreadyExists 类：AlreadyExists
-		// - 其余默认 FailedPrecondition/Unknown 也行
 		switch bizCode {
 		case CodeUserNotFound, CodeCatNotFound, CodeTaskNotFound, CodeAdoptionNotFound, CodePostNotFound:
 			return codes.NotFound
@@ -79,7 +73,6 @@ func grpcCodeFromBiz(bizCode int) codes.Code {
 	}
 }
 
-// FromGRPC extracts AppError from a gRPC error. If not present, returns internal error.
 func FromGRPC(err error) *AppError {
 	if err == nil {
 		return nil
@@ -90,7 +83,6 @@ func FromGRPC(err error) *AppError {
 		return ErrInternalServer
 	}
 
-	// default
 	msg := st.Message()
 	code := CodeInternalError
 

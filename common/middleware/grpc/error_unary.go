@@ -7,10 +7,6 @@ import (
 	"google.golang.org/grpc"
 )
 
-// ErrorUnaryServer converts application errors (*errorx.AppError etc.)
-// returned by handlers into gRPC status errors with details.
-// Place it early in interceptor chain so downstream interceptors see
-// the converted gRPC error.
 func ErrorUnaryServer() grpc.UnaryServerInterceptor {
 	return func(
 		ctx context.Context,

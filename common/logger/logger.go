@@ -19,7 +19,6 @@ var (
 	inited bool
 )
 
-// Level constants.
 const (
 	LevelDebug = "debug"
 	LevelInfo  = "info"
@@ -38,12 +37,10 @@ const (
 	ctxKeyTraceID   ctxKey = "trace_id"
 )
 
-// Config holds logger configuration.
 type Config struct {
 	Level      string // debug | info | warn | error
 	OutputPath string // "stdout" or a file path
 
-	// If OutputPath is a file, also write to stdout/stderr.
 	AlsoToStdout bool
 
 	// Encodings:
@@ -60,12 +57,9 @@ type Config struct {
 }
 
 func init() {
-	// Make helpers safe before Init.
 	global = zap.NewNop()
 }
 
-// Init must be called ONCE during startup.
-// If called more than once, it returns an error.
 func Init(cfg Config) error {
 	called := false
 	var initErr error
@@ -85,7 +79,6 @@ func Init(cfg Config) error {
 }
 
 func initOnce(cfg Config) error {
-	// ---- level
 	level := zap.InfoLevel
 	if strings.TrimSpace(cfg.Level) != "" {
 		if err := level.UnmarshalText([]byte(cfg.Level)); err != nil {
@@ -93,7 +86,6 @@ func initOnce(cfg Config) error {
 		}
 	}
 
-	// ---- defaults
 	outputPath := strings.TrimSpace(cfg.OutputPath)
 	if outputPath == "" {
 		outputPath = OutputStdout
@@ -113,7 +105,6 @@ func initOnce(cfg Config) error {
 		fileEncName = "json"
 	}
 
-	// ---- cores
 	var cores []zapcore.Core
 
 	if outputPath == OutputStdout {
@@ -121,7 +112,6 @@ func initOnce(cfg Config) error {
 		stdoutCore, stderrCore := buildStdCores(consoleEnc, level)
 		cores = append(cores, stdoutCore, stderrCore)
 	} else {
-		// file core
 		fileEnc := newEncoder(fileEncName, false)
 		cores = append(cores, buildFileCore(fileEnc, level, outputPath))
 
@@ -138,7 +128,6 @@ func initOnce(cfg Config) error {
 
 	core := zapcore.NewTee(cores...)
 
-	// ---- options
 	opts := []zap.Option{
 		zap.AddCaller(),
 		zap.AddCallerSkip(1),
@@ -148,7 +137,6 @@ func initOnce(cfg Config) error {
 		opts = append(opts, zap.AddStacktrace(zapcore.ErrorLevel))
 	}
 
-	// fixed fields
 	fixed := make([]zap.Field, 0, 2+len(cfg.InitialFields))
 	if cfg.Service != "" {
 		fixed = append(fixed, zap.String("service", cfg.Service))
@@ -228,10 +216,6 @@ func buildFileCore(enc zapcore.Encoder, min zapcore.Level, path string) zapcore.
 	return zapcore.NewCore(enc, fileSink, zap.NewAtomicLevelAt(min))
 }
 
-// ──────────────────────────────────────────────
-// Context helpers
-// ──────────────────────────────────────────────
-
 func WithRequestID(ctx context.Context, requestID string) context.Context {
 	if ctx == nil {
 		ctx = context.Background()
@@ -277,10 +261,6 @@ func FromContext(ctx context.Context) *zap.Logger {
 	return l
 }
 
-// ──────────────────────────────────────────────
-// Module-level helpers
-// ──────────────────────────────────────────────
-
 func With(fields ...zap.Field) *zap.Logger { return global.With(fields...) }
 
 func Debug(msg string, fields ...zap.Field) { global.Debug(msg, fields...) }
@@ -290,19 +270,13 @@ func Error(msg string, fields ...zap.Field) { global.Error(msg, fields...) }
 func Fatal(msg string, fields ...zap.Field) { global.Fatal(msg, fields...) }
 
 func Sync() {
-	// before Init it's Nop, safe.
 	_ = global.Sync()
 }
 
-// Useful helper
 func SinceMS(start time.Time) int64 { return time.Since(start).Milliseconds() }
 
-// Optional: if you want to check initialization status.
 func Inited() bool { return inited }
 
-// Sugared returns a sugared logger that provides a more ergonomic, but slightly slower, API.
-// For example, instead of `logger.Info("Failed to fetch URL.", zap.String("url", url), zap.Int("attempt", 3))`,
-// you can write `logger.Sugared().Infow("Failed to fetch URL.", "url", url, "attempt", 3)`.
 func Sugared() *zap.SugaredLogger {
 	return global.Sugar()
 }

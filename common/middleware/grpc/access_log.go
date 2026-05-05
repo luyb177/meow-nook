@@ -17,7 +17,6 @@ func AccessLogUnary() grpc.UnaryServerInterceptor {
 	return func(ctx context.Context, req any, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (any, error) {
 		start := time.Now()
 
-		// request id from metadata
 		var rid string
 		if md, ok := metadata.FromIncomingContext(ctx); ok {
 			if vals := md.Get("x-request-id"); len(vals) > 0 {

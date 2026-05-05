@@ -14,7 +14,7 @@ COPY . .
 # 下载依赖
 RUN go mod download
 
-# ✅ 关键：用包路径构建，而不是文件
+# 关键：用包路径构建，而不是文件
 RUN go build -ldflags="-s -w" -o /app/cat ./service/cat
 
 

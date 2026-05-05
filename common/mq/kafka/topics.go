@@ -20,7 +20,6 @@ func BuildTopics(serviceName string) Topics {
 	}
 }
 
-// BuildTaskID constructs a TaskID in the format "{type}:{biz}:{uuid}".
 func BuildTaskID(taskType, biz string) string {
 	return fmt.Sprintf("%s:%s:%s", taskType, biz, uuid.NewString())
 }

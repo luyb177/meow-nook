@@ -1,4 +1,3 @@
-// internal/logic/cancel_apply_create_cat_logic.go
 package logic
 
 import (

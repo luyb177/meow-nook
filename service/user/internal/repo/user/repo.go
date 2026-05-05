@@ -10,22 +10,11 @@ import (
 
 // Repository defines the data access interface for users.
 type Repository interface {
-	// Create inserts a new user and returns the created record (with ID filled).
 	Create(ctx context.Context, u *User) error
-
-	// ExistsByEmail returns true if a user with the given email already exists.
 	ExistsByEmail(ctx context.Context, email string) (bool, error)
-
-	// FindByEmail returns the user with the given email, or nil if not found.
 	FindByEmail(ctx context.Context, email string) (*User, error)
-
-	// FindByID returns the user with the given id, or nil if not found.
 	FindByID(ctx context.Context, userID int64) (*User, error)
-
-	// UpdateFields updates the given columns for the target user id.
 	UpdateFields(ctx context.Context, userID int64, fields map[string]any) error
-
-	// AddPointsDelta adds delta to points atomically and returns new points.
 	AddPointsDelta(ctx context.Context, userID int64, delta int32) (int32, error)
 }
 
