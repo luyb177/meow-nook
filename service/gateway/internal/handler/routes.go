@@ -83,6 +83,11 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 				Path:    "/users/:userId/service_types",
 				Handler: auth(httpmw.AdminMiddleware(adminhandler.UpdateUserServiceTypesHandler(serverCtx))),
 			},
+			{
+				Method:  http.MethodPost,
+				Path:    "/ai/review_task",
+				Handler: auth(httpmw.AdminMiddleware(adminhandler.AIReviewTaskHandler(serverCtx))),
+			},
 		},
 		rest.WithPrefix("/api/v1/admin"),
 		rest.WithTimeout(30000*time.Millisecond),

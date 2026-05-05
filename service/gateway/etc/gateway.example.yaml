@@ -25,3 +25,8 @@ UserRPC:
 JWT:
   Secret: "your-jwt-secret-change-in-production"
   ExpireTime: 336h   # 14 days
+
+AI_Service:
+  MODEL_API_KEY: "your-ai-api-key-change-in-production"
+  MODEL_BASE_URL: "https://example.com/ai/review"
+  MODEL_NAME: "your-model-name"

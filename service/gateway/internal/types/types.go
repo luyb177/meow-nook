@@ -59,6 +59,17 @@ type CreditPointsResp struct {
 	CreditPoints int32 `json:"creditPoints"`
 }
 
+type AIReviewTaskReq struct {
+	TaskId  string `json:"taskId"`
+	Content string `json:"content,omitempty"`
+}
+
+type AIReviewTaskResp struct {
+	StatusCode int32  `json:"statusCode"`
+	Result     any    `json:"result,omitempty"`
+	Raw        string `json:"raw,omitempty"`
+}
+
 type UpdateUserInfoReq struct {
 	Username *string `json:"username,omitempty"`
 	Avatar   *string `json:"avatar,omitempty"`
