@@ -50,6 +50,22 @@ message SendVerificationCodeReq {
   VerifyPurpose purpose = 3;
 }
 
+message VerifyCodeReq {
+  string target  = 1;
+  VerifyChannel channel = 2;
+  VerifyPurpose purpose = 3;
+  string code    = 4;
+}
+
+message RegisterReq {
+  string email    = 1;
+  string password = 2;
+}
+
+message RegisterResp {
+  int64  user_id  = 1;
+}
+
 message TestReq {
 
 }
@@ -206,6 +222,8 @@ service UserService {
   // Auth
   rpc Test(TestReq)                       returns (Response);
   rpc SendVerificationCode(SendVerificationCodeReq) returns (Response);
+  rpc VerifyCode(VerifyCodeReq)           returns (Response);
+  rpc Register(RegisterReq)              returns (RegisterResp);
 //  rpc Register(RegisterReq)             returns (RegisterResp);
 //  rpc Login(LoginReq)                   returns (LoginResp);
 //  rpc Logout(LogoutReq)                 returns (LogoutResp);

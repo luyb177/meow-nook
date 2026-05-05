@@ -21,3 +21,7 @@ UserRPC:
     Hosts:
       - 127.0.0.1:2379
     Key: user.rpc
+
+JWT:
+  Secret: "your-jwt-secret-change-in-production"
+  ExpireTime: 336h   # 14 days

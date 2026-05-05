@@ -10,15 +10,17 @@ import (
 )
 
 type ServiceContext struct {
-	Config  config.Config
-	UserRPC userpb.UserServiceClient
+	Config    config.Config
+	UserRPC   userpb.UserServiceClient
+	JWTSecret string // convenience shortcut used by middleware builders
 }
 
 func NewServiceContext(c config.Config) *ServiceContext {
 	uc := zrpc.MustNewClient(c.UserRPC).Conn()
 
 	return &ServiceContext{
-		Config:  c,
-		UserRPC: userpb.NewUserServiceClient(uc),
+		Config:    c,
+		UserRPC:   userpb.NewUserServiceClient(uc),
+		JWTSecret: c.JWT.Secret,
 	}
 }

@@ -16,6 +16,12 @@ type Config struct {
 
 	RedisConf RedisConf
 
+	MySQL struct {
+		DSN string
+	}
+
+	JWT JWTConf
+
 	Email struct {
 		From     string
 		Password string
@@ -24,6 +30,12 @@ type Config struct {
 	}
 
 	DLQEmail DLQEmailConf
+}
+
+// JWTConf holds JWT signing configuration.
+type JWTConf struct {
+	Secret     string        // HMAC-SHA256 signing secret
+	ExpireTime time.Duration // token TTL, e.g. "72h"
 }
 
 // KafkaConf holds Kafka broker and task-queue configuration for the service.
