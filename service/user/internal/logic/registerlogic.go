@@ -9,7 +9,6 @@ import (
 	"unicode/utf8"
 
 	"github.com/golang-jwt/jwt/v4"
-
 	"github.com/luyb177/meow-nook/common/errorx"
 	"github.com/luyb177/meow-nook/common/logger"
 	pkgemail "github.com/luyb177/meow-nook/service/user/internal/pkg/email"
@@ -38,7 +37,6 @@ func NewRegisterLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Register
 func (l *RegisterLogic) Register(in *v1.RegisterReq) (*v1.RegisterResp, error) {
 	logger.Info("user Register called")
 
-	// ── 1. 参数校验 ──────────────────────────────────────────────
 	if in.Email == "" {
 		return nil, errorx.Wrap(errorx.CodeBadRequest, "邮箱不能为空", errorx.ErrBadRequest)
 	}
@@ -54,7 +52,6 @@ func (l *RegisterLogic) Register(in *v1.RegisterReq) (*v1.RegisterResp, error) {
 
 	email := pkgemail.CanonicalEmail(in.Email)
 
-	// ── 2. 检查"已验证"标记（由 VerifyCode 接口写入）──────────────
 	meta := &verify.VerifyMeta{
 		Target:  email,
 		Channel: v1.VerifyChannel_VERIFY_CHANNEL_EMAIL,
@@ -68,7 +65,6 @@ func (l *RegisterLogic) Register(in *v1.RegisterReq) (*v1.RegisterResp, error) {
 		return nil, errorx.New(errorx.CodeBadRequest, "邮箱尚未完成验证，请先验证验证码")
 	}
 
-	// ── 3. 检查邮箱是否已注册 ────────────────────────────────────
 	exists, err := l.svcCtx.Repo.User.ExistsByEmail(l.ctx, email)
 	if err != nil {
 		return nil, errorx.WrapInternal("查询用户失败", err)
@@ -77,24 +73,22 @@ func (l *RegisterLogic) Register(in *v1.RegisterReq) (*v1.RegisterResp, error) {
 		return nil, errorx.ErrUserAlreadyExists
 	}
 
-	// ── 4. 密码哈希（salt + sha256，无需外部依赖）────────────────
 	passwordHash, err := hashPassword(in.Password)
 	if err != nil {
 		return nil, errorx.WrapInternal("密码加密失败", err)
 	}
 
-	// ── 5. 入库 ──────────────────────────────────────────────────
 	u := &usermodel.User{
 		Email:        email,
 		PasswordHash: passwordHash,
-		Username:     email, // 默认用邮箱作为用户名，后续可修改
+		Username:     email,
 		Role:         "user",
+		Points:       200,
 	}
 	if err = l.svcCtx.Repo.User.Create(l.ctx, u); err != nil {
 		return nil, errorx.WrapInternal("创建用户失败", err)
 	}
 
-	// ── 6. 注册即登录，签发 JWT（包含 user_id + role，有效期 14 天）
 	token, err := generateJWT(l.svcCtx.Config.JWT.Secret, l.svcCtx.Config.JWT.ExpireTime, u.ID, u.Role)
 	if err != nil {
 		return nil, errorx.WrapInternal("生成 token 失败", err)
@@ -103,7 +97,6 @@ func (l *RegisterLogic) Register(in *v1.RegisterReq) (*v1.RegisterResp, error) {
 	return &v1.RegisterResp{UserId: u.ID, Token: token}, nil
 }
 
-// hashPassword 生成 "salt$hash" 格式的密码摘要。
 func hashPassword(password string) (string, error) {
 	saltBytes := make([]byte, 16)
 	if _, err := rand.Read(saltBytes); err != nil {
@@ -114,7 +107,6 @@ func hashPassword(password string) (string, error) {
 	return salt + "$" + hex.EncodeToString(sum[:]), nil
 }
 
-// generateJWT 是跨 logic 共用的 JWT 签发函数。
 func generateJWT(secret string, expireTime time.Duration, userID int64, role string) (string, error) {
 	expire := expireTime
 	if expire <= 0 {

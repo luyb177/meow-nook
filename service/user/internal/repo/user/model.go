@@ -12,7 +12,8 @@ type User struct {
 	Phone        string    `gorm:"size:32" json:"phone"`
 	Area         string    `gorm:"size:128" json:"area"`
 	Gender       string    `gorm:"size:16" json:"gender"`
-	Points       int32     `gorm:"default:0" json:"points"`
+	ServiceTypes []string  `gorm:"type:json;serializer:json;default:'[]'" json:"service_types"`
+	Points       int32     `gorm:"default:200" json:"points"`
 	Role         string    `gorm:"size:32;default:'user'" json:"role"` // user / volunteer / admin
 	CreatedAt    time.Time `gorm:"autoCreateTime" json:"created_at"`
 	UpdatedAt    time.Time `gorm:"autoUpdateTime" json:"updated_at"`

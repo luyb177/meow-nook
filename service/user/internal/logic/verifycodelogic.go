@@ -9,7 +9,7 @@ import (
 	pkgemail "github.com/luyb177/meow-nook/service/user/internal/pkg/email"
 	"github.com/luyb177/meow-nook/service/user/internal/repo/verify"
 	"github.com/luyb177/meow-nook/service/user/internal/svc"
-	v1 "github.com/luyb177/meow-nook/service/user/pb/user/v1"
+	"github.com/luyb177/meow-nook/service/user/pb/user/v1"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -42,14 +42,12 @@ func (l *VerifyCodeLogic) VerifyCode(in *v1.VerifyCodeReq) (*v1.Response, error)
 	}
 
 	target := pkgemail.CanonicalEmail(in.Target)
-
 	meta := &verify.VerifyMeta{
 		Target:  target,
 		Channel: in.Channel,
 		Purpose: in.Purpose,
 	}
 
-	// 原子读取并删除验证码
 	stored, exists, err := l.svcCtx.Repo.Verify.GetAndDeleteCode(l.ctx, meta)
 	if err != nil {
 		return nil, errorx.WrapInternal("读取验证码失败", err)
@@ -61,7 +59,6 @@ func (l *VerifyCodeLogic) VerifyCode(in *v1.VerifyCodeReq) (*v1.Response, error)
 		return nil, errorx.New(errorx.CodeBadRequest, "验证码错误")
 	}
 
-	// 打"已验证"标记，有效期 10 分钟，供后续注册/重置密码消费
 	if err = l.svcCtx.Repo.Verify.SetVerified(l.ctx, meta, 10*time.Minute); err != nil {
 		return nil, errorx.WrapInternal("设置验证标记失败", err)
 	}

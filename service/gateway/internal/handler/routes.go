@@ -8,7 +8,9 @@ import (
 	"time"
 
 	httpmw "github.com/luyb177/meow-nook/common/middleware/http"
+	adminhandler "github.com/luyb177/meow-nook/service/gateway/internal/handler/admin"
 	authhandler "github.com/luyb177/meow-nook/service/gateway/internal/handler/auth"
+	userhandler "github.com/luyb177/meow-nook/service/gateway/internal/handler/user"
 	"github.com/luyb177/meow-nook/service/gateway/internal/svc"
 
 	"github.com/zeromicro/go-zero/rest"
@@ -53,27 +55,34 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 	// ── 普通用户路由（需登录，role: user / volunteer / admin）──────
 	server.AddRoutes(
 		[]rest.Route{
-			// 示例：用户自身信息（后续业务接口挂在这里）
-			// {
-			// 	Method:  http.MethodGet,
-			// 	Path:    "/info",
-			// 	Handler: auth(userhandler.GetUserInfoHandler(serverCtx)),
-			// },
+			{
+				Method:  http.MethodGet,
+				Path:    "/info",
+				Handler: auth(userhandler.GetUserInfoHandler(serverCtx)),
+			},
+			{
+				Method:  http.MethodGet,
+				Path:    "/credit",
+				Handler: auth(userhandler.GetCreditPointsHandler(serverCtx)),
+			},
+			{
+				Method:  http.MethodPut,
+				Path:    "/info",
+				Handler: auth(userhandler.UpdateUserInfoHandler(serverCtx)),
+			},
 		},
 		rest.WithPrefix("/api/v1/user"),
 		rest.WithTimeout(30000*time.Millisecond),
 	)
-	_ = auth // 避免 unused 编译错误，待业务路由接入后移除
 
 	// ── 管理员路由（需登录且 role == admin）──────────────────────
 	server.AddRoutes(
 		[]rest.Route{
-			// 示例：管理员接口（后续挂在这里）
-			// {
-			// 	Method:  http.MethodGet,
-			// 	Path:    "/users",
-			// 	Handler: auth(httpmw.AdminMiddleware(adminhandler.ListUsersHandler(serverCtx))),
-			// },
+			{
+				Method:  http.MethodPut,
+				Path:    "/users/:userId/service_types",
+				Handler: auth(httpmw.AdminMiddleware(adminhandler.UpdateUserServiceTypesHandler(serverCtx))),
+			},
 		},
 		rest.WithPrefix("/api/v1/admin"),
 		rest.WithTimeout(30000*time.Millisecond),

@@ -18,6 +18,7 @@ message UserInfo {
   int32  points       = 7;
   string role         = 8;   // user / volunteer / admin
   int64  created_at   = 9;
+  repeated string service_types = 10;
 }
 
 // ──────────────────────────────────────────────
@@ -63,26 +64,12 @@ message RegisterReq {
 }
 
 message RegisterResp {
-  int64  user_id  = 1;
-}
-
-message TestReq {
-
-}
-
-message RegisterReq {
-  string username = 1;
-  string password = 2;
-  string phone    = 3;
-}
-
-message RegisterResp {
   int64  user_id = 1;
   string token   = 2;
 }
 
 message LoginReq {
-  string username = 1;
+  string email    = 1;
   string password = 2;
 }
 
@@ -90,6 +77,8 @@ message LoginResp {
   int64  user_id = 1;
   string token   = 2;
 }
+
+message TestReq {}
 
 message LogoutReq {
   int64 user_id = 1;
@@ -116,10 +105,16 @@ message UpdateUserInfoReq {
   string phone    = 4;
   string area     = 5;
   string gender   = 6;
-  repeated string service_types = 7;
 }
 
 message UpdateUserInfoResp {}
+
+message AdminUpdateServiceTypesReq {
+  int64 user_id = 1;
+  repeated string service_types = 2;
+}
+
+message AdminUpdateServiceTypesResp {}
 
 message ChangePasswordReq {
   int64  user_id      = 1;
@@ -170,6 +165,31 @@ message PointLog {
 message ListPointLogsResp {
   repeated PointLog logs  = 1;
   int64             total = 2;
+}
+
+message GetCreditPointsReq {
+  int64 user_id = 1;
+}
+
+message GetCreditPointsResp {
+  int32 credit_points = 1;
+}
+
+message DeductCreditForTaskViolationReq {
+  int64 user_id = 1;
+  string task_id = 2;
+}
+
+message DeductCreditForTaskViolationResp {
+  int32 credit_points = 1;
+}
+
+message CheckCanTakeTaskReq {
+  int64 user_id = 1;
+}
+
+message CheckCanTakeTaskResp {
+  int32 credit_points = 1;
 }
 
 // ──────────────────────────────────────────────
@@ -224,24 +244,18 @@ service UserService {
   rpc SendVerificationCode(SendVerificationCodeReq) returns (Response);
   rpc VerifyCode(VerifyCodeReq)           returns (Response);
   rpc Register(RegisterReq)              returns (RegisterResp);
-//  rpc Register(RegisterReq)             returns (RegisterResp);
-//  rpc Login(LoginReq)                   returns (LoginResp);
-//  rpc Logout(LogoutReq)                 returns (LogoutResp);
-//
-//  // Profile
-//  rpc GetUserInfo(GetUserInfoReq)       returns (GetUserInfoResp);
-//  rpc UpdateUserInfo(UpdateUserInfoReq) returns (UpdateUserInfoResp);
-//  rpc ChangePassword(ChangePasswordReq) returns (ChangePasswordResp);
-//
-//  // Points
-//  rpc GetPoints(GetPointsReq)           returns (GetPointsResp);
-//  rpc AddPoints(AddPointsReq)           returns (AddPointsResp);
-//  rpc ListPointLogs(ListPointLogsReq)   returns (ListPointLogsResp);
-//
-//  // Notifications
-//  rpc GetNotificationSettings(GetNotificationSettingsReq)       returns (GetNotificationSettingsResp);
-//  rpc UpdateNotificationSettings(UpdateNotificationSettingsReq) returns (UpdateNotificationSettingsResp);
-//
-//  // Feedback
-//  rpc SubmitFeedback(SubmitFeedbackReq) returns (SubmitFeedbackResp);
+  rpc Login(LoginReq)                    returns (LoginResp);
+  rpc Logout(LogoutReq)                  returns (LogoutResp);
+
+  // Profile
+  rpc GetUserInfo(GetUserInfoReq)        returns (GetUserInfoResp);
+  rpc UpdateUserInfo(UpdateUserInfoReq)  returns (UpdateUserInfoResp);
+
+  // Admin
+  rpc AdminUpdateServiceTypes(AdminUpdateServiceTypesReq) returns (AdminUpdateServiceTypesResp);
+
+  // Credit
+  rpc GetCreditPoints(GetCreditPointsReq) returns (GetCreditPointsResp);
+  rpc DeductCreditForTaskViolation(DeductCreditForTaskViolationReq) returns (DeductCreditForTaskViolationResp);
+  rpc CheckCanTakeTask(CheckCanTakeTaskReq) returns (CheckCanTakeTaskResp);
 }

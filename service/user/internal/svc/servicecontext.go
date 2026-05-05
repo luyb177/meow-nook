@@ -10,6 +10,7 @@ import (
 	"github.com/luyb177/meow-nook/service/user/internal/config"
 	"github.com/luyb177/meow-nook/service/user/internal/pkg/email"
 	"github.com/luyb177/meow-nook/service/user/internal/repo"
+	usermodel "github.com/luyb177/meow-nook/service/user/internal/repo/user"
 )
 
 type ServiceContext struct {
@@ -55,6 +56,9 @@ func NewServiceContext(c config.Config) *ServiceContext {
 	mysqlClient, err := database.NewMySQLClient(c.MySQL.DSN)
 	if err != nil {
 		panic(fmt.Sprintf("failed to connect to MySQL: %v", err))
+	}
+	if err := mysqlClient.DB.AutoMigrate(&usermodel.User{}); err != nil {
+		panic(fmt.Sprintf("failed to auto-migrate users table: %v", err))
 	}
 
 	return &ServiceContext{

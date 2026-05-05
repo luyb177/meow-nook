@@ -41,3 +41,32 @@ type LoginResp struct {
 type TestReq struct{}
 
 type TestResp struct{}
+
+type UserInfoResp struct {
+	Id           int64    `json:"id"`
+	Username     string   `json:"username"`
+	Avatar       string   `json:"avatar"`
+	Phone        string   `json:"phone"`
+	Area         string   `json:"area"`
+	Gender       string   `json:"gender"`
+	Points       int32    `json:"points"`
+	Role         string   `json:"role"`
+	CreatedAt    int64    `json:"createdAt"`
+	ServiceTypes []string `json:"serviceTypes"`
+}
+
+type CreditPointsResp struct {
+	CreditPoints int32 `json:"creditPoints"`
+}
+
+type UpdateUserInfoReq struct {
+	Username *string `json:"username,omitempty"`
+	Avatar   *string `json:"avatar,omitempty"`
+	Phone    *string `json:"phone,omitempty"`
+	Area     *string `json:"area,omitempty"`
+}
+
+type AdminUpdateUserServiceTypesReq struct {
+	UserId       int64    `path:"userId"`
+	ServiceTypes []string `json:"serviceTypes"`
+}
