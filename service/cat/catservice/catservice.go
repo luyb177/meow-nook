@@ -48,12 +48,16 @@ type (
 	CompleteTaskResponse                 = v1.CompleteTaskResponse
 	CreateAdoptionRequest                = v1.CreateAdoptionRequest
 	CreateAdoptionResponse               = v1.CreateAdoptionResponse
+	DetectHotspotsRequest                = v1.DetectHotspotsRequest
+	DetectHotspotsResponse               = v1.DetectHotspotsResponse
 	DirectAdoptRequest                   = v1.DirectAdoptRequest
 	DirectAdoptResponse                  = v1.DirectAdoptResponse
 	DirectCreateCatRequest               = v1.DirectCreateCatRequest
 	DirectCreateCatResponse              = v1.DirectCreateCatResponse
 	DirectCreateTaskRequest              = v1.DirectCreateTaskRequest
 	DirectCreateTaskResponse             = v1.DirectCreateTaskResponse
+	DispatchTasksRequest                 = v1.DispatchTasksRequest
+	DispatchTasksResponse                = v1.DispatchTasksResponse
 	EscalateTaskUrgencyRequest           = v1.EscalateTaskUrgencyRequest
 	EscalateTaskUrgencyResponse          = v1.EscalateTaskUrgencyResponse
 	GetAdoptApplyDetailRequest           = v1.GetAdoptApplyDetailRequest
@@ -62,6 +66,8 @@ type (
 	GetAdoptionDetailResponse            = v1.GetAdoptionDetailResponse
 	GetApplyDetailRequest                = v1.GetApplyDetailRequest
 	GetApplyDetailResponse               = v1.GetApplyDetailResponse
+	GetPriorityCatsRequest               = v1.GetPriorityCatsRequest
+	GetPriorityCatsResponse              = v1.GetPriorityCatsResponse
 	GetTaskApplyDetailRequest            = v1.GetTaskApplyDetailRequest
 	GetTaskApplyDetailResponse           = v1.GetTaskApplyDetailResponse
 	GetTaskDetailRequest                 = v1.GetTaskDetailRequest
@@ -70,6 +76,7 @@ type (
 	GetTaskFlowsResponse                 = v1.GetTaskFlowsResponse
 	GetTaskLogsRequest                   = v1.GetTaskLogsRequest
 	GetTaskLogsResponse                  = v1.GetTaskLogsResponse
+	HotspotInfo                          = v1.HotspotInfo
 	ImageItem                            = v1.ImageItem
 	ListAdoptionsRequest                 = v1.ListAdoptionsRequest
 	ListAdoptionsResponse                = v1.ListAdoptionsResponse
@@ -98,6 +105,9 @@ type (
 	ListTasksResponse                    = v1.ListTasksResponse
 	NearbyFilter                         = v1.NearbyFilter
 	PendingApplyVO                       = v1.PendingApplyVO
+	PlanRouteRequest                     = v1.PlanRouteRequest
+	PlanRouteResponse                    = v1.PlanRouteResponse
+	PriorityCatInfo                      = v1.PriorityCatInfo
 	RecordFollowUpVisitRequest           = v1.RecordFollowUpVisitRequest
 	RecordFollowUpVisitResponse          = v1.RecordFollowUpVisitResponse
 	RecordHomeVisitRequest               = v1.RecordHomeVisitRequest
@@ -122,6 +132,9 @@ type (
 	UpdateTaskRequest                    = v1.UpdateTaskRequest
 	UpdateTaskResponse                   = v1.UpdateTaskResponse
 	UserBriefVO                          = v1.UserBriefVO
+	VolunteerAssignment                  = v1.VolunteerAssignment
+	VolunteerInfo                        = v1.VolunteerInfo
+	Waypoint                             = v1.Waypoint
 
 	CatService interface {
 		// 志愿者
@@ -209,6 +222,14 @@ type (
 		GetTaskFlows(ctx context.Context, in *GetTaskFlowsRequest, opts ...grpc.CallOption) (*GetTaskFlowsResponse, error)
 		// 查看任务操作日志
 		GetTaskLogs(ctx context.Context, in *GetTaskLogsRequest, opts ...grpc.CallOption) (*GetTaskLogsResponse, error)
+		// 热点区域检测
+		DetectHotspots(ctx context.Context, in *DetectHotspotsRequest, opts ...grpc.CallOption) (*DetectHotspotsResponse, error)
+		// 路径规划
+		PlanRoute(ctx context.Context, in *PlanRouteRequest, opts ...grpc.CallOption) (*PlanRouteResponse, error)
+		// 优先级评分
+		GetPriorityCats(ctx context.Context, in *GetPriorityCatsRequest, opts ...grpc.CallOption) (*GetPriorityCatsResponse, error)
+		// 多志愿者任务分配
+		DispatchTasks(ctx context.Context, in *DispatchTasksRequest, opts ...grpc.CallOption) (*DispatchTasksResponse, error)
 	}
 
 	defaultCatService struct {
@@ -489,4 +510,28 @@ func (m *defaultCatService) GetTaskFlows(ctx context.Context, in *GetTaskFlowsRe
 func (m *defaultCatService) GetTaskLogs(ctx context.Context, in *GetTaskLogsRequest, opts ...grpc.CallOption) (*GetTaskLogsResponse, error) {
 	client := v1.NewCatServiceClient(m.cli.Conn())
 	return client.GetTaskLogs(ctx, in, opts...)
+}
+
+// 热点区域检测
+func (m *defaultCatService) DetectHotspots(ctx context.Context, in *DetectHotspotsRequest, opts ...grpc.CallOption) (*DetectHotspotsResponse, error) {
+	client := v1.NewCatServiceClient(m.cli.Conn())
+	return client.DetectHotspots(ctx, in, opts...)
+}
+
+// 路径规划
+func (m *defaultCatService) PlanRoute(ctx context.Context, in *PlanRouteRequest, opts ...grpc.CallOption) (*PlanRouteResponse, error) {
+	client := v1.NewCatServiceClient(m.cli.Conn())
+	return client.PlanRoute(ctx, in, opts...)
+}
+
+// 优先级评分
+func (m *defaultCatService) GetPriorityCats(ctx context.Context, in *GetPriorityCatsRequest, opts ...grpc.CallOption) (*GetPriorityCatsResponse, error) {
+	client := v1.NewCatServiceClient(m.cli.Conn())
+	return client.GetPriorityCats(ctx, in, opts...)
+}
+
+// 多志愿者任务分配
+func (m *defaultCatService) DispatchTasks(ctx context.Context, in *DispatchTasksRequest, opts ...grpc.CallOption) (*DispatchTasksResponse, error) {
+	client := v1.NewCatServiceClient(m.cli.Conn())
+	return client.DispatchTasks(ctx, in, opts...)
 }

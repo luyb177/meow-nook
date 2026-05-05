@@ -593,6 +593,104 @@ func calculateDistance(lat1, lng1, lat2, lng2 float64) float64 {
 	return earthRadius * c
 }
 
+// ===================== 算法相关新增方法 =====================
+
+// GetAllCatsWithLocation 获取所有有坐标的猫咪（用于热点检测）
+func (r *repository) GetAllCatsWithLocation(ctx context.Context, tx ...*gorm.DB) ([]*Cat, error) {
+	db := r.getDB(ctx, tx...)
+	var cats []*Cat
+
+	err := db.WithContext(ctx).
+		Where("longitude != 0 AND latitude != 0").
+		Where("deleted_at IS NULL").
+		Find(&cats).Error
+
+	return cats, err
+}
+
+// GetCatsByIDs 批量获取猫咪信息
+func (r *repository) GetCatsByIDs(ctx context.Context, ids []uint64, tx ...*gorm.DB) ([]*Cat, error) {
+	if len(ids) == 0 {
+		return []*Cat{}, nil
+	}
+
+	db := r.getDB(ctx, tx...)
+	var cats []*Cat
+
+	err := db.WithContext(ctx).
+		Where("id IN ?", ids).
+		Where("deleted_at IS NULL").
+		Find(&cats).Error
+
+	return cats, err
+}
+
+// GetCatsByHotspot 获取热点区域内的猫咪（用于任务自动创建）
+func (r *repository) GetCatsByHotspot(ctx context.Context, centerLat, centerLng, radiusKm float64, tx ...*gorm.DB) ([]*Cat, error) {
+	db := r.getDB(ctx, tx...)
+	var cats []*Cat
+
+	// 使用 MySQL 的空间函数计算距离
+	// 粗略筛选：经纬度范围 ±radius度（1度≈111km）
+	latRange := radiusKm / 111.0
+	lngRange := radiusKm / (111.0 * math.Cos(centerLat*math.Pi/180))
+
+	err := db.WithContext(ctx).
+		Where("longitude BETWEEN ? AND ?", centerLng-lngRange, centerLng+lngRange).
+		Where("latitude BETWEEN ? AND ?", centerLat-latRange, centerLat+latRange).
+		Where("deleted_at IS NULL").
+		Find(&cats).Error
+
+	if err != nil {
+		return nil, err
+	}
+
+	// 精确筛选距离
+	result := make([]*Cat, 0)
+	for _, c := range cats {
+		dist := haversine(centerLat, centerLng, c.Latitude, c.Longitude)
+		if dist <= radiusKm {
+			result = append(result, c)
+		}
+	}
+
+	return result, nil
+}
+
+// GetCatReportCounts 获取每只猫咪的近期报告/申请次数（用于优先级评分）
+func (r *repository) GetCatReportCounts(ctx context.Context, catIDs []uint64, days int, tx ...*gorm.DB) (map[uint64]int, error) {
+	db := r.getDB(ctx, tx...)
+
+	type Result struct {
+		CatID uint64
+		Count int
+	}
+
+	var results []Result
+
+	// 统计7天内的申请和任务创建次数
+	threshold := time.Now().AddDate(0, 0, -days)
+
+	err := db.WithContext(ctx).
+		Table("cat_create_applies").
+		Select("cat_id, COUNT(*) as count").
+		Where("cat_id IN ?", catIDs).
+		Where("created_at > ?", threshold).
+		Group("cat_id").
+		Scan(&results).Error
+
+	if err != nil {
+		return nil, err
+	}
+
+	countMap := make(map[uint64]int)
+	for _, r := range results {
+		countMap[r.CatID] = r.Count
+	}
+
+	return countMap, nil
+}
+
 // todo 以下表结构暂时没有用到
 
 // CatRescueRecord 救助历程表

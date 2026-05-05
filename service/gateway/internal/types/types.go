@@ -312,6 +312,16 @@ type CreateAdoptionResp struct {
 	Message    string `json:"message"`
 }
 
+type DetectHotspotsReq struct {
+	RadiusKm float64 `json:"radius_km"` // 半径(km)，默认0.5
+	MinCats  int     `json:"min_cats"`  // 最少猫咪数，默认3
+}
+
+type DetectHotspotsResp struct {
+	Hotspots      []HotspotInfo `json:"hotspots"`
+	TotalHotspots int           `json:"total_hotspots"`
+}
+
 type DirectAdoptReq struct {
 	CatId       uint64 `json:"cat_id"`
 	AdopterId   uint64 `json:"adopter_id"`
@@ -428,6 +438,15 @@ type GetApplyDetailResp struct {
 	UpdatedAt        string      `json:"updated_at"`
 }
 
+type GetPriorityCatsReq struct {
+	TopN int `json:"top_n"` // 返回前N只，默认10
+}
+
+type GetPriorityCatsResp struct {
+	Cats  []PriorityCatInfo `json:"cats"`
+	Total int               `json:"total"`
+}
+
 type GetTaskApplyDetailReq struct {
 	ApplyId uint64 `path:"apply_id"`
 }
@@ -460,6 +479,14 @@ type GetTaskLogsReq struct {
 
 type GetTaskLogsResp struct {
 	Items []TaskLogVO `json:"items"`
+}
+
+type HotspotInfo struct {
+	CenterLat float64  `json:"center_lat"`
+	CenterLng float64  `json:"center_lng"`
+	CatIDs    []uint64 `json:"cat_ids"`
+	Density   int      `json:"density"`
+	RadiusKm  float64  `json:"radius_km"`
 }
 
 type ImageItem struct {
@@ -680,6 +707,28 @@ type PendingApplyVO struct {
 	ContactPhone         string `json:"contact_phone"`
 	ContactWechat        string `json:"contact_wechat"`
 	CreatedAt            string `json:"created_at"`
+}
+
+type PlanRouteReq struct {
+	VolunteerLat float64  `json:"volunteer_lat"`
+	VolunteerLng float64  `json:"volunteer_lng"`
+	CatIDs       []uint64 `json:"cat_ids"`
+}
+
+type PlanRouteResp struct {
+	Waypoints       []Waypoint `json:"waypoints"`
+	TotalDistanceKm float64    `json:"total_distance_km"`
+	TotalStops      int        `json:"total_stops"`
+}
+
+type PriorityCatInfo struct {
+	CatID     uint64             `json:"cat_id"`
+	CatName   string             `json:"cat_name"`
+	CatCode   string             `json:"cat_code"`
+	Score     float64            `json:"score"`
+	Details   map[string]float64 `json:"details"`
+	Longitude float64            `json:"longitude"`
+	Latitude  float64            `json:"latitude"`
 }
 
 type RecordFollowUpVisitReq struct {
@@ -922,4 +971,12 @@ type VerifyCodeReq struct {
 	Channel int32  `json:"channel"`
 	Purpose int32  `json:"purpose"`
 	Code    string `json:"code"`
+}
+
+type Waypoint struct {
+	ID    uint64  `json:"id"`
+	Type  string  `json:"type"` // volunteer/cat
+	Lat   float64 `json:"lat"`
+	Lng   float64 `json:"lng"`
+	Order int     `json:"order"`
 }

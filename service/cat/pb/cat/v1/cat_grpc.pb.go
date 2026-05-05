@@ -65,6 +65,10 @@ const (
 	CatService_EscalateTaskUrgency_FullMethodName     = "/cat.CatService/EscalateTaskUrgency"
 	CatService_GetTaskFlows_FullMethodName            = "/cat.CatService/GetTaskFlows"
 	CatService_GetTaskLogs_FullMethodName             = "/cat.CatService/GetTaskLogs"
+	CatService_DetectHotspots_FullMethodName          = "/cat.CatService/DetectHotspots"
+	CatService_PlanRoute_FullMethodName               = "/cat.CatService/PlanRoute"
+	CatService_GetPriorityCats_FullMethodName         = "/cat.CatService/GetPriorityCats"
+	CatService_DispatchTasks_FullMethodName           = "/cat.CatService/DispatchTasks"
 )
 
 // CatServiceClient is the client API for CatService service.
@@ -156,6 +160,14 @@ type CatServiceClient interface {
 	GetTaskFlows(ctx context.Context, in *GetTaskFlowsRequest, opts ...grpc.CallOption) (*GetTaskFlowsResponse, error)
 	// 查看任务操作日志
 	GetTaskLogs(ctx context.Context, in *GetTaskLogsRequest, opts ...grpc.CallOption) (*GetTaskLogsResponse, error)
+	// 热点区域检测
+	DetectHotspots(ctx context.Context, in *DetectHotspotsRequest, opts ...grpc.CallOption) (*DetectHotspotsResponse, error)
+	// 路径规划
+	PlanRoute(ctx context.Context, in *PlanRouteRequest, opts ...grpc.CallOption) (*PlanRouteResponse, error)
+	// 优先级评分
+	GetPriorityCats(ctx context.Context, in *GetPriorityCatsRequest, opts ...grpc.CallOption) (*GetPriorityCatsResponse, error)
+	// 多志愿者任务分配
+	DispatchTasks(ctx context.Context, in *DispatchTasksRequest, opts ...grpc.CallOption) (*DispatchTasksResponse, error)
 }
 
 type catServiceClient struct {
@@ -626,6 +638,46 @@ func (c *catServiceClient) GetTaskLogs(ctx context.Context, in *GetTaskLogsReque
 	return out, nil
 }
 
+func (c *catServiceClient) DetectHotspots(ctx context.Context, in *DetectHotspotsRequest, opts ...grpc.CallOption) (*DetectHotspotsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DetectHotspotsResponse)
+	err := c.cc.Invoke(ctx, CatService_DetectHotspots_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *catServiceClient) PlanRoute(ctx context.Context, in *PlanRouteRequest, opts ...grpc.CallOption) (*PlanRouteResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(PlanRouteResponse)
+	err := c.cc.Invoke(ctx, CatService_PlanRoute_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *catServiceClient) GetPriorityCats(ctx context.Context, in *GetPriorityCatsRequest, opts ...grpc.CallOption) (*GetPriorityCatsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetPriorityCatsResponse)
+	err := c.cc.Invoke(ctx, CatService_GetPriorityCats_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *catServiceClient) DispatchTasks(ctx context.Context, in *DispatchTasksRequest, opts ...grpc.CallOption) (*DispatchTasksResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DispatchTasksResponse)
+	err := c.cc.Invoke(ctx, CatService_DispatchTasks_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // CatServiceServer is the server API for CatService service.
 // All implementations must embed UnimplementedCatServiceServer
 // for forward compatibility.
@@ -715,6 +767,14 @@ type CatServiceServer interface {
 	GetTaskFlows(context.Context, *GetTaskFlowsRequest) (*GetTaskFlowsResponse, error)
 	// 查看任务操作日志
 	GetTaskLogs(context.Context, *GetTaskLogsRequest) (*GetTaskLogsResponse, error)
+	// 热点区域检测
+	DetectHotspots(context.Context, *DetectHotspotsRequest) (*DetectHotspotsResponse, error)
+	// 路径规划
+	PlanRoute(context.Context, *PlanRouteRequest) (*PlanRouteResponse, error)
+	// 优先级评分
+	GetPriorityCats(context.Context, *GetPriorityCatsRequest) (*GetPriorityCatsResponse, error)
+	// 多志愿者任务分配
+	DispatchTasks(context.Context, *DispatchTasksRequest) (*DispatchTasksResponse, error)
 	mustEmbedUnimplementedCatServiceServer()
 }
 
@@ -862,6 +922,18 @@ func (UnimplementedCatServiceServer) GetTaskFlows(context.Context, *GetTaskFlows
 }
 func (UnimplementedCatServiceServer) GetTaskLogs(context.Context, *GetTaskLogsRequest) (*GetTaskLogsResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method GetTaskLogs not implemented")
+}
+func (UnimplementedCatServiceServer) DetectHotspots(context.Context, *DetectHotspotsRequest) (*DetectHotspotsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method DetectHotspots not implemented")
+}
+func (UnimplementedCatServiceServer) PlanRoute(context.Context, *PlanRouteRequest) (*PlanRouteResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method PlanRoute not implemented")
+}
+func (UnimplementedCatServiceServer) GetPriorityCats(context.Context, *GetPriorityCatsRequest) (*GetPriorityCatsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetPriorityCats not implemented")
+}
+func (UnimplementedCatServiceServer) DispatchTasks(context.Context, *DispatchTasksRequest) (*DispatchTasksResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method DispatchTasks not implemented")
 }
 func (UnimplementedCatServiceServer) mustEmbedUnimplementedCatServiceServer() {}
 func (UnimplementedCatServiceServer) testEmbeddedByValue()                    {}
@@ -1712,6 +1784,78 @@ func _CatService_GetTaskLogs_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _CatService_DetectHotspots_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DetectHotspotsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CatServiceServer).DetectHotspots(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CatService_DetectHotspots_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CatServiceServer).DetectHotspots(ctx, req.(*DetectHotspotsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CatService_PlanRoute_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(PlanRouteRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CatServiceServer).PlanRoute(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CatService_PlanRoute_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CatServiceServer).PlanRoute(ctx, req.(*PlanRouteRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CatService_GetPriorityCats_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetPriorityCatsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CatServiceServer).GetPriorityCats(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CatService_GetPriorityCats_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CatServiceServer).GetPriorityCats(ctx, req.(*GetPriorityCatsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _CatService_DispatchTasks_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DispatchTasksRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CatServiceServer).DispatchTasks(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CatService_DispatchTasks_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CatServiceServer).DispatchTasks(ctx, req.(*DispatchTasksRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // CatService_ServiceDesc is the grpc.ServiceDesc for CatService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -1902,6 +2046,22 @@ var CatService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetTaskLogs",
 			Handler:    _CatService_GetTaskLogs_Handler,
+		},
+		{
+			MethodName: "DetectHotspots",
+			Handler:    _CatService_DetectHotspots_Handler,
+		},
+		{
+			MethodName: "PlanRoute",
+			Handler:    _CatService_PlanRoute_Handler,
+		},
+		{
+			MethodName: "GetPriorityCats",
+			Handler:    _CatService_GetPriorityCats_Handler,
+		},
+		{
+			MethodName: "DispatchTasks",
+			Handler:    _CatService_DispatchTasks_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

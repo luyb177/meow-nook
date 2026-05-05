@@ -8,6 +8,7 @@ import (
 	"time"
 
 	adoption "github.com/luyb177/meow-nook/service/gateway/internal/handler/adoption"
+	algorithm "github.com/luyb177/meow-nook/service/gateway/internal/handler/algorithm"
 	auth "github.com/luyb177/meow-nook/service/gateway/internal/handler/auth"
 	cat "github.com/luyb177/meow-nook/service/gateway/internal/handler/cat"
 	task "github.com/luyb177/meow-nook/service/gateway/internal/handler/task"
@@ -123,6 +124,30 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 			},
 		},
 		rest.WithPrefix("/api/v1/adoption"),
+	)
+
+	server.AddRoutes(
+		[]rest.Route{
+			{
+				// 检测猫咪热点区域
+				Method:  http.MethodPost,
+				Path:    "/hotspots",
+				Handler: algorithm.DetectHotspotsHandler(serverCtx),
+			},
+			{
+				// 获取需要优先救助的猫咪列表
+				Method:  http.MethodPost,
+				Path:    "/priority/cats",
+				Handler: algorithm.GetPriorityCatsHandler(serverCtx),
+			},
+			{
+				// 规划最优救助路线
+				Method:  http.MethodPost,
+				Path:    "/route/plan",
+				Handler: algorithm.PlanRouteHandler(serverCtx),
+			},
+		},
+		rest.WithPrefix("/api/v1/algorithm"),
 	)
 
 	server.AddRoutes(
