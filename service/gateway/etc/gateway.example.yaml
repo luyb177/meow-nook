@@ -21,3 +21,12 @@ UserRPC:
     Hosts:
       - 127.0.0.1:2379
     Key: user.rpc
+
+JWT:
+  Secret: "your-jwt-secret-change-in-production"
+  ExpireTime: 336h   # 14 days
+
+AI_Service:
+  MODEL_API_KEY: "your-ai-api-key-change-in-production"
+  MODEL_BASE_URL: "https://example.com/ai/review"
+  MODEL_NAME: "your-model-name"

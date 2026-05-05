@@ -35,6 +35,13 @@ Email:
   SMTPHost: smtp.example.com
   SMTPPort: 465
 
+MySQL:
+  DSN: "user:password@tcp(127.0.0.1:3306)/meow_nook?charset=utf8mb4&parseTime=True&loc=Asia%2FShanghai&timeout=10s&readTimeout=30s&writeTimeout=30s"
+
+JWT:
+  Secret: "your-jwt-secret-change-in-production"
+  ExpireTime: 336h   # 14 days
+
 DLQEmail:
   To:
     - admin@example.com

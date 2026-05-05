@@ -30,6 +30,13 @@ type Repository interface {
 
 	// GetAndDeleteCode 原子获取并删除验证码（Lua 保证一致性）
 	GetAndDeleteCode(ctx context.Context, meta *VerifyMeta) (string, bool, error)
+
+	// SetVerified 在验证码校验通过后打一个"已验证"标记，供后续业务（如注册）消费。
+	// expire 建议 10 分钟，业务消费后应调用 DeleteVerified 清除。
+	SetVerified(ctx context.Context, meta *VerifyMeta, expire time.Duration) error
+
+	// GetAndDeleteVerified 原子读取并删除"已验证"标记，返回是否存在。
+	GetAndDeleteVerified(ctx context.Context, meta *VerifyMeta) (bool, error)
 }
 
 type repo struct {
@@ -79,4 +86,37 @@ func verifyCodeKey(meta *VerifyMeta) string {
 	targetHash := hex.EncodeToString(sum[:])
 
 	return fmt.Sprintf(CodeKey, meta.Channel, meta.Purpose, targetHash)
+}
+
+// ──────────────────────────────────────────────
+// Verified mark
+// ──────────────────────────────────────────────
+
+const (
+	// verify:verified:{channel}:{purpose}:{target_hash}
+	verifiedKey = "verify:verified:%d:%d:%s"
+)
+
+func (r *repo) SetVerified(ctx context.Context, meta *VerifyMeta, expire time.Duration) error {
+	key := verifiedMarkKey(meta)
+	return r.client.Set(ctx, key, "1", expire).Err()
+}
+
+func (r *repo) GetAndDeleteVerified(ctx context.Context, meta *VerifyMeta) (bool, error) {
+	key := verifiedMarkKey(meta)
+
+	val, err := getAndDeleteScript.Run(ctx, r.client, []string{key}).Result()
+	if errors.Is(err, redis.Nil) {
+		return false, nil
+	}
+	if err != nil {
+		return false, err
+	}
+	return val != nil, nil
+}
+
+func verifiedMarkKey(meta *VerifyMeta) string {
+	sum := sha256.Sum256([]byte(meta.Target))
+	targetHash := hex.EncodeToString(sum[:])
+	return fmt.Sprintf(verifiedKey, meta.Channel, meta.Purpose, targetHash)
 }

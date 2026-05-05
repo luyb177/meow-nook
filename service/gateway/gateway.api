@@ -31,6 +31,27 @@ type (
 		Channel int32  `json:"channel"`
 		Purpose int32  `json:"purpose"`
 	}
+	VerifyCodeReq {
+		Target  string `json:"target"`
+		Channel int32  `json:"channel"`
+		Purpose int32  `json:"purpose"`
+		Code    string `json:"code"`
+	}
+	RegisterReq {
+		Email    string `json:"email"`
+		Password string `json:"password"`
+	}
+	RegisterResp {
+		UserId int64 `json:"userId"`
+	}
+	LoginReq {
+		Email    string `json:"email"`
+		Password string `json:"password"`
+	}
+	LoginResp {
+		Token  string `json:"token"`
+		UserId int64  `json:"userId"`
+	}
 )
 
 @server (
@@ -47,6 +68,15 @@ service gateway {
 	@doc "发送验证码，支持邮件"
 	@handler SendVerificationCode
 	post /send_code (SendVerificationCodeReq) returns (Response)
+
+	@handler VerifyCode
+	post /verify_code (VerifyCodeReq) returns (Response)
+
+	@handler Register
+	post /register (RegisterReq) returns (RegisterResp)
+
+	@handler Login
+	post /login (LoginReq) returns (LoginResp)
 }
 
 // ──────────────────────────────────────────────

@@ -4,11 +4,13 @@ import (
 	"fmt"
 
 	"github.com/luyb177/meow-nook/common/cache"
+	"github.com/luyb177/meow-nook/common/database"
 	"github.com/luyb177/meow-nook/common/mail"
 	"github.com/luyb177/meow-nook/common/mq/kafka"
 	"github.com/luyb177/meow-nook/service/user/internal/config"
 	"github.com/luyb177/meow-nook/service/user/internal/pkg/email"
 	"github.com/luyb177/meow-nook/service/user/internal/repo"
+	usermodel "github.com/luyb177/meow-nook/service/user/internal/repo/user"
 )
 
 type ServiceContext struct {
@@ -47,12 +49,24 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		panic(fmt.Sprintf("failed to connect to Redis (%s): %v", c.RedisConf.Addr, err))
 	}
 
+	// MySQL is required for user persistence.
+	if c.MySQL.DSN == "" {
+		panic("MySQL.DSN must be set")
+	}
+	mysqlClient, err := database.NewMySQLClient(c.MySQL.DSN)
+	if err != nil {
+		panic(fmt.Sprintf("failed to connect to MySQL: %v", err))
+	}
+	if err := mysqlClient.DB.AutoMigrate(&usermodel.User{}); err != nil {
+		panic(fmt.Sprintf("failed to auto-migrate users table: %v", err))
+	}
+
 	return &ServiceContext{
 		Config:        c,
 		Mailer:        m,
 		EmailSender:   emailSender,
 		KafkaProducer: producer,
 		RedisClient:   rc,
-		Repo:          repo.NewRepositories(rc.Client),
+		Repo:          repo.NewRepositoriesWithDB(rc.Client, mysqlClient.DB),
 	}
 }
