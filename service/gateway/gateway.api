@@ -12,6 +12,12 @@ info (
 // ──────────────────────────────────────────────
 type (
 	Response  {}
+	ImageItem {
+		Url         string `json:"url"`
+		Description string `json:"description"`
+		Sort        int32  `json:"sort"`
+		IsCover     bool   `json:"is_cover"`
+	}
 )
 
 // ──────────────────────────────────────────────
@@ -25,23 +31,6 @@ type (
 		Channel int32  `json:"channel"`
 		Purpose int32  `json:"purpose"`
 	}
-// RegisterReq {
-//  Username string `json:"username"`
-//  Password string `json:"password"`
-//  Phone    string `json:"phone"`
-// }
-// RegisterResp {
-//  UserId int64  `json:"userId"`
-//  Token  string `json:"token"`
-// }
-// LoginReq {
-//  Username string `json:"username"`
-//  Password string `json:"password"`
-// }
-// LoginResp {
-//  UserId int64  `json:"userId"`
-//  Token  string `json:"token"`
-// }
 )
 
 @server (
@@ -51,593 +40,1100 @@ type (
 	timeout: 60s
 )
 service gateway {
+	@doc "测试接口，验证网关是否正常工作"
 	@handler Test
 	get /test (TestReq) returns (TestResp)
 
+	@doc "发送验证码，支持邮件"
 	@handler SendVerificationCode
 	post /send_code (SendVerificationCodeReq) returns (Response)
-// @handler Register
-// post /register (RegisterReq) returns (RegisterResp)
-//
-// @handler Login
-// post /login (LoginReq) returns (LoginResp)
 }
 
-//
-//// ──────────────────────────────────────────────
-//// User
-//// ──────────────────────────────────────────────
-//type (
-// UserInfoResp {
-//  Id        int64  `json:"id"`
-//  Username  string `json:"username"`
-//  Avatar    string `json:"avatar"`
-//  Phone     string `json:"phone"`
-//  Area      string `json:"area"`
-//  Gender    string `json:"gender"`
-//  Points    int32  `json:"points"`
-//  Role      string `json:"role"`
-//  CreatedAt int64  `json:"createdAt"`
-// }
-// UpdateUserInfoReq {
-//  Username     string   `json:"username,optional"`
-//  Avatar       string   `json:"avatar,optional"`
-//  Phone        string   `json:"phone,optional"`
-//  Area         string   `json:"area,optional"`
-//  Gender       string   `json:"gender,optional"`
-//  ServiceTypes []string `json:"serviceTypes,optional"`
-// }
-// ChangePasswordReq {
-//  OldPassword string `json:"oldPassword"`
-//  NewPassword string `json:"newPassword"`
-// }
-// PointsResp {
-//  Points int32 `json:"points"`
-// }
-// PointLog {
-//  Id        int64  `json:"id"`
-//  Delta     int32  `json:"delta"`
-//  Reason    string `json:"reason"`
-//  TaskId    string `json:"taskId"`
-//  Balance   int32  `json:"balance"`
-//  CreatedAt int64  `json:"createdAt"`
-// }
-// PointLogsResp {
-//  Logs  []PointLog `json:"logs"`
-//  Total int64      `json:"total"`
-// }
-// NotificationSettings {
-//  TaskNotify     bool `json:"taskNotify"`
-//  AdoptionNotify bool `json:"adoptionNotify"`
-//  PointsNotify   bool `json:"pointsNotify"`
-//  SystemNotify   bool `json:"systemNotify"`
-//  MessageNotify  bool `json:"messageNotify"`
-// }
-// FeedbackReq {
-//  FeedbackType string `json:"feedbackType"`
-//  Content      string `json:"content"`
-//  Contact      string `json:"contact"`
-// }
-// FeedbackResp {
-//  FeedbackId int64 `json:"feedbackId"`
-// }
-//)
-//
-//@server (
-// prefix:     /api/v1/user
-// middleware: Auth
-// tags:       "用户模块"
-// group:      user
-//)
-//service gateway {
-// @handler GetUserInfo
-// get /info returns (UserInfoResp)
-//
-// @handler UpdateUserInfo
-// put /info (UpdateUserInfoReq)
-//
-// @handler ChangePassword
-// put /password (ChangePasswordReq)
-//
-// @handler GetPoints
-// get /points returns (PointsResp)
-//
-// @handler ListPointLogs
-// get /points/logs returns (PointLogsResp)
-//
-// @handler GetNotificationSettings
-// get /notifications returns (NotificationSettings)
-//
-// @handler UpdateNotificationSettings
-// put /notifications (NotificationSettings)
-//
-// @handler SubmitFeedback
-// post /feedback (FeedbackReq) returns (FeedbackResp)
-//
-// @handler Logout
-// post /logout
-//}
-//
-//// ──────────────────────────────────────────────
-//// Cats
-//// ──────────────────────────────────────────────
-//type (
-// CatInfo {
-//  Id             int64    `json:"id"`
-//  Name           string   `json:"name"`
-//  Gender         int32    `json:"gender"`
-//  AgeStage       int32    `json:"ageStage"`
-//  Size           int32    `json:"size"`
-//  NeuterStatus   int32    `json:"neuterStatus"`
-//  AdoptionStatus int32    `json:"adoptionStatus"`
-//  FoundLocation  string   `json:"foundLocation"`
-//  FoundLat       float64  `json:"foundLat"`
-//  FoundLng       float64  `json:"foundLng"`
-//  Description    string   `json:"description"`
-//  Tags           []string `json:"tags"`
-//  Photos         []string `json:"photos"`
-//  CreatedAt      int64    `json:"createdAt"`
-//  UpdatedAt      int64    `json:"updatedAt"`
-// }
-// ListCatsReq {
-//  Gender         int32  `form:"gender,optional"`
-//  Size           int32  `form:"size,optional"`
-//  AgeStage       int32  `form:"ageStage,optional"`
-//  NeuterStatus   int32  `form:"neuterStatus,optional"`
-//  AdoptionStatus int32  `form:"adoptionStatus,optional"`
-//  Keyword        string `form:"keyword,optional"`
-//  Page           int32  `form:"page,optional,default=1"`
-//  PageSize       int32  `form:"pageSize,optional,default=20"`
-// }
-// ListCatsResp {
-//  Cats  []CatInfo `json:"cats"`
-//  Total int64     `json:"total"`
-// }
-// CreateCatReq {
-//  Name           string   `json:"name"`
-//  Gender         int32    `json:"gender"`
-//  AgeStage       int32    `json:"ageStage"`
-//  Size           int32    `json:"size"`
-//  NeuterStatus   int32    `json:"neuterStatus"`
-//  AdoptionStatus int32    `json:"adoptionStatus"`
-//  FoundLocation  string   `json:"foundLocation"`
-//  FoundLat       float64  `json:"foundLat"`
-//  FoundLng       float64  `json:"foundLng"`
-//  Description    string   `json:"description,optional"`
-//  Tags           []string `json:"tags,optional"`
-//  Photos         []string `json:"photos,optional"`
-// }
-// CreateCatResp {
-//  CatId int64 `json:"catId"`
-// }
-// UpdateCatReq {
-//  Name           string   `json:"name,optional"`
-//  Gender         int32    `json:"gender,optional"`
-//  AgeStage       int32    `json:"ageStage,optional"`
-//  Size           int32    `json:"size,optional"`
-//  NeuterStatus   int32    `json:"neuterStatus,optional"`
-//  AdoptionStatus int32    `json:"adoptionStatus,optional"`
-//  FoundLocation  string   `json:"foundLocation,optional"`
-//  FoundLat       float64  `json:"foundLat,optional"`
-//  FoundLng       float64  `json:"foundLng,optional"`
-//  Description    string   `json:"description,optional"`
-//  Tags           []string `json:"tags,optional"`
-//  Photos         []string `json:"photos,optional"`
-// }
-// RescueRecord {
-//  Id          int64  `json:"id"`
-//  CatId       int64  `json:"catId"`
-//  RescuerId   int64  `json:"rescuerId"`
-//  RescuerName string `json:"rescuerName"`
-//  Status      string `json:"status"`
-//  Description string `json:"description"`
-//  RescueTime  int64  `json:"rescueTime"`
-// }
-// AddRescueRecordReq {
-//  Status      string `json:"status"`
-//  Description string `json:"description"`
-// }
-// HealthRecord {
-//  Id         int64  `json:"id"`
-//  CatId      int64  `json:"catId"`
-//  RecordType string `json:"recordType"`
-//  Content    string `json:"content"`
-//  Operator   string `json:"operator"`
-//  RecordDate int64  `json:"recordDate"`
-// }
-// AddHealthRecordReq {
-//  RecordType string `json:"recordType"`
-//  Content    string `json:"content"`
-//  Operator   string `json:"operator"`
-//  RecordDate int64  `json:"recordDate"`
-// }
-// CatStatsResp {
-//  TotalCats        int64 `json:"totalCats"`
-//  NeuteredCats     int64 `json:"neuteredCats"`
-//  AdoptedCats      int64 `json:"adoptedCats"`
-//  ActiveVolunteers int64 `json:"activeVolunteers"`
-// }
-// HeatmapReq {
-//  MapType   string `form:"mapType,optional"`
-//  CatStatus string `form:"catStatus,optional"`
-//  TimeFrom  int64  `form:"timeFrom,optional"`
-//  TimeTo    int64  `form:"timeTo,optional"`
-//  Area      string `form:"area,optional"`
-// }
-// HeatmapPoint {
-//  Lat    float64 `json:"lat"`
-//  Lng    float64 `json:"lng"`
-//  Weight int32   `json:"weight"`
-//  Area   string  `json:"area"`
-// }
-// HeatmapResp {
-//  Points []HeatmapPoint `json:"points"`
-// }
-// PathIdReq {
-//  Id int64 `path:"id"`
-// }
-//)
-//
-//@server (
-// prefix:     /api/v1/cats
-// middleware: Auth
-// tags:       "猫咪模块"
-// group:      cats
-//)
-//service gateway {
-// @handler ListCats
-// get / (ListCatsReq) returns (ListCatsResp)
-//
-// @handler CreateCat
-// post / (CreateCatReq) returns (CreateCatResp)
-//
-// @handler GetCatStats
-// get /stats returns (CatStatsResp)
-//
-// @handler GetHeatmap
-// get /heatmap (HeatmapReq) returns (HeatmapResp)
-//
-// @handler GetCat
-// get /:id (PathIdReq) returns (CatInfo)
-//
-// @handler UpdateCat
-// put /:id (UpdateCatReq)
-//
-// @handler DeleteCat
-// delete /:id (PathIdReq)
-//
-// @handler ListRescueRecords
-// get /:id/rescue (PathIdReq) returns ([]RescueRecord)
-//
-// @handler AddRescueRecord
-// post /:id/rescue (AddRescueRecordReq) returns (RescueRecord)
-//
-// @handler ListHealthRecords
-// get /:id/health (PathIdReq) returns ([]HealthRecord)
-//
-// @handler AddHealthRecord
-// post /:id/health (AddHealthRecordReq) returns (HealthRecord)
-//}
-//
-//// ──────────────────────────────────────────────
-//// Tasks
-//// ──────────────────────────────────────────────
-//type (
-// TaskInfo {
-//  Id               int64   `json:"id"`
-//  CatId            int64   `json:"catId"`
-//  CatName          string  `json:"catName"`
-//  Title            string  `json:"title"`
-//  Description      string  `json:"description"`
-//  TaskType         int32   `json:"taskType"`
-//  Urgency          int32   `json:"urgency"`
-//  Difficulty       int32   `json:"difficulty"`
-//  Status           int32   `json:"status"`
-//  PointsReward     int32   `json:"pointsReward"`
-//  MaxAssignees     int32   `json:"maxAssignees"`
-//  CurrentAssignees int32   `json:"currentAssignees"`
-//  Deadline         int64   `json:"deadline"`
-//  CreatedBy        int64   `json:"createdBy"`
-//  CreatedAt        int64   `json:"createdAt"`
-//  UpdatedAt        int64   `json:"updatedAt"`
-//  Location         string  `json:"location"`
-//  Lat              float64 `json:"lat"`
-//  Lng              float64 `json:"lng"`
-// }
-// TaskLog {
-//  Id         int64  `json:"id"`
-//  TaskId     int64  `json:"taskId"`
-//  OperatorId int64  `json:"operatorId"`
-//  Operator   string `json:"operator"`
-//  Action     string `json:"action"`
-//  Remark     string `json:"remark"`
-//  CreatedAt  int64  `json:"createdAt"`
-// }
-// TaskAssignee {
-//  UserId     int64  `json:"userId"`
-//  Username   string `json:"username"`
-//  Status     string `json:"status"`
-//  AssignedAt int64  `json:"assignedAt"`
-// }
-// GetTaskResp {
-//  Task      TaskInfo       `json:"task"`
-//  Logs      []TaskLog      `json:"logs"`
-//  Assignees []TaskAssignee `json:"assignees"`
-// }
-// ListTasksReq {
-//  CatId      int64   `form:"catId,optional"`
-//  TaskType   int32   `form:"taskType,optional"`
-//  Urgency    int32   `form:"urgency,optional"`
-//  Status     int32   `form:"status,optional"`
-//  AssignedTo int64   `form:"assignedTo,optional"`
-//  NearLat    float64 `form:"nearLat,optional"`
-//  NearLng    float64 `form:"nearLng,optional"`
-//  RadiusKm   float64 `form:"radiusKm,optional"`
-//  Page       int32   `form:"page,optional,default=1"`
-//  PageSize   int32   `form:"pageSize,optional,default=20"`
-// }
-// ListTasksResp {
-//  Tasks []TaskInfo `json:"tasks"`
-//  Total int64      `json:"total"`
-// }
-// CreateTaskReq {
-//  CatId        int64   `json:"catId"`
-//  Title        string  `json:"title"`
-//  Description  string  `json:"description"`
-//  TaskType     int32   `json:"taskType"`
-//  Urgency      int32   `json:"urgency"`
-//  Difficulty   int32   `json:"difficulty"`
-//  PointsReward int32   `json:"pointsReward"`
-//  MaxAssignees int32   `json:"maxAssignees,optional,default=1"`
-//  Deadline     int64   `json:"deadline"`
-//  Location     string  `json:"location,optional"`
-//  Lat          float64 `json:"lat,optional"`
-//  Lng          float64 `json:"lng,optional"`
-// }
-// CreateTaskResp {
-//  TaskId int64 `json:"taskId"`
-// }
-// UpdateTaskReq {
-//  Title       string `json:"title,optional"`
-//  Description string `json:"description,optional"`
-//  Urgency     int32  `json:"urgency,optional"`
-//  Difficulty  int32  `json:"difficulty,optional"`
-//  Status      int32  `json:"status,optional"`
-//  Deadline    int64  `json:"deadline,optional"`
-//  Remark      string `json:"remark,optional"`
-// }
-// AbandonTaskReq {
-//  Reason string `json:"reason,optional"`
-// }
-// CompleteTaskReq {
-//  Proof string `json:"proof,optional"`
-// }
-// ExtendDeadlineReq {
-//  NewDeadline int64 `json:"newDeadline"`
-// }
-//)
-//
-//@server (
-// prefix:     /api/v1/tasks
-// middleware: Auth
-// tags:       "任务模块"
-// group:      tasks
-//)
-//service gateway {
-// @handler ListTasks
-// get / (ListTasksReq) returns (ListTasksResp)
-//
-// @handler CreateTask
-// post / (CreateTaskReq) returns (CreateTaskResp)
-//
-// @handler GetTask
-// get /:id (PathIdReq) returns (GetTaskResp)
-//
-// @handler UpdateTask
-// put /:id (UpdateTaskReq)
-//
-// @handler ClaimTask
-// post /:id/claim (PathIdReq)
-//
-// @handler AbandonTask
-// post /:id/abandon (AbandonTaskReq)
-//
-// @handler CompleteTask
-// post /:id/complete (CompleteTaskReq)
-//
-// @handler ExtendDeadline
-// post /:id/extend (ExtendDeadlineReq)
-//}
-//
-//// ──────────────────────────────────────────────
-//// Adoption
-//// ──────────────────────────────────────────────
-//type (
-// AdoptionApplication {
-//  Id             int64  `json:"id"`
-//  CatId          int64  `json:"catId"`
-//  CatName        string `json:"catName"`
-//  ApplicantId    int64  `json:"applicantId"`
-//  ApplicantName  string `json:"applicantName"`
-//  Status         int32  `json:"status"`
-//  RejectReason   string `json:"rejectReason"`
-//  RequiredPoints int32  `json:"requiredPoints"`
-//  AppliedAt      int64  `json:"appliedAt"`
-//  UpdatedAt      int64  `json:"updatedAt"`
-// }
-// ApplyAdoptionReq {
-//  CatId int64  `json:"catId"`
-//  Note  string `json:"note,optional"`
-// }
-// ApplyAdoptionResp {
-//  ApplicationId int64 `json:"applicationId"`
-// }
-// ListAdoptionReq {
-//  Status   int32 `form:"status,optional"`
-//  Page     int32 `form:"page,optional,default=1"`
-//  PageSize int32 `form:"pageSize,optional,default=20"`
-// }
-// ListAdoptionResp {
-//  Applications []AdoptionApplication `json:"applications"`
-//  Total        int64                 `json:"total"`
-// }
-// ReviewApplicationReq {
-//  Approved     bool   `json:"approved"`
-//  RejectReason string `json:"rejectReason,optional"`
-// }
-// FollowUpRecord {
-//  Id            int64    `json:"id"`
-//  ApplicationId int64    `json:"applicationId"`
-//  ApplicantId   int64    `json:"applicantId"`
-//  Stage         string   `json:"stage"`
-//  Content       string   `json:"content"`
-//  Photos        []string `json:"photos"`
-//  SubmittedAt   int64    `json:"submittedAt"`
-// }
-// SubmitFollowUpReq {
-//  Stage   string   `json:"stage"`
-//  Content string   `json:"content"`
-//  Photos  []string `json:"photos,optional"`
-// }
-// AdoptionPathIdReq {
-//  Id int64 `path:"id"`
-// }
-//)
-//
-//@server (
-// prefix:     /api/v1/adoption
-// middleware: Auth
-// tags:       "领养模块"
-// group:      adoption
-//)
-//service gateway {
-// @handler ListAdoptions
-// get / (ListAdoptionReq) returns (ListAdoptionResp)
-//
-// @handler ApplyAdoption
-// post /apply (ApplyAdoptionReq) returns (ApplyAdoptionResp)
-//
-// @handler GetAdoption
-// get /:id (AdoptionPathIdReq) returns (AdoptionApplication)
-//
-// @handler ReviewAdoption
-// post /:id/review (ReviewApplicationReq)
-//
-// @handler ListFollowUps
-// get /:id/followup (AdoptionPathIdReq) returns ([]FollowUpRecord)
-//
-// @handler SubmitFollowUp
-// post /:id/followup (SubmitFollowUpReq)
-//}
-//
-//// ──────────────────────────────────────────────
-//// Posts / dynamics
-//// ──────────────────────────────────────────────
-//type (
-// PostInfo {
-//  Id         int64    `json:"id"`
-//  AuthorId   int64    `json:"authorId"`
-//  AuthorName string   `json:"authorName"`
-//  Avatar     string   `json:"avatar"`
-//  CatId      int64    `json:"catId"`
-//  CatName    string   `json:"catName"`
-//  Content    string   `json:"content"`
-//  Images     []string `json:"images"`
-//  Likes      int32    `json:"likes"`
-//  Comments   int32    `json:"comments"`
-//  Favorites  int32    `json:"favorites"`
-//  CreatedAt  int64    `json:"createdAt"`
-// }
-// ListPostsReq {
-//  CatId    int64 `form:"catId,optional"`
-//  AuthorId int64 `form:"authorId,optional"`
-//  Page     int32 `form:"page,optional,default=1"`
-//  PageSize int32 `form:"pageSize,optional,default=20"`
-// }
-// ListPostsResp {
-//  Posts []PostInfo `json:"posts"`
-//  Total int64      `json:"total"`
-// }
-// CreatePostReq {
-//  CatId   int64    `json:"catId"`
-//  Content string   `json:"content"`
-//  Images  []string `json:"images,optional"`
-// }
-// CreatePostResp {
-//  PostId int64 `json:"postId"`
-// }
-// CommentInfo {
-//  Id         int64  `json:"id"`
-//  PostId     int64  `json:"postId"`
-//  AuthorId   int64  `json:"authorId"`
-//  AuthorName string `json:"authorName"`
-//  Avatar     string `json:"avatar"`
-//  Content    string `json:"content"`
-//  CreatedAt  int64  `json:"createdAt"`
-// }
-// ListCommentsResp {
-//  Comments []CommentInfo `json:"comments"`
-//  Total    int64         `json:"total"`
-// }
-// AddCommentReq {
-//  Content string `json:"content"`
-// }
-// ReportPostReq {
-//  Reason string `json:"reason"`
-// }
-// PostPathIdReq {
-//  Id int64 `path:"id"`
-// }
-// CommentPathReq {
-//  Id  int64 `path:"id"`
-//  Cid int64 `path:"cid"`
-// }
-// ListCommentsReq {
-//  Page     int32 `form:"page,optional,default=1"`
-//  PageSize int32 `form:"pageSize,optional,default=20"`
-// }
-//)
-//
-//@server (
-// prefix:     /api/v1/posts
-// middleware: Auth
-// tags:       "动态模块"
-// group:      posts
-//)
-//service gateway {
-// @handler ListPosts
-// get / (ListPostsReq) returns (ListPostsResp)
-//
-// @handler CreatePost
-// post / (CreatePostReq) returns (CreatePostResp)
-//
-// @handler GetPost
-// get /:id (PostPathIdReq) returns (PostInfo)
-//
-// @handler DeletePost
-// delete /:id (PostPathIdReq)
-//
-// @handler LikePost
-// post /:id/like (PostPathIdReq)
-//
-// @handler UnlikePost
-// post /:id/unlike (PostPathIdReq)
-//
-// @handler FavoritePost
-// post /:id/favorite (PostPathIdReq)
-//
-// @handler UnfavoritePost
-// post /:id/unfavorite (PostPathIdReq)
-//
-// @handler ListComments
-// get /:id/comments (ListCommentsReq) returns (ListCommentsResp)
-//
-// @handler AddComment
-// post /:id/comments (AddCommentReq)
-//
-// @handler DeleteComment
-// delete /:id/comments/:cid (CommentPathReq)
-//
-// @handler ReportPost
-// post /:id/report (ReportPostReq)
-//}
+// ──────────────────────────────────────────────
+// Cats
+// ──────────────────────────────────────────────
+// ==================== 志愿者 ====================
+type ApplyCreateCatReq {
+	Name             string      `json:"name"`
+	Gender           string      `json:"gender"`
+	BodySize         string      `json:"body_size"`
+	AgeStage         string      `json:"age_stage"`
+	Description      string      `json:"description"`
+	DiscoveryAddress string      `json:"discovery_address"`
+	Longitude        float64     `json:"longitude"`
+	Latitude         float64     `json:"latitude"`
+	Images           []ImageItem `json:"images"`
+	TagIds           []uint64    `json:"tag_ids"`
+}
+
+type ApplyCreateCatResp {
+	ApplyId   uint64 `json:"apply_id"`
+	CreatedAt string `json:"created_at"`
+}
+
+type CancelApplyCreateCatReq {
+	Id     uint64 `path:"id"`
+	Reason string `json:"reason"`
+}
+
+type GetApplyDetailReq {
+	Id uint64 `path:"id"`
+}
+
+type GetApplyDetailResp {
+	ApplyId          uint64      `json:"apply_id"`
+	CatId            uint64      `json:"cat_id"`
+	Name             string      `json:"name"`
+	Gender           string      `json:"gender"`
+	BodySize         string      `json:"body_size"`
+	AgeStage         string      `json:"age_stage"`
+	Description      string      `json:"description"`
+	DiscoveryAddress string      `json:"discovery_address"`
+	Longitude        float64     `json:"longitude"`
+	Latitude         float64     `json:"latitude"`
+	ApplicantUserId  uint64      `json:"applicant_user_id"`
+	Status           string      `json:"status"`
+	RejectReason     string      `json:"reject_reason"`
+	CancelReason     string      `json:"cancel_reason"`
+	ReviewerId       uint64      `json:"reviewer_id"`
+	Images           []ImageItem `json:"images"`
+	CreatedAt        string      `json:"created_at"`
+	UpdatedAt        string      `json:"updated_at"`
+}
+
+type ListMyAppliesReq {
+	Status   string `form:"status,optional"`
+	Page     int32  `form:"page,default=1"`
+	PageSize int32  `form:"page_size,default=20"`
+}
+
+type ApplyItem {
+	ApplyId   uint64 `json:"apply_id"`
+	Name      string `json:"name"`
+	Status    string `json:"status"`
+	CatId     uint64 `json:"cat_id"`
+	CreatedAt string `json:"created_at"`
+}
+
+type ListMyAppliesResp {
+	List  []ApplyItem `json:"list"`
+	Total int64       `json:"total"`
+}
+
+// ==================== 管理员 ====================
+type ApproveCreateCatReq {
+	Id                      uint64   `path:"id"`
+	CatCode                 string   `json:"cat_code"`
+	Breed                   string   `json:"breed"`
+	Color                   string   `json:"color"`
+	IsVaccinated            bool     `json:"is_vaccinated"`
+	IsHealthy               bool     `json:"is_healthy"`
+	NeedMedicalIntervention bool     `json:"need_medical_intervention"`
+	SterilizationStatus     string   `json:"sterilization_status"`
+	ExtraTagIds             []uint64 `json:"extra_tag_ids"`
+}
+
+type ApproveCreateCatResp {
+	CatId   uint64 `json:"cat_id"`
+	CatCode string `json:"cat_code"`
+	Status  string `json:"status"`
+}
+
+type RejectCreateCatReq {
+	Id     uint64 `path:"id"`
+	Reason string `json:"reason"`
+}
+
+type DirectCreateCatReq {
+	CatCode                 string      `json:"cat_code"`
+	Name                    string      `json:"name"`
+	Breed                   string      `json:"breed"`
+	Color                   string      `json:"color"`
+	Gender                  string      `json:"gender"`
+	BodySize                string      `json:"body_size"`
+	AgeStage                string      `json:"age_stage"`
+	Description             string      `json:"description"`
+	DiscoveryAddress        string      `json:"discovery_address"`
+	Longitude               float64     `json:"longitude"`
+	Latitude                float64     `json:"latitude"`
+	IsVaccinated            bool        `json:"is_vaccinated"`
+	IsHealthy               bool        `json:"is_healthy"`
+	NeedMedicalIntervention bool        `json:"need_medical_intervention"`
+	SterilizationStatus     string      `json:"sterilization_status"`
+	Images                  []ImageItem `json:"images"`
+	TagIds                  []uint64    `json:"tag_ids"`
+}
+
+type DirectCreateCatResp {
+	CatId   uint64 `json:"cat_id"`
+	CatCode string `json:"cat_code"`
+}
+
+type ListPendingAppliesReq {
+	Keyword  string `form:"keyword,optional"`
+	Page     int32  `form:"page,default=1"`
+	PageSize int32  `form:"page_size,default=20"`
+}
+
+type PendingApplyItem {
+	ApplyId          uint64 `json:"apply_id"`
+	Name             string `json:"name"`
+	Gender           string `json:"gender"`
+	AgeStage         string `json:"age_stage"`
+	DiscoveryAddress string `json:"discovery_address"`
+	ApplicantUserId  uint64 `json:"applicant_user_id"`
+	CreatedAt        string `json:"created_at"`
+}
+
+type ListPendingAppliesResp {
+	List  []PendingApplyItem `json:"list"`
+	Total int64              `json:"total"`
+}
+
+type (
+	// ==================== 查询：猫咪列表 ====================
+	// 附近筛选条件
+	NearbyFilter {
+		Latitude  float64 `json:"latitude"` // 纬度
+		Longitude float64 `json:"longitude"` // 经度
+		Radius    float64 `json:"radius"` // 半径（公里，默认5km，最大50km）
+	}
+	// 获取小猫列表请求
+	ListCatsReq {
+		// 基础筛选
+		Keyword string `json:"keyword,optional"` // 关键词搜索（name/cat_code/breed/color）
+		Name    string `json:"name,optional"` // 名称模糊搜索
+		CatCode string `json:"cat_code,optional"` // 猫咪编号精确搜索
+		Breed   string `json:"breed,optional"` // 品种
+		Color   string `json:"color,optional"` // 毛色
+		Gender  string `json:"gender,optional"` // 性别（male/female/unknown）
+		// 体态筛选
+		BodySize string `json:"body_size,optional"` // 体型（small/medium/large）
+		AgeStage string `json:"age_stage,optional"` // 年龄阶段（kitten/young/adult/old）
+		// 健康筛选
+		SterilizationStatus     string `json:"sterilization_status,optional"` // 绝育状态（sterilized/unsterilized）
+		AdoptionStatus          string `json:"adoption_status,optional"` // 领养状态（pending/adopted/unavailable）
+		IsVaccinated            *bool  `json:"is_vaccinated,optional"` // 是否已接种疫苗
+		IsHealthy               *bool  `json:"is_healthy,optional"` // 是否健康
+		NeedMedicalIntervention *bool  `json:"need_medical_intervention,optional"` // 是否需要医疗干预
+		// 附近筛选
+		Nearby *NearbyFilter `json:"nearby,optional"` // 附近查找条件
+		// 其他筛选
+		AdopterID uint64 `json:"adopter_id,optional"` // 领养人ID
+		CreatorID uint64 `json:"creator_id,optional"` // 创建人ID
+		ApplyID   uint64 `json:"apply_id,optional"` // 申请单ID
+		// 时间范围
+		FoundAtStart   string `json:"found_at_start,optional"` // 发现开始时间
+		FoundAtEnd     string `json:"found_at_end,optional"` // 发现结束时间
+		CreatedAtStart string `json:"created_at_start,optional"` // 创建开始时间
+		CreatedAtEnd   string `json:"created_at_end,optional"` // 创建结束时间
+		// 分页排序
+		Page      int32  `json:"page,optional,default=1"` // 页码（默认1）
+		PageSize  int32  `json:"page_size,optional,default=20"` // 每页数量（默认20，最大100）
+		SortBy    string `json:"sort_by,optional,default=created_at"` // 排序字段（id/created_at/found_at/updated_at/distance）
+		SortOrder string `json:"sort_order,optional,default=desc"` // 排序方向（asc/desc）
+	}
+	// 小猫信息
+	CatInfo {
+		// 基础信息
+		Id      uint64 `json:"id"`
+		CatCode string `json:"cat_code"`
+		Name    string `json:"name"`
+		Breed   string `json:"breed"`
+		Color   string `json:"color"`
+		Gender  string `json:"gender"`
+		// 体态信息
+		BodySize  string  `json:"body_size"`
+		AgeStage  string  `json:"age_stage"`
+		Weight    float32 `json:"weight"`
+		Character string  `json:"character"`
+		BirthDate string  `json:"birth_date,optional"`
+		// 展示信息
+		Avatar      string `json:"avatar"`
+		Description string `json:"description"`
+		// 发现信息
+		FoundAt          string  `json:"found_at,optional"`
+		DiscoveryAddress string  `json:"discovery_address"`
+		Longitude        float64 `json:"longitude"`
+		Latitude         float64 `json:"latitude"`
+		// 健康信息
+		IsVaccinated            bool   `json:"is_vaccinated"`
+		IsHealthy               bool   `json:"is_healthy"`
+		NeedMedicalIntervention bool   `json:"need_medical_intervention"`
+		SterilizationStatus     string `json:"sterilization_status"`
+		LastMedicalCheckAt      string `json:"last_medical_check_at,optional"`
+		// 领养信息
+		AdoptionStatus string `json:"adoption_status"`
+		AdopterId      uint64 `json:"adopter_id"`
+		AdoptedAt      string `json:"adopted_at,optional"`
+		// 来源信息
+		ApplyId   uint64 `json:"apply_id"`
+		CreatorId uint64 `json:"creator_id"`
+		// 时间信息
+		CreatedAt string `json:"created_at"`
+		UpdatedAt string `json:"updated_at"`
+		// 距离（公里，仅在附近搜索时有值）
+		Distance float64 `json:"distance,optional"`
+	}
+	// 获取小猫列表响应
+	ListCatsResp {
+		Total int64     `json:"total"` // 总数
+		List  []CatInfo `json:"list"` // 小猫列表
+	}
+)
+
+// ==================== 路由定义 ====================
+@server (
+	prefix: /api/v1/cats
+	//middleware: Auth
+	tags:  "猫咪模块"
+	group: cat
+)
+service gateway {
+	@doc "志愿者申请创建猫咪档案"
+	@handler ApplyCreateCat
+	post /applies (ApplyCreateCatReq) returns (ApplyCreateCatResp)
+
+	@doc "志愿者取消申请"
+	@handler CancelApplyCreateCat
+	post /applies/:id/cancel (CancelApplyCreateCatReq) returns (Response)
+
+	@doc "查询申请详情"
+	@handler GetApplyDetail
+	get /applies/:id (GetApplyDetailReq) returns (GetApplyDetailResp)
+
+	@doc "我的申请列表"
+	@handler ListMyApplies
+	get /applies/my (ListMyAppliesReq) returns (ListMyAppliesResp)
+
+	@doc "管理员审核通过"
+	@handler ApproveCreateCat
+	post /applies/:id/approve (ApproveCreateCatReq) returns (ApproveCreateCatResp)
+
+	@doc "管理员驳回申请"
+	@handler RejectCreateCat
+	post /applies/:id/reject (RejectCreateCatReq) returns (Response)
+
+	@doc "管理员直接创建猫咪档案"
+	@handler DirectCreateCat
+	post /direct (DirectCreateCatReq) returns (DirectCreateCatResp)
+
+	@doc "管理员查询待审核列表"
+	@handler ListPendingApplies
+	get /applies/pending (ListPendingAppliesReq) returns (ListPendingAppliesResp)
+
+	// 获取小猫列表
+	@doc "获取小猫列表（支持筛选、分页、附近查找）"
+	@handler listCats
+	post /cats/list (ListCatsReq) returns (ListCatsResp)
+}
+
+type (
+	// ==================== 领养申请 ====================
+	ApplyAdoptReq {
+		CatId         uint64 `json:"cat_id"`
+		ApplyReason   string `json:"apply_reason"`
+		ContactPhone  string `json:"contact_phone"`
+		ContactWechat string `json:"contact_wechat"`
+	}
+	ApplyAdoptResp {
+		ApplyId              uint64 `json:"apply_id"`
+		Status               string `json:"status"`
+		Message              string `json:"message"`
+		ApplicantCreditScore int32  `json:"applicant_credit_score"`
+	}
+	CancelAdoptApplyReq {
+		ApplyId uint64 `json:"apply_id"`
+		Reason  string `json:"reason"`
+	}
+	CancelAdoptApplyResp {
+		Message string `json:"message"`
+	}
+	GetAdoptApplyDetailReq {
+		ApplyId uint64 `path:"apply_id"`
+	}
+	GetAdoptApplyDetailResp {
+		Apply AdoptApplicationVO `json:"apply"`
+		Cat   CatBriefVO         `json:"cat"`
+	}
+	ListMyAdoptAppliesReq {
+		Status   string `form:"status,optional"`
+		Page     int32  `form:"page,optional"`
+		PageSize int32  `form:"page_size,optional"`
+	}
+	ListMyAdoptAppliesResp {
+		Items    []AdoptApplyItemVO `json:"items"`
+		Total    int64              `json:"total"`
+		Page     int32              `json:"page"`
+		PageSize int32              `json:"page_size"`
+	}
+	// ==================== 管理员审核 ====================
+	ApproveAdoptReq {
+		ApplyId uint64 `json:"apply_id"`
+		Note    string `json:"note"`
+	}
+	ApproveAdoptResp {
+		ApplyId   uint64 `json:"apply_id"`
+		Status    string `json:"status"`
+		Message   string `json:"message"`
+		ExpiresAt string `json:"expires_at,omitempty"`
+	}
+	RejectAdoptReq {
+		ApplyId      uint64 `json:"apply_id"`
+		RejectReason string `json:"reject_reason"`
+	}
+	RejectAdoptResp {
+		Message string `json:"message"`
+	}
+	ListPendingAdoptAppliesReq {
+		CatId    uint64 `form:"cat_id,optional"`
+		Page     int32  `form:"page,optional"`
+		PageSize int32  `form:"page_size,optional"`
+	}
+	ListPendingAdoptAppliesResp {
+		Items    []PendingApplyVO `json:"items"`
+		Total    int64            `json:"total"`
+		Page     int32            `json:"page"`
+		PageSize int32            `json:"page_size"`
+	}
+	// ==================== 领养记录 ====================
+	CreateAdoptionReq {
+		ApplyId     uint64 `json:"apply_id"`
+		AgreementNo string `json:"agreement_no"`
+		Note        string `json:"note"`
+	}
+	CreateAdoptionResp {
+		AdoptionId uint64 `json:"adoption_id"`
+		Message    string `json:"message"`
+	}
+	DirectAdoptReq {
+		CatId       uint64 `json:"cat_id"`
+		AdopterId   uint64 `json:"adopter_id"`
+		AgreementNo string `json:"agreement_no"`
+		Note        string `json:"note"`
+	}
+	DirectAdoptResp {
+		AdoptionId uint64 `json:"adoption_id"`
+		Message    string `json:"message"`
+	}
+	GetAdoptionDetailReq {
+		AdoptionId uint64 `path:"adoption_id"`
+	}
+	GetAdoptionDetailResp {
+		Adoption AdoptionVO  `json:"adoption"`
+		Cat      CatBriefVO  `json:"cat"`
+		Adopter  UserBriefVO `json:"adopter"`
+	}
+	ListMyAdoptionsReq {
+		Page     int32 `form:"page,optional"`
+		PageSize int32 `form:"page_size,optional"`
+	}
+	ListAdoptionsReq {
+		AdopterId uint64 `form:"adopter_id,optional"`
+		CatId     uint64 `form:"cat_id,optional"`
+		Status    string `form:"status,optional"`
+		Page      int32  `form:"page,optional"`
+		PageSize  int32  `form:"page_size,optional"`
+	}
+	ListAdoptionsResp {
+		Items    []AdoptionItemVO `json:"items"`
+		Total    int64            `json:"total"`
+		Page     int32            `json:"page"`
+		PageSize int32            `json:"page_size"`
+	}
+	UpdateAdoptionReq {
+		AdoptionId  uint64 `json:"adoption_id"`
+		AgreementNo string `json:"agreement_no"`
+		Note        string `json:"note"`
+	}
+	UpdateAdoptionResp {
+		Message string `json:"message"`
+	}
+	RecordHomeVisitReq {
+		AdoptionId uint64 `json:"adoption_id"`
+		Remark     string `json:"remark"`
+		Photos     string `json:"photos"`
+	}
+	RecordHomeVisitResp {
+		Message string `json:"message"`
+	}
+	RecordFollowUpVisitReq {
+		AdoptionId uint64 `json:"adoption_id"`
+		VisitType  int32  `json:"visit_type"`
+		Remark     string `json:"remark"`
+		Photos     string `json:"photos"`
+	}
+	RecordFollowUpVisitResp {
+		Message string `json:"message"`
+	}
+	UpdateReturnStatusReq {
+		AdoptionId       uint64 `json:"adoption_id"`
+		Returned         bool   `json:"returned"`
+		ReturnedToUserId uint64 `json:"returned_to_user_id"`
+		ReturnReason     string `json:"return_reason"`
+		Photos           string `json:"photos"`
+	}
+	UpdateReturnStatusResp {
+		Message string `json:"message"`
+	}
+	// ==================== 通用 VO ====================
+	CatBriefVO {
+		Id                  uint64 `json:"id"`
+		Name                string `json:"name"`
+		Avatar              string `json:"avatar"`
+		Gender              string `json:"gender"`
+		CreditScoreRequired int32  `json:"credit_score_required"`
+	}
+	UserBriefVO {
+		Id     uint64 `json:"id"`
+		Name   string `json:"name"`
+		Avatar string `json:"avatar"`
+	}
+	AdoptApplicationVO {
+		Id                   uint64 `json:"id"`
+		CatId                uint64 `json:"cat_id"`
+		CatName              string `json:"cat_name"`
+		CatAvatar            string `json:"cat_avatar"`
+		ApplicantId          uint64 `json:"applicant_id"`
+		ApplicantName        string `json:"applicant_name"`
+		ApplyReason          string `json:"apply_reason"`
+		ContactPhone         string `json:"contact_phone"`
+		ContactWechat        string `json:"contact_wechat"`
+		ApplicantCreditScore int32  `json:"applicant_credit_score"`
+		Status               string `json:"status"`
+		RejectReason         string `json:"reject_reason"`
+		ReviewerId           uint64 `json:"reviewer_id"`
+		ReviewerName         string `json:"reviewer_name"`
+		ReviewedAt           string `json:"reviewed_at,omitempty"`
+		ApprovedAt           string `json:"approved_at,omitempty"`
+		ExpiresAt            string `json:"expires_at,omitempty"`
+		CreatedAt            string `json:"created_at"`
+		UpdatedAt            string `json:"updated_at"`
+		AdoptionId           uint64 `json:"adoption_id"`
+	}
+	AdoptApplyItemVO {
+		ApplyId             uint64 `json:"apply_id"`
+		CatId               uint64 `json:"cat_id"`
+		CatName             string `json:"cat_name"`
+		CatAvatar           string `json:"cat_avatar"`
+		CatGender           string `json:"cat_gender"`
+		CreditScoreRequired int32  `json:"credit_score_required"`
+		ApplyReason         string `json:"apply_reason"`
+		Status              string `json:"status"`
+		RejectReason        string `json:"reject_reason"`
+		CreatedAt           string `json:"created_at"`
+		ExpiresAt           string `json:"expires_at,omitempty"`
+	}
+	PendingApplyVO {
+		ApplyId              uint64 `json:"apply_id"`
+		CatId                uint64 `json:"cat_id"`
+		CatName              string `json:"cat_name"`
+		CatAvatar            string `json:"cat_avatar"`
+		CatGender            string `json:"cat_gender"`
+		CreditScoreRequired  int32  `json:"credit_score_required"`
+		ApplicantId          uint64 `json:"applicant_id"`
+		ApplicantName        string `json:"applicant_name"`
+		ApplicantAvatar      string `json:"applicant_avatar"`
+		ApplicantCreditScore int32  `json:"applicant_credit_score"`
+		ApplyReason          string `json:"apply_reason"`
+		ContactPhone         string `json:"contact_phone"`
+		ContactWechat        string `json:"contact_wechat"`
+		CreatedAt            string `json:"created_at"`
+	}
+	AdoptionVO {
+		Id                uint64 `json:"id"`
+		CatId             uint64 `json:"cat_id"`
+		CatName           string `json:"cat_name"`
+		CatAvatar         string `json:"cat_avatar"`
+		AdopterId         uint64 `json:"adopter_id"`
+		AdopterName       string `json:"adopter_name"`
+		Status            string `json:"status"`
+		AgreementNo       string `json:"agreement_no"`
+		AgreedAt          string `json:"agreed_at,omitempty"`
+		AdoptedAt         string `json:"adopted_at,omitempty"`
+		HomeVisitAt       string `json:"home_visit_at,omitempty"`
+		HomeVisitUserId   uint64 `json:"home_visit_user_id,omitempty"`
+		HomeVisitRemark   string `json:"home_visit_remark,omitempty"`
+		VisitOneWeekAt    string `json:"visit_one_week_at,omitempty"`
+		VisitOneMonthAt   string `json:"visit_one_month_at,omitempty"`
+		VisitThreeMonthAt string `json:"visit_three_month_at,omitempty"`
+		VisitSixMonthAt   string `json:"visit_six_month_at,omitempty"`
+		IsReturned        bool   `json:"is_returned"`
+		ReturnReason      string `json:"return_reason,omitempty"`
+		ReturnedAt        string `json:"returned_at,omitempty"`
+		Note              string `json:"note,omitempty"`
+		CreatedAt         string `json:"created_at"`
+		UpdatedAt         string `json:"updated_at"`
+	}
+	AdoptionItemVO {
+		AdoptionId  uint64 `json:"adoption_id"`
+		CatId       uint64 `json:"cat_id"`
+		CatName     string `json:"cat_name"`
+		CatAvatar   string `json:"cat_avatar"`
+		AdopterId   uint64 `json:"adopter_id"`
+		AdopterName string `json:"adopter_name"`
+		Status      string `json:"status"`
+		AgreementNo string `json:"agreement_no"`
+		AdoptedAt   string `json:"adopted_at,omitempty"`
+		IsReturned  bool   `json:"is_returned"`
+	}
+)
+
+@server (
+	prefix: /api/v1/adoption
+	tags:   "领养模块"
+	group:  adoption
+)
+service gateway {
+	// ==================== 志愿者端 ====================
+	@doc "提交领养申请（志愿者提交领养意向）"
+	@handler ApplyAdopt
+	post /adoption/apply (ApplyAdoptReq) returns (ApplyAdoptResp)
+
+	@doc "取消待审核的领养申请"
+	@handler CancelAdoptApply
+	post /adoption/cancel (CancelAdoptApplyReq) returns (CancelAdoptApplyResp)
+
+	@doc "获取领养申请详情"
+	@handler GetAdoptApplyDetail
+	get /adoption/apply/:apply_id (GetAdoptApplyDetailReq) returns (GetAdoptApplyDetailResp)
+
+	@doc "查询我的领养申请列表（志愿者查询自己提交的申请）"
+	@handler ListMyAdoptApplies
+	get /adoption/my-applies (ListMyAdoptAppliesReq) returns (ListMyAdoptAppliesResp)
+
+	@doc "查询我的领养记录列表（志愿者已成功领养的记录）"
+	@handler ListMyAdoptions
+	get /adoption/my-adoptions (ListMyAdoptionsReq) returns (ListAdoptionsResp)
+
+	@doc "完成回访（志愿者提交回访完成状态）"
+	@handler CompleteVisit
+	post /adoption/visit/complete (RecordFollowUpVisitReq) returns (RecordFollowUpVisitResp)
+
+	// ==================== 管理员端 ====================
+	@doc "审核通过领养申请"
+	@handler ApproveAdopt
+	post /admin/adoption/approve (ApproveAdoptReq) returns (ApproveAdoptResp)
+
+	@doc "驳回领养申请"
+	@handler RejectAdopt
+	post /admin/adoption/reject (RejectAdoptReq) returns (RejectAdoptResp)
+
+	@doc "查询待审核的领养申请列表"
+	@handler ListPendingAdoptApplies
+	get /admin/adoption/pending (ListPendingAdoptAppliesReq) returns (ListPendingAdoptAppliesResp)
+
+	@doc "创建领养记录（管理员直接创建）"
+	@handler CreateAdoption
+	post /admin/adoption/create (CreateAdoptionReq) returns (CreateAdoptionResp)
+
+	@doc "管理员直接审核通过领养申请（快捷通过）"
+	@handler DirectAdopt
+	post /admin/adoption/direct (DirectAdoptReq) returns (DirectAdoptResp)
+
+	@doc "查询领养记录详情"
+	@handler GetAdoptionDetail
+	get /adoption/detail/:adoption_id (GetAdoptionDetailReq) returns (GetAdoptionDetailResp)
+
+	@doc "查询所有领养记录列表（管理员专用）"
+	@handler ListAdoptions
+	get /admin/adoption/list (ListAdoptionsReq) returns (ListAdoptionsResp)
+
+	@doc "更新领养记录信息"
+	@handler UpdateAdoption
+	post /admin/adoption/update (UpdateAdoptionReq) returns (UpdateAdoptionResp)
+
+	@doc "记录家访信息"
+	@handler RecordHomeVisit
+	post /admin/adoption/home-visit (RecordHomeVisitReq) returns (RecordHomeVisitResp)
+
+	@doc "记录回访信息"
+	@handler RecordFollowUpVisit
+	post /admin/adoption/visit (RecordFollowUpVisitReq) returns (RecordFollowUpVisitResp)
+
+	@doc "更新退养状态"
+	@handler UpdateReturnStatus
+	post /admin/adoption/return (UpdateReturnStatusReq) returns (UpdateReturnStatusResp)
+}
+
+// ==================== 任务申请相关 ====================
+type ApplyCreateTaskReq {
+	CatId      uint64   `json:"cat_id"`
+	Title      string   `json:"title"`
+	TaskType   string   `json:"task_type"`
+	Summary    string   `json:"summary"`
+	Detail     string   `json:"detail"`
+	Location   string   `json:"location"`
+	Longitude  float64  `json:"longitude"`
+	Latitude   float64  `json:"latitude"`
+	DeadlineAt string   `json:"deadline_at,omitempty"`
+	ImageUrls  []string `json:"image_urls"`
+	TagIds     []uint64 `json:"tag_ids"`
+}
+
+type ApplyCreateTaskResp {
+	ApplyId uint64 `json:"apply_id"`
+	Status  string `json:"status"`
+	Message string `json:"message"`
+}
+
+type CancelTaskApplyReq {
+	ApplyId uint64 `json:"apply_id"`
+	Reason  string `json:"reason"`
+}
+
+type CancelTaskApplyResp {
+	Message string `json:"message"`
+}
+
+type GetTaskApplyDetailReq {
+	ApplyId uint64 `path:"apply_id"`
+}
+
+type GetTaskApplyDetailResp {
+	Apply TaskApplyVO `json:"apply"`
+	Cat   CatBriefVO  `json:"cat"`
+}
+
+type ListMyTaskAppliesReq {
+	Status   string `form:"status,optional"`
+	Page     int32  `form:"page,optional"`
+	PageSize int32  `form:"page_size,optional"`
+}
+
+type ListMyTaskAppliesResp {
+	Items    []TaskApplyItemVO `json:"items"`
+	Total    int64             `json:"total"`
+	Page     int32             `json:"page"`
+	PageSize int32             `json:"page_size"`
+}
+
+type TaskApplyVO {
+	Id              uint64   `json:"id"`
+	CatId           uint64   `json:"cat_id"`
+	CatName         string   `json:"cat_name"`
+	CatAvatar       string   `json:"cat_avatar"`
+	ApplicantUserId uint64   `json:"applicant_user_id"`
+	ApplicantName   string   `json:"applicant_name"`
+	ApplicantAvatar string   `json:"applicant_avatar"`
+	Title           string   `json:"title"`
+	TaskType        string   `json:"task_type"`
+	Summary         string   `json:"summary"`
+	Detail          string   `json:"detail"`
+	Location        string   `json:"location"`
+	Longitude       float64  `json:"longitude"`
+	Latitude        float64  `json:"latitude"`
+	Status          string   `json:"status"`
+	ReviewerId      uint64   `json:"reviewer_id"`
+	ReviewerName    string   `json:"reviewer_name"`
+	ReviewedAt      string   `json:"reviewed_at,omitempty"`
+	RejectReason    string   `json:"reject_reason"`
+	UrgencyLevel    string   `json:"urgency_level"`
+	DifficultyLevel int32    `json:"difficulty_level"`
+	RewardPoints    int32    `json:"reward_points"`
+	TaskId          uint64   `json:"task_id"`
+	DeadlineAt      string   `json:"deadline_at,omitempty"`
+	CreatedAt       string   `json:"created_at"`
+	UpdatedAt       string   `json:"updated_at"`
+	ImageUrls       []string `json:"image_urls"`
+	Tags            []TagVO  `json:"tags"`
+}
+
+type TaskApplyItemVO {
+	ApplyId      uint64 `json:"apply_id"`
+	CatId        uint64 `json:"cat_id"`
+	CatName      string `json:"cat_name"`
+	CatAvatar    string `json:"cat_avatar"`
+	Title        string `json:"title"`
+	TaskType     string `json:"task_type"`
+	Status       string `json:"status"`
+	RejectReason string `json:"reject_reason"`
+	CreatedAt    string `json:"created_at"`
+}
+
+// ==================== 管理员审核相关 ====================
+type ApproveTaskApplyReq {
+	ApplyId         uint64 `path:"apply_id"`
+	UrgencyLevel    string `json:"urgency_level"`
+	DifficultyLevel int32  `json:"difficulty_level"`
+	RewardPoints    int32  `json:"reward_points"`
+	MaxClaimers     int32  `json:"max_claimers"`
+	Area            string `json:"area"`
+	Remark          string `json:"remark"`
+}
+
+type ApproveTaskApplyResp {
+	TaskId  uint64 `json:"task_id"`
+	Message string `json:"message"`
+}
+
+type RejectTaskApplyReq {
+	ApplyId      uint64 `path:"apply_id"`
+	RejectReason string `json:"reject_reason"`
+}
+
+type RejectTaskApplyResp {
+	Message string `json:"message"`
+}
+
+type ListPendingTaskAppliesReq {
+	CatId    uint64 `form:"cat_id,optional"`
+	Page     int32  `form:"page,optional"`
+	PageSize int32  `form:"page_size,optional"`
+}
+
+type ListPendingTaskAppliesResp {
+	Items    []TaskApplyVO `json:"items"`
+	Total    int64         `json:"total"`
+	Page     int32         `json:"page"`
+	PageSize int32         `json:"page_size"`
+}
+
+// ==================== 正式任务相关 ====================
+type DirectCreateTaskReq {
+	CatId           uint64   `json:"cat_id"`
+	Title           string   `json:"title"`
+	TaskType        string   `json:"task_type"`
+	Summary         string   `json:"summary"`
+	Detail          string   `json:"detail"`
+	Location        string   `json:"location"`
+	Longitude       float64  `json:"longitude"`
+	Latitude        float64  `json:"latitude"`
+	Area            string   `json:"area"`
+	UrgencyLevel    string   `json:"urgency_level"`
+	DifficultyLevel int32    `json:"difficulty_level"`
+	RewardPoints    int32    `json:"reward_points"`
+	MaxClaimers     int32    `json:"max_claimers"`
+	DeadlineAt      string   `json:"deadline_at,omitempty"`
+	Remark          string   `json:"remark"`
+	ImageUrls       []string `json:"image_urls"`
+	TagIds          []uint64 `json:"tag_ids"`
+}
+
+type DirectCreateTaskResp {
+	TaskId  uint64 `json:"task_id"`
+	Message string `json:"message"`
+}
+
+type GetTaskDetailReq {
+	TaskId uint64 `path:"task_id"`
+}
+
+type GetTaskDetailResp {
+	Task TaskVO     `json:"task"`
+	Cat  CatBriefVO `json:"cat"`
+}
+
+type ListTasksReq {
+	CatId           uint64 `form:"cat_id,optional"`
+	Status          string `form:"status,optional"`
+	UrgencyLevel    string `form:"urgency_level,optional"`
+	DifficultyLevel int32  `form:"difficulty_level,optional"`
+	Area            string `form:"area,optional"`
+	Page            int32  `form:"page,optional"`
+	PageSize        int32  `form:"page_size,optional"`
+}
+
+type ListTasksResp {
+	Items    []TaskItemVO `json:"items"`
+	Total    int64        `json:"total"`
+	Page     int32        `json:"page"`
+	PageSize int32        `json:"page_size"`
+}
+
+type TaskVO {
+	Id                uint64   `json:"id"`
+	CatId             uint64   `json:"cat_id"`
+	CatName           string   `json:"cat_name"`
+	CatAvatar         string   `json:"cat_avatar"`
+	ApplyId           uint64   `json:"apply_id"`
+	CreatorId         uint64   `json:"creator_id"`
+	CreatorName       string   `json:"creator_name"`
+	Title             string   `json:"title"`
+	TaskType          string   `json:"task_type"`
+	Summary           string   `json:"summary"`
+	Detail            string   `json:"detail"`
+	Location          string   `json:"location"`
+	Longitude         float64  `json:"longitude"`
+	Latitude          float64  `json:"latitude"`
+	Area              string   `json:"area"`
+	UrgencyLevel      string   `json:"urgency_level"`
+	DifficultyLevel   int32    `json:"difficulty_level"`
+	RewardPoints      int32    `json:"reward_points"`
+	FinalRewardPoints int32    `json:"final_reward_points"`
+	MaxClaimers       int32    `json:"max_claimers"`
+	CurrentClaimers   int32    `json:"current_claimers"`
+	Status            string   `json:"status"`
+	Remark            string   `json:"remark"`
+	DeadlineAt        string   `json:"deadline_at,omitempty"`
+	LastEscalatedAt   string   `json:"last_escalated_at,omitempty"`
+	EscalationCount   int32    `json:"escalation_count"`
+	CreatedAt         string   `json:"created_at"`
+	UpdatedAt         string   `json:"updated_at"`
+	ImageUrls         []string `json:"image_urls"`
+	Tags              []TagVO  `json:"tags"`
+}
+
+type TaskItemVO {
+	TaskId          uint64 `json:"task_id"`
+	CatId           uint64 `json:"cat_id"`
+	CatName         string `json:"cat_name"`
+	CatAvatar       string `json:"cat_avatar"`
+	Title           string `json:"title"`
+	TaskType        string `json:"task_type"`
+	Summary         string `json:"summary"`
+	Location        string `json:"location"`
+	UrgencyLevel    string `json:"urgency_level"`
+	DifficultyLevel int32  `json:"difficulty_level"`
+	RewardPoints    int32  `json:"reward_points"`
+	CurrentClaimers int32  `json:"current_claimers"`
+	MaxClaimers     int32  `json:"max_claimers"`
+	Status          string `json:"status"`
+	DeadlineAt      string `json:"deadline_at,omitempty"`
+	CreatedAt       string `json:"created_at"`
+}
+
+type UpdateTaskReq {
+	TaskId          uint64 `path:"task_id"`
+	Title           string `json:"title"`
+	Summary         string `json:"summary"`
+	Detail          string `json:"detail"`
+	DifficultyLevel int32  `json:"difficulty_level"`
+	RewardPoints    int32  `json:"reward_points"`
+	DeadlineAt      string `json:"deadline_at,omitempty"`
+	Remark          string `json:"remark"`
+}
+
+type UpdateTaskResp {
+	Message string `json:"message"`
+}
+
+type CancelTaskReq {
+	TaskId uint64 `path:"task_id"`
+	Reason string `json:"reason"`
+}
+
+type CancelTaskResp {
+	Message string `json:"message"`
+}
+
+type EscalateTaskUrgencyReq {
+	TaskId uint64 `path:"task_id"`
+}
+
+type EscalateTaskUrgencyResp {
+	NewUrgencyLevel string `json:"new_urgency_level"`
+	EscalationCount int32  `json:"escalation_count"`
+	Message         string `json:"message"`
+}
+
+// ==================== 任务认领相关 ====================
+type ClaimTaskReq {
+	TaskId uint64 `path:"task_id"`
+}
+
+type ClaimTaskResp {
+	ClaimId uint64 `json:"claim_id"`
+	Message string `json:"message"`
+}
+
+type AbandonTaskReq {
+	ClaimId uint64 `path:"claim_id"`
+	Reason  string `json:"reason"`
+}
+
+type AbandonTaskResp {
+	Message string `json:"message"`
+}
+
+type CompleteTaskReq {
+	ClaimId   uint64   `path:"claim_id"`
+	Content   string   `json:"content"`
+	ImageUrls []string `json:"image_urls"`
+}
+
+type CompleteTaskResp {
+	RewardPoints        int32  `json:"reward_points"`
+	IsOverdue           bool   `json:"is_overdue"`
+	ReputationDeduction int32  `json:"reputation_deduction"`
+	Message             string `json:"message"`
+}
+
+type ListMyClaimedTasksReq {
+	Status   string `form:"status,optional"`
+	Page     int32  `form:"page,optional"`
+	PageSize int32  `form:"page_size,optional"`
+}
+
+type ListMyClaimedTasksResp {
+	Items    []ClaimItemVO `json:"items"`
+	Total    int64         `json:"total"`
+	Page     int32         `json:"page"`
+	PageSize int32         `json:"page_size"`
+}
+
+type ListMyCompletedTasksReq {
+	Page     int32 `form:"page,optional"`
+	PageSize int32 `form:"page_size,optional"`
+}
+
+type ListMyCompletedTasksResp {
+	Items       []ClaimItemVO `json:"items"`
+	Total       int64         `json:"total"`
+	TotalPoints int32         `json:"total_points"`
+	Page        int32         `json:"page"`
+	PageSize    int32         `json:"page_size"`
+}
+
+type ClaimItemVO {
+	ClaimId      uint64 `json:"claim_id"`
+	TaskId       uint64 `json:"task_id"`
+	TaskTitle    string `json:"task_title"`
+	TaskType     string `json:"task_type"`
+	CatName      string `json:"cat_name"`
+	Status       string `json:"status"`
+	RewardPoints int32  `json:"reward_points"`
+	IsOverdue    bool   `json:"is_overdue"`
+	ClaimedAt    string `json:"claimed_at"`
+	DeadlineAt   string `json:"deadline_at,omitempty"`
+}
+
+// ==================== 流转日志相关 ====================
+type GetTaskFlowsReq {
+	TaskId uint64 `path:"task_id"`
+}
+
+type GetTaskFlowsResp {
+	Items []TaskFlowVO `json:"items"`
+}
+
+type TaskFlowVO {
+	Id         uint64 `json:"id"`
+	TaskId     uint64 `json:"task_id"`
+	UserId     uint64 `json:"user_id"`
+	UserName   string `json:"user_name"`
+	Action     string `json:"action"`
+	FromStatus string `json:"from_status"`
+	ToStatus   string `json:"to_status"`
+	Remark     string `json:"remark"`
+	CreatedAt  string `json:"created_at"`
+}
+
+type GetTaskLogsReq {
+	TaskId uint64 `path:"task_id"`
+}
+
+type GetTaskLogsResp {
+	Items []TaskLogVO `json:"items"`
+}
+
+type TaskLogVO {
+	Id        uint64 `json:"id"`
+	TaskId    uint64 `json:"task_id"`
+	UserId    uint64 `json:"user_id"`
+	UserName  string `json:"user_name"`
+	Action    string `json:"action"`
+	Content   string `json:"content"`
+	CreatedAt string `json:"created_at"`
+}
+
+// ==================== 通用 VO ====================
+type TagVO {
+	Id    uint64 `json:"id"`
+	Name  string `json:"name"`
+	Type  string `json:"type"`
+	Theme string `json:"theme"`
+}
+
+@server (
+	prefix: /api/v1/task
+	tags:   "任务模块"
+	group:  task
+)
+service gateway {
+	// ==================== 志愿者端 - 任务申请 ====================
+	@doc "提交任务创建申请（志愿者申请创建新任务）"
+	@handler ApplyCreateTask
+	post /task/apply (ApplyCreateTaskReq) returns (ApplyCreateTaskResp)
+
+	@doc "取消待审核的任务申请"
+	@handler CancelTaskApply
+	post /task/apply/cancel (CancelTaskApplyReq) returns (CancelTaskApplyResp)
+
+	@doc "获取任务申请详情"
+	@handler GetTaskApplyDetail
+	get /task/apply/:apply_id (GetTaskApplyDetailReq) returns (GetTaskApplyDetailResp)
+
+	@doc "查询我的任务申请列表"
+	@handler ListMyTaskApplies
+	get /task/my-applies (ListMyTaskAppliesReq) returns (ListMyTaskAppliesResp)
+
+	// ==================== 志愿者端 - 任务操作 ====================
+	@doc "领取/认领任务"
+	@handler ClaimTask
+	post /task/:task_id/claim (ClaimTaskReq) returns (ClaimTaskResp)
+
+	@doc "放弃已领取的任务"
+	@handler AbandonTask
+	post /task/claim/:claim_id/abandon (AbandonTaskReq) returns (AbandonTaskResp)
+
+	@doc "完成任务（提交完成状态）"
+	@handler CompleteTask
+	post /task/claim/:claim_id/complete (CompleteTaskReq) returns (CompleteTaskResp)
+
+	@doc "获取任务详情"
+	@handler GetTaskDetail
+	get /task/:task_id (GetTaskDetailReq) returns (GetTaskDetailResp)
+
+	@doc "查询任务列表（所有可领取的任务）"
+	@handler ListTasks
+	get /task/list (ListTasksReq) returns (ListTasksResp)
+
+	@doc "查询我已领取的任务列表"
+	@handler ListMyClaimedTasks
+	get /task/my-claimed (ListMyClaimedTasksReq) returns (ListMyClaimedTasksResp)
+
+	@doc "查询我已完成的任务列表"
+	@handler ListMyCompletedTasks
+	get /task/my-completed (ListMyCompletedTasksReq) returns (ListMyCompletedTasksResp)
+
+	// ==================== 管理员端 - 任务申请审核 ====================
+	@doc "审核通过任务申请"
+	@handler ApproveTaskApply
+	post /admin/task/apply/:apply_id/approve (ApproveTaskApplyReq) returns (ApproveTaskApplyResp)
+
+	@doc "驳回任务申请"
+	@handler RejectTaskApply
+	post /admin/task/apply/:apply_id/reject (RejectTaskApplyReq) returns (RejectTaskApplyResp)
+
+	@doc "查询待审核的任务申请列表"
+	@handler ListPendingTaskApplies
+	get /admin/task/apply/pending (ListPendingTaskAppliesReq) returns (ListPendingTaskAppliesResp)
+
+	// ==================== 管理员端 - 任务管理 ====================
+	@doc "直接创建任务（管理员直接发布任务，无需申请）"
+	@handler DirectCreateTask
+	post /admin/task/create (DirectCreateTaskReq) returns (DirectCreateTaskResp)
+
+	@doc "更新任务信息"
+	@handler UpdateTask
+	post /admin/task/:task_id/update (UpdateTaskReq) returns (UpdateTaskResp)
+
+	@doc "取消任务"
+	@handler CancelTask
+	post /admin/task/:task_id/cancel (CancelTaskReq) returns (CancelTaskResp)
+
+	@doc "提升任务紧急程度"
+	@handler EscalateTaskUrgency
+	post /admin/task/:task_id/escalate (EscalateTaskUrgencyReq) returns (EscalateTaskUrgencyResp)
+
+	// ==================== 流转日志 ====================
+	@doc "查询任务流转记录（状态变更历史）"
+	@handler GetTaskFlows
+	get /task/:task_id/flows (GetTaskFlowsReq) returns (GetTaskFlowsResp)
+
+	@doc "查询任务操作日志"
+	@handler GetTaskLogs
+	get /task/:task_id/logs (GetTaskLogsReq) returns (GetTaskLogsResp)
+}
+

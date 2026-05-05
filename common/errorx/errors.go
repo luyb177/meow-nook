@@ -12,13 +12,27 @@ import (
 
 // ──────────────────────────────────────────────
 // Error codes
+// Format: AABBCC
+//
+// AA: 一级分类（系统级 / 业务级）
+// BB: 子模块
+// CC: 具体错误编号
+//
+// 示例：
+// 200101
+// 20 = 用户模块
+// 01 = 用户基础信息
+// 01 = 用户不存在
 // ──────────────────────────────────────────────
 
 const (
 	// Success
 	CodeOK = 0
 
-	// Client-side errors (4xx)
+	// =========================================================
+	// Common HTTP-style errors（兼容基础状态码）
+	// =========================================================
+
 	CodeBadRequest      = 400
 	CodeUnauthorized    = 401
 	CodeForbidden       = 403
@@ -27,27 +41,63 @@ const (
 	CodeUnprocessable   = 422
 	CodeTooManyRequests = 429
 
-	// Server-side errors (5xx)
-	CodeInternalError  = 500
-	CodeNotImplemented = 501
-	CodeUnavailable    = 503
+	// =========================================================
+	// System Errors（10 ~ 19）
+	// =========================================================
 
-	// Business-domain codes (starting at 1000)
-	CodeUserNotFound           = 1001
-	CodeUserAlreadyExists      = 1002
-	CodePasswordWrong          = 1003
-	CodeTokenInvalid           = 1004
-	CodeTokenExpired           = 1005
-	CodeInsufficientPoints     = 1010
-	CodeCatNotFound            = 1020
-	CodeTaskNotFound           = 1030
-	CodeTaskAlreadyClaimed     = 1031
-	CodeTaskFull               = 1032
-	CodeTaskNotOwned           = 1033
-	CodeAdoptionNotFound       = 1040
-	CodeAdoptionAlreadyApplied = 1041
-	CodePostNotFound           = 1050
-	CodePermissionDenied       = 1060
+	// 10 - 通用系统错误
+	CodeInternalError  = 100001 // 系统内部错误
+	CodeNotImplemented = 100002 // 功能暂未实现
+	CodeUnavailable    = 100003 // 服务暂不可用
+
+	// 11 - 数据库错误
+	CodeDatabaseQueryFailed  = 110101 // 数据查询失败
+	CodeDatabaseInsertFailed = 110102 // 数据插入失败
+	CodeDatabaseUpdateFailed = 110103 // 数据更新失败
+	CodeDatabaseDeleteFailed = 110104 // 数据删除失败
+	CodeDatabaseTxFailed     = 110105 // 数据事务失败
+
+	// 12 - Redis错误
+	CodeRedisGetFailed = 120101 // Redis读取失败
+	CodeRedisSetFailed = 120102 // Redis写入失败
+
+	// 14 - RPC调用错误
+	CodeRPCFailed = 140101 // RPC调用失败
+
+	// 18 - 权限认证错误
+	CodeTokenInvalid = 180101 // Token无效
+	CodeTokenExpired = 180102 // Token过期
+
+	// =========================================================
+	// Business Errors（20 ~ 29）
+	// =========================================================
+
+	// 20 - 用户模块
+	CodeUserNotFound      = 200101 // 用户不存在
+	CodeUserAlreadyExists = 200102 // 用户已存在
+	CodePasswordWrong     = 200103 // 密码错误
+
+	// 21 - 猫咪模块
+	CodeCatNotFound = 210101 // 猫咪档案不存在
+
+	// 22 - 任务模块
+	CodeTaskNotFound       = 220101 // 任务不存在
+	CodeTaskAlreadyClaimed = 220102 // 任务已被认领
+	CodeTaskFull           = 220103 // 任务人数已满
+	CodeTaskNotOwned       = 220104 // 非本人认领任务
+
+	// 23 - 领养模块
+	CodeAdoptionNotFound       = 230101 // 领养申请不存在
+	CodeAdoptionAlreadyApplied = 230102 // 已申请过该猫咪领养
+
+	// 24 - 动态模块
+	CodePostNotFound = 240101 // 动态不存在
+
+	// 26 - 积分模块
+	CodeInsufficientPoints = 260101 // 积分不足
+
+	// 27 - 权限模块
+	CodePermissionDenied = 270101 // 权限不足
 )
 
 // codeToHTTPStatus maps business error codes to HTTP status codes.
@@ -55,7 +105,7 @@ var codeToHTTPStatus = map[int]int{
 	// Success
 	CodeOK: http.StatusOK,
 
-	// Client-side errors (4xx)
+	// HTTP compatibility
 	CodeBadRequest:      http.StatusBadRequest,
 	CodeUnauthorized:    http.StatusUnauthorized,
 	CodeForbidden:       http.StatusForbidden,
@@ -64,18 +114,25 @@ var codeToHTTPStatus = map[int]int{
 	CodeUnprocessable:   http.StatusUnprocessableEntity,
 	CodeTooManyRequests: http.StatusTooManyRequests,
 
-	// Server-side errors (5xx)
-	CodeInternalError:  http.StatusInternalServerError,
-	CodeNotImplemented: http.StatusNotImplemented,
-	CodeUnavailable:    http.StatusServiceUnavailable,
+	// System errors
+	CodeInternalError:        http.StatusInternalServerError,
+	CodeNotImplemented:       http.StatusNotImplemented,
+	CodeUnavailable:          http.StatusServiceUnavailable,
+	CodeDatabaseQueryFailed:  http.StatusInternalServerError,
+	CodeDatabaseInsertFailed: http.StatusInternalServerError,
+	CodeDatabaseUpdateFailed: http.StatusInternalServerError,
+	CodeDatabaseDeleteFailed: http.StatusInternalServerError,
+	CodeDatabaseTxFailed:     http.StatusInternalServerError,
+	CodeRedisGetFailed:       http.StatusInternalServerError,
+	CodeRedisSetFailed:       http.StatusInternalServerError,
+	CodeRPCFailed:            http.StatusInternalServerError,
+	CodeTokenInvalid:         http.StatusUnauthorized,
+	CodeTokenExpired:         http.StatusUnauthorized,
 
-	// Business-domain codes (starting at 1000)
+	// Business errors
 	CodeUserNotFound:           http.StatusNotFound,
 	CodeUserAlreadyExists:      http.StatusConflict,
 	CodePasswordWrong:          http.StatusUnauthorized,
-	CodeTokenInvalid:           http.StatusUnauthorized,
-	CodeTokenExpired:           http.StatusUnauthorized,
-	CodeInsufficientPoints:     http.StatusForbidden,
 	CodeCatNotFound:            http.StatusNotFound,
 	CodeTaskNotFound:           http.StatusNotFound,
 	CodeTaskAlreadyClaimed:     http.StatusConflict,
@@ -84,6 +141,7 @@ var codeToHTTPStatus = map[int]int{
 	CodeAdoptionNotFound:       http.StatusNotFound,
 	CodeAdoptionAlreadyApplied: http.StatusConflict,
 	CodePostNotFound:           http.StatusNotFound,
+	CodeInsufficientPoints:     http.StatusForbidden,
 	CodePermissionDenied:       http.StatusForbidden,
 }
 
@@ -140,56 +198,95 @@ func Wrap(code int, msg string, cause error) *AppError {
 // ──────────────────────────────────────────────
 
 var (
-	// ─────────────────────────────
+	// =========================================================
 	// Common errors
-	// ─────────────────────────────
+	// =========================================================
 
 	ErrBadRequest     = New(CodeBadRequest, "请求参数错误")
 	ErrUnauthorized   = New(CodeUnauthorized, "请先登录")
 	ErrForbidden      = New(CodeForbidden, "无权限访问")
 	ErrNotFound       = New(CodeNotFound, "资源不存在")
 	ErrInternalServer = New(CodeInternalError, "服务器内部错误")
+	ErrUnavailable    = New(CodeUnavailable, "服务暂不可用")
+	ErrNotImplemented = New(CodeNotImplemented, "功能暂未实现")
 
-	// ─────────────────────────────
+	// =========================================================
 	// Auth / Token errors
-	// ─────────────────────────────
+	// =========================================================
 
 	ErrTokenInvalid = New(CodeTokenInvalid, "令牌无效")
 	ErrTokenExpired = New(CodeTokenExpired, "令牌已过期")
 
-	// ─────────────────────────────
+	// =========================================================
+	// Database errors
+	// =========================================================
+
+	ErrDatabaseQuery  = New(CodeDatabaseQueryFailed, "数据库查询失败")
+	ErrDatabaseInsert = New(CodeDatabaseInsertFailed, "数据库新增失败")
+	ErrDatabaseUpdate = New(CodeDatabaseUpdateFailed, "数据库更新失败")
+	ErrDatabaseDelete = New(CodeDatabaseDeleteFailed, "数据库删除失败")
+	ErrDatabaseTx     = New(CodeDatabaseTxFailed, "数据库事务失败")
+
+	// =========================================================
+	// Redis errors
+	// =========================================================
+
+	ErrRedisGet = New(CodeRedisGetFailed, "缓存读取失败")
+	ErrRedisSet = New(CodeRedisSetFailed, "缓存写入失败")
+
+	// =========================================================
+	// RPC errors
+	// =========================================================
+
+	ErrRPCFailed = New(CodeRPCFailed, "服务调用失败")
+
+	// =========================================================
 	// User errors
-	// ─────────────────────────────
+	// =========================================================
 
 	ErrUserNotFound      = New(CodeUserNotFound, "用户不存在")
 	ErrUserAlreadyExists = New(CodeUserAlreadyExists, "用户已存在")
 	ErrPasswordWrong     = New(CodePasswordWrong, "密码错误")
 
-	// ─────────────────────────────
-	// Resource / Business errors
-	// ─────────────────────────────
+	// =========================================================
+	// Cat errors
+	// =========================================================
 
-	ErrInsufficientPoints     = New(CodeInsufficientPoints, "积分不足")
-	ErrCatNotFound            = New(CodeCatNotFound, "猫咪档案不存在")
-	ErrTaskNotFound           = New(CodeTaskNotFound, "任务不存在")
-	ErrTaskAlreadyClaimed     = New(CodeTaskAlreadyClaimed, "任务已被认领")
-	ErrTaskFull               = New(CodeTaskFull, "任务认领人数已满")
-	ErrTaskNotOwned           = New(CodeTaskNotOwned, "非本人认领的任务")
+	ErrCatNotFound = New(CodeCatNotFound, "猫咪档案不存在")
+
+	// =========================================================
+	// Task errors
+	// =========================================================
+
+	ErrTaskNotFound       = New(CodeTaskNotFound, "任务不存在")
+	ErrTaskAlreadyClaimed = New(CodeTaskAlreadyClaimed, "任务已被认领")
+	ErrTaskFull           = New(CodeTaskFull, "任务认领人数已满")
+	ErrTaskNotOwned       = New(CodeTaskNotOwned, "非本人认领的任务")
+
+	// =========================================================
+	// Adoption errors
+	// =========================================================
+
 	ErrAdoptionNotFound       = New(CodeAdoptionNotFound, "领养申请不存在")
 	ErrAdoptionAlreadyApplied = New(CodeAdoptionAlreadyApplied, "已申请过该猫咪的领养")
-	ErrPostNotFound           = New(CodePostNotFound, "动态不存在")
 
-	// ─────────────────────────────
+	// =========================================================
+	// Post errors
+	// =========================================================
+
+	ErrPostNotFound = New(CodePostNotFound, "动态不存在")
+
+	// =========================================================
+	// Points errors
+	// =========================================================
+
+	ErrInsufficientPoints = New(CodeInsufficientPoints, "积分不足")
+
+	// =========================================================
 	// Permission errors
-	// ─────────────────────────────
+	// =========================================================
 
 	ErrPermissionDenied = New(CodePermissionDenied, "没有操作权限")
-
-	// ─────────────────────────────
-	// Server capability errors
-	// ─────────────────────────────
-
-	ErrNotImplemented = New(CodeNotImplemented, "功能暂未实现")
 )
 
 // ──────────────────────────────────────────────
@@ -229,4 +326,36 @@ func MsgOf(err error) string {
 
 func WrapInternal(msg string, err error) *AppError {
 	return Wrap(CodeInternalError, msg, err)
+}
+
+func WrapDBQuery(msg string, err error) *AppError {
+	return Wrap(CodeDatabaseQueryFailed, msg, err)
+}
+
+func WrapDBInsert(msg string, err error) *AppError {
+	return Wrap(CodeDatabaseInsertFailed, msg, err)
+}
+
+func WrapDBUpdate(msg string, err error) *AppError {
+	return Wrap(CodeDatabaseUpdateFailed, msg, err)
+}
+
+func WrapDBDelete(msg string, err error) *AppError {
+	return Wrap(CodeDatabaseDeleteFailed, msg, err)
+}
+
+func WrapDBTx(msg string, err error) *AppError {
+	return Wrap(CodeDatabaseTxFailed, msg, err)
+}
+
+func WrapRedisGet(msg string, err error) *AppError {
+	return Wrap(CodeRedisGetFailed, msg, err)
+}
+
+func WrapRedisSet(msg string, err error) *AppError {
+	return Wrap(CodeRedisSetFailed, msg, err)
+}
+
+func WrapRPC(msg string, err error) *AppError {
+	return Wrap(CodeRPCFailed, msg, err)
 }

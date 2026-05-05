@@ -2,6 +2,8 @@ package cache
 
 import (
 	"context"
+	"fmt"
+	"log"
 	"time"
 
 	"github.com/redis/go-redis/v9"
@@ -18,27 +20,43 @@ func NewRedisClient(addr, password string, db int) (*RedisClient, error) {
 		DB:       db,
 
 		// 连接池
-		PoolSize:     50, // 连接池大小
-		MinIdleConns: 10, // 最小空闲连接
+		PoolSize:     50,
+		MinIdleConns: 10,
 
 		// 超时
-		DialTimeout:  5 * time.Second, // 连接超时
-		ReadTimeout:  3 * time.Second, // 读超时
-		WriteTimeout: 3 * time.Second, // 写超时
+		DialTimeout:  5 * time.Second,
+		ReadTimeout:  3 * time.Second,
+		WriteTimeout: 3 * time.Second,
 
-		// 重试
+		// 内置重试（针对命令）
 		MaxRetries:      3,
 		MinRetryBackoff: 8 * time.Millisecond,
 		MaxRetryBackoff: 512 * time.Millisecond,
 	})
 
-	// ping 检查连接
-	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
-	defer cancel()
+	// 外层重试（连接阶段）
+	maxRetries := 10
+	retryInterval := 2 * time.Second
 
-	if err := rdb.Ping(ctx).Err(); err != nil {
-		return nil, err
+	var err error
+
+	for i := 1; i <= maxRetries; i++ {
+		ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+
+		err = rdb.Ping(ctx).Err()
+		cancel()
+
+		if err == nil {
+			log.Println("Redis connected successfully")
+			return &RedisClient{Client: rdb}, nil
+		}
+
+		log.Printf("Redis not ready (attempt %d/%d): %v\n", i, maxRetries, err)
+
+		if i < maxRetries {
+			time.Sleep(retryInterval)
+		}
 	}
 
-	return &RedisClient{Client: rdb}, nil
+	return nil, fmt.Errorf("failed to connect to Redis after %d attempts: %w", maxRetries, err)
 }

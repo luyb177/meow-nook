@@ -13,6 +13,7 @@ type Config struct {
 	rest.RestConf
 
 	UserRPC zrpc.RpcClientConf
+	CatRPC  zrpc.RpcClientConf
 
 	Logger logger.Config
 }

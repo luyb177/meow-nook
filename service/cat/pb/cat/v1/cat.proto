@@ -1,0 +1,1241 @@
+syntax = "proto3";
+
+package cat;
+
+option go_package = "./pb/cat/v1";
+
+import "google/protobuf/timestamp.proto";
+
+
+service CatService {
+    // 志愿者
+    rpc ApplyCreateCat(ApplyCreateCatRequest) returns (ApplyCreateCatResponse);
+    rpc CancelApplyCreateCat(CancelApplyCreateCatRequest) returns (Response);
+    rpc GetApplyDetail(GetApplyDetailRequest) returns (GetApplyDetailResponse);
+    rpc ListMyApplies(ListMyAppliesRequest) returns (ListMyAppliesResponse);
+
+    // 管理员
+    rpc ApproveCreateCat(ApproveCreateCatRequest) returns (ApproveCreateCatResponse);
+    rpc RejectCreateCat(RejectCreateCatRequest) returns (Response);
+    rpc DirectCreateCat(DirectCreateCatRequest) returns (DirectCreateCatResponse);
+    rpc ListPendingApplies(ListPendingAppliesRequest) returns (ListPendingAppliesResponse);
+
+    rpc ListCats(ListCatsReq) returns (ListCatsResp);
+
+    // ==================== 志愿者端 ====================
+
+    // 申请领养
+        rpc ApplyAdopt(ApplyAdoptRequest) returns (ApplyAdoptResponse);
+
+    // 取消申请
+        rpc CancelAdoptApply(CancelAdoptApplyRequest) returns (CancelAdoptApplyResponse);
+
+    // 查看申请详情
+        rpc GetAdoptApplyDetail(GetAdoptApplyDetailRequest) returns (GetAdoptApplyDetailResponse);
+
+    // 我的申请列表
+        rpc ListMyAdoptApplies(ListMyAdoptAppliesRequest) returns (ListMyAdoptAppliesResponse);
+
+    // 我的领养记录
+        rpc ListMyAdoptions(ListMyAdoptionsRequest) returns (ListAdoptionsResponse);
+
+    // 完成回访
+        rpc CompleteVisit(RecordFollowUpVisitRequest) returns (RecordFollowUpVisitResponse);
+
+    // ==================== 管理员端 ====================
+
+    // 审核通过
+        rpc ApproveAdopt(ApproveAdoptRequest) returns (ApproveAdoptResponse);
+
+    // 审核拒绝
+        rpc RejectAdopt(RejectAdoptRequest) returns (RejectAdoptResponse);
+
+    // 待审核列表
+        rpc ListPendingAdoptApplies(ListPendingAdoptAppliesRequest) returns (ListPendingAdoptAppliesResponse);
+
+    // 从申请创建领养记录
+        rpc CreateAdoption(CreateAdoptionRequest) returns (CreateAdoptionResponse);
+
+    // 直接领养
+        rpc DirectAdopt(DirectAdoptRequest) returns (DirectAdoptResponse);
+
+    // 查看领养详情
+        rpc GetAdoptionDetail(GetAdoptionDetailRequest) returns (GetAdoptionDetailResponse);
+
+    // 领养记录列表
+        rpc ListAdoptions(ListAdoptionsRequest) returns (ListAdoptionsResponse);
+
+    // 更新领养信息
+        rpc UpdateAdoption(UpdateAdoptionRequest) returns (UpdateAdoptionResponse);
+
+    // 记录家访
+        rpc RecordHomeVisit(RecordHomeVisitRequest) returns (RecordHomeVisitResponse);
+
+    // 记录回访
+        rpc RecordFollowUpVisit(RecordFollowUpVisitRequest) returns (RecordFollowUpVisitResponse);
+
+    // 更新退回状态
+        rpc UpdateReturnStatus(UpdateReturnStatusRequest) returns (UpdateReturnStatusResponse);
+
+
+    // ==================== 志愿者端 - 任务申请 ====================
+
+    // 申请创建任务
+    rpc ApplyCreateTask(ApplyCreateTaskRequest) returns (ApplyCreateTaskResponse);
+
+    // 取消任务申请
+    rpc CancelTaskApply(CancelTaskApplyRequest) returns (CancelTaskApplyResponse);
+
+    // 查看任务申请详情
+    rpc GetTaskApplyDetail(GetTaskApplyDetailRequest) returns (GetTaskApplyDetailResponse);
+
+    // 我的任务申请列表
+    rpc ListMyTaskApplies(ListMyTaskAppliesRequest) returns (ListMyTaskAppliesResponse);
+
+    // ==================== 志愿者端 - 任务操作 ====================
+
+    // 认领任务
+    rpc ClaimTask(ClaimTaskRequest) returns (ClaimTaskResponse);
+
+    // 放弃任务
+    rpc AbandonTask(AbandonTaskRequest) returns (AbandonTaskResponse);
+
+    // 完成任务
+    rpc CompleteTask(CompleteTaskRequest) returns (CompleteTaskResponse);
+
+    // 查看任务详情
+    rpc GetTaskDetail(GetTaskDetailRequest) returns (GetTaskDetailResponse);
+
+    // 任务列表（公开查询）
+    rpc ListTasks(ListTasksRequest) returns (ListTasksResponse);
+
+    // 我认领的任务列表
+    rpc ListMyClaimedTasks(ListMyClaimedTasksRequest) returns (ListMyClaimedTasksResponse);
+
+    // 我完成的任务列表
+    rpc ListMyCompletedTasks(ListMyCompletedTasksRequest) returns (ListMyCompletedTasksResponse);
+
+    // ==================== 管理员端 - 任务申请审核 ====================
+
+    // 审核通过任务申请
+    rpc ApproveTaskApply(ApproveTaskApplyRequest) returns (ApproveTaskApplyResponse);
+
+    // 拒绝任务申请
+    rpc RejectTaskApply(RejectTaskApplyRequest) returns (RejectTaskApplyResponse);
+
+    // 待审核任务申请列表
+    rpc ListPendingTaskApplies(ListPendingTaskAppliesRequest) returns (ListPendingTaskAppliesResponse);
+
+    // ==================== 管理员端 - 任务管理 ====================
+
+    // 直接创建任务（跳过申请）
+    rpc DirectCreateTask(DirectCreateTaskRequest) returns (DirectCreateTaskResponse);
+
+    // 更新任务
+    rpc UpdateTask(UpdateTaskRequest) returns (UpdateTaskResponse);
+
+    // 取消任务
+    rpc CancelTask(CancelTaskRequest) returns (CancelTaskResponse);
+
+    // 升级任务紧急度
+    rpc EscalateTaskUrgency(EscalateTaskUrgencyRequest) returns (EscalateTaskUrgencyResponse);
+
+    // ==================== 流转日志 ====================
+
+    // 查看任务流转日志
+    rpc GetTaskFlows(GetTaskFlowsRequest) returns (GetTaskFlowsResponse);
+
+    // 查看任务操作日志
+    rpc GetTaskLogs(GetTaskLogsRequest) returns (GetTaskLogsResponse);
+}
+
+// ==================== 通用响应 ====================
+
+message Response {}
+
+// ==================== 图片项 ====================
+
+message ImageItem {
+    string url = 1;
+    string description = 2;
+    int32 sort = 3;
+    bool is_cover = 4;
+}
+
+// ==================== 志愿者：申请创建猫咪档案 ====================
+
+message ApplyCreateCatRequest {
+    // 基础信息
+    string name = 1;
+    string gender = 2;
+    string body_size = 3;
+    string age_stage = 4;
+    string description = 5;
+
+    // 位置信息
+    string discovery_address = 6;
+    double longitude = 7;
+    double latitude = 8;
+
+    // 图片（URL列表，已上传到OSS）
+    repeated ImageItem images = 9;
+
+    // 标签ID列表
+    repeated uint64 tag_ids = 10;
+
+    // 申请人ID（从网关JWT解析传入）
+    uint64 applicant_user_id = 11;
+}
+
+message ApplyCreateCatResponse {
+    uint64 apply_id = 1;
+    google.protobuf.Timestamp created_at = 2;
+}
+
+// ==================== 志愿者：取消申请 ====================
+
+message CancelApplyCreateCatRequest {
+    uint64 apply_id = 1;
+    uint64 applicant_user_id = 2;
+    string reason = 3;
+}
+
+// ==================== 管理员：审核通过 ====================
+
+message ApproveCreateCatRequest {
+    uint64 apply_id = 1;
+    uint64 operator_id = 2;
+
+    // 审核时补充的正式档案信息
+    string cat_code = 3;
+    string breed = 4;
+    string color = 5;
+    bool is_vaccinated = 6;
+    bool is_healthy = 7;
+    bool need_medical_intervention = 8;
+    string sterilization_status = 9;
+
+    // 追加标签ID（审核时可以额外补充标签）
+    repeated uint64 extra_tag_ids = 10;
+}
+
+message ApproveCreateCatResponse {
+    uint64 cat_id = 1;
+    string cat_code = 2;
+    string status = 3;
+}
+
+// ==================== 管理员：驳回 ====================
+
+message RejectCreateCatRequest {
+    uint64 apply_id = 1;
+    string reason = 2;
+    uint64 operator_id = 3;
+}
+
+// ==================== 管理员：直接创建猫咪档案 ====================
+
+message DirectCreateCatRequest {
+    string cat_code = 1;
+    string name = 2;
+    string breed = 3;
+    string color = 4;
+    string gender = 5;
+    string body_size = 6;
+    string age_stage = 7;
+    string description = 8;
+
+    string discovery_address = 9;
+    double longitude = 10;
+    double latitude = 11;
+
+    bool is_vaccinated = 12;
+    bool is_healthy = 13;
+    bool need_medical_intervention = 14;
+    string sterilization_status = 15;
+
+    repeated ImageItem images = 16;
+    repeated uint64 tag_ids = 17;
+
+    uint64 operator_id = 18;
+}
+
+message DirectCreateCatResponse {
+    uint64 cat_id = 1;
+    string cat_code = 2;
+}
+
+// ==================== 查询：申请详情 ====================
+
+message GetApplyDetailRequest {
+    uint64 apply_id = 1;
+}
+
+message GetApplyDetailResponse {
+    uint64 apply_id = 1;
+    uint64 cat_id = 2;
+    string name = 3;
+    string gender = 4;
+    string body_size = 5;
+    string age_stage = 6;
+    string description = 7;
+    string discovery_address = 8;
+    double longitude = 9;
+    double latitude = 10;
+    uint64 applicant_user_id = 11;
+    string status = 12;
+    string reject_reason = 13;
+    string cancel_reason = 14;
+    uint64 reviewer_id = 15;
+
+    repeated ImageItem images = 16;
+
+    google.protobuf.Timestamp created_at = 17;
+    google.protobuf.Timestamp updated_at = 18;
+}
+
+// ==================== 查询：我的申请列表 ====================
+
+message ListMyAppliesRequest {
+    uint64 applicant_user_id = 1;
+    string status = 2;
+    int32 page = 3;
+    int32 page_size = 4;
+}
+
+message ListMyAppliesResponse {
+    message ApplyItem {
+        uint64 apply_id = 1;
+        string name = 2;
+        string status = 3;
+        uint64 cat_id = 4;
+        google.protobuf.Timestamp created_at = 5;
+    }
+
+    repeated ApplyItem list = 1;
+    int64 total = 2;
+}
+
+// ==================== 查询：待审核列表 ====================
+
+message ListPendingAppliesRequest {
+    string keyword = 1;
+    int32 page = 2;
+    int32 page_size = 3;
+}
+
+message ListPendingAppliesResponse {
+    message ApplyItem {
+        uint64 apply_id = 1;
+        string name = 2;
+        string gender = 3;
+        string age_stage = 4;
+        string discovery_address = 5;
+        uint64 applicant_user_id = 6;
+        google.protobuf.Timestamp created_at = 7;
+    }
+
+    repeated ApplyItem list = 1;
+    int64 total = 2;
+}
+
+// ==================== 查询：猫咪列表 ====================
+// 获取小猫列表请求
+message ListCatsReq {
+    // 基础筛选
+    string keyword = 1;        // 关键词搜索（name/cat_code/breed/color）
+    string name = 2;           // 名称模糊搜索
+    string cat_code = 3;       // 猫咪编号精确搜索
+    string breed = 4;          // 品种
+    string color = 5;          // 毛色
+    string gender = 6;         // 性别（male/female/unknown）
+
+    // 体态筛选
+    string body_size = 7;      // 体型（small/medium/large）
+    string age_stage = 8;      // 年龄阶段（kitten/young/adult/old）
+
+    // 健康筛选
+    string sterilization_status = 9;   // 绝育状态（sterilized/unsterilized）
+    string adoption_status = 10;        // 领养状态（pending/adopted/unavailable）
+    optional bool is_vaccinated = 11;   // 是否已接种疫苗
+    optional bool is_healthy = 12;      // 是否健康
+    optional bool need_medical_intervention = 13; // 是否需要医疗干预
+
+    // 附近筛选
+    NearbyFilter nearby = 14;   // 附近查找条件
+
+    // 其他筛选
+    uint64 adopter_id = 15;      // 领养人ID
+    uint64 creator_id = 16;      // 创建人ID
+    uint64 apply_id = 17;        // 申请单ID
+
+    // 时间范围
+    string found_at_start = 18;   // 发现开始时间（RFC3339格式）
+    string found_at_end = 19;     // 发现结束时间
+    string created_at_start = 20; // 创建开始时间
+    string created_at_end = 21;   // 创建结束时间
+
+    // 分页排序
+    int32 page = 22;               // 页码（默认1）
+    int32 page_size = 23;         // 每页数量（默认20，最大100）
+    string sort_by = 24;          // 排序字段（id/created_at/found_at/updated_at/distance）
+    string sort_order = 25;       // 排序方向（asc/desc）
+}
+
+// 附近筛选条件
+message NearbyFilter {
+    double latitude = 1;   // 纬度
+    double longitude = 2;  // 经度
+    double radius = 3;     // 半径（公里，默认5km，最大50km）
+}
+
+// 获取小猫列表响应
+message ListCatsResp {
+    int64 total = 1;               // 总数
+    repeated CatInfo list = 2;     // 小猫列表
+}
+
+// 小猫信息（含距离）
+message CatInfo {
+    // 基础信息
+    uint64 id = 1;
+    string cat_code = 2;
+    string name = 3;
+    string breed = 4;
+    string color = 5;
+    string gender = 6;
+
+    // 体态信息
+    string body_size = 7;
+    string age_stage = 8;
+    float weight = 9;
+    string character = 10;
+    string birth_date = 11;
+
+    // 展示信息
+    string avatar = 12;
+    string description = 13;
+
+    // 发现信息
+    string found_at = 14;
+    string discovery_address = 15;
+    double longitude = 16;
+    double latitude = 17;
+
+    // 健康信息
+    bool is_vaccinated = 18;
+    bool is_healthy = 19;
+    bool need_medical_intervention = 20;
+    string sterilization_status = 21;
+    string last_medical_check_at = 22;
+
+    // 领养信息
+    string adoption_status = 23;
+    uint64 adopter_id = 24;
+    string adopted_at = 25;
+
+    // 来源信息
+    uint64 apply_id = 26;
+    uint64 creator_id = 27;
+
+    // 时间信息
+    string created_at = 28;
+    string updated_at = 29;
+
+    // 距离（公里，仅在附近搜索时有值）
+    double distance = 30;
+}
+
+
+// ==================== 领养申请表相关 ====================
+
+message ApplyAdoptRequest {
+    uint64 cat_id = 1;                    // 猫咪ID
+    string apply_reason = 2;              // 申请理由
+    string contact_phone = 3;             // 联系电话
+    string contact_wechat = 4;            // 微信号
+
+    uint64 applicant_id = 5;              // 申请人ID，由HTTP层从登录态注入
+}
+
+message ApplyAdoptResponse {
+    uint64 apply_id = 1;                  // 申请ID
+    string status = 2;                    // 申请状态
+    string message = 3;                   // 提示信息
+    int32 applicant_credit_score = 4;     // 申请时的积分快照
+}
+
+message CancelAdoptApplyRequest {
+    uint64 apply_id = 1;                  // 申请ID
+    string reason = 2;                    // 取消原因
+
+    uint64 applicant_id = 3;              // 当前用户ID，用于校验是否本人申请
+}
+
+message CancelAdoptApplyResponse {
+    string message = 2;
+}
+
+message GetAdoptApplyDetailRequest {
+    uint64 apply_id = 1;
+
+    uint64 requester_id = 2;              // 当前查看人ID，用于权限校验
+}
+
+message AdoptApplicationVO {
+    uint64 id = 1;
+    uint64 cat_id = 2;
+    string cat_name = 3;
+    string cat_avatar = 4;
+    uint64 applicant_id = 5;
+    string applicant_name = 6;
+    string apply_reason = 7;
+    string contact_phone = 8;
+    string contact_wechat = 9;
+    int32 applicant_credit_score = 10;   // 申请时积分快照
+    string status = 11;                   // pending/approved/rejected/cancelled/completed/expired
+    string reject_reason = 12;
+    uint64 reviewer_id = 13;
+    string reviewer_name = 14;
+    google.protobuf.Timestamp reviewed_at = 15;
+    google.protobuf.Timestamp approved_at = 16;
+    google.protobuf.Timestamp expires_at = 17;
+    google.protobuf.Timestamp created_at = 18;
+    google.protobuf.Timestamp updated_at = 19;
+    uint64 adoption_id = 20;              // 关联的领养记录ID
+}
+
+message GetAdoptApplyDetailResponse {
+    AdoptApplicationVO apply = 1;
+    CatBriefVO cat = 2;
+}
+
+message ListMyAdoptAppliesRequest {
+    string status = 1;                    // 可选：筛选状态
+    int32 page = 2;
+    int32 page_size = 3;
+
+    uint64 applicant_id = 4;              // 当前登录用户ID
+}
+
+message ListMyAdoptionsRequest {
+    uint64 user_id = 1;                   // 当前登录用户ID，作为 adopter_id 查询
+    int32 page = 2;
+    int32 page_size = 3;
+}
+
+message AdoptApplyItemVO {
+    uint64 apply_id = 1;
+    uint64 cat_id = 2;
+    string cat_name = 3;
+    string cat_avatar = 4;
+    string cat_gender = 5;
+    int32 credit_score_required = 6;      // 该猫所需积分
+    string apply_reason = 7;
+    string status = 8;
+    string reject_reason = 9;
+    google.protobuf.Timestamp created_at = 10;
+    google.protobuf.Timestamp expires_at = 11;
+}
+
+message ListMyAdoptAppliesResponse {
+    repeated AdoptApplyItemVO items = 1;
+    int32 total = 2;
+    int32 page = 3;
+    int32 page_size = 4;
+}
+
+// ==================== 管理员审核相关 ====================
+
+message ApproveAdoptRequest {
+    uint64 apply_id = 1;
+    string note = 2;                      // 审核备注
+
+    uint64 reviewer_id = 3;               // 审核人ID，当前管理员ID
+}
+
+message ApproveAdoptResponse {
+    uint64 apply_id = 1;
+    string status = 2;
+    string message = 3;
+    google.protobuf.Timestamp expires_at = 4;
+}
+
+// 拒绝申请
+message RejectAdoptRequest {
+    uint64 apply_id = 1;
+    string reject_reason = 2;             // 必填
+
+    uint64 reviewer_id = 3;               // 审核人ID，当前管理员ID
+}
+
+message RejectAdoptResponse {
+    string message = 1;
+}
+
+message ListPendingAdoptAppliesRequest {
+    uint64 cat_id = 1;                    // 可选：筛选某只猫的申请
+    int32 page = 2;
+    int32 page_size = 3;
+
+    uint64 admin_id = 4;                  // 当前管理员ID，用于权限校验
+}
+
+message PendingApplyVO {
+    uint64 apply_id = 1;
+    uint64 cat_id = 2;
+    string cat_name = 3;
+    string cat_avatar = 4;
+    string cat_gender = 5;
+    int32 credit_score_required = 6;
+    uint64 applicant_id = 7;
+    string applicant_name = 8;
+    string applicant_avatar = 9;
+    int32 applicant_credit_score = 10;   // 申请时积分
+    string apply_reason = 11;
+    string contact_phone = 12;
+    string contact_wechat = 13;
+    google.protobuf.Timestamp created_at = 14;
+}
+
+message ListPendingAdoptAppliesResponse {
+    repeated PendingApplyVO items = 1;
+    int32 total = 2;
+    int32 page = 3;
+    int32 page_size = 4;
+}
+
+// ==================== 领养记录相关 ====================
+
+message CreateAdoptionRequest {
+    uint64 apply_id = 1;                  // 来源申请ID
+    string agreement_no = 2;              // 协议编号
+    string note = 3;
+
+    uint64 creator_id = 4;                // 创建人ID，通常是管理员ID
+}
+
+message CreateAdoptionResponse {
+    uint64 adoption_id = 1;
+    string message = 2;
+}
+
+// 直接领养（跳过申请流程）
+message DirectAdoptRequest {
+    uint64 cat_id = 1;
+    uint64 adopter_id = 2;                // 领养人ID
+    string agreement_no = 3;
+    string note = 4;
+
+    uint64 creator_id = 5;                // 操作管理员ID
+}
+
+message DirectAdoptResponse {
+    uint64 adoption_id = 1;
+    string message = 2;
+}
+
+// 获取领养详情
+message GetAdoptionDetailRequest {
+    uint64 adoption_id = 1;
+
+    uint64 requester_id = 2;              // 当前查看人ID，用于判断是否本人/管理员
+}
+
+message AdoptionVO {
+    uint64 id = 1;
+    uint64 cat_id = 2;
+    string cat_name = 3;
+    string cat_avatar = 4;
+    uint64 adopter_id = 5;
+    string adopter_name = 6;
+    string status = 7;                    // active/returned/expired
+    string agreement_no = 8;
+    google.protobuf.Timestamp agreed_at = 9;
+    google.protobuf.Timestamp adopted_at = 10;
+
+    // 家访信息
+    google.protobuf.Timestamp home_visit_at = 11;
+    uint64 home_visit_user_id = 12;
+    string home_visit_remark = 13;
+
+    // 回访信息
+    google.protobuf.Timestamp visit_one_week_at = 14;
+    google.protobuf.Timestamp visit_one_month_at = 15;
+    google.protobuf.Timestamp visit_three_month_at = 16;
+    google.protobuf.Timestamp visit_six_month_at = 17;
+
+    // 退回信息
+    bool is_returned = 18;
+    string return_reason = 19;
+    google.protobuf.Timestamp returned_at = 20;
+
+    string note = 21;
+    google.protobuf.Timestamp created_at = 22;
+    google.protobuf.Timestamp updated_at = 23;
+}
+
+message GetAdoptionDetailResponse {
+    AdoptionVO adoption = 1;
+    CatBriefVO cat = 2;
+    UserBriefVO adopter = 3;
+}
+
+// 领养记录列表
+message ListAdoptionsRequest {
+    uint64 adopter_id = 1;                // 按领养人筛选
+    uint64 cat_id = 2;                    // 按猫咪筛选
+    string status = 3;                    // active/returned/expired
+    int32 page = 4;
+    int32 page_size = 5;
+
+    uint64 requester_id = 6;              // 当前查询人ID，通常是管理员ID
+}
+
+message AdoptionItemVO {
+    uint64 adoption_id = 1;
+    uint64 cat_id = 2;
+    string cat_name = 3;
+    string cat_avatar = 4;
+    uint64 adopter_id = 5;
+    string adopter_name = 6;
+    string status = 7;
+    string agreement_no = 8;
+    google.protobuf.Timestamp adopted_at = 9;
+    bool is_returned = 10;
+}
+
+message ListAdoptionsResponse {
+    repeated AdoptionItemVO items = 1;
+    int32 total = 2;
+    int32 page = 3;
+    int32 page_size = 4;
+}
+
+// 更新领养信息
+message UpdateAdoptionRequest {
+    uint64 adoption_id = 1;
+    string agreement_no = 2;
+    string note = 3;
+
+    uint64 operator_id = 4;               // 操作人ID
+}
+
+message UpdateAdoptionResponse {
+    string message = 2;
+}
+
+// 记录家访
+message RecordHomeVisitRequest {
+    uint64 adoption_id = 1;
+    string remark = 2;
+    string photos = 3;                    // JSON数组
+
+    uint64 visitor_id = 4;                // 家访志愿者/管理员ID
+}
+
+message RecordHomeVisitResponse {
+    string message = 2;
+}
+
+// 记录回访
+message RecordFollowUpVisitRequest {
+    uint64 adoption_id = 1;
+    int32 visit_type = 2;                 // 1=1周, 2=1月, 3=3月, 4=6月
+    string remark = 3;
+    string photos = 4;                    // JSON数组
+
+    uint64 visitor_id = 5;                // 回访志愿者/管理员ID
+}
+
+message RecordFollowUpVisitResponse {
+    string message = 2;
+}
+
+// 更新退回状态
+message UpdateReturnStatusRequest {
+    uint64 adoption_id = 1;
+    bool returned = 2;
+    uint64 returned_to_user_id = 3;       // 0表示退回平台
+    string return_reason = 4;
+    string photos = 5;
+    google.protobuf.Timestamp returned_at = 6;
+
+    uint64 operator_id = 7;               // 操作人ID，通常是管理员ID
+}
+
+message UpdateReturnStatusResponse {
+    string message = 2;
+}
+
+// ==================== 通用 VO ====================
+
+message CatBriefVO {
+    uint64 id = 1;
+    string name = 2;
+    string avatar = 3;
+    string gender = 4;
+    int32 credit_score_required = 5;
+}
+
+message UserBriefVO {
+    uint64 id = 1;
+    string name = 2;
+    string avatar = 3;
+}
+
+// ==================== 任务申请相关 ====================
+
+message ApplyCreateTaskRequest {
+    uint64 cat_id = 1;                  // 猫咪ID
+    string title = 2;                   // 任务标题
+    string task_type = 3;               // 任务类型
+    string summary = 4;                 // 简介
+    string detail = 5;                  // 详细描述
+    string location = 6;                // 地点描述
+    double longitude = 7;               // 经度
+    double latitude = 8;                // 纬度
+    google.protobuf.Timestamp deadline_at = 9; // 截止时间
+    repeated string image_urls = 10;    // 图片URLs
+    repeated uint64 tag_ids = 11;       // 标签IDs
+
+    uint64 applicant_user_id = 12;      // 申请人ID（HTTP注入）
+}
+
+message ApplyCreateTaskResponse {
+    uint64 apply_id = 1;
+    string status = 2;
+    string message = 3;
+}
+
+message CancelTaskApplyRequest {
+    uint64 apply_id = 1;
+    string reason = 2;
+
+    uint64 user_id = 3;                 // 当前用户ID
+}
+
+message CancelTaskApplyResponse {
+    string message = 1;
+}
+
+message GetTaskApplyDetailRequest {
+    uint64 apply_id = 1;
+
+    uint64 requester_id = 2;            // 当前查看人ID
+}
+
+message TaskApplyVO {
+    uint64 id = 1;
+    uint64 cat_id = 2;
+    string cat_name = 3;
+    string cat_avatar = 4;
+    uint64 applicant_user_id = 5;
+    string applicant_name = 6;
+    string applicant_avatar = 7;
+
+    string title = 8;
+    string task_type = 9;
+    string summary = 10;
+    string detail = 11;
+    string location = 12;
+    double longitude = 13;
+    double latitude = 14;
+
+    string status = 15;                 // pending/approved/rejected/cancelled
+    uint64 reviewer_id = 16;
+    string reviewer_name = 17;
+    google.protobuf.Timestamp reviewed_at = 18;
+    string reject_reason = 19;
+
+    string urgency_level = 20;
+    int32 difficulty_level = 21;
+    int32 reward_points = 22;
+
+    uint64 task_id = 23;                // 关联的正式任务ID
+
+    google.protobuf.Timestamp deadline_at = 24;
+    google.protobuf.Timestamp created_at = 25;
+    google.protobuf.Timestamp updated_at = 26;
+
+    repeated string image_urls = 27;
+    repeated TagVO tags = 28;
+}
+
+message GetTaskApplyDetailResponse {
+    TaskApplyVO apply = 1;
+    CatBriefVO cat = 2;
+}
+
+message ListMyTaskAppliesRequest {
+    string status = 1;                  // 可选
+    int32 page = 2;
+    int32 page_size = 3;
+
+    uint64 applicant_user_id = 4;
+}
+
+message ListMyTaskAppliesResponse {
+    repeated TaskApplyItemVO items = 1;
+    int64 total = 2;
+    int32 page = 3;
+    int32 page_size = 4;
+}
+
+message TaskApplyItemVO {
+    uint64 apply_id = 1;
+    uint64 cat_id = 2;
+    string cat_name = 3;
+    string cat_avatar = 4;
+    string title = 5;
+    string task_type = 6;
+    string status = 7;
+    string reject_reason = 8;
+    google.protobuf.Timestamp created_at = 9;
+}
+
+// ==================== 管理员审核 ====================
+
+message ApproveTaskApplyRequest {
+    uint64 apply_id = 1;
+    string urgency_level = 2;           // 紧急程度
+    int32 difficulty_level = 3;         // 难度等级
+    int32 reward_points = 4;            // 奖励积分
+    int32 max_claimers = 5;             // 最多认领人数
+    string area = 6;                    // 所在区域
+    string remark = 7;                  // 备注
+
+    uint64 reviewer_id = 8;             // 审核人ID
+}
+
+message ApproveTaskApplyResponse {
+    uint64 task_id = 1;
+    string message = 2;
+}
+
+message RejectTaskApplyRequest {
+    uint64 apply_id = 1;
+    string reject_reason = 2;
+
+    uint64 reviewer_id = 3;
+}
+
+message RejectTaskApplyResponse {
+    string message = 1;
+}
+
+message ListPendingTaskAppliesRequest {
+    uint64 cat_id = 1;                  // 可选
+    int32 page = 2;
+    int32 page_size = 3;
+
+    uint64 admin_id = 4;
+}
+
+message ListPendingTaskAppliesResponse {
+    repeated TaskApplyVO items = 1;
+    int64 total = 2;
+    int32 page = 3;
+    int32 page_size = 4;
+}
+
+// ==================== 正式任务相关 ====================
+
+message DirectCreateTaskRequest {
+    uint64 cat_id = 1;
+    string title = 2;
+    string task_type = 3;
+    string summary = 4;
+    string detail = 5;
+    string location = 6;
+    double longitude = 7;
+    double latitude = 8;
+    string area = 9;
+
+    string urgency_level = 10;
+    int32 difficulty_level = 11;
+    int32 reward_points = 12;
+    int32 max_claimers = 13;
+
+    google.protobuf.Timestamp deadline_at = 14;
+    string remark = 15;
+
+    repeated string image_urls = 16;
+    repeated uint64 tag_ids = 17;
+
+    uint64 creator_id = 18;             // 管理员ID
+}
+
+message DirectCreateTaskResponse {
+    uint64 task_id = 1;
+    string message = 2;
+}
+
+message GetTaskDetailRequest {
+    uint64 task_id = 1;
+
+    uint64 requester_id = 2;
+}
+
+message TaskVO {
+    uint64 id = 1;
+    uint64 cat_id = 2;
+    string cat_name = 3;
+    string cat_avatar = 4;
+    uint64 apply_id = 5;
+    uint64 creator_id = 6;
+    string creator_name = 7;
+
+    string title = 8;
+    string task_type = 9;
+    string summary = 10;
+    string detail = 11;
+
+    string location = 12;
+    double longitude = 13;
+    double latitude = 14;
+    string area = 15;
+
+    string urgency_level = 16;
+    int32 difficulty_level = 17;
+    int32 reward_points = 18;
+    int32 final_reward_points = 19;
+
+    int32 max_claimers = 20;
+    int32 current_claimers = 21;
+
+    string status = 22;                 // pending/processing/completed/cancelled
+    string remark = 23;
+
+    google.protobuf.Timestamp deadline_at = 24;
+    google.protobuf.Timestamp last_escalated_at = 25;
+    int32 escalation_count = 26;
+
+    google.protobuf.Timestamp created_at = 27;
+    google.protobuf.Timestamp updated_at = 28;
+
+    repeated string image_urls = 29;
+    repeated TagVO tags = 30;
+}
+
+message GetTaskDetailResponse {
+    TaskVO task = 1;
+    CatBriefVO cat = 2;
+}
+
+message ListTasksRequest {
+    uint64 cat_id = 1;                  // 可选
+    string status = 2;                  // 可选
+    string urgency_level = 3;           // 可选
+    int32 difficulty_level = 4;         // 可选
+    string area = 5;                    // 可选
+
+    int32 page = 6;
+    int32 page_size = 7;
+
+    uint64 requester_id = 8;
+}
+
+message ListTasksResponse {
+    repeated TaskItemVO items = 1;
+    int64 total = 2;
+    int32 page = 3;
+    int32 page_size = 4;
+}
+
+message TaskItemVO {
+    uint64 task_id = 1;
+    uint64 cat_id = 2;
+    string cat_name = 3;
+    string cat_avatar = 4;
+    string title = 5;
+    string task_type = 6;
+    string summary = 7;
+    string location = 8;
+    string urgency_level = 9;
+    int32 difficulty_level = 10;
+    int32 reward_points = 11;
+    int32 current_claimers = 12;
+    int32 max_claimers = 13;
+    string status = 14;
+    google.protobuf.Timestamp deadline_at = 15;
+    google.protobuf.Timestamp created_at = 16;
+}
+
+message UpdateTaskRequest {
+    uint64 task_id = 1;
+    string title = 2;
+    string summary = 3;
+    string detail = 4;
+    int32 difficulty_level = 5;
+    int32 reward_points = 6;
+    google.protobuf.Timestamp deadline_at = 7;
+    string remark = 8;
+
+    uint64 operator_id = 9;
+}
+
+message UpdateTaskResponse {
+    string message = 1;
+}
+
+message CancelTaskRequest {
+    uint64 task_id = 1;
+    string reason = 2;
+
+    uint64 operator_id = 3;
+}
+
+message CancelTaskResponse {
+    string message = 1;
+}
+
+message EscalateTaskUrgencyRequest {
+    uint64 task_id = 1;
+
+    uint64 operator_id = 2;
+}
+
+message EscalateTaskUrgencyResponse {
+    string new_urgency_level = 1;
+    int32 escalation_count = 2;
+    string message = 3;
+}
+
+// ==================== 任务认领相关 ====================
+
+message ClaimTaskRequest {
+    uint64 task_id = 1;
+
+    uint64 user_id = 2;
+}
+
+message ClaimTaskResponse {
+    uint64 claim_id = 1;
+    string message = 2;
+}
+
+message AbandonTaskRequest {
+    uint64 claim_id = 1;
+    string reason = 2;
+
+    uint64 user_id = 3;
+}
+
+message AbandonTaskResponse {
+    string message = 1;
+}
+
+message CompleteTaskRequest {
+    uint64 claim_id = 1;
+    string content = 2;
+    repeated string image_urls = 3;
+
+    uint64 user_id = 4;
+}
+
+message CompleteTaskResponse {
+    int32 reward_points = 1;
+    bool is_overdue = 2;
+    int32 reputation_deduction = 3;
+    string message = 4;
+}
+
+message ListMyClaimedTasksRequest {
+    string status = 1;                  // active/completed/abandoned
+    int32 page = 2;
+    int32 page_size = 3;
+
+    uint64 user_id = 4;
+}
+
+message ListMyClaimedTasksResponse {
+    repeated ClaimItemVO items = 1;
+    int64 total = 2;
+    int32 page = 3;
+    int32 page_size = 4;
+}
+
+message ClaimItemVO {
+    uint64 claim_id = 1;
+    uint64 task_id = 2;
+    string task_title = 3;
+    string task_type = 4;
+    string cat_name = 5;
+    string status = 6;
+    int32 reward_points = 7;
+    bool is_overdue = 8;
+    google.protobuf.Timestamp claimed_at = 9;
+    google.protobuf.Timestamp deadline_at = 10;
+}
+
+message ListMyCompletedTasksRequest {
+    int32 page = 1;
+    int32 page_size = 2;
+
+    uint64 user_id = 3;
+}
+
+message ListMyCompletedTasksResponse {
+    repeated ClaimItemVO items = 1;
+    int64 total = 2;
+    int32 total_points = 3;             // 累计积分
+    int32 page = 4;
+    int32 page_size = 5;
+}
+
+// ==================== 流转日志 ====================
+
+message GetTaskFlowsRequest {
+    uint64 task_id = 1;
+
+    uint64 requester_id = 2;
+}
+
+message GetTaskFlowsResponse {
+    repeated TaskFlowVO items = 1;
+}
+
+message TaskFlowVO {
+    uint64 id = 1;
+    uint64 task_id = 2;
+    uint64 user_id = 3;
+    string user_name = 4;
+    string action = 5;
+    string from_status = 6;
+    string to_status = 7;
+    string remark = 8;
+    google.protobuf.Timestamp created_at = 9;
+}
+
+message GetTaskLogsRequest {
+    uint64 task_id = 1;
+
+    uint64 requester_id = 2;
+}
+
+message GetTaskLogsResponse {
+    repeated TaskLogVO items = 1;
+}
+
+message TaskLogVO {
+    uint64 id = 1;
+    uint64 task_id = 2;
+    uint64 user_id = 3;
+    string user_name = 4;
+    string action = 5;
+    string content = 6;
+    google.protobuf.Timestamp created_at = 7;
+}
+
+// ==================== 通用 VO ====================
+
+
+
+message TagVO {
+    uint64 id = 1;
+    string name = 2;
+    string type = 3;
+    string theme = 4;
+}
+
