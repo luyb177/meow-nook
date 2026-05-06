@@ -5092,9 +5092,178 @@
           }
         }
       }
+    },
+    "/api/v1/users/credit_points": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "用户模块"
+        ],
+        "summary": "获取信誉积分",
+        "operationId": "userGetCreditPoints",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "creditPoints": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/users/me": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "用户模块"
+        ],
+        "summary": "获取用户信息",
+        "operationId": "userGetUserInfo",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "area": {
+                  "type": "string"
+                },
+                "avatar": {
+                  "type": "string"
+                },
+                "createdAt": {
+                  "type": "integer"
+                },
+                "gender": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "integer"
+                },
+                "phone": {
+                  "type": "string"
+                },
+                "points": {
+                  "type": "integer"
+                },
+                "role": {
+                  "type": "string"
+                },
+                "serviceTypes": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "username": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/users/me/update": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "用户模块"
+        ],
+        "summary": "更新用户信息",
+        "operationId": "userUpdateUserInfo",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "id",
+                "username",
+                "avatar",
+                "phone",
+                "area",
+                "gender",
+                "points",
+                "role",
+                "createdAt",
+                "serviceTypes"
+              ],
+              "properties": {
+                "area": {
+                  "type": "string"
+                },
+                "avatar": {
+                  "type": "string"
+                },
+                "createdAt": {
+                  "type": "integer"
+                },
+                "gender": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "integer"
+                },
+                "phone": {
+                  "type": "string"
+                },
+                "points": {
+                  "type": "integer"
+                },
+                "role": {
+                  "type": "string"
+                },
+                "serviceTypes": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "username": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object"
+            }
+          }
+        }
+      }
     }
   },
-  "x-date": "2026-05-05 22:22:48",
+  "x-date": "2026-05-06 10:31:23",
   "x-description": "This is a goctl generated swagger file.",
   "x-github": "https://github.com/zeromicro/go-zero",
   "x-go-zero-doc": "https://go-zero.dev/",
