@@ -15,6 +15,127 @@
   },
   "basePath": "/",
   "paths": {
+    "/api/v1/admin/task/apply/{apply_id}/ai-review": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "管理员相关"
+        ],
+        "summary": "AI辅助审核任务申请",
+        "operationId": "adminAiReviewTask",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "taskId",
+                "content"
+              ],
+              "properties": {
+                "content": {
+                  "type": "string"
+                },
+                "taskId": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "raw": {
+                  "type": "string"
+                },
+                "result": {},
+                "statusCode": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/user/{user_id}/service-types": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "管理员相关"
+        ],
+        "summary": "更新用户服务类型",
+        "operationId": "adminUpdateUserServiceTypes",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "username",
+                "avatar",
+                "phone",
+                "area"
+              ],
+              "properties": {
+                "area": {
+                  "type": "string"
+                },
+                "avatar": {
+                  "type": "string"
+                },
+                "phone": {
+                  "type": "string"
+                },
+                "username": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "serviceTypes": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/adoption/admin/adoption/approve": {
       "post": {
         "consumes": [
@@ -1445,6 +1566,391 @@
         }
       }
     },
+    "/api/v1/algorithm/hotspots": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "路径规划算法"
+        ],
+        "summary": "检测猫咪热点区域",
+        "operationId": "algorithmDetectHotspots",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "radius_km",
+                "min_cats"
+              ],
+              "properties": {
+                "min_cats": {
+                  "description": "最少猫咪数，默认3",
+                  "type": "integer"
+                },
+                "radius_km": {
+                  "description": "半径(km)，默认0.5",
+                  "type": "number"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "hotspots": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "center_lat",
+                      "center_lng",
+                      "cat_ids",
+                      "density",
+                      "radius_km"
+                    ],
+                    "properties": {
+                      "cat_ids": {
+                        "type": "array",
+                        "items": {
+                          "type": "integer"
+                        }
+                      },
+                      "center_lat": {
+                        "type": "number"
+                      },
+                      "center_lng": {
+                        "type": "number"
+                      },
+                      "density": {
+                        "type": "integer"
+                      },
+                      "radius_km": {
+                        "type": "number"
+                      }
+                    }
+                  }
+                },
+                "total_hotspots": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/algorithm/priority/cats": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "路径规划算法"
+        ],
+        "summary": "获取需要优先救助的猫咪列表",
+        "operationId": "algorithmGetPriorityCats",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "top_n"
+              ],
+              "properties": {
+                "top_n": {
+                  "description": "返回前N只，默认10",
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "cats": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "cat_id",
+                      "cat_name",
+                      "cat_code",
+                      "score",
+                      "details",
+                      "longitude",
+                      "latitude"
+                    ],
+                    "properties": {
+                      "cat_code": {
+                        "type": "string"
+                      },
+                      "cat_id": {
+                        "type": "integer"
+                      },
+                      "cat_name": {
+                        "type": "string"
+                      },
+                      "details": {
+                        "type": "object",
+                        "additionalProperties": {
+                          "type": "number"
+                        }
+                      },
+                      "latitude": {
+                        "type": "number"
+                      },
+                      "longitude": {
+                        "type": "number"
+                      },
+                      "score": {
+                        "type": "number"
+                      }
+                    }
+                  }
+                },
+                "total": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/algorithm/route/plan": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "路径规划算法"
+        ],
+        "summary": "规划最优救助路线",
+        "operationId": "algorithmPlanRoute",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "volunteer_lat",
+                "volunteer_lng",
+                "cat_ids"
+              ],
+              "properties": {
+                "cat_ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer"
+                  }
+                },
+                "volunteer_lat": {
+                  "type": "number"
+                },
+                "volunteer_lng": {
+                  "type": "number"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "total_distance_km": {
+                  "type": "number"
+                },
+                "total_stops": {
+                  "type": "integer"
+                },
+                "waypoints": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "type",
+                      "lat",
+                      "lng",
+                      "order"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "integer"
+                      },
+                      "lat": {
+                        "type": "number"
+                      },
+                      "lng": {
+                        "type": "number"
+                      },
+                      "order": {
+                        "type": "integer"
+                      },
+                      "type": {
+                        "description": "volunteer/cat",
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/login": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "认证模块"
+        ],
+        "summary": "Login",
+        "operationId": "authLogin",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "email",
+                "password"
+              ],
+              "properties": {
+                "email": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "token": {
+                  "type": "string"
+                },
+                "userId": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/register": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "认证模块"
+        ],
+        "summary": "Register",
+        "operationId": "authRegister",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "email",
+                "password"
+              ],
+              "properties": {
+                "email": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "token": {
+                  "type": "string"
+                },
+                "userId": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/auth/send_code": {
       "post": {
         "consumes": [
@@ -1511,6 +2017,62 @@
         ],
         "summary": "测试接口，验证网关是否正常工作",
         "operationId": "authTest",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object"
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/verify_code": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "认证模块"
+        ],
+        "summary": "VerifyCode",
+        "operationId": "authVerifyCode",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "target",
+                "channel",
+                "purpose",
+                "code"
+              ],
+              "properties": {
+                "channel": {
+                  "type": "integer"
+                },
+                "code": {
+                  "type": "string"
+                },
+                "purpose": {
+                  "type": "integer"
+                },
+                "target": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "",
@@ -4530,9 +5092,178 @@
           }
         }
       }
+    },
+    "/api/v1/users/credit_points": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "用户模块"
+        ],
+        "summary": "获取信誉积分",
+        "operationId": "userGetCreditPoints",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "creditPoints": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/users/me": {
+      "get": {
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "用户模块"
+        ],
+        "summary": "获取用户信息",
+        "operationId": "userGetUserInfo",
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "area": {
+                  "type": "string"
+                },
+                "avatar": {
+                  "type": "string"
+                },
+                "createdAt": {
+                  "type": "integer"
+                },
+                "gender": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "integer"
+                },
+                "phone": {
+                  "type": "string"
+                },
+                "points": {
+                  "type": "integer"
+                },
+                "role": {
+                  "type": "string"
+                },
+                "serviceTypes": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "username": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/users/me/update": {
+      "post": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "schemes": [
+          "https"
+        ],
+        "tags": [
+          "用户模块"
+        ],
+        "summary": "更新用户信息",
+        "operationId": "userUpdateUserInfo",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": [
+                "id",
+                "username",
+                "avatar",
+                "phone",
+                "area",
+                "gender",
+                "points",
+                "role",
+                "createdAt",
+                "serviceTypes"
+              ],
+              "properties": {
+                "area": {
+                  "type": "string"
+                },
+                "avatar": {
+                  "type": "string"
+                },
+                "createdAt": {
+                  "type": "integer"
+                },
+                "gender": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "integer"
+                },
+                "phone": {
+                  "type": "string"
+                },
+                "points": {
+                  "type": "integer"
+                },
+                "role": {
+                  "type": "string"
+                },
+                "serviceTypes": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "username": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "schema": {
+              "type": "object"
+            }
+          }
+        }
+      }
     }
   },
-  "x-date": "2026-05-02 17:07:54",
+  "x-date": "2026-05-06 10:31:23",
   "x-description": "This is a goctl generated swagger file.",
   "x-github": "https://github.com/zeromicro/go-zero",
   "x-go-zero-doc": "https://go-zero.dev/",

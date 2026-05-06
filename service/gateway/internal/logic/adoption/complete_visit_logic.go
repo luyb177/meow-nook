@@ -6,6 +6,7 @@ import (
 	"github.com/luyb177/meow-nook/common/errorx"
 	"github.com/luyb177/meow-nook/common/logger"
 	catpb "github.com/luyb177/meow-nook/service/cat/pb/cat/v1"
+	"github.com/luyb177/meow-nook/service/gateway/internal/logic"
 	"github.com/luyb177/meow-nook/service/gateway/internal/svc"
 	"github.com/luyb177/meow-nook/service/gateway/internal/types"
 )
@@ -24,14 +25,11 @@ func NewCompleteVisitLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Com
 
 func (l *CompleteVisitLogic) CompleteVisit(req *types.RecordFollowUpVisitReq) (*types.RecordFollowUpVisitResp, error) {
 	logger.Info("CompleteVisitLogic called")
-	//
-	//userID, err := ctxutil.GetUserID(l.ctx)
-	//if err != nil {
-	//	return nil, errorx.Wrap(errorx.CodeUnauthorized, "未登录", err)
-	//}
 
-	// todo get userID from token
-	userID := uint64(1)
+	userID, err := logic.GetUserID(l.ctx)
+	if err != nil {
+		return nil, errorx.Wrap(errorx.CodeUnauthorized, "未登录", err)
+	}
 
 	if req.AdoptionId == 0 {
 		return nil, errorx.Wrap(errorx.CodeBadRequest, "adoption_id is required", errorx.ErrBadRequest)
@@ -45,7 +43,7 @@ func (l *CompleteVisitLogic) CompleteVisit(req *types.RecordFollowUpVisitReq) (*
 		VisitType:  req.VisitType,
 		Remark:     req.Remark,
 		Photos:     req.Photos,
-		VisitorId:  userID,
+		VisitorId:  uint64(userID),
 	})
 	if err != nil {
 		return nil, errorx.FromGRPC(err)

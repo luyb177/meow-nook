@@ -23,17 +23,14 @@ func NewGetTaskApplyDetailLogic(ctx context.Context, svcCtx *svc.ServiceContext)
 func (l *GetTaskApplyDetailLogic) GetTaskApplyDetail(req *types.GetTaskApplyDetailReq) (*types.GetTaskApplyDetailResp, error) {
 	logger.Info("GetTaskApplyDetailLogic called")
 
-	//userID, err := ctxutil.GetUserID(l.ctx)
-	//if err != nil {
-	//	return nil, errorx.Wrap(errorx.CodeUnauthorized, "未登录", err)
-	//}
-
-	// todo g u f t
-	userID := uint64(1)
+	userID, err := logic.GetUserID(l.ctx)
+	if err != nil {
+		return nil, errorx.Wrap(errorx.CodeUnauthorized, "未登录", err)
+	}
 
 	resp, err := l.svcCtx.CatRPC.GetTaskApplyDetail(l.ctx, &taskpb.GetTaskApplyDetailRequest{
 		ApplyId:     req.ApplyId,
-		RequesterId: userID,
+		RequesterId: uint64(userID),
 	})
 	if err != nil {
 		return nil, errorx.FromGRPC(err)

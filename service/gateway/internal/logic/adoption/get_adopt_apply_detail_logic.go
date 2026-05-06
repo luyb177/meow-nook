@@ -3,11 +3,10 @@ package adoption
 import (
 	"context"
 
-	. "github.com/luyb177/meow-nook/service/gateway/internal/logic"
-
 	"github.com/luyb177/meow-nook/common/errorx"
 	"github.com/luyb177/meow-nook/common/logger"
 	catpb "github.com/luyb177/meow-nook/service/cat/pb/cat/v1"
+	"github.com/luyb177/meow-nook/service/gateway/internal/logic"
 	"github.com/luyb177/meow-nook/service/gateway/internal/svc"
 	"github.com/luyb177/meow-nook/service/gateway/internal/types"
 )
@@ -27,13 +26,10 @@ func NewGetAdoptApplyDetailLogic(ctx context.Context, svcCtx *svc.ServiceContext
 func (l *GetAdoptApplyDetailLogic) GetAdoptApplyDetail(req *types.GetAdoptApplyDetailReq) (*types.GetAdoptApplyDetailResp, error) {
 	logger.Info("GetAdoptApplyDetailLogic called")
 
-	//userID, err := ctxutil.GetUserID(l.ctx)
-	//if err != nil {
-	//	return nil, errorx.Wrap(errorx.CodeUnauthorized, "未登录", err)
-	//}
-
-	// todo get userID from token
-	userID := uint64(1)
+	userID, err := logic.GetUserID(l.ctx)
+	if err != nil {
+		return nil, errorx.Wrap(errorx.CodeUnauthorized, "未登录", err)
+	}
 
 	if req.ApplyId == 0 {
 		return nil, errorx.Wrap(errorx.CodeBadRequest, "apply_id is required", errorx.ErrBadRequest)
@@ -41,7 +37,7 @@ func (l *GetAdoptApplyDetailLogic) GetAdoptApplyDetail(req *types.GetAdoptApplyD
 
 	resp, err := l.svcCtx.CatRPC.GetAdoptApplyDetail(l.ctx, &catpb.GetAdoptApplyDetailRequest{
 		ApplyId:     req.ApplyId,
-		RequesterId: userID,
+		RequesterId: uint64(userID),
 	})
 	if err != nil {
 		return nil, errorx.FromGRPC(err)
@@ -66,11 +62,11 @@ func (l *GetAdoptApplyDetailLogic) GetAdoptApplyDetail(req *types.GetAdoptApplyD
 			RejectReason:         a.RejectReason,
 			ReviewerId:           a.ReviewerId,
 			ReviewerName:         a.ReviewerName,
-			ReviewedAt:           PBTimeToString(a.ReviewedAt),
-			ApprovedAt:           PBTimeToString(a.ApprovedAt),
-			ExpiresAt:            PBTimeToString(a.ExpiresAt),
-			CreatedAt:            PBTimeToString(a.CreatedAt),
-			UpdatedAt:            PBTimeToString(a.UpdatedAt),
+			ReviewedAt:           logic.PBTimeToString(a.ReviewedAt),
+			ApprovedAt:           logic.PBTimeToString(a.ApprovedAt),
+			ExpiresAt:            logic.PBTimeToString(a.ExpiresAt),
+			CreatedAt:            logic.PBTimeToString(a.CreatedAt),
+			UpdatedAt:            logic.PBTimeToString(a.UpdatedAt),
 			AdoptionId:           a.AdoptionId,
 		}
 	}

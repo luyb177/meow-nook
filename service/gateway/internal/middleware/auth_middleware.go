@@ -1,22 +1,21 @@
-// Code scaffolded by goctl. Safe to edit.
-// goctl 1.10.1
-
 package middleware
 
-import "net/http"
+import (
+	"net/http"
+
+	httpmd "github.com/luyb177/meow-nook/common/middleware/http"
+)
 
 type AuthMiddleware struct {
+	Secret string
 }
 
-func NewAuthMiddleware() *AuthMiddleware {
-	return &AuthMiddleware{}
+func NewAuthMiddleware(secret string) *AuthMiddleware {
+	return &AuthMiddleware{
+		Secret: secret,
+	}
 }
 
 func (m *AuthMiddleware) Handle(next http.HandlerFunc) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		// TODO generate middleware implement function, delete after code implementation
-
-		// Passthrough to next handler if need
-		next(w, r)
-	}
+	return httpmd.AuthMiddleware(m.Secret)(next)
 }

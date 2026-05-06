@@ -22,7 +22,7 @@ func NewAIReviewTaskLogic(ctx context.Context, svcCtx *svc.ServiceContext) *AIRe
 	return &AIReviewTaskLogic{ctx: ctx, svcCtx: svcCtx}
 }
 
-func (l *AIReviewTaskLogic) AIReviewTask(req *types.AIReviewTaskReq) (*types.AIReviewTaskResp, error) {
+func (l *AIReviewTaskLogic) AiReviewTask(req *types.AiReviewTaskReq) (*types.AiReviewTaskResp, error) {
 	cfg := l.svcCtx.Config.AIService
 	baseURL := cfg.ModelBaseURL
 	if baseURL == "" {
@@ -64,7 +64,7 @@ func (l *AIReviewTaskLogic) AIReviewTask(req *types.AIReviewTaskReq) (*types.AIR
 		return nil, errorx.WrapInternal("读取 AI 响应失败", err)
 	}
 
-	out := &types.AIReviewTaskResp{
+	out := &types.AiReviewTaskResp{
 		StatusCode: int32(httpResp.StatusCode),
 	}
 

@@ -36,7 +36,7 @@ func (l *ListTasksLogic) ListTasks(req *types.ListTasksReq) (*types.ListTasksRes
 		Area:            req.Area,
 		Page:            req.Page,
 		PageSize:        req.PageSize,
-		RequesterId:     userID,
+		RequesterId:     uint64(userID),
 	})
 	if err != nil {
 		return nil, errorx.FromGRPC(err)

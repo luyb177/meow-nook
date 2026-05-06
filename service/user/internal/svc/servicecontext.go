@@ -10,7 +10,6 @@ import (
 	"github.com/luyb177/meow-nook/service/user/internal/config"
 	"github.com/luyb177/meow-nook/service/user/internal/pkg/email"
 	"github.com/luyb177/meow-nook/service/user/internal/repo"
-	usermodel "github.com/luyb177/meow-nook/service/user/internal/repo/user"
 )
 
 type ServiceContext struct {
@@ -40,7 +39,6 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		BaseBackoff:     c.Kafka.BaseBackoff,
 	})
 
-	// Redis is required for the delay queue (delayed retries).
 	if c.RedisConf.Addr == "" {
 		panic("RedisConf.Addr must be set: RedisConf is required for delayed retries")
 	}
@@ -49,18 +47,13 @@ func NewServiceContext(c config.Config) *ServiceContext {
 		panic(fmt.Sprintf("failed to connect to Redis (%s): %v", c.RedisConf.Addr, err))
 	}
 
-	// MySQL is required for user persistence.
-	if c.MySQL.DSN == "" {
+	if c.MySQLConf.DSN == "" {
 		panic("MySQL.DSN must be set")
 	}
-	mysqlClient, err := database.NewMySQLClient(c.MySQL.DSN)
+	mysqlClient, err := database.NewMySQLClient(c.MySQLConf.DSN)
 	if err != nil {
 		panic(fmt.Sprintf("failed to connect to MySQL: %v", err))
 	}
-	if err := mysqlClient.DB.AutoMigrate(&usermodel.User{}); err != nil {
-		panic(fmt.Sprintf("failed to auto-migrate users table: %v", err))
-	}
-
 	return &ServiceContext{
 		Config:        c,
 		Mailer:        m,

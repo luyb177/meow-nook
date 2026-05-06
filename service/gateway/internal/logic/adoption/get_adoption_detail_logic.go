@@ -9,7 +9,7 @@ import (
 	"github.com/luyb177/meow-nook/common/errorx"
 	"github.com/luyb177/meow-nook/common/logger"
 	catpb "github.com/luyb177/meow-nook/service/cat/pb/cat/v1"
-	. "github.com/luyb177/meow-nook/service/gateway/internal/logic"
+	"github.com/luyb177/meow-nook/service/gateway/internal/logic"
 	"github.com/luyb177/meow-nook/service/gateway/internal/svc"
 	"github.com/luyb177/meow-nook/service/gateway/internal/types"
 
@@ -33,13 +33,10 @@ func NewGetAdoptionDetailLogic(ctx context.Context, svcCtx *svc.ServiceContext) 
 func (l *GetAdoptionDetailLogic) GetAdoptionDetail(req *types.GetAdoptionDetailReq) (*types.GetAdoptionDetailResp, error) {
 	logger.Info("GetAdoptionDetailLogic called")
 
-	//userID, err := ctxutil.GetUserID(l.ctx)
-	//if err != nil {
-	//	return nil, errorx.Wrap(errorx.CodeUnauthorized, "未登录", err)
-	//}
-
-	// todo get userID from token
-	userID := uint64(1)
+	userID, err := logic.GetUserID(l.ctx)
+	if err != nil {
+		return nil, errorx.Wrap(errorx.CodeUnauthorized, "未登录", err)
+	}
 
 	if req.AdoptionId == 0 {
 		return nil, errorx.Wrap(errorx.CodeBadRequest, "adoption_id is required", errorx.ErrBadRequest)
@@ -47,7 +44,7 @@ func (l *GetAdoptionDetailLogic) GetAdoptionDetail(req *types.GetAdoptionDetailR
 
 	resp, err := l.svcCtx.CatRPC.GetAdoptionDetail(l.ctx, &catpb.GetAdoptionDetailRequest{
 		AdoptionId:  req.AdoptionId,
-		RequesterId: userID,
+		RequesterId: uint64(userID),
 	})
 	if err != nil {
 		return nil, errorx.FromGRPC(err)
@@ -65,21 +62,21 @@ func (l *GetAdoptionDetailLogic) GetAdoptionDetail(req *types.GetAdoptionDetailR
 			AdopterName:       a.AdopterName,
 			Status:            a.Status,
 			AgreementNo:       a.AgreementNo,
-			AgreedAt:          PBTimeToString(a.AgreedAt),
-			AdoptedAt:         PBTimeToString(a.AdoptedAt),
-			HomeVisitAt:       PBTimeToString(a.HomeVisitAt),
+			AgreedAt:          logic.PBTimeToString(a.AgreedAt),
+			AdoptedAt:         logic.PBTimeToString(a.AdoptedAt),
+			HomeVisitAt:       logic.PBTimeToString(a.HomeVisitAt),
 			HomeVisitUserId:   a.HomeVisitUserId,
 			HomeVisitRemark:   a.HomeVisitRemark,
-			VisitOneWeekAt:    PBTimeToString(a.VisitOneWeekAt),
-			VisitOneMonthAt:   PBTimeToString(a.VisitOneMonthAt),
-			VisitThreeMonthAt: PBTimeToString(a.VisitThreeMonthAt),
-			VisitSixMonthAt:   PBTimeToString(a.VisitSixMonthAt),
+			VisitOneWeekAt:    logic.PBTimeToString(a.VisitOneWeekAt),
+			VisitOneMonthAt:   logic.PBTimeToString(a.VisitOneMonthAt),
+			VisitThreeMonthAt: logic.PBTimeToString(a.VisitThreeMonthAt),
+			VisitSixMonthAt:   logic.PBTimeToString(a.VisitSixMonthAt),
 			IsReturned:        a.IsReturned,
 			ReturnReason:      a.ReturnReason,
-			ReturnedAt:        PBTimeToString(a.ReturnedAt),
+			ReturnedAt:        logic.PBTimeToString(a.ReturnedAt),
 			Note:              a.Note,
-			CreatedAt:         PBTimeToString(a.CreatedAt),
-			UpdatedAt:         PBTimeToString(a.UpdatedAt),
+			CreatedAt:         logic.PBTimeToString(a.CreatedAt),
+			UpdatedAt:         logic.PBTimeToString(a.UpdatedAt),
 		}
 	}
 	if resp.Cat != nil {

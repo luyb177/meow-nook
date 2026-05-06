@@ -7,6 +7,7 @@ import (
 
 	"github.com/luyb177/meow-nook/common/errorx"
 	catpb "github.com/luyb177/meow-nook/service/cat/pb/cat/v1"
+	"github.com/luyb177/meow-nook/service/gateway/internal/logic"
 	"github.com/luyb177/meow-nook/service/gateway/internal/svc"
 	"github.com/luyb177/meow-nook/service/gateway/internal/types"
 )
@@ -24,15 +25,13 @@ func NewListMyAppliesLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Lis
 }
 
 func (l *ListMyAppliesLogic) ListMyApplies(req *types.ListMyAppliesReq) (*types.ListMyAppliesResp, error) {
-	//uid := getUserID(l.ctx)
-	//if uid == 0 {
-	//	return nil, errorx.ErrUnauthorized
-	//}
-	// todo 从 JWT 中获取用户 ID
-	uid := uint64(1)
+	userID, err := logic.GetUserID(l.ctx)
+	if err != nil {
+		return nil, errorx.Wrap(errorx.CodeUnauthorized, "未登录", err)
+	}
 
 	resp, err := l.svcCtx.CatRPC.ListMyApplies(l.ctx, &catpb.ListMyAppliesRequest{
-		ApplicantUserId: uid,
+		ApplicantUserId: uint64(userID),
 		Status:          req.Status,
 		Page:            req.Page,
 		PageSize:        req.PageSize,

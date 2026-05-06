@@ -3,6 +3,7 @@ package cat
 import (
 	"context"
 	"errors"
+	"math"
 	"strings"
 	"time"
 
@@ -142,4 +143,24 @@ func cleanCatUpdateValues(values map[string]any) map[string]any {
 	}
 
 	return values
+}
+
+// haversine 计算两点距离（km）
+func haversine(lat1, lng1, lat2, lng2 float64) float64 {
+	const R = 6371 // 地球半径 km
+
+	dLat := (lat2 - lat1) * math.Pi / 180
+	dLng := (lng2 - lng1) * math.Pi / 180
+
+	a := math.Sin(dLat/2)*math.Sin(dLat/2) +
+		math.Cos(lat1*math.Pi/180)*math.Cos(lat2*math.Pi/180)*
+			math.Sin(dLng/2)*math.Sin(dLng/2)
+	c := 2 * math.Atan2(math.Sqrt(a), math.Sqrt(1-a))
+
+	return R * c
+}
+
+// CalculateDistance 公共方法
+func CalculateDistance(lat1, lng1, lat2, lng2 float64) float64 {
+	return haversine(lat1, lng1, lat2, lng2)
 }

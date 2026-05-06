@@ -31,7 +31,7 @@ func (l *CancelTaskLogic) CancelTask(req *types.CancelTaskReq) (*types.CancelTas
 	resp, err := l.svcCtx.CatRPC.CancelTask(l.ctx, &taskpb.CancelTaskRequest{
 		TaskId:     req.TaskId,
 		Reason:     req.Reason,
-		OperatorId: userID,
+		OperatorId: uint64(userID),
 	})
 	if err != nil {
 		return nil, errorx.FromGRPC(err)

@@ -6,6 +6,7 @@ import (
 	"github.com/luyb177/meow-nook/common/errorx"
 	"github.com/luyb177/meow-nook/common/logger"
 	catpb "github.com/luyb177/meow-nook/service/cat/pb/cat/v1"
+	"github.com/luyb177/meow-nook/service/gateway/internal/logic"
 	"github.com/luyb177/meow-nook/service/gateway/internal/svc"
 	"github.com/luyb177/meow-nook/service/gateway/internal/types"
 )
@@ -25,12 +26,10 @@ func NewApplyAdoptLogic(ctx context.Context, svcCtx *svc.ServiceContext) *ApplyA
 func (l *ApplyAdoptLogic) ApplyAdopt(req *types.ApplyAdoptReq) (*types.ApplyAdoptResp, error) {
 	logger.Info("ApplyAdoptLogic called")
 
-	//userID, err := ctxutil.GetUserID(l.ctx)
-	//if err != nil {
-	//	return nil, errorx.Wrap(errorx.CodeUnauthorized, "未登录", err)
-	//}
-	// todo get userID from token
-	userID := uint64(1)
+	userID, err := logic.GetUserID(l.ctx)
+	if err != nil {
+		return nil, errorx.Wrap(errorx.CodeUnauthorized, "未登录", err)
+	}
 
 	if req.CatId == 0 {
 		return nil, errorx.Wrap(errorx.CodeBadRequest, "cat_id is required", errorx.ErrBadRequest)
@@ -41,7 +40,7 @@ func (l *ApplyAdoptLogic) ApplyAdopt(req *types.ApplyAdoptReq) (*types.ApplyAdop
 		ApplyReason:   req.ApplyReason,
 		ContactPhone:  req.ContactPhone,
 		ContactWechat: req.ContactWechat,
-		ApplicantId:   userID,
+		ApplicantId:   uint64(userID),
 	})
 	if err != nil {
 		return nil, errorx.FromGRPC(err)

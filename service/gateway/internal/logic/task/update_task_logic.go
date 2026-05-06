@@ -37,7 +37,7 @@ func (l *UpdateTaskLogic) UpdateTask(req *types.UpdateTaskReq) (*types.UpdateTas
 		RewardPoints:    req.RewardPoints,
 		DeadlineAt:      logic.ParseTimePtr(req.DeadlineAt),
 		Remark:          req.Remark,
-		OperatorId:      userID,
+		OperatorId:      uint64(userID),
 	})
 	if err != nil {
 		return nil, errorx.FromGRPC(err)

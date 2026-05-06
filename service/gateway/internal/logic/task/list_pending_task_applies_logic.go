@@ -32,7 +32,7 @@ func (l *ListPendingTaskAppliesLogic) ListPendingTaskApplies(req *types.ListPend
 		CatId:    req.CatId,
 		Page:     req.Page,
 		PageSize: req.PageSize,
-		AdminId:  userID,
+		AdminId:  uint64(userID),
 	})
 	if err != nil {
 		return nil, errorx.FromGRPC(err)

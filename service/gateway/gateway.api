@@ -42,7 +42,8 @@ type (
 		Password string `json:"password"`
 	}
 	RegisterResp {
-		UserId int64 `json:"userId"`
+		UserId int64  `json:"userId"`
+		Token  string `json:"token"`
 	}
 	LoginReq {
 		Email    string `json:"email"`
@@ -77,6 +78,43 @@ service gateway {
 
 	@handler Login
 	post /login (LoginReq) returns (LoginResp)
+}
+
+type UserInfoResp {
+	Id           int64    `json:"id"`
+	Username     string   `json:"username"`
+	Avatar       string   `json:"avatar"`
+	Phone        string   `json:"phone"`
+	Area         string   `json:"area"`
+	Gender       string   `json:"gender"`
+	Points       int32    `json:"points"`
+	Role         string   `json:"role"`
+	CreatedAt    int64    `json:"createdAt"`
+	ServiceTypes []string `json:"serviceTypes"`
+}
+
+type CreditPointsResp {
+	CreditPoints int32 `json:"creditPoints"`
+}
+
+@server (
+	prefix:     /api/v1/users
+	tags:       "用户模块"
+	group:      user
+	middleware: Auth
+)
+service gateway {
+	@doc "获取信誉积分"
+	@handler GetCreditPoints
+	get /credit_points returns (CreditPointsResp)
+
+	@doc "获取用户信息"
+	@handler GetUserInfo
+	get /me returns (UserInfoResp)
+
+	@doc "更新用户信息"
+	@handler UpdateUserInfo
+	post /me/update (UserInfoResp) returns (Response)
 }
 
 // ──────────────────────────────────────────────
@@ -314,10 +352,10 @@ type (
 
 // ==================== 路由定义 ====================
 @server (
-	prefix: /api/v1/cats
-	//middleware: Auth
-	tags:  "猫咪模块"
-	group: cat
+	prefix:     /api/v1/cats
+	middleware: Auth
+	tags:       "猫咪模块"
+	group:      cat
 )
 service gateway {
 	@doc "志愿者申请创建猫咪档案"
@@ -610,9 +648,10 @@ type (
 )
 
 @server (
-	prefix: /api/v1/adoption
-	tags:   "领养模块"
-	group:  adoption
+	prefix:     /api/v1/adoption
+	tags:       "领养模块"
+	group:      adoption
+	middleware: Auth
 )
 service gateway {
 	// ==================== 志愿者端 ====================
@@ -1076,9 +1115,10 @@ type TagVO {
 }
 
 @server (
-	prefix: /api/v1/task
-	tags:   "任务模块"
-	group:  task
+	prefix:     /api/v1/task
+	tags:       "任务模块"
+	group:      task
+	middleware: Auth
 )
 service gateway {
 	// ==================== 志愿者端 - 任务申请 ====================
@@ -1165,5 +1205,122 @@ service gateway {
 	@doc "查询任务操作日志"
 	@handler GetTaskLogs
 	get /task/:task_id/logs (GetTaskLogsReq) returns (GetTaskLogsResp)
+}
+
+// ==================== 算法模块 ====================
+type DetectHotspotsReq {
+	RadiusKm float64 `json:"radius_km"` // 半径(km)，默认0.5
+	MinCats  int     `json:"min_cats"` // 最少猫咪数，默认3
+}
+
+type HotspotInfo {
+	CenterLat float64  `json:"center_lat"`
+	CenterLng float64  `json:"center_lng"`
+	CatIDs    []uint64 `json:"cat_ids"`
+	Density   int      `json:"density"`
+	RadiusKm  float64  `json:"radius_km"`
+}
+
+type DetectHotspotsResp {
+	Hotspots      []HotspotInfo `json:"hotspots"`
+	TotalHotspots int           `json:"total_hotspots"`
+}
+
+type PlanRouteReq {
+	VolunteerLat float64  `json:"volunteer_lat"`
+	VolunteerLng float64  `json:"volunteer_lng"`
+	CatIDs       []uint64 `json:"cat_ids"`
+}
+
+type Waypoint {
+	ID    uint64  `json:"id"`
+	Type  string  `json:"type"` // volunteer/cat
+	Lat   float64 `json:"lat"`
+	Lng   float64 `json:"lng"`
+	Order int     `json:"order"`
+}
+
+type PlanRouteResp {
+	Waypoints       []Waypoint `json:"waypoints"`
+	TotalDistanceKm float64    `json:"total_distance_km"`
+	TotalStops      int        `json:"total_stops"`
+}
+
+type GetPriorityCatsReq {
+	TopN int `json:"top_n"` // 返回前N只，默认10
+}
+
+type PriorityCatInfo {
+	CatID     uint64             `json:"cat_id"`
+	CatName   string             `json:"cat_name"`
+	CatCode   string             `json:"cat_code"`
+	Score     float64            `json:"score"`
+	Details   map[string]float64 `json:"details"`
+	Longitude float64            `json:"longitude"`
+	Latitude  float64            `json:"latitude"`
+}
+
+type GetPriorityCatsResp {
+	Cats  []PriorityCatInfo `json:"cats"`
+	Total int               `json:"total"`
+}
+
+@server (
+	prefix:     /api/v1/algorithm
+	tags:       "路径规划算法"
+	group:      algorithm
+	middleware: Auth
+)
+service gateway {
+	@doc "检测猫咪热点区域"
+	@handler DetectHotspots
+	post /hotspots (DetectHotspotsReq) returns (DetectHotspotsResp)
+
+	@doc "规划最优救助路线"
+	@handler PlanRoute
+	post /route/plan (PlanRouteReq) returns (PlanRouteResp)
+
+	@doc "获取需要优先救助的猫咪列表"
+	@handler GetPriorityCats
+	post /priority/cats (GetPriorityCatsReq) returns (GetPriorityCatsResp)
+}
+
+type AiReviewTaskReq {
+	TaskId  string `json:"taskId"`
+	Content string `json:"content,omitempty"`
+}
+
+type AiReviewTaskResp {
+	StatusCode int32       `json:"statusCode"`
+	Result     interface{} `json:"result,omitempty"`
+	Raw        string      `json:"raw,omitempty"`
+}
+
+type UpdateUserInfoReq {
+	Username *string `json:"username,omitempty"`
+	Avatar   *string `json:"avatar,omitempty"`
+	Phone    *string `json:"phone,omitempty"`
+	Area     *string `json:"area,omitempty"`
+}
+
+type AdminUpdateUserServiceTypesReq {
+	UserId       int64    `path:"userId"`
+	ServiceTypes []string `json:"serviceTypes"`
+}
+
+@server (
+	prefix:     /api/v1/admin
+	tags:       "管理员相关"
+	group:      admin
+	middleware: Auth
+)
+service gateway {
+	@doc "AI辅助审核任务申请"
+	@handler AiReviewTask
+	post /task/apply/:apply_id/ai-review (AiReviewTaskReq) returns (AiReviewTaskResp)
+
+	@doc "更新用户服务类型"
+	@handler UpdateUserServiceTypes
+	post /user/:user_id/service-types (UpdateUserInfoReq) returns (AdminUpdateUserServiceTypesReq)
 }
 

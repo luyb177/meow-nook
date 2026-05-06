@@ -65,4 +65,9 @@ type Repository interface {
 	DeleteCat(ctx context.Context, catID uint64, tx ...*gorm.DB) error
 
 	ListCatsWithNearby(ctx context.Context, filter CatListFilter, near *NearFilter, tx ...*gorm.DB) ([]*Cat, []float64, int64, error)
+
+	GetAllCatsWithLocation(ctx context.Context, tx ...*gorm.DB) ([]*Cat, error)
+	GetCatsByIDs(ctx context.Context, ids []uint64, tx ...*gorm.DB) ([]*Cat, error)
+	GetCatsByHotspot(ctx context.Context, centerLat, centerLng, radiusKm float64, tx ...*gorm.DB) ([]*Cat, error)
+	GetCatReportCounts(ctx context.Context, catIDs []uint64, days int, tx ...*gorm.DB) (map[uint64]int, error)
 }

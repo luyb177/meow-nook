@@ -6,6 +6,7 @@ import (
 
 	"github.com/luyb177/meow-nook/common/errorx"
 	catpb "github.com/luyb177/meow-nook/service/cat/pb/cat/v1"
+	"github.com/luyb177/meow-nook/service/gateway/internal/logic"
 	"github.com/luyb177/meow-nook/service/gateway/internal/svc"
 	"github.com/luyb177/meow-nook/service/gateway/internal/types"
 )
@@ -23,16 +24,14 @@ func NewCancelApplyCreateCatLogic(ctx context.Context, svcCtx *svc.ServiceContex
 }
 
 func (l *CancelApplyCreateCatLogic) CancelApplyCreateCat(req *types.CancelApplyCreateCatReq) (*types.Response, error) {
-	//uid := getUserID(l.ctx)
-	//if uid == 0 {
-	//	return nil, errorx.ErrUnauthorized
-	//}
-	// todo 从 JWT 中获取用户 ID
-	uid := uint64(1)
+	userID, err := logic.GetUserID(l.ctx)
+	if err != nil {
+		return nil, errorx.Wrap(errorx.CodeUnauthorized, "未登录", err)
+	}
 
-	_, err := l.svcCtx.CatRPC.CancelApplyCreateCat(l.ctx, &catpb.CancelApplyCreateCatRequest{
+	_, err = l.svcCtx.CatRPC.CancelApplyCreateCat(l.ctx, &catpb.CancelApplyCreateCatRequest{
 		ApplyId:         req.Id,
-		ApplicantUserId: uid,
+		ApplicantUserId: uint64(userID),
 		Reason:          req.Reason,
 	})
 	if err != nil {

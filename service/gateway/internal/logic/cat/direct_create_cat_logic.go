@@ -6,6 +6,7 @@ import (
 
 	"github.com/luyb177/meow-nook/common/errorx"
 	catpb "github.com/luyb177/meow-nook/service/cat/pb/cat/v1"
+	"github.com/luyb177/meow-nook/service/gateway/internal/logic"
 	"github.com/luyb177/meow-nook/service/gateway/internal/svc"
 	"github.com/luyb177/meow-nook/service/gateway/internal/types"
 )
@@ -23,17 +24,10 @@ func NewDirectCreateCatLogic(ctx context.Context, svcCtx *svc.ServiceContext) *D
 }
 
 func (l *DirectCreateCatLogic) DirectCreateCat(req *types.DirectCreateCatReq) (*types.DirectCreateCatResp, error) {
-	//if !isAdmin(l.ctx) {
-	//	return nil, errorx.ErrPermissionDenied
-	//}
-	//
-	//uid := getUserID(l.ctx)
-	//if uid == 0 {
-	//	return nil, errorx.ErrUnauthorized
-	//}
-
-	// todo  从JWT中获取用户ID
-	uid := uint64(1)
+	userID, err := logic.GetUserID(l.ctx)
+	if err != nil {
+		return nil, errorx.Wrap(errorx.CodeUnauthorized, "未登录", err)
+	}
 
 	// todo casbin 权限检测
 
@@ -55,7 +49,7 @@ func (l *DirectCreateCatLogic) DirectCreateCat(req *types.DirectCreateCatReq) (*
 		SterilizationStatus:     req.SterilizationStatus,
 		Images:                  convertImagesToPB(req.Images),
 		TagIds:                  req.TagIds,
-		OperatorId:              uid,
+		OperatorId:              uint64(userID),
 	})
 	if err != nil {
 		return nil, errorx.FromGRPC(err)

@@ -23,19 +23,16 @@ func NewListMyTaskAppliesLogic(ctx context.Context, svcCtx *svc.ServiceContext) 
 func (l *ListMyTaskAppliesLogic) ListMyTaskApplies(req *types.ListMyTaskAppliesReq) (*types.ListMyTaskAppliesResp, error) {
 	logger.Info("ListMyTaskAppliesLogic called")
 
-	//userID, err := ctxutil.GetUserID(l.ctx)
-	//if err != nil {
-	//	return nil, errorx.Wrap(errorx.CodeUnauthorized, "未登录", err)
-	//}
-
-	// todo g u f t
-	userID := uint64(1)
+	userID, err := logic.GetUserID(l.ctx)
+	if err != nil {
+		return nil, errorx.Wrap(errorx.CodeUnauthorized, "未登录", err)
+	}
 
 	resp, err := l.svcCtx.CatRPC.ListMyTaskApplies(l.ctx, &taskpb.ListMyTaskAppliesRequest{
 		Status:          req.Status,
 		Page:            req.Page,
 		PageSize:        req.PageSize,
-		ApplicantUserId: userID,
+		ApplicantUserId: uint64(userID),
 	})
 	if err != nil {
 		return nil, errorx.FromGRPC(err)

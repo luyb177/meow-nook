@@ -30,7 +30,7 @@ func (l *GetTaskDetailLogic) GetTaskDetail(req *types.GetTaskDetailReq) (*types.
 
 	resp, err := l.svcCtx.CatRPC.GetTaskDetail(l.ctx, &taskpb.GetTaskDetailRequest{
 		TaskId:      req.TaskId,
-		RequesterId: userID,
+		RequesterId: uint64(userID),
 	})
 	if err != nil {
 		return nil, errorx.FromGRPC(err)

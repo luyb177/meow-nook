@@ -8529,6 +8529,7 @@ func (x *TaskLogVO) GetCreatedAt() *timestamppb.Timestamp {
 	return nil
 }
 
+// ==================== 通用 VO ====================
 type TagVO struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            uint64                 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
@@ -8597,6 +8598,818 @@ func (x *TagVO) GetTheme() string {
 	return ""
 }
 
+type DetectHotspotsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	RadiusKm      float64                `protobuf:"fixed64,1,opt,name=radius_km,json=radiusKm,proto3" json:"radius_km,omitempty"` // 半径（公里）
+	MinCats       int32                  `protobuf:"varint,2,opt,name=min_cats,json=minCats,proto3" json:"min_cats,omitempty"`     // 最少猫咪数量阈值
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DetectHotspotsRequest) Reset() {
+	*x = DetectHotspotsRequest{}
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[106]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DetectHotspotsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DetectHotspotsRequest) ProtoMessage() {}
+
+func (x *DetectHotspotsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[106]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DetectHotspotsRequest.ProtoReflect.Descriptor instead.
+func (*DetectHotspotsRequest) Descriptor() ([]byte, []int) {
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{106}
+}
+
+func (x *DetectHotspotsRequest) GetRadiusKm() float64 {
+	if x != nil {
+		return x.RadiusKm
+	}
+	return 0
+}
+
+func (x *DetectHotspotsRequest) GetMinCats() int32 {
+	if x != nil {
+		return x.MinCats
+	}
+	return 0
+}
+
+type HotspotInfo struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	CenterLat     float64                `protobuf:"fixed64,1,opt,name=center_lat,json=centerLat,proto3" json:"center_lat,omitempty"`
+	CenterLng     float64                `protobuf:"fixed64,2,opt,name=center_lng,json=centerLng,proto3" json:"center_lng,omitempty"`
+	CatIds        []uint64               `protobuf:"varint,3,rep,packed,name=cat_ids,json=catIds,proto3" json:"cat_ids,omitempty"`
+	Density       int32                  `protobuf:"varint,4,opt,name=density,proto3" json:"density,omitempty"`
+	RadiusKm      float64                `protobuf:"fixed64,5,opt,name=radius_km,json=radiusKm,proto3" json:"radius_km,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *HotspotInfo) Reset() {
+	*x = HotspotInfo{}
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[107]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *HotspotInfo) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*HotspotInfo) ProtoMessage() {}
+
+func (x *HotspotInfo) ProtoReflect() protoreflect.Message {
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[107]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use HotspotInfo.ProtoReflect.Descriptor instead.
+func (*HotspotInfo) Descriptor() ([]byte, []int) {
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{107}
+}
+
+func (x *HotspotInfo) GetCenterLat() float64 {
+	if x != nil {
+		return x.CenterLat
+	}
+	return 0
+}
+
+func (x *HotspotInfo) GetCenterLng() float64 {
+	if x != nil {
+		return x.CenterLng
+	}
+	return 0
+}
+
+func (x *HotspotInfo) GetCatIds() []uint64 {
+	if x != nil {
+		return x.CatIds
+	}
+	return nil
+}
+
+func (x *HotspotInfo) GetDensity() int32 {
+	if x != nil {
+		return x.Density
+	}
+	return 0
+}
+
+func (x *HotspotInfo) GetRadiusKm() float64 {
+	if x != nil {
+		return x.RadiusKm
+	}
+	return 0
+}
+
+type DetectHotspotsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Hotspots      []*HotspotInfo         `protobuf:"bytes,1,rep,name=hotspots,proto3" json:"hotspots,omitempty"`
+	TotalHotspots int32                  `protobuf:"varint,2,opt,name=total_hotspots,json=totalHotspots,proto3" json:"total_hotspots,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DetectHotspotsResponse) Reset() {
+	*x = DetectHotspotsResponse{}
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[108]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DetectHotspotsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DetectHotspotsResponse) ProtoMessage() {}
+
+func (x *DetectHotspotsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[108]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DetectHotspotsResponse.ProtoReflect.Descriptor instead.
+func (*DetectHotspotsResponse) Descriptor() ([]byte, []int) {
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{108}
+}
+
+func (x *DetectHotspotsResponse) GetHotspots() []*HotspotInfo {
+	if x != nil {
+		return x.Hotspots
+	}
+	return nil
+}
+
+func (x *DetectHotspotsResponse) GetTotalHotspots() int32 {
+	if x != nil {
+		return x.TotalHotspots
+	}
+	return 0
+}
+
+type PlanRouteRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	VolunteerLat  float64                `protobuf:"fixed64,1,opt,name=volunteer_lat,json=volunteerLat,proto3" json:"volunteer_lat,omitempty"`
+	VolunteerLng  float64                `protobuf:"fixed64,2,opt,name=volunteer_lng,json=volunteerLng,proto3" json:"volunteer_lng,omitempty"`
+	CatIds        []uint64               `protobuf:"varint,3,rep,packed,name=cat_ids,json=catIds,proto3" json:"cat_ids,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PlanRouteRequest) Reset() {
+	*x = PlanRouteRequest{}
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[109]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PlanRouteRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PlanRouteRequest) ProtoMessage() {}
+
+func (x *PlanRouteRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[109]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PlanRouteRequest.ProtoReflect.Descriptor instead.
+func (*PlanRouteRequest) Descriptor() ([]byte, []int) {
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{109}
+}
+
+func (x *PlanRouteRequest) GetVolunteerLat() float64 {
+	if x != nil {
+		return x.VolunteerLat
+	}
+	return 0
+}
+
+func (x *PlanRouteRequest) GetVolunteerLng() float64 {
+	if x != nil {
+		return x.VolunteerLng
+	}
+	return 0
+}
+
+func (x *PlanRouteRequest) GetCatIds() []uint64 {
+	if x != nil {
+		return x.CatIds
+	}
+	return nil
+}
+
+type Waypoint struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            uint64                 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Type          string                 `protobuf:"bytes,2,opt,name=type,proto3" json:"type,omitempty"` // volunteer/cat
+	Lat           float64                `protobuf:"fixed64,3,opt,name=lat,proto3" json:"lat,omitempty"`
+	Lng           float64                `protobuf:"fixed64,4,opt,name=lng,proto3" json:"lng,omitempty"`
+	Order         int32                  `protobuf:"varint,5,opt,name=order,proto3" json:"order,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Waypoint) Reset() {
+	*x = Waypoint{}
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[110]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Waypoint) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Waypoint) ProtoMessage() {}
+
+func (x *Waypoint) ProtoReflect() protoreflect.Message {
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[110]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Waypoint.ProtoReflect.Descriptor instead.
+func (*Waypoint) Descriptor() ([]byte, []int) {
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{110}
+}
+
+func (x *Waypoint) GetId() uint64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *Waypoint) GetType() string {
+	if x != nil {
+		return x.Type
+	}
+	return ""
+}
+
+func (x *Waypoint) GetLat() float64 {
+	if x != nil {
+		return x.Lat
+	}
+	return 0
+}
+
+func (x *Waypoint) GetLng() float64 {
+	if x != nil {
+		return x.Lng
+	}
+	return 0
+}
+
+func (x *Waypoint) GetOrder() int32 {
+	if x != nil {
+		return x.Order
+	}
+	return 0
+}
+
+type PlanRouteResponse struct {
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	Waypoints       []*Waypoint            `protobuf:"bytes,1,rep,name=waypoints,proto3" json:"waypoints,omitempty"`
+	TotalDistanceKm float64                `protobuf:"fixed64,2,opt,name=total_distance_km,json=totalDistanceKm,proto3" json:"total_distance_km,omitempty"`
+	TotalStops      int32                  `protobuf:"varint,3,opt,name=total_stops,json=totalStops,proto3" json:"total_stops,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
+}
+
+func (x *PlanRouteResponse) Reset() {
+	*x = PlanRouteResponse{}
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[111]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PlanRouteResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PlanRouteResponse) ProtoMessage() {}
+
+func (x *PlanRouteResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[111]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PlanRouteResponse.ProtoReflect.Descriptor instead.
+func (*PlanRouteResponse) Descriptor() ([]byte, []int) {
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{111}
+}
+
+func (x *PlanRouteResponse) GetWaypoints() []*Waypoint {
+	if x != nil {
+		return x.Waypoints
+	}
+	return nil
+}
+
+func (x *PlanRouteResponse) GetTotalDistanceKm() float64 {
+	if x != nil {
+		return x.TotalDistanceKm
+	}
+	return 0
+}
+
+func (x *PlanRouteResponse) GetTotalStops() int32 {
+	if x != nil {
+		return x.TotalStops
+	}
+	return 0
+}
+
+type GetPriorityCatsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	TopN          int32                  `protobuf:"varint,1,opt,name=top_n,json=topN,proto3" json:"top_n,omitempty"` // 返回前N只，0表示全部
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetPriorityCatsRequest) Reset() {
+	*x = GetPriorityCatsRequest{}
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[112]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetPriorityCatsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetPriorityCatsRequest) ProtoMessage() {}
+
+func (x *GetPriorityCatsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[112]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetPriorityCatsRequest.ProtoReflect.Descriptor instead.
+func (*GetPriorityCatsRequest) Descriptor() ([]byte, []int) {
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{112}
+}
+
+func (x *GetPriorityCatsRequest) GetTopN() int32 {
+	if x != nil {
+		return x.TopN
+	}
+	return 0
+}
+
+type PriorityCatInfo struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	CatId         uint64                 `protobuf:"varint,1,opt,name=cat_id,json=catId,proto3" json:"cat_id,omitempty"`
+	Score         float64                `protobuf:"fixed64,2,opt,name=score,proto3" json:"score,omitempty"`
+	Details       map[string]float64     `protobuf:"bytes,3,rep,name=details,proto3" json:"details,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"fixed64,2,opt,name=value"`
+	CatName       string                 `protobuf:"bytes,4,opt,name=cat_name,json=catName,proto3" json:"cat_name,omitempty"`
+	CatCode       string                 `protobuf:"bytes,5,opt,name=cat_code,json=catCode,proto3" json:"cat_code,omitempty"`
+	Longitude     float64                `protobuf:"fixed64,6,opt,name=longitude,proto3" json:"longitude,omitempty"`
+	Latitude      float64                `protobuf:"fixed64,7,opt,name=latitude,proto3" json:"latitude,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PriorityCatInfo) Reset() {
+	*x = PriorityCatInfo{}
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[113]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PriorityCatInfo) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PriorityCatInfo) ProtoMessage() {}
+
+func (x *PriorityCatInfo) ProtoReflect() protoreflect.Message {
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[113]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PriorityCatInfo.ProtoReflect.Descriptor instead.
+func (*PriorityCatInfo) Descriptor() ([]byte, []int) {
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{113}
+}
+
+func (x *PriorityCatInfo) GetCatId() uint64 {
+	if x != nil {
+		return x.CatId
+	}
+	return 0
+}
+
+func (x *PriorityCatInfo) GetScore() float64 {
+	if x != nil {
+		return x.Score
+	}
+	return 0
+}
+
+func (x *PriorityCatInfo) GetDetails() map[string]float64 {
+	if x != nil {
+		return x.Details
+	}
+	return nil
+}
+
+func (x *PriorityCatInfo) GetCatName() string {
+	if x != nil {
+		return x.CatName
+	}
+	return ""
+}
+
+func (x *PriorityCatInfo) GetCatCode() string {
+	if x != nil {
+		return x.CatCode
+	}
+	return ""
+}
+
+func (x *PriorityCatInfo) GetLongitude() float64 {
+	if x != nil {
+		return x.Longitude
+	}
+	return 0
+}
+
+func (x *PriorityCatInfo) GetLatitude() float64 {
+	if x != nil {
+		return x.Latitude
+	}
+	return 0
+}
+
+type GetPriorityCatsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Cats          []*PriorityCatInfo     `protobuf:"bytes,1,rep,name=cats,proto3" json:"cats,omitempty"`
+	Total         int32                  `protobuf:"varint,2,opt,name=total,proto3" json:"total,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetPriorityCatsResponse) Reset() {
+	*x = GetPriorityCatsResponse{}
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[114]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetPriorityCatsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetPriorityCatsResponse) ProtoMessage() {}
+
+func (x *GetPriorityCatsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[114]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetPriorityCatsResponse.ProtoReflect.Descriptor instead.
+func (*GetPriorityCatsResponse) Descriptor() ([]byte, []int) {
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{114}
+}
+
+func (x *GetPriorityCatsResponse) GetCats() []*PriorityCatInfo {
+	if x != nil {
+		return x.Cats
+	}
+	return nil
+}
+
+func (x *GetPriorityCatsResponse) GetTotal() int32 {
+	if x != nil {
+		return x.Total
+	}
+	return 0
+}
+
+type VolunteerInfo struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            uint64                 `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	Lat           float64                `protobuf:"fixed64,2,opt,name=lat,proto3" json:"lat,omitempty"`
+	Lng           float64                `protobuf:"fixed64,3,opt,name=lng,proto3" json:"lng,omitempty"`
+	Name          string                 `protobuf:"bytes,4,opt,name=name,proto3" json:"name,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *VolunteerInfo) Reset() {
+	*x = VolunteerInfo{}
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[115]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *VolunteerInfo) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*VolunteerInfo) ProtoMessage() {}
+
+func (x *VolunteerInfo) ProtoReflect() protoreflect.Message {
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[115]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use VolunteerInfo.ProtoReflect.Descriptor instead.
+func (*VolunteerInfo) Descriptor() ([]byte, []int) {
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{115}
+}
+
+func (x *VolunteerInfo) GetId() uint64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *VolunteerInfo) GetLat() float64 {
+	if x != nil {
+		return x.Lat
+	}
+	return 0
+}
+
+func (x *VolunteerInfo) GetLng() float64 {
+	if x != nil {
+		return x.Lng
+	}
+	return 0
+}
+
+func (x *VolunteerInfo) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+type DispatchTasksRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Volunteers    []*VolunteerInfo       `protobuf:"bytes,1,rep,name=volunteers,proto3" json:"volunteers,omitempty"`
+	CatIds        []uint64               `protobuf:"varint,2,rep,packed,name=cat_ids,json=catIds,proto3" json:"cat_ids,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DispatchTasksRequest) Reset() {
+	*x = DispatchTasksRequest{}
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[116]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DispatchTasksRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DispatchTasksRequest) ProtoMessage() {}
+
+func (x *DispatchTasksRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[116]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DispatchTasksRequest.ProtoReflect.Descriptor instead.
+func (*DispatchTasksRequest) Descriptor() ([]byte, []int) {
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{116}
+}
+
+func (x *DispatchTasksRequest) GetVolunteers() []*VolunteerInfo {
+	if x != nil {
+		return x.Volunteers
+	}
+	return nil
+}
+
+func (x *DispatchTasksRequest) GetCatIds() []uint64 {
+	if x != nil {
+		return x.CatIds
+	}
+	return nil
+}
+
+type VolunteerAssignment struct {
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	VolunteerId     uint64                 `protobuf:"varint,1,opt,name=volunteer_id,json=volunteerId,proto3" json:"volunteer_id,omitempty"`
+	Waypoints       []*Waypoint            `protobuf:"bytes,2,rep,name=waypoints,proto3" json:"waypoints,omitempty"`
+	TotalDistanceKm float64                `protobuf:"fixed64,3,opt,name=total_distance_km,json=totalDistanceKm,proto3" json:"total_distance_km,omitempty"`
+	AssignedCount   int32                  `protobuf:"varint,4,opt,name=assigned_count,json=assignedCount,proto3" json:"assigned_count,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
+}
+
+func (x *VolunteerAssignment) Reset() {
+	*x = VolunteerAssignment{}
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[117]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *VolunteerAssignment) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*VolunteerAssignment) ProtoMessage() {}
+
+func (x *VolunteerAssignment) ProtoReflect() protoreflect.Message {
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[117]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use VolunteerAssignment.ProtoReflect.Descriptor instead.
+func (*VolunteerAssignment) Descriptor() ([]byte, []int) {
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{117}
+}
+
+func (x *VolunteerAssignment) GetVolunteerId() uint64 {
+	if x != nil {
+		return x.VolunteerId
+	}
+	return 0
+}
+
+func (x *VolunteerAssignment) GetWaypoints() []*Waypoint {
+	if x != nil {
+		return x.Waypoints
+	}
+	return nil
+}
+
+func (x *VolunteerAssignment) GetTotalDistanceKm() float64 {
+	if x != nil {
+		return x.TotalDistanceKm
+	}
+	return 0
+}
+
+func (x *VolunteerAssignment) GetAssignedCount() int32 {
+	if x != nil {
+		return x.AssignedCount
+	}
+	return 0
+}
+
+type DispatchTasksResponse struct {
+	state            protoimpl.MessageState          `protogen:"open.v1"`
+	Assignments      map[uint64]*VolunteerAssignment `protobuf:"bytes,1,rep,name=assignments,proto3" json:"assignments,omitempty" protobuf_key:"varint,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	TotalDistanceAll float64                         `protobuf:"fixed64,2,opt,name=total_distance_all,json=totalDistanceAll,proto3" json:"total_distance_all,omitempty"`
+	UnassignedCats   int32                           `protobuf:"varint,3,opt,name=unassigned_cats,json=unassignedCats,proto3" json:"unassigned_cats,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
+}
+
+func (x *DispatchTasksResponse) Reset() {
+	*x = DispatchTasksResponse{}
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[118]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DispatchTasksResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DispatchTasksResponse) ProtoMessage() {}
+
+func (x *DispatchTasksResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[118]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DispatchTasksResponse.ProtoReflect.Descriptor instead.
+func (*DispatchTasksResponse) Descriptor() ([]byte, []int) {
+	return file_pb_cat_v1_cat_proto_rawDescGZIP(), []int{118}
+}
+
+func (x *DispatchTasksResponse) GetAssignments() map[uint64]*VolunteerAssignment {
+	if x != nil {
+		return x.Assignments
+	}
+	return nil
+}
+
+func (x *DispatchTasksResponse) GetTotalDistanceAll() float64 {
+	if x != nil {
+		return x.TotalDistanceAll
+	}
+	return 0
+}
+
+func (x *DispatchTasksResponse) GetUnassignedCats() int32 {
+	if x != nil {
+		return x.UnassignedCats
+	}
+	return 0
+}
+
 type ListMyAppliesResponse_ApplyItem struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	ApplyId       uint64                 `protobuf:"varint,1,opt,name=apply_id,json=applyId,proto3" json:"apply_id,omitempty"`
@@ -8610,7 +9423,7 @@ type ListMyAppliesResponse_ApplyItem struct {
 
 func (x *ListMyAppliesResponse_ApplyItem) Reset() {
 	*x = ListMyAppliesResponse_ApplyItem{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[106]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[119]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8622,7 +9435,7 @@ func (x *ListMyAppliesResponse_ApplyItem) String() string {
 func (*ListMyAppliesResponse_ApplyItem) ProtoMessage() {}
 
 func (x *ListMyAppliesResponse_ApplyItem) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[106]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[119]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -8688,7 +9501,7 @@ type ListPendingAppliesResponse_ApplyItem struct {
 
 func (x *ListPendingAppliesResponse_ApplyItem) Reset() {
 	*x = ListPendingAppliesResponse_ApplyItem{}
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[107]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[120]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -8700,7 +9513,7 @@ func (x *ListPendingAppliesResponse_ApplyItem) String() string {
 func (*ListPendingAppliesResponse_ApplyItem) ProtoMessage() {}
 
 func (x *ListPendingAppliesResponse_ApplyItem) ProtoReflect() protoreflect.Message {
-	mi := &file_pb_cat_v1_cat_proto_msgTypes[107]
+	mi := &file_pb_cat_v1_cat_proto_msgTypes[120]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -9614,7 +10427,74 @@ const file_pb_cat_v1_cat_proto_rawDesc = "" +
 	"\x02id\x18\x01 \x01(\x04R\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x12\n" +
 	"\x04type\x18\x03 \x01(\tR\x04type\x12\x14\n" +
-	"\x05theme\x18\x04 \x01(\tR\x05theme2\xce\x1b\n" +
+	"\x05theme\x18\x04 \x01(\tR\x05theme\"O\n" +
+	"\x15DetectHotspotsRequest\x12\x1b\n" +
+	"\tradius_km\x18\x01 \x01(\x01R\bradiusKm\x12\x19\n" +
+	"\bmin_cats\x18\x02 \x01(\x05R\aminCats\"\x9b\x01\n" +
+	"\vHotspotInfo\x12\x1d\n" +
+	"\n" +
+	"center_lat\x18\x01 \x01(\x01R\tcenterLat\x12\x1d\n" +
+	"\n" +
+	"center_lng\x18\x02 \x01(\x01R\tcenterLng\x12\x17\n" +
+	"\acat_ids\x18\x03 \x03(\x04R\x06catIds\x12\x18\n" +
+	"\adensity\x18\x04 \x01(\x05R\adensity\x12\x1b\n" +
+	"\tradius_km\x18\x05 \x01(\x01R\bradiusKm\"m\n" +
+	"\x16DetectHotspotsResponse\x12,\n" +
+	"\bhotspots\x18\x01 \x03(\v2\x10.cat.HotspotInfoR\bhotspots\x12%\n" +
+	"\x0etotal_hotspots\x18\x02 \x01(\x05R\rtotalHotspots\"u\n" +
+	"\x10PlanRouteRequest\x12#\n" +
+	"\rvolunteer_lat\x18\x01 \x01(\x01R\fvolunteerLat\x12#\n" +
+	"\rvolunteer_lng\x18\x02 \x01(\x01R\fvolunteerLng\x12\x17\n" +
+	"\acat_ids\x18\x03 \x03(\x04R\x06catIds\"h\n" +
+	"\bWaypoint\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x04R\x02id\x12\x12\n" +
+	"\x04type\x18\x02 \x01(\tR\x04type\x12\x10\n" +
+	"\x03lat\x18\x03 \x01(\x01R\x03lat\x12\x10\n" +
+	"\x03lng\x18\x04 \x01(\x01R\x03lng\x12\x14\n" +
+	"\x05order\x18\x05 \x01(\x05R\x05order\"\x8d\x01\n" +
+	"\x11PlanRouteResponse\x12+\n" +
+	"\twaypoints\x18\x01 \x03(\v2\r.cat.WaypointR\twaypoints\x12*\n" +
+	"\x11total_distance_km\x18\x02 \x01(\x01R\x0ftotalDistanceKm\x12\x1f\n" +
+	"\vtotal_stops\x18\x03 \x01(\x05R\n" +
+	"totalStops\"-\n" +
+	"\x16GetPriorityCatsRequest\x12\x13\n" +
+	"\x05top_n\x18\x01 \x01(\x05R\x04topN\"\xa7\x02\n" +
+	"\x0fPriorityCatInfo\x12\x15\n" +
+	"\x06cat_id\x18\x01 \x01(\x04R\x05catId\x12\x14\n" +
+	"\x05score\x18\x02 \x01(\x01R\x05score\x12;\n" +
+	"\adetails\x18\x03 \x03(\v2!.cat.PriorityCatInfo.DetailsEntryR\adetails\x12\x19\n" +
+	"\bcat_name\x18\x04 \x01(\tR\acatName\x12\x19\n" +
+	"\bcat_code\x18\x05 \x01(\tR\acatCode\x12\x1c\n" +
+	"\tlongitude\x18\x06 \x01(\x01R\tlongitude\x12\x1a\n" +
+	"\blatitude\x18\a \x01(\x01R\blatitude\x1a:\n" +
+	"\fDetailsEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
+	"\x05value\x18\x02 \x01(\x01R\x05value:\x028\x01\"Y\n" +
+	"\x17GetPriorityCatsResponse\x12(\n" +
+	"\x04cats\x18\x01 \x03(\v2\x14.cat.PriorityCatInfoR\x04cats\x12\x14\n" +
+	"\x05total\x18\x02 \x01(\x05R\x05total\"W\n" +
+	"\rVolunteerInfo\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x04R\x02id\x12\x10\n" +
+	"\x03lat\x18\x02 \x01(\x01R\x03lat\x12\x10\n" +
+	"\x03lng\x18\x03 \x01(\x01R\x03lng\x12\x12\n" +
+	"\x04name\x18\x04 \x01(\tR\x04name\"c\n" +
+	"\x14DispatchTasksRequest\x122\n" +
+	"\n" +
+	"volunteers\x18\x01 \x03(\v2\x12.cat.VolunteerInfoR\n" +
+	"volunteers\x12\x17\n" +
+	"\acat_ids\x18\x02 \x03(\x04R\x06catIds\"\xb8\x01\n" +
+	"\x13VolunteerAssignment\x12!\n" +
+	"\fvolunteer_id\x18\x01 \x01(\x04R\vvolunteerId\x12+\n" +
+	"\twaypoints\x18\x02 \x03(\v2\r.cat.WaypointR\twaypoints\x12*\n" +
+	"\x11total_distance_km\x18\x03 \x01(\x01R\x0ftotalDistanceKm\x12%\n" +
+	"\x0eassigned_count\x18\x04 \x01(\x05R\rassignedCount\"\x97\x02\n" +
+	"\x15DispatchTasksResponse\x12M\n" +
+	"\vassignments\x18\x01 \x03(\v2+.cat.DispatchTasksResponse.AssignmentsEntryR\vassignments\x12,\n" +
+	"\x12total_distance_all\x18\x02 \x01(\x01R\x10totalDistanceAll\x12'\n" +
+	"\x0funassigned_cats\x18\x03 \x01(\x05R\x0eunassignedCats\x1aX\n" +
+	"\x10AssignmentsEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\x04R\x03key\x12.\n" +
+	"\x05value\x18\x02 \x01(\v2\x18.cat.VolunteerAssignmentR\x05value:\x028\x012\xa3\x1d\n" +
 	"\n" +
 	"CatService\x12I\n" +
 	"\x0eApplyCreateCat\x12\x1a.cat.ApplyCreateCatRequest\x1a\x1b.cat.ApplyCreateCatResponse\x12G\n" +
@@ -9665,7 +10545,10 @@ const file_pb_cat_v1_cat_proto_rawDesc = "" +
 	"CancelTask\x12\x16.cat.CancelTaskRequest\x1a\x17.cat.CancelTaskResponse\x12X\n" +
 	"\x13EscalateTaskUrgency\x12\x1f.cat.EscalateTaskUrgencyRequest\x1a .cat.EscalateTaskUrgencyResponse\x12C\n" +
 	"\fGetTaskFlows\x12\x18.cat.GetTaskFlowsRequest\x1a\x19.cat.GetTaskFlowsResponse\x12@\n" +
-	"\vGetTaskLogs\x12\x17.cat.GetTaskLogsRequest\x1a\x18.cat.GetTaskLogsResponseB\rZ\v./pb/cat/v1b\x06proto3"
+	"\vGetTaskLogs\x12\x17.cat.GetTaskLogsRequest\x1a\x18.cat.GetTaskLogsResponse\x12I\n" +
+	"\x0eDetectHotspots\x12\x1a.cat.DetectHotspotsRequest\x1a\x1b.cat.DetectHotspotsResponse\x12:\n" +
+	"\tPlanRoute\x12\x15.cat.PlanRouteRequest\x1a\x16.cat.PlanRouteResponse\x12L\n" +
+	"\x0fGetPriorityCats\x12\x1b.cat.GetPriorityCatsRequest\x1a\x1c.cat.GetPriorityCatsResponseB\rZ\v./pb/cat/v1b\x06proto3"
 
 var (
 	file_pb_cat_v1_cat_proto_rawDescOnce sync.Once
@@ -9679,7 +10562,7 @@ func file_pb_cat_v1_cat_proto_rawDescGZIP() []byte {
 	return file_pb_cat_v1_cat_proto_rawDescData
 }
 
-var file_pb_cat_v1_cat_proto_msgTypes = make([]protoimpl.MessageInfo, 108)
+var file_pb_cat_v1_cat_proto_msgTypes = make([]protoimpl.MessageInfo, 123)
 var file_pb_cat_v1_cat_proto_goTypes = []any{
 	(*Response)(nil),                             // 0: cat.Response
 	(*ImageItem)(nil),                            // 1: cat.ImageItem
@@ -9787,180 +10670,209 @@ var file_pb_cat_v1_cat_proto_goTypes = []any{
 	(*GetTaskLogsResponse)(nil),                  // 103: cat.GetTaskLogsResponse
 	(*TaskLogVO)(nil),                            // 104: cat.TaskLogVO
 	(*TagVO)(nil),                                // 105: cat.TagVO
-	(*ListMyAppliesResponse_ApplyItem)(nil),      // 106: cat.ListMyAppliesResponse.ApplyItem
-	(*ListPendingAppliesResponse_ApplyItem)(nil), // 107: cat.ListPendingAppliesResponse.ApplyItem
-	(*timestamppb.Timestamp)(nil),                // 108: google.protobuf.Timestamp
+	(*DetectHotspotsRequest)(nil),                // 106: cat.DetectHotspotsRequest
+	(*HotspotInfo)(nil),                          // 107: cat.HotspotInfo
+	(*DetectHotspotsResponse)(nil),               // 108: cat.DetectHotspotsResponse
+	(*PlanRouteRequest)(nil),                     // 109: cat.PlanRouteRequest
+	(*Waypoint)(nil),                             // 110: cat.Waypoint
+	(*PlanRouteResponse)(nil),                    // 111: cat.PlanRouteResponse
+	(*GetPriorityCatsRequest)(nil),               // 112: cat.GetPriorityCatsRequest
+	(*PriorityCatInfo)(nil),                      // 113: cat.PriorityCatInfo
+	(*GetPriorityCatsResponse)(nil),              // 114: cat.GetPriorityCatsResponse
+	(*VolunteerInfo)(nil),                        // 115: cat.VolunteerInfo
+	(*DispatchTasksRequest)(nil),                 // 116: cat.DispatchTasksRequest
+	(*VolunteerAssignment)(nil),                  // 117: cat.VolunteerAssignment
+	(*DispatchTasksResponse)(nil),                // 118: cat.DispatchTasksResponse
+	(*ListMyAppliesResponse_ApplyItem)(nil),      // 119: cat.ListMyAppliesResponse.ApplyItem
+	(*ListPendingAppliesResponse_ApplyItem)(nil), // 120: cat.ListPendingAppliesResponse.ApplyItem
+	nil,                           // 121: cat.PriorityCatInfo.DetailsEntry
+	nil,                           // 122: cat.DispatchTasksResponse.AssignmentsEntry
+	(*timestamppb.Timestamp)(nil), // 123: google.protobuf.Timestamp
 }
 var file_pb_cat_v1_cat_proto_depIdxs = []int32{
 	1,   // 0: cat.ApplyCreateCatRequest.images:type_name -> cat.ImageItem
-	108, // 1: cat.ApplyCreateCatResponse.created_at:type_name -> google.protobuf.Timestamp
+	123, // 1: cat.ApplyCreateCatResponse.created_at:type_name -> google.protobuf.Timestamp
 	1,   // 2: cat.DirectCreateCatRequest.images:type_name -> cat.ImageItem
 	1,   // 3: cat.GetApplyDetailResponse.images:type_name -> cat.ImageItem
-	108, // 4: cat.GetApplyDetailResponse.created_at:type_name -> google.protobuf.Timestamp
-	108, // 5: cat.GetApplyDetailResponse.updated_at:type_name -> google.protobuf.Timestamp
-	106, // 6: cat.ListMyAppliesResponse.list:type_name -> cat.ListMyAppliesResponse.ApplyItem
-	107, // 7: cat.ListPendingAppliesResponse.list:type_name -> cat.ListPendingAppliesResponse.ApplyItem
+	123, // 4: cat.GetApplyDetailResponse.created_at:type_name -> google.protobuf.Timestamp
+	123, // 5: cat.GetApplyDetailResponse.updated_at:type_name -> google.protobuf.Timestamp
+	119, // 6: cat.ListMyAppliesResponse.list:type_name -> cat.ListMyAppliesResponse.ApplyItem
+	120, // 7: cat.ListPendingAppliesResponse.list:type_name -> cat.ListPendingAppliesResponse.ApplyItem
 	17,  // 8: cat.ListCatsReq.nearby:type_name -> cat.NearbyFilter
 	19,  // 9: cat.ListCatsResp.list:type_name -> cat.CatInfo
-	108, // 10: cat.AdoptApplicationVO.reviewed_at:type_name -> google.protobuf.Timestamp
-	108, // 11: cat.AdoptApplicationVO.approved_at:type_name -> google.protobuf.Timestamp
-	108, // 12: cat.AdoptApplicationVO.expires_at:type_name -> google.protobuf.Timestamp
-	108, // 13: cat.AdoptApplicationVO.created_at:type_name -> google.protobuf.Timestamp
-	108, // 14: cat.AdoptApplicationVO.updated_at:type_name -> google.protobuf.Timestamp
+	123, // 10: cat.AdoptApplicationVO.reviewed_at:type_name -> google.protobuf.Timestamp
+	123, // 11: cat.AdoptApplicationVO.approved_at:type_name -> google.protobuf.Timestamp
+	123, // 12: cat.AdoptApplicationVO.expires_at:type_name -> google.protobuf.Timestamp
+	123, // 13: cat.AdoptApplicationVO.created_at:type_name -> google.protobuf.Timestamp
+	123, // 14: cat.AdoptApplicationVO.updated_at:type_name -> google.protobuf.Timestamp
 	25,  // 15: cat.GetAdoptApplyDetailResponse.apply:type_name -> cat.AdoptApplicationVO
 	56,  // 16: cat.GetAdoptApplyDetailResponse.cat:type_name -> cat.CatBriefVO
-	108, // 17: cat.AdoptApplyItemVO.created_at:type_name -> google.protobuf.Timestamp
-	108, // 18: cat.AdoptApplyItemVO.expires_at:type_name -> google.protobuf.Timestamp
+	123, // 17: cat.AdoptApplyItemVO.created_at:type_name -> google.protobuf.Timestamp
+	123, // 18: cat.AdoptApplyItemVO.expires_at:type_name -> google.protobuf.Timestamp
 	29,  // 19: cat.ListMyAdoptAppliesResponse.items:type_name -> cat.AdoptApplyItemVO
-	108, // 20: cat.ApproveAdoptResponse.expires_at:type_name -> google.protobuf.Timestamp
-	108, // 21: cat.PendingApplyVO.created_at:type_name -> google.protobuf.Timestamp
+	123, // 20: cat.ApproveAdoptResponse.expires_at:type_name -> google.protobuf.Timestamp
+	123, // 21: cat.PendingApplyVO.created_at:type_name -> google.protobuf.Timestamp
 	36,  // 22: cat.ListPendingAdoptAppliesResponse.items:type_name -> cat.PendingApplyVO
-	108, // 23: cat.AdoptionVO.agreed_at:type_name -> google.protobuf.Timestamp
-	108, // 24: cat.AdoptionVO.adopted_at:type_name -> google.protobuf.Timestamp
-	108, // 25: cat.AdoptionVO.home_visit_at:type_name -> google.protobuf.Timestamp
-	108, // 26: cat.AdoptionVO.visit_one_week_at:type_name -> google.protobuf.Timestamp
-	108, // 27: cat.AdoptionVO.visit_one_month_at:type_name -> google.protobuf.Timestamp
-	108, // 28: cat.AdoptionVO.visit_three_month_at:type_name -> google.protobuf.Timestamp
-	108, // 29: cat.AdoptionVO.visit_six_month_at:type_name -> google.protobuf.Timestamp
-	108, // 30: cat.AdoptionVO.returned_at:type_name -> google.protobuf.Timestamp
-	108, // 31: cat.AdoptionVO.created_at:type_name -> google.protobuf.Timestamp
-	108, // 32: cat.AdoptionVO.updated_at:type_name -> google.protobuf.Timestamp
+	123, // 23: cat.AdoptionVO.agreed_at:type_name -> google.protobuf.Timestamp
+	123, // 24: cat.AdoptionVO.adopted_at:type_name -> google.protobuf.Timestamp
+	123, // 25: cat.AdoptionVO.home_visit_at:type_name -> google.protobuf.Timestamp
+	123, // 26: cat.AdoptionVO.visit_one_week_at:type_name -> google.protobuf.Timestamp
+	123, // 27: cat.AdoptionVO.visit_one_month_at:type_name -> google.protobuf.Timestamp
+	123, // 28: cat.AdoptionVO.visit_three_month_at:type_name -> google.protobuf.Timestamp
+	123, // 29: cat.AdoptionVO.visit_six_month_at:type_name -> google.protobuf.Timestamp
+	123, // 30: cat.AdoptionVO.returned_at:type_name -> google.protobuf.Timestamp
+	123, // 31: cat.AdoptionVO.created_at:type_name -> google.protobuf.Timestamp
+	123, // 32: cat.AdoptionVO.updated_at:type_name -> google.protobuf.Timestamp
 	43,  // 33: cat.GetAdoptionDetailResponse.adoption:type_name -> cat.AdoptionVO
 	56,  // 34: cat.GetAdoptionDetailResponse.cat:type_name -> cat.CatBriefVO
 	57,  // 35: cat.GetAdoptionDetailResponse.adopter:type_name -> cat.UserBriefVO
-	108, // 36: cat.AdoptionItemVO.adopted_at:type_name -> google.protobuf.Timestamp
+	123, // 36: cat.AdoptionItemVO.adopted_at:type_name -> google.protobuf.Timestamp
 	46,  // 37: cat.ListAdoptionsResponse.items:type_name -> cat.AdoptionItemVO
-	108, // 38: cat.UpdateReturnStatusRequest.returned_at:type_name -> google.protobuf.Timestamp
-	108, // 39: cat.ApplyCreateTaskRequest.deadline_at:type_name -> google.protobuf.Timestamp
-	108, // 40: cat.TaskApplyVO.reviewed_at:type_name -> google.protobuf.Timestamp
-	108, // 41: cat.TaskApplyVO.deadline_at:type_name -> google.protobuf.Timestamp
-	108, // 42: cat.TaskApplyVO.created_at:type_name -> google.protobuf.Timestamp
-	108, // 43: cat.TaskApplyVO.updated_at:type_name -> google.protobuf.Timestamp
+	123, // 38: cat.UpdateReturnStatusRequest.returned_at:type_name -> google.protobuf.Timestamp
+	123, // 39: cat.ApplyCreateTaskRequest.deadline_at:type_name -> google.protobuf.Timestamp
+	123, // 40: cat.TaskApplyVO.reviewed_at:type_name -> google.protobuf.Timestamp
+	123, // 41: cat.TaskApplyVO.deadline_at:type_name -> google.protobuf.Timestamp
+	123, // 42: cat.TaskApplyVO.created_at:type_name -> google.protobuf.Timestamp
+	123, // 43: cat.TaskApplyVO.updated_at:type_name -> google.protobuf.Timestamp
 	105, // 44: cat.TaskApplyVO.tags:type_name -> cat.TagVO
 	63,  // 45: cat.GetTaskApplyDetailResponse.apply:type_name -> cat.TaskApplyVO
 	56,  // 46: cat.GetTaskApplyDetailResponse.cat:type_name -> cat.CatBriefVO
 	67,  // 47: cat.ListMyTaskAppliesResponse.items:type_name -> cat.TaskApplyItemVO
-	108, // 48: cat.TaskApplyItemVO.created_at:type_name -> google.protobuf.Timestamp
+	123, // 48: cat.TaskApplyItemVO.created_at:type_name -> google.protobuf.Timestamp
 	63,  // 49: cat.ListPendingTaskAppliesResponse.items:type_name -> cat.TaskApplyVO
-	108, // 50: cat.DirectCreateTaskRequest.deadline_at:type_name -> google.protobuf.Timestamp
-	108, // 51: cat.TaskVO.deadline_at:type_name -> google.protobuf.Timestamp
-	108, // 52: cat.TaskVO.last_escalated_at:type_name -> google.protobuf.Timestamp
-	108, // 53: cat.TaskVO.created_at:type_name -> google.protobuf.Timestamp
-	108, // 54: cat.TaskVO.updated_at:type_name -> google.protobuf.Timestamp
+	123, // 50: cat.DirectCreateTaskRequest.deadline_at:type_name -> google.protobuf.Timestamp
+	123, // 51: cat.TaskVO.deadline_at:type_name -> google.protobuf.Timestamp
+	123, // 52: cat.TaskVO.last_escalated_at:type_name -> google.protobuf.Timestamp
+	123, // 53: cat.TaskVO.created_at:type_name -> google.protobuf.Timestamp
+	123, // 54: cat.TaskVO.updated_at:type_name -> google.protobuf.Timestamp
 	105, // 55: cat.TaskVO.tags:type_name -> cat.TagVO
 	77,  // 56: cat.GetTaskDetailResponse.task:type_name -> cat.TaskVO
 	56,  // 57: cat.GetTaskDetailResponse.cat:type_name -> cat.CatBriefVO
 	81,  // 58: cat.ListTasksResponse.items:type_name -> cat.TaskItemVO
-	108, // 59: cat.TaskItemVO.deadline_at:type_name -> google.protobuf.Timestamp
-	108, // 60: cat.TaskItemVO.created_at:type_name -> google.protobuf.Timestamp
-	108, // 61: cat.UpdateTaskRequest.deadline_at:type_name -> google.protobuf.Timestamp
+	123, // 59: cat.TaskItemVO.deadline_at:type_name -> google.protobuf.Timestamp
+	123, // 60: cat.TaskItemVO.created_at:type_name -> google.protobuf.Timestamp
+	123, // 61: cat.UpdateTaskRequest.deadline_at:type_name -> google.protobuf.Timestamp
 	96,  // 62: cat.ListMyClaimedTasksResponse.items:type_name -> cat.ClaimItemVO
-	108, // 63: cat.ClaimItemVO.claimed_at:type_name -> google.protobuf.Timestamp
-	108, // 64: cat.ClaimItemVO.deadline_at:type_name -> google.protobuf.Timestamp
+	123, // 63: cat.ClaimItemVO.claimed_at:type_name -> google.protobuf.Timestamp
+	123, // 64: cat.ClaimItemVO.deadline_at:type_name -> google.protobuf.Timestamp
 	96,  // 65: cat.ListMyCompletedTasksResponse.items:type_name -> cat.ClaimItemVO
 	101, // 66: cat.GetTaskFlowsResponse.items:type_name -> cat.TaskFlowVO
-	108, // 67: cat.TaskFlowVO.created_at:type_name -> google.protobuf.Timestamp
+	123, // 67: cat.TaskFlowVO.created_at:type_name -> google.protobuf.Timestamp
 	104, // 68: cat.GetTaskLogsResponse.items:type_name -> cat.TaskLogVO
-	108, // 69: cat.TaskLogVO.created_at:type_name -> google.protobuf.Timestamp
-	108, // 70: cat.ListMyAppliesResponse.ApplyItem.created_at:type_name -> google.protobuf.Timestamp
-	108, // 71: cat.ListPendingAppliesResponse.ApplyItem.created_at:type_name -> google.protobuf.Timestamp
-	2,   // 72: cat.CatService.ApplyCreateCat:input_type -> cat.ApplyCreateCatRequest
-	4,   // 73: cat.CatService.CancelApplyCreateCat:input_type -> cat.CancelApplyCreateCatRequest
-	10,  // 74: cat.CatService.GetApplyDetail:input_type -> cat.GetApplyDetailRequest
-	12,  // 75: cat.CatService.ListMyApplies:input_type -> cat.ListMyAppliesRequest
-	5,   // 76: cat.CatService.ApproveCreateCat:input_type -> cat.ApproveCreateCatRequest
-	7,   // 77: cat.CatService.RejectCreateCat:input_type -> cat.RejectCreateCatRequest
-	8,   // 78: cat.CatService.DirectCreateCat:input_type -> cat.DirectCreateCatRequest
-	14,  // 79: cat.CatService.ListPendingApplies:input_type -> cat.ListPendingAppliesRequest
-	16,  // 80: cat.CatService.ListCats:input_type -> cat.ListCatsReq
-	20,  // 81: cat.CatService.ApplyAdopt:input_type -> cat.ApplyAdoptRequest
-	22,  // 82: cat.CatService.CancelAdoptApply:input_type -> cat.CancelAdoptApplyRequest
-	24,  // 83: cat.CatService.GetAdoptApplyDetail:input_type -> cat.GetAdoptApplyDetailRequest
-	27,  // 84: cat.CatService.ListMyAdoptApplies:input_type -> cat.ListMyAdoptAppliesRequest
-	28,  // 85: cat.CatService.ListMyAdoptions:input_type -> cat.ListMyAdoptionsRequest
-	52,  // 86: cat.CatService.CompleteVisit:input_type -> cat.RecordFollowUpVisitRequest
-	31,  // 87: cat.CatService.ApproveAdopt:input_type -> cat.ApproveAdoptRequest
-	33,  // 88: cat.CatService.RejectAdopt:input_type -> cat.RejectAdoptRequest
-	35,  // 89: cat.CatService.ListPendingAdoptApplies:input_type -> cat.ListPendingAdoptAppliesRequest
-	38,  // 90: cat.CatService.CreateAdoption:input_type -> cat.CreateAdoptionRequest
-	40,  // 91: cat.CatService.DirectAdopt:input_type -> cat.DirectAdoptRequest
-	42,  // 92: cat.CatService.GetAdoptionDetail:input_type -> cat.GetAdoptionDetailRequest
-	45,  // 93: cat.CatService.ListAdoptions:input_type -> cat.ListAdoptionsRequest
-	48,  // 94: cat.CatService.UpdateAdoption:input_type -> cat.UpdateAdoptionRequest
-	50,  // 95: cat.CatService.RecordHomeVisit:input_type -> cat.RecordHomeVisitRequest
-	52,  // 96: cat.CatService.RecordFollowUpVisit:input_type -> cat.RecordFollowUpVisitRequest
-	54,  // 97: cat.CatService.UpdateReturnStatus:input_type -> cat.UpdateReturnStatusRequest
-	58,  // 98: cat.CatService.ApplyCreateTask:input_type -> cat.ApplyCreateTaskRequest
-	60,  // 99: cat.CatService.CancelTaskApply:input_type -> cat.CancelTaskApplyRequest
-	62,  // 100: cat.CatService.GetTaskApplyDetail:input_type -> cat.GetTaskApplyDetailRequest
-	65,  // 101: cat.CatService.ListMyTaskApplies:input_type -> cat.ListMyTaskAppliesRequest
-	88,  // 102: cat.CatService.ClaimTask:input_type -> cat.ClaimTaskRequest
-	90,  // 103: cat.CatService.AbandonTask:input_type -> cat.AbandonTaskRequest
-	92,  // 104: cat.CatService.CompleteTask:input_type -> cat.CompleteTaskRequest
-	76,  // 105: cat.CatService.GetTaskDetail:input_type -> cat.GetTaskDetailRequest
-	79,  // 106: cat.CatService.ListTasks:input_type -> cat.ListTasksRequest
-	94,  // 107: cat.CatService.ListMyClaimedTasks:input_type -> cat.ListMyClaimedTasksRequest
-	97,  // 108: cat.CatService.ListMyCompletedTasks:input_type -> cat.ListMyCompletedTasksRequest
-	68,  // 109: cat.CatService.ApproveTaskApply:input_type -> cat.ApproveTaskApplyRequest
-	70,  // 110: cat.CatService.RejectTaskApply:input_type -> cat.RejectTaskApplyRequest
-	72,  // 111: cat.CatService.ListPendingTaskApplies:input_type -> cat.ListPendingTaskAppliesRequest
-	74,  // 112: cat.CatService.DirectCreateTask:input_type -> cat.DirectCreateTaskRequest
-	82,  // 113: cat.CatService.UpdateTask:input_type -> cat.UpdateTaskRequest
-	84,  // 114: cat.CatService.CancelTask:input_type -> cat.CancelTaskRequest
-	86,  // 115: cat.CatService.EscalateTaskUrgency:input_type -> cat.EscalateTaskUrgencyRequest
-	99,  // 116: cat.CatService.GetTaskFlows:input_type -> cat.GetTaskFlowsRequest
-	102, // 117: cat.CatService.GetTaskLogs:input_type -> cat.GetTaskLogsRequest
-	3,   // 118: cat.CatService.ApplyCreateCat:output_type -> cat.ApplyCreateCatResponse
-	0,   // 119: cat.CatService.CancelApplyCreateCat:output_type -> cat.Response
-	11,  // 120: cat.CatService.GetApplyDetail:output_type -> cat.GetApplyDetailResponse
-	13,  // 121: cat.CatService.ListMyApplies:output_type -> cat.ListMyAppliesResponse
-	6,   // 122: cat.CatService.ApproveCreateCat:output_type -> cat.ApproveCreateCatResponse
-	0,   // 123: cat.CatService.RejectCreateCat:output_type -> cat.Response
-	9,   // 124: cat.CatService.DirectCreateCat:output_type -> cat.DirectCreateCatResponse
-	15,  // 125: cat.CatService.ListPendingApplies:output_type -> cat.ListPendingAppliesResponse
-	18,  // 126: cat.CatService.ListCats:output_type -> cat.ListCatsResp
-	21,  // 127: cat.CatService.ApplyAdopt:output_type -> cat.ApplyAdoptResponse
-	23,  // 128: cat.CatService.CancelAdoptApply:output_type -> cat.CancelAdoptApplyResponse
-	26,  // 129: cat.CatService.GetAdoptApplyDetail:output_type -> cat.GetAdoptApplyDetailResponse
-	30,  // 130: cat.CatService.ListMyAdoptApplies:output_type -> cat.ListMyAdoptAppliesResponse
-	47,  // 131: cat.CatService.ListMyAdoptions:output_type -> cat.ListAdoptionsResponse
-	53,  // 132: cat.CatService.CompleteVisit:output_type -> cat.RecordFollowUpVisitResponse
-	32,  // 133: cat.CatService.ApproveAdopt:output_type -> cat.ApproveAdoptResponse
-	34,  // 134: cat.CatService.RejectAdopt:output_type -> cat.RejectAdoptResponse
-	37,  // 135: cat.CatService.ListPendingAdoptApplies:output_type -> cat.ListPendingAdoptAppliesResponse
-	39,  // 136: cat.CatService.CreateAdoption:output_type -> cat.CreateAdoptionResponse
-	41,  // 137: cat.CatService.DirectAdopt:output_type -> cat.DirectAdoptResponse
-	44,  // 138: cat.CatService.GetAdoptionDetail:output_type -> cat.GetAdoptionDetailResponse
-	47,  // 139: cat.CatService.ListAdoptions:output_type -> cat.ListAdoptionsResponse
-	49,  // 140: cat.CatService.UpdateAdoption:output_type -> cat.UpdateAdoptionResponse
-	51,  // 141: cat.CatService.RecordHomeVisit:output_type -> cat.RecordHomeVisitResponse
-	53,  // 142: cat.CatService.RecordFollowUpVisit:output_type -> cat.RecordFollowUpVisitResponse
-	55,  // 143: cat.CatService.UpdateReturnStatus:output_type -> cat.UpdateReturnStatusResponse
-	59,  // 144: cat.CatService.ApplyCreateTask:output_type -> cat.ApplyCreateTaskResponse
-	61,  // 145: cat.CatService.CancelTaskApply:output_type -> cat.CancelTaskApplyResponse
-	64,  // 146: cat.CatService.GetTaskApplyDetail:output_type -> cat.GetTaskApplyDetailResponse
-	66,  // 147: cat.CatService.ListMyTaskApplies:output_type -> cat.ListMyTaskAppliesResponse
-	89,  // 148: cat.CatService.ClaimTask:output_type -> cat.ClaimTaskResponse
-	91,  // 149: cat.CatService.AbandonTask:output_type -> cat.AbandonTaskResponse
-	93,  // 150: cat.CatService.CompleteTask:output_type -> cat.CompleteTaskResponse
-	78,  // 151: cat.CatService.GetTaskDetail:output_type -> cat.GetTaskDetailResponse
-	80,  // 152: cat.CatService.ListTasks:output_type -> cat.ListTasksResponse
-	95,  // 153: cat.CatService.ListMyClaimedTasks:output_type -> cat.ListMyClaimedTasksResponse
-	98,  // 154: cat.CatService.ListMyCompletedTasks:output_type -> cat.ListMyCompletedTasksResponse
-	69,  // 155: cat.CatService.ApproveTaskApply:output_type -> cat.ApproveTaskApplyResponse
-	71,  // 156: cat.CatService.RejectTaskApply:output_type -> cat.RejectTaskApplyResponse
-	73,  // 157: cat.CatService.ListPendingTaskApplies:output_type -> cat.ListPendingTaskAppliesResponse
-	75,  // 158: cat.CatService.DirectCreateTask:output_type -> cat.DirectCreateTaskResponse
-	83,  // 159: cat.CatService.UpdateTask:output_type -> cat.UpdateTaskResponse
-	85,  // 160: cat.CatService.CancelTask:output_type -> cat.CancelTaskResponse
-	87,  // 161: cat.CatService.EscalateTaskUrgency:output_type -> cat.EscalateTaskUrgencyResponse
-	100, // 162: cat.CatService.GetTaskFlows:output_type -> cat.GetTaskFlowsResponse
-	103, // 163: cat.CatService.GetTaskLogs:output_type -> cat.GetTaskLogsResponse
-	118, // [118:164] is the sub-list for method output_type
-	72,  // [72:118] is the sub-list for method input_type
-	72,  // [72:72] is the sub-list for extension type_name
-	72,  // [72:72] is the sub-list for extension extendee
-	0,   // [0:72] is the sub-list for field type_name
+	123, // 69: cat.TaskLogVO.created_at:type_name -> google.protobuf.Timestamp
+	107, // 70: cat.DetectHotspotsResponse.hotspots:type_name -> cat.HotspotInfo
+	110, // 71: cat.PlanRouteResponse.waypoints:type_name -> cat.Waypoint
+	121, // 72: cat.PriorityCatInfo.details:type_name -> cat.PriorityCatInfo.DetailsEntry
+	113, // 73: cat.GetPriorityCatsResponse.cats:type_name -> cat.PriorityCatInfo
+	115, // 74: cat.DispatchTasksRequest.volunteers:type_name -> cat.VolunteerInfo
+	110, // 75: cat.VolunteerAssignment.waypoints:type_name -> cat.Waypoint
+	122, // 76: cat.DispatchTasksResponse.assignments:type_name -> cat.DispatchTasksResponse.AssignmentsEntry
+	123, // 77: cat.ListMyAppliesResponse.ApplyItem.created_at:type_name -> google.protobuf.Timestamp
+	123, // 78: cat.ListPendingAppliesResponse.ApplyItem.created_at:type_name -> google.protobuf.Timestamp
+	117, // 79: cat.DispatchTasksResponse.AssignmentsEntry.value:type_name -> cat.VolunteerAssignment
+	2,   // 80: cat.CatService.ApplyCreateCat:input_type -> cat.ApplyCreateCatRequest
+	4,   // 81: cat.CatService.CancelApplyCreateCat:input_type -> cat.CancelApplyCreateCatRequest
+	10,  // 82: cat.CatService.GetApplyDetail:input_type -> cat.GetApplyDetailRequest
+	12,  // 83: cat.CatService.ListMyApplies:input_type -> cat.ListMyAppliesRequest
+	5,   // 84: cat.CatService.ApproveCreateCat:input_type -> cat.ApproveCreateCatRequest
+	7,   // 85: cat.CatService.RejectCreateCat:input_type -> cat.RejectCreateCatRequest
+	8,   // 86: cat.CatService.DirectCreateCat:input_type -> cat.DirectCreateCatRequest
+	14,  // 87: cat.CatService.ListPendingApplies:input_type -> cat.ListPendingAppliesRequest
+	16,  // 88: cat.CatService.ListCats:input_type -> cat.ListCatsReq
+	20,  // 89: cat.CatService.ApplyAdopt:input_type -> cat.ApplyAdoptRequest
+	22,  // 90: cat.CatService.CancelAdoptApply:input_type -> cat.CancelAdoptApplyRequest
+	24,  // 91: cat.CatService.GetAdoptApplyDetail:input_type -> cat.GetAdoptApplyDetailRequest
+	27,  // 92: cat.CatService.ListMyAdoptApplies:input_type -> cat.ListMyAdoptAppliesRequest
+	28,  // 93: cat.CatService.ListMyAdoptions:input_type -> cat.ListMyAdoptionsRequest
+	52,  // 94: cat.CatService.CompleteVisit:input_type -> cat.RecordFollowUpVisitRequest
+	31,  // 95: cat.CatService.ApproveAdopt:input_type -> cat.ApproveAdoptRequest
+	33,  // 96: cat.CatService.RejectAdopt:input_type -> cat.RejectAdoptRequest
+	35,  // 97: cat.CatService.ListPendingAdoptApplies:input_type -> cat.ListPendingAdoptAppliesRequest
+	38,  // 98: cat.CatService.CreateAdoption:input_type -> cat.CreateAdoptionRequest
+	40,  // 99: cat.CatService.DirectAdopt:input_type -> cat.DirectAdoptRequest
+	42,  // 100: cat.CatService.GetAdoptionDetail:input_type -> cat.GetAdoptionDetailRequest
+	45,  // 101: cat.CatService.ListAdoptions:input_type -> cat.ListAdoptionsRequest
+	48,  // 102: cat.CatService.UpdateAdoption:input_type -> cat.UpdateAdoptionRequest
+	50,  // 103: cat.CatService.RecordHomeVisit:input_type -> cat.RecordHomeVisitRequest
+	52,  // 104: cat.CatService.RecordFollowUpVisit:input_type -> cat.RecordFollowUpVisitRequest
+	54,  // 105: cat.CatService.UpdateReturnStatus:input_type -> cat.UpdateReturnStatusRequest
+	58,  // 106: cat.CatService.ApplyCreateTask:input_type -> cat.ApplyCreateTaskRequest
+	60,  // 107: cat.CatService.CancelTaskApply:input_type -> cat.CancelTaskApplyRequest
+	62,  // 108: cat.CatService.GetTaskApplyDetail:input_type -> cat.GetTaskApplyDetailRequest
+	65,  // 109: cat.CatService.ListMyTaskApplies:input_type -> cat.ListMyTaskAppliesRequest
+	88,  // 110: cat.CatService.ClaimTask:input_type -> cat.ClaimTaskRequest
+	90,  // 111: cat.CatService.AbandonTask:input_type -> cat.AbandonTaskRequest
+	92,  // 112: cat.CatService.CompleteTask:input_type -> cat.CompleteTaskRequest
+	76,  // 113: cat.CatService.GetTaskDetail:input_type -> cat.GetTaskDetailRequest
+	79,  // 114: cat.CatService.ListTasks:input_type -> cat.ListTasksRequest
+	94,  // 115: cat.CatService.ListMyClaimedTasks:input_type -> cat.ListMyClaimedTasksRequest
+	97,  // 116: cat.CatService.ListMyCompletedTasks:input_type -> cat.ListMyCompletedTasksRequest
+	68,  // 117: cat.CatService.ApproveTaskApply:input_type -> cat.ApproveTaskApplyRequest
+	70,  // 118: cat.CatService.RejectTaskApply:input_type -> cat.RejectTaskApplyRequest
+	72,  // 119: cat.CatService.ListPendingTaskApplies:input_type -> cat.ListPendingTaskAppliesRequest
+	74,  // 120: cat.CatService.DirectCreateTask:input_type -> cat.DirectCreateTaskRequest
+	82,  // 121: cat.CatService.UpdateTask:input_type -> cat.UpdateTaskRequest
+	84,  // 122: cat.CatService.CancelTask:input_type -> cat.CancelTaskRequest
+	86,  // 123: cat.CatService.EscalateTaskUrgency:input_type -> cat.EscalateTaskUrgencyRequest
+	99,  // 124: cat.CatService.GetTaskFlows:input_type -> cat.GetTaskFlowsRequest
+	102, // 125: cat.CatService.GetTaskLogs:input_type -> cat.GetTaskLogsRequest
+	106, // 126: cat.CatService.DetectHotspots:input_type -> cat.DetectHotspotsRequest
+	109, // 127: cat.CatService.PlanRoute:input_type -> cat.PlanRouteRequest
+	112, // 128: cat.CatService.GetPriorityCats:input_type -> cat.GetPriorityCatsRequest
+	3,   // 129: cat.CatService.ApplyCreateCat:output_type -> cat.ApplyCreateCatResponse
+	0,   // 130: cat.CatService.CancelApplyCreateCat:output_type -> cat.Response
+	11,  // 131: cat.CatService.GetApplyDetail:output_type -> cat.GetApplyDetailResponse
+	13,  // 132: cat.CatService.ListMyApplies:output_type -> cat.ListMyAppliesResponse
+	6,   // 133: cat.CatService.ApproveCreateCat:output_type -> cat.ApproveCreateCatResponse
+	0,   // 134: cat.CatService.RejectCreateCat:output_type -> cat.Response
+	9,   // 135: cat.CatService.DirectCreateCat:output_type -> cat.DirectCreateCatResponse
+	15,  // 136: cat.CatService.ListPendingApplies:output_type -> cat.ListPendingAppliesResponse
+	18,  // 137: cat.CatService.ListCats:output_type -> cat.ListCatsResp
+	21,  // 138: cat.CatService.ApplyAdopt:output_type -> cat.ApplyAdoptResponse
+	23,  // 139: cat.CatService.CancelAdoptApply:output_type -> cat.CancelAdoptApplyResponse
+	26,  // 140: cat.CatService.GetAdoptApplyDetail:output_type -> cat.GetAdoptApplyDetailResponse
+	30,  // 141: cat.CatService.ListMyAdoptApplies:output_type -> cat.ListMyAdoptAppliesResponse
+	47,  // 142: cat.CatService.ListMyAdoptions:output_type -> cat.ListAdoptionsResponse
+	53,  // 143: cat.CatService.CompleteVisit:output_type -> cat.RecordFollowUpVisitResponse
+	32,  // 144: cat.CatService.ApproveAdopt:output_type -> cat.ApproveAdoptResponse
+	34,  // 145: cat.CatService.RejectAdopt:output_type -> cat.RejectAdoptResponse
+	37,  // 146: cat.CatService.ListPendingAdoptApplies:output_type -> cat.ListPendingAdoptAppliesResponse
+	39,  // 147: cat.CatService.CreateAdoption:output_type -> cat.CreateAdoptionResponse
+	41,  // 148: cat.CatService.DirectAdopt:output_type -> cat.DirectAdoptResponse
+	44,  // 149: cat.CatService.GetAdoptionDetail:output_type -> cat.GetAdoptionDetailResponse
+	47,  // 150: cat.CatService.ListAdoptions:output_type -> cat.ListAdoptionsResponse
+	49,  // 151: cat.CatService.UpdateAdoption:output_type -> cat.UpdateAdoptionResponse
+	51,  // 152: cat.CatService.RecordHomeVisit:output_type -> cat.RecordHomeVisitResponse
+	53,  // 153: cat.CatService.RecordFollowUpVisit:output_type -> cat.RecordFollowUpVisitResponse
+	55,  // 154: cat.CatService.UpdateReturnStatus:output_type -> cat.UpdateReturnStatusResponse
+	59,  // 155: cat.CatService.ApplyCreateTask:output_type -> cat.ApplyCreateTaskResponse
+	61,  // 156: cat.CatService.CancelTaskApply:output_type -> cat.CancelTaskApplyResponse
+	64,  // 157: cat.CatService.GetTaskApplyDetail:output_type -> cat.GetTaskApplyDetailResponse
+	66,  // 158: cat.CatService.ListMyTaskApplies:output_type -> cat.ListMyTaskAppliesResponse
+	89,  // 159: cat.CatService.ClaimTask:output_type -> cat.ClaimTaskResponse
+	91,  // 160: cat.CatService.AbandonTask:output_type -> cat.AbandonTaskResponse
+	93,  // 161: cat.CatService.CompleteTask:output_type -> cat.CompleteTaskResponse
+	78,  // 162: cat.CatService.GetTaskDetail:output_type -> cat.GetTaskDetailResponse
+	80,  // 163: cat.CatService.ListTasks:output_type -> cat.ListTasksResponse
+	95,  // 164: cat.CatService.ListMyClaimedTasks:output_type -> cat.ListMyClaimedTasksResponse
+	98,  // 165: cat.CatService.ListMyCompletedTasks:output_type -> cat.ListMyCompletedTasksResponse
+	69,  // 166: cat.CatService.ApproveTaskApply:output_type -> cat.ApproveTaskApplyResponse
+	71,  // 167: cat.CatService.RejectTaskApply:output_type -> cat.RejectTaskApplyResponse
+	73,  // 168: cat.CatService.ListPendingTaskApplies:output_type -> cat.ListPendingTaskAppliesResponse
+	75,  // 169: cat.CatService.DirectCreateTask:output_type -> cat.DirectCreateTaskResponse
+	83,  // 170: cat.CatService.UpdateTask:output_type -> cat.UpdateTaskResponse
+	85,  // 171: cat.CatService.CancelTask:output_type -> cat.CancelTaskResponse
+	87,  // 172: cat.CatService.EscalateTaskUrgency:output_type -> cat.EscalateTaskUrgencyResponse
+	100, // 173: cat.CatService.GetTaskFlows:output_type -> cat.GetTaskFlowsResponse
+	103, // 174: cat.CatService.GetTaskLogs:output_type -> cat.GetTaskLogsResponse
+	108, // 175: cat.CatService.DetectHotspots:output_type -> cat.DetectHotspotsResponse
+	111, // 176: cat.CatService.PlanRoute:output_type -> cat.PlanRouteResponse
+	114, // 177: cat.CatService.GetPriorityCats:output_type -> cat.GetPriorityCatsResponse
+	129, // [129:178] is the sub-list for method output_type
+	80,  // [80:129] is the sub-list for method input_type
+	80,  // [80:80] is the sub-list for extension type_name
+	80,  // [80:80] is the sub-list for extension extendee
+	0,   // [0:80] is the sub-list for field type_name
 }
 
 func init() { file_pb_cat_v1_cat_proto_init() }
@@ -9975,7 +10887,7 @@ func file_pb_cat_v1_cat_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_pb_cat_v1_cat_proto_rawDesc), len(file_pb_cat_v1_cat_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   108,
+			NumMessages:   123,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

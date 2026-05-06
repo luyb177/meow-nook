@@ -16,7 +16,7 @@ type Config struct {
 
 	RedisConf RedisConf
 
-	MySQL struct {
+	MySQLConf struct {
 		DSN string
 	}
 

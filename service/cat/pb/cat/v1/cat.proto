@@ -147,6 +147,17 @@ service CatService {
 
     // 查看任务操作日志
     rpc GetTaskLogs(GetTaskLogsRequest) returns (GetTaskLogsResponse);
+
+    // ==================== 算法模块 ====================
+
+    // 热点区域检测
+    rpc DetectHotspots(DetectHotspotsRequest) returns (DetectHotspotsResponse);
+
+    // 路径规划
+    rpc PlanRoute(PlanRouteRequest) returns (PlanRouteResponse);
+
+    // 优先级评分
+    rpc GetPriorityCats(GetPriorityCatsRequest) returns (GetPriorityCatsResponse);
 }
 
 // ==================== 通用响应 ====================
@@ -1229,9 +1240,6 @@ message TaskLogVO {
 }
 
 // ==================== 通用 VO ====================
-
-
-
 message TagVO {
     uint64 id = 1;
     string name = 2;
@@ -1239,3 +1247,86 @@ message TagVO {
     string theme = 4;
 }
 
+// ==================== 算法模块消息定义 ====================
+
+message DetectHotspotsRequest {
+    double radius_km = 1;   // 半径（公里）
+    int32 min_cats = 2;      // 最少猫咪数量阈值
+}
+
+message HotspotInfo {
+    double center_lat = 1;
+    double center_lng = 2;
+    repeated uint64 cat_ids = 3;
+    int32 density = 4;
+    double radius_km = 5;
+}
+
+message DetectHotspotsResponse {
+    repeated HotspotInfo hotspots = 1;
+    int32 total_hotspots = 2;
+}
+
+message PlanRouteRequest {
+    double volunteer_lat = 1;
+    double volunteer_lng = 2;
+    repeated uint64 cat_ids = 3;
+}
+
+message Waypoint {
+    uint64 id = 1;
+    string type = 2;   // volunteer/cat
+    double lat = 3;
+    double lng = 4;
+    int32 order = 5;
+}
+
+message PlanRouteResponse {
+    repeated Waypoint waypoints = 1;
+    double total_distance_km = 2;
+    int32 total_stops = 3;
+}
+
+message GetPriorityCatsRequest {
+    int32 top_n = 1;  // 返回前N只，0表示全部
+}
+
+message PriorityCatInfo {
+    uint64 cat_id = 1;
+    double score = 2;
+    map<string, double> details = 3;
+    string cat_name = 4;
+    string cat_code = 5;
+    double longitude = 6;
+    double latitude = 7;
+}
+
+message GetPriorityCatsResponse {
+    repeated PriorityCatInfo cats = 1;
+    int32 total = 2;
+}
+
+message VolunteerInfo {
+    uint64 id = 1;
+    double lat = 2;
+    double lng = 3;
+    string name = 4;
+}
+
+message DispatchTasksRequest {
+    repeated VolunteerInfo volunteers = 1;
+    repeated uint64 cat_ids = 2;
+}
+
+message VolunteerAssignment {
+    uint64 volunteer_id = 1;
+    repeated Waypoint waypoints = 2;
+    double total_distance_km = 3;
+    int32 assigned_count = 4;
+}
+
+message DispatchTasksResponse {
+    map<uint64, VolunteerAssignment> assignments = 1;
+    double total_distance_all = 2;
+    int32 unassigned_cats = 3;
+}

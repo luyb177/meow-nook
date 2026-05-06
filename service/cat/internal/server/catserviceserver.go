@@ -291,3 +291,21 @@ func (s *CatServiceServer) GetTaskLogs(ctx context.Context, in *v1.GetTaskLogsRe
 	l := logic.NewGetTaskLogsLogic(ctx, s.svcCtx)
 	return l.GetTaskLogs(in)
 }
+
+// 热点区域检测
+func (s *CatServiceServer) DetectHotspots(ctx context.Context, in *v1.DetectHotspotsRequest) (*v1.DetectHotspotsResponse, error) {
+	l := logic.NewDetectHotspotsLogic(ctx, s.svcCtx)
+	return l.DetectHotspots(in)
+}
+
+// 路径规划
+func (s *CatServiceServer) PlanRoute(ctx context.Context, in *v1.PlanRouteRequest) (*v1.PlanRouteResponse, error) {
+	l := logic.NewPlanRouteLogic(ctx, s.svcCtx)
+	return l.PlanRoute(in)
+}
+
+// 优先级评分
+func (s *CatServiceServer) GetPriorityCats(ctx context.Context, in *v1.GetPriorityCatsRequest) (*v1.GetPriorityCatsResponse, error) {
+	l := logic.NewGetPriorityCatsLogic(ctx, s.svcCtx)
+	return l.GetPriorityCats(in)
+}

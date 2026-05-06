@@ -9,6 +9,7 @@ import (
 	"github.com/luyb177/meow-nook/common/errorx"
 	"github.com/luyb177/meow-nook/common/logger"
 	catpb "github.com/luyb177/meow-nook/service/cat/pb/cat/v1"
+	"github.com/luyb177/meow-nook/service/gateway/internal/logic"
 	"github.com/luyb177/meow-nook/service/gateway/internal/svc"
 	"github.com/luyb177/meow-nook/service/gateway/internal/types"
 
@@ -33,13 +34,10 @@ func NewDirectAdoptLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Direc
 func (l *DirectAdoptLogic) DirectAdopt(req *types.DirectAdoptReq) (*types.DirectAdoptResp, error) {
 	logger.Info("DirectAdoptLogic called")
 
-	//userID, err := ctxutil.GetUserID(l.ctx)
-	//if err != nil {
-	//	return nil, errorx.Wrap(errorx.CodeUnauthorized, "未登录", err)
-	//}
-
-	// todo get userID from token
-	userID := uint64(1)
+	userID, err := logic.GetUserID(l.ctx)
+	if err != nil {
+		return nil, errorx.Wrap(errorx.CodeUnauthorized, "未登录", err)
+	}
 
 	if req.CatId == 0 || req.AdopterId == 0 {
 		return nil, errorx.Wrap(errorx.CodeBadRequest, "cat_id 和 adopter_id 必填", errorx.ErrBadRequest)
@@ -50,7 +48,7 @@ func (l *DirectAdoptLogic) DirectAdopt(req *types.DirectAdoptReq) (*types.Direct
 		AdopterId:   req.AdopterId,
 		AgreementNo: req.AgreementNo,
 		Note:        req.Note,
-		CreatorId:   userID,
+		CreatorId:   uint64(userID),
 	})
 	if err != nil {
 		return nil, errorx.FromGRPC(err)
