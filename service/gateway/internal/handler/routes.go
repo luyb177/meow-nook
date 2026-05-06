@@ -13,6 +13,7 @@ import (
 	auth "github.com/luyb177/meow-nook/service/gateway/internal/handler/auth"
 	cat "github.com/luyb177/meow-nook/service/gateway/internal/handler/cat"
 	task "github.com/luyb177/meow-nook/service/gateway/internal/handler/task"
+	user "github.com/luyb177/meow-nook/service/gateway/internal/handler/user"
 	"github.com/luyb177/meow-nook/service/gateway/internal/svc"
 
 	"github.com/zeromicro/go-zero/rest"
@@ -20,152 +21,161 @@ import (
 
 func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 	server.AddRoutes(
-		[]rest.Route{
-			{
-				// AI辅助审核任务申请
-				Method:  http.MethodPost,
-				Path:    "/task/apply/:apply_id/ai-review",
-				Handler: admin.AiReviewTaskHandler(serverCtx),
-			},
-			{
-				// 更新用户服务类型
-				Method:  http.MethodPost,
-				Path:    "/user/:user_id/service-types",
-				Handler: admin.UpdateUserServiceTypesHandler(serverCtx),
-			},
-		},
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.Auth},
+			[]rest.Route{
+				{
+					// AI辅助审核任务申请
+					Method:  http.MethodPost,
+					Path:    "/task/apply/:apply_id/ai-review",
+					Handler: admin.AiReviewTaskHandler(serverCtx),
+				},
+				{
+					// 更新用户服务类型
+					Method:  http.MethodPost,
+					Path:    "/user/:user_id/service-types",
+					Handler: admin.UpdateUserServiceTypesHandler(serverCtx),
+				},
+			}...,
+		),
 		rest.WithPrefix("/api/v1/admin"),
 	)
 
 	server.AddRoutes(
-		[]rest.Route{
-			{
-				// 审核通过领养申请
-				Method:  http.MethodPost,
-				Path:    "/admin/adoption/approve",
-				Handler: adoption.ApproveAdoptHandler(serverCtx),
-			},
-			{
-				// 创建领养记录（管理员直接创建）
-				Method:  http.MethodPost,
-				Path:    "/admin/adoption/create",
-				Handler: adoption.CreateAdoptionHandler(serverCtx),
-			},
-			{
-				// 管理员直接审核通过领养申请（快捷通过）
-				Method:  http.MethodPost,
-				Path:    "/admin/adoption/direct",
-				Handler: adoption.DirectAdoptHandler(serverCtx),
-			},
-			{
-				// 记录家访信息
-				Method:  http.MethodPost,
-				Path:    "/admin/adoption/home-visit",
-				Handler: adoption.RecordHomeVisitHandler(serverCtx),
-			},
-			{
-				// 查询所有领养记录列表（管理员专用）
-				Method:  http.MethodGet,
-				Path:    "/admin/adoption/list",
-				Handler: adoption.ListAdoptionsHandler(serverCtx),
-			},
-			{
-				// 查询待审核的领养申请列表
-				Method:  http.MethodGet,
-				Path:    "/admin/adoption/pending",
-				Handler: adoption.ListPendingAdoptAppliesHandler(serverCtx),
-			},
-			{
-				// 驳回领养申请
-				Method:  http.MethodPost,
-				Path:    "/admin/adoption/reject",
-				Handler: adoption.RejectAdoptHandler(serverCtx),
-			},
-			{
-				// 更新退养状态
-				Method:  http.MethodPost,
-				Path:    "/admin/adoption/return",
-				Handler: adoption.UpdateReturnStatusHandler(serverCtx),
-			},
-			{
-				// 更新领养记录信息
-				Method:  http.MethodPost,
-				Path:    "/admin/adoption/update",
-				Handler: adoption.UpdateAdoptionHandler(serverCtx),
-			},
-			{
-				// 记录回访信息
-				Method:  http.MethodPost,
-				Path:    "/admin/adoption/visit",
-				Handler: adoption.RecordFollowUpVisitHandler(serverCtx),
-			},
-			{
-				// 提交领养申请（志愿者提交领养意向）
-				Method:  http.MethodPost,
-				Path:    "/adoption/apply",
-				Handler: adoption.ApplyAdoptHandler(serverCtx),
-			},
-			{
-				// 获取领养申请详情
-				Method:  http.MethodGet,
-				Path:    "/adoption/apply/:apply_id",
-				Handler: adoption.GetAdoptApplyDetailHandler(serverCtx),
-			},
-			{
-				// 取消待审核的领养申请
-				Method:  http.MethodPost,
-				Path:    "/adoption/cancel",
-				Handler: adoption.CancelAdoptApplyHandler(serverCtx),
-			},
-			{
-				// 查询领养记录详情
-				Method:  http.MethodGet,
-				Path:    "/adoption/detail/:adoption_id",
-				Handler: adoption.GetAdoptionDetailHandler(serverCtx),
-			},
-			{
-				// 查询我的领养记录列表（志愿者已成功领养的记录）
-				Method:  http.MethodGet,
-				Path:    "/adoption/my-adoptions",
-				Handler: adoption.ListMyAdoptionsHandler(serverCtx),
-			},
-			{
-				// 查询我的领养申请列表（志愿者查询自己提交的申请）
-				Method:  http.MethodGet,
-				Path:    "/adoption/my-applies",
-				Handler: adoption.ListMyAdoptAppliesHandler(serverCtx),
-			},
-			{
-				// 完成回访（志愿者提交回访完成状态）
-				Method:  http.MethodPost,
-				Path:    "/adoption/visit/complete",
-				Handler: adoption.CompleteVisitHandler(serverCtx),
-			},
-		},
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.Auth},
+			[]rest.Route{
+				{
+					// 审核通过领养申请
+					Method:  http.MethodPost,
+					Path:    "/admin/adoption/approve",
+					Handler: adoption.ApproveAdoptHandler(serverCtx),
+				},
+				{
+					// 创建领养记录（管理员直接创建）
+					Method:  http.MethodPost,
+					Path:    "/admin/adoption/create",
+					Handler: adoption.CreateAdoptionHandler(serverCtx),
+				},
+				{
+					// 管理员直接审核通过领养申请（快捷通过）
+					Method:  http.MethodPost,
+					Path:    "/admin/adoption/direct",
+					Handler: adoption.DirectAdoptHandler(serverCtx),
+				},
+				{
+					// 记录家访信息
+					Method:  http.MethodPost,
+					Path:    "/admin/adoption/home-visit",
+					Handler: adoption.RecordHomeVisitHandler(serverCtx),
+				},
+				{
+					// 查询所有领养记录列表（管理员专用）
+					Method:  http.MethodGet,
+					Path:    "/admin/adoption/list",
+					Handler: adoption.ListAdoptionsHandler(serverCtx),
+				},
+				{
+					// 查询待审核的领养申请列表
+					Method:  http.MethodGet,
+					Path:    "/admin/adoption/pending",
+					Handler: adoption.ListPendingAdoptAppliesHandler(serverCtx),
+				},
+				{
+					// 驳回领养申请
+					Method:  http.MethodPost,
+					Path:    "/admin/adoption/reject",
+					Handler: adoption.RejectAdoptHandler(serverCtx),
+				},
+				{
+					// 更新退养状态
+					Method:  http.MethodPost,
+					Path:    "/admin/adoption/return",
+					Handler: adoption.UpdateReturnStatusHandler(serverCtx),
+				},
+				{
+					// 更新领养记录信息
+					Method:  http.MethodPost,
+					Path:    "/admin/adoption/update",
+					Handler: adoption.UpdateAdoptionHandler(serverCtx),
+				},
+				{
+					// 记录回访信息
+					Method:  http.MethodPost,
+					Path:    "/admin/adoption/visit",
+					Handler: adoption.RecordFollowUpVisitHandler(serverCtx),
+				},
+				{
+					// 提交领养申请（志愿者提交领养意向）
+					Method:  http.MethodPost,
+					Path:    "/adoption/apply",
+					Handler: adoption.ApplyAdoptHandler(serverCtx),
+				},
+				{
+					// 获取领养申请详情
+					Method:  http.MethodGet,
+					Path:    "/adoption/apply/:apply_id",
+					Handler: adoption.GetAdoptApplyDetailHandler(serverCtx),
+				},
+				{
+					// 取消待审核的领养申请
+					Method:  http.MethodPost,
+					Path:    "/adoption/cancel",
+					Handler: adoption.CancelAdoptApplyHandler(serverCtx),
+				},
+				{
+					// 查询领养记录详情
+					Method:  http.MethodGet,
+					Path:    "/adoption/detail/:adoption_id",
+					Handler: adoption.GetAdoptionDetailHandler(serverCtx),
+				},
+				{
+					// 查询我的领养记录列表（志愿者已成功领养的记录）
+					Method:  http.MethodGet,
+					Path:    "/adoption/my-adoptions",
+					Handler: adoption.ListMyAdoptionsHandler(serverCtx),
+				},
+				{
+					// 查询我的领养申请列表（志愿者查询自己提交的申请）
+					Method:  http.MethodGet,
+					Path:    "/adoption/my-applies",
+					Handler: adoption.ListMyAdoptAppliesHandler(serverCtx),
+				},
+				{
+					// 完成回访（志愿者提交回访完成状态）
+					Method:  http.MethodPost,
+					Path:    "/adoption/visit/complete",
+					Handler: adoption.CompleteVisitHandler(serverCtx),
+				},
+			}...,
+		),
 		rest.WithPrefix("/api/v1/adoption"),
 	)
 
 	server.AddRoutes(
-		[]rest.Route{
-			{
-				// 检测猫咪热点区域
-				Method:  http.MethodPost,
-				Path:    "/hotspots",
-				Handler: algorithm.DetectHotspotsHandler(serverCtx),
-			},
-			{
-				// 获取需要优先救助的猫咪列表
-				Method:  http.MethodPost,
-				Path:    "/priority/cats",
-				Handler: algorithm.GetPriorityCatsHandler(serverCtx),
-			},
-			{
-				// 规划最优救助路线
-				Method:  http.MethodPost,
-				Path:    "/route/plan",
-				Handler: algorithm.PlanRouteHandler(serverCtx),
-			},
-		},
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.Auth},
+			[]rest.Route{
+				{
+					// 检测猫咪热点区域
+					Method:  http.MethodPost,
+					Path:    "/hotspots",
+					Handler: algorithm.DetectHotspotsHandler(serverCtx),
+				},
+				{
+					// 获取需要优先救助的猫咪列表
+					Method:  http.MethodPost,
+					Path:    "/priority/cats",
+					Handler: algorithm.GetPriorityCatsHandler(serverCtx),
+				},
+				{
+					// 规划最优救助路线
+					Method:  http.MethodPost,
+					Path:    "/route/plan",
+					Handler: algorithm.PlanRouteHandler(serverCtx),
+				},
+			}...,
+		),
 		rest.WithPrefix("/api/v1/algorithm"),
 	)
 
@@ -204,188 +214,221 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 	)
 
 	server.AddRoutes(
-		[]rest.Route{
-			{
-				// 志愿者申请创建猫咪档案
-				Method:  http.MethodPost,
-				Path:    "/applies",
-				Handler: cat.ApplyCreateCatHandler(serverCtx),
-			},
-			{
-				// 查询申请详情
-				Method:  http.MethodGet,
-				Path:    "/applies/:id",
-				Handler: cat.GetApplyDetailHandler(serverCtx),
-			},
-			{
-				// 管理员审核通过
-				Method:  http.MethodPost,
-				Path:    "/applies/:id/approve",
-				Handler: cat.ApproveCreateCatHandler(serverCtx),
-			},
-			{
-				// 志愿者取消申请
-				Method:  http.MethodPost,
-				Path:    "/applies/:id/cancel",
-				Handler: cat.CancelApplyCreateCatHandler(serverCtx),
-			},
-			{
-				// 管理员驳回申请
-				Method:  http.MethodPost,
-				Path:    "/applies/:id/reject",
-				Handler: cat.RejectCreateCatHandler(serverCtx),
-			},
-			{
-				// 我的申请列表
-				Method:  http.MethodGet,
-				Path:    "/applies/my",
-				Handler: cat.ListMyAppliesHandler(serverCtx),
-			},
-			{
-				// 管理员查询待审核列表
-				Method:  http.MethodGet,
-				Path:    "/applies/pending",
-				Handler: cat.ListPendingAppliesHandler(serverCtx),
-			},
-			{
-				// 获取小猫列表（支持筛选、分页、附近查找）
-				Method:  http.MethodPost,
-				Path:    "/cats/list",
-				Handler: cat.ListCatsHandler(serverCtx),
-			},
-			{
-				// 管理员直接创建猫咪档案
-				Method:  http.MethodPost,
-				Path:    "/direct",
-				Handler: cat.DirectCreateCatHandler(serverCtx),
-			},
-		},
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.Auth},
+			[]rest.Route{
+				{
+					// 志愿者申请创建猫咪档案
+					Method:  http.MethodPost,
+					Path:    "/applies",
+					Handler: cat.ApplyCreateCatHandler(serverCtx),
+				},
+				{
+					// 查询申请详情
+					Method:  http.MethodGet,
+					Path:    "/applies/:id",
+					Handler: cat.GetApplyDetailHandler(serverCtx),
+				},
+				{
+					// 管理员审核通过
+					Method:  http.MethodPost,
+					Path:    "/applies/:id/approve",
+					Handler: cat.ApproveCreateCatHandler(serverCtx),
+				},
+				{
+					// 志愿者取消申请
+					Method:  http.MethodPost,
+					Path:    "/applies/:id/cancel",
+					Handler: cat.CancelApplyCreateCatHandler(serverCtx),
+				},
+				{
+					// 管理员驳回申请
+					Method:  http.MethodPost,
+					Path:    "/applies/:id/reject",
+					Handler: cat.RejectCreateCatHandler(serverCtx),
+				},
+				{
+					// 我的申请列表
+					Method:  http.MethodGet,
+					Path:    "/applies/my",
+					Handler: cat.ListMyAppliesHandler(serverCtx),
+				},
+				{
+					// 管理员查询待审核列表
+					Method:  http.MethodGet,
+					Path:    "/applies/pending",
+					Handler: cat.ListPendingAppliesHandler(serverCtx),
+				},
+				{
+					// 获取小猫列表（支持筛选、分页、附近查找）
+					Method:  http.MethodPost,
+					Path:    "/cats/list",
+					Handler: cat.ListCatsHandler(serverCtx),
+				},
+				{
+					// 管理员直接创建猫咪档案
+					Method:  http.MethodPost,
+					Path:    "/direct",
+					Handler: cat.DirectCreateCatHandler(serverCtx),
+				},
+			}...,
+		),
 		rest.WithPrefix("/api/v1/cats"),
 	)
 
 	server.AddRoutes(
-		[]rest.Route{
-			{
-				// 取消任务
-				Method:  http.MethodPost,
-				Path:    "/admin/task/:task_id/cancel",
-				Handler: task.CancelTaskHandler(serverCtx),
-			},
-			{
-				// 提升任务紧急程度
-				Method:  http.MethodPost,
-				Path:    "/admin/task/:task_id/escalate",
-				Handler: task.EscalateTaskUrgencyHandler(serverCtx),
-			},
-			{
-				// 更新任务信息
-				Method:  http.MethodPost,
-				Path:    "/admin/task/:task_id/update",
-				Handler: task.UpdateTaskHandler(serverCtx),
-			},
-			{
-				// 审核通过任务申请
-				Method:  http.MethodPost,
-				Path:    "/admin/task/apply/:apply_id/approve",
-				Handler: task.ApproveTaskApplyHandler(serverCtx),
-			},
-			{
-				// 驳回任务申请
-				Method:  http.MethodPost,
-				Path:    "/admin/task/apply/:apply_id/reject",
-				Handler: task.RejectTaskApplyHandler(serverCtx),
-			},
-			{
-				// 查询待审核的任务申请列表
-				Method:  http.MethodGet,
-				Path:    "/admin/task/apply/pending",
-				Handler: task.ListPendingTaskAppliesHandler(serverCtx),
-			},
-			{
-				// 直接创建任务（管理员直接发布任务，无需申请）
-				Method:  http.MethodPost,
-				Path:    "/admin/task/create",
-				Handler: task.DirectCreateTaskHandler(serverCtx),
-			},
-			{
-				// 获取任务详情
-				Method:  http.MethodGet,
-				Path:    "/task/:task_id",
-				Handler: task.GetTaskDetailHandler(serverCtx),
-			},
-			{
-				// 领取/认领任务
-				Method:  http.MethodPost,
-				Path:    "/task/:task_id/claim",
-				Handler: task.ClaimTaskHandler(serverCtx),
-			},
-			{
-				// 查询任务流转记录（状态变更历史）
-				Method:  http.MethodGet,
-				Path:    "/task/:task_id/flows",
-				Handler: task.GetTaskFlowsHandler(serverCtx),
-			},
-			{
-				// 查询任务操作日志
-				Method:  http.MethodGet,
-				Path:    "/task/:task_id/logs",
-				Handler: task.GetTaskLogsHandler(serverCtx),
-			},
-			{
-				// 提交任务创建申请（志愿者申请创建新任务）
-				Method:  http.MethodPost,
-				Path:    "/task/apply",
-				Handler: task.ApplyCreateTaskHandler(serverCtx),
-			},
-			{
-				// 获取任务申请详情
-				Method:  http.MethodGet,
-				Path:    "/task/apply/:apply_id",
-				Handler: task.GetTaskApplyDetailHandler(serverCtx),
-			},
-			{
-				// 取消待审核的任务申请
-				Method:  http.MethodPost,
-				Path:    "/task/apply/cancel",
-				Handler: task.CancelTaskApplyHandler(serverCtx),
-			},
-			{
-				// 放弃已领取的任务
-				Method:  http.MethodPost,
-				Path:    "/task/claim/:claim_id/abandon",
-				Handler: task.AbandonTaskHandler(serverCtx),
-			},
-			{
-				// 完成任务（提交完成状态）
-				Method:  http.MethodPost,
-				Path:    "/task/claim/:claim_id/complete",
-				Handler: task.CompleteTaskHandler(serverCtx),
-			},
-			{
-				// 查询任务列表（所有可领取的任务）
-				Method:  http.MethodGet,
-				Path:    "/task/list",
-				Handler: task.ListTasksHandler(serverCtx),
-			},
-			{
-				// 查询我的任务申请列表
-				Method:  http.MethodGet,
-				Path:    "/task/my-applies",
-				Handler: task.ListMyTaskAppliesHandler(serverCtx),
-			},
-			{
-				// 查询我已领取的任务列表
-				Method:  http.MethodGet,
-				Path:    "/task/my-claimed",
-				Handler: task.ListMyClaimedTasksHandler(serverCtx),
-			},
-			{
-				// 查询我已完成的任务列表
-				Method:  http.MethodGet,
-				Path:    "/task/my-completed",
-				Handler: task.ListMyCompletedTasksHandler(serverCtx),
-			},
-		},
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.Auth},
+			[]rest.Route{
+				{
+					// 取消任务
+					Method:  http.MethodPost,
+					Path:    "/admin/task/:task_id/cancel",
+					Handler: task.CancelTaskHandler(serverCtx),
+				},
+				{
+					// 提升任务紧急程度
+					Method:  http.MethodPost,
+					Path:    "/admin/task/:task_id/escalate",
+					Handler: task.EscalateTaskUrgencyHandler(serverCtx),
+				},
+				{
+					// 更新任务信息
+					Method:  http.MethodPost,
+					Path:    "/admin/task/:task_id/update",
+					Handler: task.UpdateTaskHandler(serverCtx),
+				},
+				{
+					// 审核通过任务申请
+					Method:  http.MethodPost,
+					Path:    "/admin/task/apply/:apply_id/approve",
+					Handler: task.ApproveTaskApplyHandler(serverCtx),
+				},
+				{
+					// 驳回任务申请
+					Method:  http.MethodPost,
+					Path:    "/admin/task/apply/:apply_id/reject",
+					Handler: task.RejectTaskApplyHandler(serverCtx),
+				},
+				{
+					// 查询待审核的任务申请列表
+					Method:  http.MethodGet,
+					Path:    "/admin/task/apply/pending",
+					Handler: task.ListPendingTaskAppliesHandler(serverCtx),
+				},
+				{
+					// 直接创建任务（管理员直接发布任务，无需申请）
+					Method:  http.MethodPost,
+					Path:    "/admin/task/create",
+					Handler: task.DirectCreateTaskHandler(serverCtx),
+				},
+				{
+					// 获取任务详情
+					Method:  http.MethodGet,
+					Path:    "/task/:task_id",
+					Handler: task.GetTaskDetailHandler(serverCtx),
+				},
+				{
+					// 领取/认领任务
+					Method:  http.MethodPost,
+					Path:    "/task/:task_id/claim",
+					Handler: task.ClaimTaskHandler(serverCtx),
+				},
+				{
+					// 查询任务流转记录（状态变更历史）
+					Method:  http.MethodGet,
+					Path:    "/task/:task_id/flows",
+					Handler: task.GetTaskFlowsHandler(serverCtx),
+				},
+				{
+					// 查询任务操作日志
+					Method:  http.MethodGet,
+					Path:    "/task/:task_id/logs",
+					Handler: task.GetTaskLogsHandler(serverCtx),
+				},
+				{
+					// 提交任务创建申请（志愿者申请创建新任务）
+					Method:  http.MethodPost,
+					Path:    "/task/apply",
+					Handler: task.ApplyCreateTaskHandler(serverCtx),
+				},
+				{
+					// 获取任务申请详情
+					Method:  http.MethodGet,
+					Path:    "/task/apply/:apply_id",
+					Handler: task.GetTaskApplyDetailHandler(serverCtx),
+				},
+				{
+					// 取消待审核的任务申请
+					Method:  http.MethodPost,
+					Path:    "/task/apply/cancel",
+					Handler: task.CancelTaskApplyHandler(serverCtx),
+				},
+				{
+					// 放弃已领取的任务
+					Method:  http.MethodPost,
+					Path:    "/task/claim/:claim_id/abandon",
+					Handler: task.AbandonTaskHandler(serverCtx),
+				},
+				{
+					// 完成任务（提交完成状态）
+					Method:  http.MethodPost,
+					Path:    "/task/claim/:claim_id/complete",
+					Handler: task.CompleteTaskHandler(serverCtx),
+				},
+				{
+					// 查询任务列表（所有可领取的任务）
+					Method:  http.MethodGet,
+					Path:    "/task/list",
+					Handler: task.ListTasksHandler(serverCtx),
+				},
+				{
+					// 查询我的任务申请列表
+					Method:  http.MethodGet,
+					Path:    "/task/my-applies",
+					Handler: task.ListMyTaskAppliesHandler(serverCtx),
+				},
+				{
+					// 查询我已领取的任务列表
+					Method:  http.MethodGet,
+					Path:    "/task/my-claimed",
+					Handler: task.ListMyClaimedTasksHandler(serverCtx),
+				},
+				{
+					// 查询我已完成的任务列表
+					Method:  http.MethodGet,
+					Path:    "/task/my-completed",
+					Handler: task.ListMyCompletedTasksHandler(serverCtx),
+				},
+			}...,
+		),
 		rest.WithPrefix("/api/v1/task"),
+	)
+
+	server.AddRoutes(
+		rest.WithMiddlewares(
+			[]rest.Middleware{serverCtx.Auth},
+			[]rest.Route{
+				{
+					// 获取信誉积分
+					Method:  http.MethodGet,
+					Path:    "/credit_points",
+					Handler: user.GetCreditPointsHandler(serverCtx),
+				},
+				{
+					// 获取用户信息
+					Method:  http.MethodGet,
+					Path:    "/me",
+					Handler: user.GetUserInfoHandler(serverCtx),
+				},
+				{
+					// 更新用户信息
+					Method:  http.MethodPost,
+					Path:    "/me/update",
+					Handler: user.UpdateUserInfoHandler(serverCtx),
+				},
+			}...,
+		),
+		rest.WithPrefix("/api/v1/users"),
 	)
 }

@@ -30,7 +30,7 @@ func (l *EscalateTaskUrgencyLogic) EscalateTaskUrgency(req *types.EscalateTaskUr
 
 	resp, err := l.svcCtx.CatRPC.EscalateTaskUrgency(l.ctx, &taskpb.EscalateTaskUrgencyRequest{
 		TaskId:     req.TaskId,
-		OperatorId: userID,
+		OperatorId: uint64(userID),
 	})
 	if err != nil {
 		return nil, errorx.FromGRPC(err)

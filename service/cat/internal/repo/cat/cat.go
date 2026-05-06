@@ -593,16 +593,20 @@ func calculateDistance(lat1, lng1, lat2, lng2 float64) float64 {
 	return earthRadius * c
 }
 
-// ===================== 算法相关新增方法 =====================
-
 // GetAllCatsWithLocation 获取所有有坐标的猫咪（用于热点检测）
 func (r *repository) GetAllCatsWithLocation(ctx context.Context, tx ...*gorm.DB) ([]*Cat, error) {
 	db := r.getDB(ctx, tx...)
 	var cats []*Cat
 
 	err := db.WithContext(ctx).
-		Where("longitude != 0 AND latitude != 0").
-		Where("deleted_at IS NULL").
+		Where(`
+	longitude != 0 
+	AND latitude != 0 
+	AND (
+		need_medical_intervention = true 
+		OR is_healthy = false
+	)
+`).
 		Find(&cats).Error
 
 	return cats, err
@@ -619,7 +623,6 @@ func (r *repository) GetCatsByIDs(ctx context.Context, ids []uint64, tx ...*gorm
 
 	err := db.WithContext(ctx).
 		Where("id IN ?", ids).
-		Where("deleted_at IS NULL").
 		Find(&cats).Error
 
 	return cats, err
@@ -729,48 +732,6 @@ func (CatMedicalRecord) TableName() string {
 	return "cat_medical_records"
 }
 
-// CatTask  猫咪任务表
-type CatTask struct {
-	ID uint64 `gorm:"primaryKey;autoIncrement" json:"id"`
-
-	CatID           uint64    `gorm:"index;not null;comment:猫咪ID" json:"cat_id"`
-	Title           string    `gorm:"type:varchar(128);not null;comment:任务标题" json:"title"`
-	TaskType        string    `gorm:"type:varchar(50);comment:任务类型 feeding/rescue/vaccine/sterilization/adoption" json:"task_type"`
-	UrgencyLevel    string    `gorm:"type:varchar(30);default:'normal';comment:紧急程度 high/urgent/normal" json:"urgency_level"`
-	DifficultyLevel int32     `gorm:"default:1;comment:难度等级 1-5" json:"difficulty_level"`
-	RewardPoints    int32     `gorm:"default:0;comment:积分奖励" json:"reward_points"`
-	Status          string    `gorm:"type:varchar(30);default:'pending';comment:状态 pending/processing/completed" json:"status"`
-	Summary         string    `gorm:"type:text;comment:任务简述" json:"summary"`
-	Detail          string    `gorm:"type:longtext;comment:任务详细说明" json:"detail"`
-	Deadline        time.Time `gorm:"comment:截止日期" json:"deadline"`
-
-	CreatedAt time.Time             `json:"created_at"`
-	UpdatedAt time.Time             `json:"updated_at"`
-	DeletedAt soft_delete.DeletedAt `gorm:"index;softDelete:nano;comment:删除时间" json:"deleted_at,omitempty"`
-}
-
-func (CatTask) TableName() string {
-	return "cat_tasks"
-}
-
-// CatAdoption 猫咪领养信息表
-type CatAdoption struct {
-	ID uint64 `gorm:"primaryKey;autoIncrement" json:"id"`
-
-	CatID               uint64 `gorm:"uniqueIndex;not null;comment:猫咪ID" json:"cat_id"`
-	AdoptionRequirement string `gorm:"type:text;comment:领养要求" json:"adoption_requirement"`
-	RequiredPoints      int32  `gorm:"default:0;comment:所需积分" json:"required_points"`
-	Status              string `gorm:"type:varchar(30);default:'pending';comment:状态 pending/adopted/unavailable" json:"status"`
-
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
-	DeletedAt soft_delete.DeletedAt
-}
-
-func (CatAdoption) TableName() string {
-	return "cat_adoptions"
-}
-
 /*
  * =========================================================
  * 修改猫咪档案申请表
@@ -869,71 +830,4 @@ type CatRescueApply struct {
 
 func (CatRescueApply) TableName() string {
 	return "cat_rescue_applies"
-}
-
-/*
- * =========================================================
- * 任务创建申请表
- * =========================================================
- */
-
-type CatTaskApply struct {
-	ID uint64 `gorm:"primaryKey;autoIncrement" json:"id"`
-
-	CatID uint64 `gorm:"index;not null" json:"cat_id"`
-
-	Title    string `gorm:"type:varchar(128);not null" json:"title"`
-	TaskType string `gorm:"type:varchar(50)" json:"task_type"`
-
-	Summary string `gorm:"type:text" json:"summary"`
-	Detail  string `gorm:"type:longtext" json:"detail"`
-
-	Deadline time.Time `json:"deadline"`
-
-	ApplicantUserID uint64 `gorm:"index;not null" json:"applicant_user_id"`
-
-	// 审核时由管理员填写
-	UrgencyLevel    string `gorm:"type:varchar(30);default:'normal'" json:"urgency_level"`
-	DifficultyLevel int32  `gorm:"default:1" json:"difficulty_level"`
-	RewardPoints    int32  `gorm:"default:0" json:"reward_points"`
-
-	Status       string `gorm:"type:varchar(30);default:'pending';index" json:"status"`
-	RejectReason string `gorm:"type:text" json:"reject_reason"`
-	ReviewerID   uint64 `gorm:"default:0" json:"reviewer_id"`
-
-	CreatedAt time.Time             `json:"created_at"`
-	UpdatedAt time.Time             `json:"updated_at"`
-	DeletedAt soft_delete.DeletedAt `gorm:"index;softDelete:nano" json:"deleted_at,omitempty"`
-}
-
-func (CatTaskApply) TableName() string {
-	return "cat_task_applies"
-}
-
-/*
- * =========================================================
- * 任务认领关系表（非常重要）
- * =========================================================
- */
-
-type CatTaskClaim struct {
-	ID uint64 `gorm:"primaryKey;autoIncrement" json:"id"`
-
-	TaskID uint64 `gorm:"index;not null;comment:任务ID" json:"task_id"`
-	UserID uint64 `gorm:"index;not null;comment:认领用户ID" json:"user_id"`
-
-	Status string `gorm:"type:varchar(30);default:'claimed';comment:claimed/completed/abandoned" json:"status"`
-
-	ClaimTime  time.Time `json:"claim_time"`
-	FinishTime time.Time `json:"finish_time"`
-
-	AbandonReason string `gorm:"type:text" json:"abandon_reason"`
-
-	CreatedAt time.Time             `json:"created_at"`
-	UpdatedAt time.Time             `json:"updated_at"`
-	DeletedAt soft_delete.DeletedAt `gorm:"index;softDelete:nano" json:"deleted_at,omitempty"`
-}
-
-func (CatTaskClaim) TableName() string {
-	return "cat_task_claims"
 }

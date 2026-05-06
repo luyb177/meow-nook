@@ -31,7 +31,7 @@ func (l *RejectTaskApplyLogic) RejectTaskApply(req *types.RejectTaskApplyReq) (*
 	resp, err := l.svcCtx.CatRPC.RejectTaskApply(l.ctx, &taskpb.RejectTaskApplyRequest{
 		ApplyId:      req.ApplyId,
 		RejectReason: req.RejectReason,
-		ReviewerId:   userID,
+		ReviewerId:   uint64(userID),
 	})
 	if err != nil {
 		return nil, errorx.FromGRPC(err)

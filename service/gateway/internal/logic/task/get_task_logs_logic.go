@@ -30,7 +30,7 @@ func (l *GetTaskLogsLogic) GetTaskLogs(req *types.GetTaskLogsReq) (*types.GetTas
 
 	resp, err := l.svcCtx.CatRPC.GetTaskLogs(l.ctx, &taskpb.GetTaskLogsRequest{
 		TaskId:      req.TaskId,
-		RequesterId: userID,
+		RequesterId: uint64(userID),
 	})
 	if err != nil {
 		return nil, errorx.FromGRPC(err)

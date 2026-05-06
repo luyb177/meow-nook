@@ -7,20 +7,17 @@ import (
 	"github.com/luyb177/meow-nook/service/cat/internal/repo/cat"
 	"github.com/luyb177/meow-nook/service/cat/internal/svc"
 	v1 "github.com/luyb177/meow-nook/service/cat/pb/cat/v1"
-	"github.com/zeromicro/go-zero/core/logx"
 )
 
 type DetectHotspotsLogic struct {
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
-	logx.Logger
 }
 
 func NewDetectHotspotsLogic(ctx context.Context, svcCtx *svc.ServiceContext) *DetectHotspotsLogic {
 	return &DetectHotspotsLogic{
 		ctx:    ctx,
 		svcCtx: svcCtx,
-		Logger: logx.WithContext(ctx),
 	}
 }
 
@@ -68,52 +65,103 @@ type hotspot struct {
 
 func (l *DetectHotspotsLogic) dbscanCluster(cats []*cat.Cat, radiusKm float64, minPts int) []*hotspot {
 	n := len(cats)
+
 	visited := make([]bool, n)
-	hotspots := make([]*hotspot, 0)
+	clustered := make([]bool, n) // 是否已经归属某个cluster
+
+	var hotspots []*hotspot
 
 	for i := 0; i < n; i++ {
 		if visited[i] {
 			continue
 		}
 
-		// 查找邻居
+		visited[i] = true
 		neighbors := l.findNeighbors(cats, i, radiusKm)
 
-		if len(neighbors) >= minPts {
-			// 形成核心点，构建聚类
-			cluster := &hotspot{
-				catIDs:  make([]uint64, 0),
-				density: len(neighbors),
-			}
-
-			var sumLat, sumLng float64
-			for _, idx := range neighbors {
-				visited[idx] = true
-				cluster.catIDs = append(cluster.catIDs, cats[idx].ID)
-				sumLat += cats[idx].Latitude
-				sumLng += cats[idx].Longitude
-			}
-
-			cluster.centerLat = sumLat / float64(len(neighbors))
-			cluster.centerLng = sumLng / float64(len(neighbors))
-			hotspots = append(hotspots, cluster)
+		// 不是核心点
+		if len(neighbors) < minPts {
+			continue
 		}
+
+		// 创建 cluster
+		clusterPoints := l.expandCluster(cats, i, neighbors, visited, clustered, radiusKm, minPts)
+
+		// 生成 hotspot
+		hs := l.buildHotspot(cats, clusterPoints)
+		hotspots = append(hotspots, hs)
 	}
 
 	return hotspots
 }
 
+func (l *DetectHotspotsLogic) expandCluster(
+	cats []*cat.Cat,
+	pointIdx int,
+	neighbors []int,
+	visited []bool,
+	clustered []bool,
+	radiusKm float64,
+	minPts int,
+) []int {
+
+	cluster := make([]int, 0)
+	queue := append([]int{}, neighbors...)
+
+	// 当前点加入 cluster
+	cluster = append(cluster, pointIdx)
+	clustered[pointIdx] = true
+
+	for len(queue) > 0 {
+		curr := queue[0]
+		queue = queue[1:]
+
+		if !visited[curr] {
+			visited[curr] = true
+
+			currNeighbors := l.findNeighbors(cats, curr, radiusKm)
+			if len(currNeighbors) >= minPts {
+				queue = append(queue, currNeighbors...)
+			}
+		}
+
+		// 加入 cluster（避免重复）
+		if !clustered[curr] {
+			clustered[curr] = true
+			cluster = append(cluster, curr)
+		}
+	}
+
+	return cluster
+}
+
+func (l *DetectHotspotsLogic) buildHotspot(cats []*cat.Cat, indices []int) *hotspot {
+	var sumLat, sumLng float64
+	catIDs := make([]uint64, 0, len(indices))
+
+	for _, idx := range indices {
+		sumLat += cats[idx].Latitude
+		sumLng += cats[idx].Longitude
+		catIDs = append(catIDs, cats[idx].ID)
+	}
+
+	return &hotspot{
+		centerLat: sumLat / float64(len(indices)),
+		centerLng: sumLng / float64(len(indices)),
+		catIDs:    catIDs,
+		density:   len(indices),
+	}
+}
+
 func (l *DetectHotspotsLogic) findNeighbors(cats []*cat.Cat, centerIdx int, radiusKm float64) []int {
-	neighbors := []int{centerIdx}
+	neighbors := []int{}
 	center := cats[centerIdx]
 
 	for i := 0; i < len(cats); i++ {
-		if i == centerIdx {
-			continue
-		}
-
-		dist := l.haversine(center.Latitude, center.Longitude,
-			cats[i].Latitude, cats[i].Longitude)
+		dist := l.haversine(
+			center.Latitude, center.Longitude,
+			cats[i].Latitude, cats[i].Longitude,
+		)
 		if dist <= radiusKm {
 			neighbors = append(neighbors, i)
 		}

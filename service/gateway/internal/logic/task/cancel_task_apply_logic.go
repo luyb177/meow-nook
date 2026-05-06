@@ -6,6 +6,7 @@ import (
 	"github.com/luyb177/meow-nook/common/errorx"
 	"github.com/luyb177/meow-nook/common/logger"
 	taskpb "github.com/luyb177/meow-nook/service/cat/pb/cat/v1"
+	"github.com/luyb177/meow-nook/service/gateway/internal/logic"
 	"github.com/luyb177/meow-nook/service/gateway/internal/svc"
 	"github.com/luyb177/meow-nook/service/gateway/internal/types"
 )
@@ -22,18 +23,15 @@ func NewCancelTaskApplyLogic(ctx context.Context, svcCtx *svc.ServiceContext) *C
 func (l *CancelTaskApplyLogic) CancelTaskApply(req *types.CancelTaskApplyReq) (*types.CancelTaskApplyResp, error) {
 	logger.Info("CancelTaskApplyLogic called")
 
-	//userID, err := ctxutil.GetUserID(l.ctx)
-	//if err != nil {
-	//	return nil, errorx.Wrap(errorx.CodeUnauthorized, "未登录", err)
-	//}
-
-	// todo get userID from token (g u f t)
-	userID := uint64(1)
+	userID, err := logic.GetUserID(l.ctx)
+	if err != nil {
+		return nil, errorx.Wrap(errorx.CodeUnauthorized, "未登录", err)
+	}
 
 	resp, err := l.svcCtx.CatRPC.CancelTaskApply(l.ctx, &taskpb.CancelTaskApplyRequest{
 		ApplyId: req.ApplyId,
 		Reason:  req.Reason,
-		UserId:  userID,
+		UserId:  uint64(userID),
 	})
 	if err != nil {
 		return nil, errorx.FromGRPC(err)

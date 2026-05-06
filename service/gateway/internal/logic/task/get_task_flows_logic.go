@@ -30,7 +30,7 @@ func (l *GetTaskFlowsLogic) GetTaskFlows(req *types.GetTaskFlowsReq) (*types.Get
 
 	resp, err := l.svcCtx.CatRPC.GetTaskFlows(l.ctx, &taskpb.GetTaskFlowsRequest{
 		TaskId:      req.TaskId,
-		RequesterId: userID,
+		RequesterId: uint64(userID),
 	})
 	if err != nil {
 		return nil, errorx.FromGRPC(err)

@@ -3,7 +3,7 @@ package adoption
 import (
 	"context"
 
-	. "github.com/luyb177/meow-nook/service/gateway/internal/logic"
+	"github.com/luyb177/meow-nook/service/gateway/internal/logic"
 
 	"github.com/luyb177/meow-nook/common/errorx"
 	"github.com/luyb177/meow-nook/common/logger"
@@ -27,19 +27,16 @@ func NewListMyAdoptAppliesLogic(ctx context.Context, svcCtx *svc.ServiceContext)
 func (l *ListMyAdoptAppliesLogic) ListMyAdoptApplies(req *types.ListMyAdoptAppliesReq) (*types.ListMyAdoptAppliesResp, error) {
 	logger.Info("ListMyAdoptAppliesLogic called")
 
-	//userID, err := ctxutil.GetUserID(l.ctx)
-	//if err != nil {
-	//	return nil, errorx.Wrap(errorx.CodeUnauthorized, "未登录", err)
-	//}
-
-	// todo get userID from token
-	userID := uint64(1)
+	userID, err := logic.GetUserID(l.ctx)
+	if err != nil {
+		return nil, errorx.Wrap(errorx.CodeUnauthorized, "未登录", err)
+	}
 
 	resp, err := l.svcCtx.CatRPC.ListMyAdoptApplies(l.ctx, &catpb.ListMyAdoptAppliesRequest{
 		Status:      req.Status,
 		Page:        req.Page,
 		PageSize:    req.PageSize,
-		ApplicantId: userID,
+		ApplicantId: uint64(userID),
 	})
 	if err != nil {
 		return nil, errorx.FromGRPC(err)
@@ -57,8 +54,8 @@ func (l *ListMyAdoptAppliesLogic) ListMyAdoptApplies(req *types.ListMyAdoptAppli
 			ApplyReason:         v.ApplyReason,
 			Status:              v.Status,
 			RejectReason:        v.RejectReason,
-			CreatedAt:           PBTimeToString(v.CreatedAt),
-			ExpiresAt:           PBTimeToString(v.ExpiresAt),
+			CreatedAt:           logic.PBTimeToString(v.CreatedAt),
+			ExpiresAt:           logic.PBTimeToString(v.ExpiresAt),
 		})
 	}
 

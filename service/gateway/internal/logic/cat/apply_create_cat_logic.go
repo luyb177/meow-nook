@@ -7,6 +7,7 @@ import (
 
 	"github.com/luyb177/meow-nook/common/errorx"
 	catpb "github.com/luyb177/meow-nook/service/cat/pb/cat/v1"
+	"github.com/luyb177/meow-nook/service/gateway/internal/logic"
 	"github.com/luyb177/meow-nook/service/gateway/internal/svc"
 	"github.com/luyb177/meow-nook/service/gateway/internal/types"
 
@@ -28,12 +29,10 @@ func NewApplyCreateCatLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Ap
 }
 
 func (l *ApplyCreateCatLogic) ApplyCreateCat(req *types.ApplyCreateCatReq) (*types.ApplyCreateCatResp, error) {
-	// todo 从 JWT 中获取用户 ID
-	//uid := getUserID(l.ctx)
-	//if uid == 0 {
-	//	return nil, errorx.ErrUnauthorized
-	//}
-	uid := uint64(1)
+	userID, err := logic.GetUserID(l.ctx)
+	if err != nil {
+		return nil, errorx.Wrap(errorx.CodeUnauthorized, "未登录", err)
+	}
 
 	resp, err := l.svcCtx.CatRPC.ApplyCreateCat(l.ctx, &catpb.ApplyCreateCatRequest{
 		Name:             req.Name,
@@ -46,7 +45,7 @@ func (l *ApplyCreateCatLogic) ApplyCreateCat(req *types.ApplyCreateCatReq) (*typ
 		Latitude:         req.Latitude,
 		Images:           convertImagesToPB(req.Images),
 		TagIds:           req.TagIds,
-		ApplicantUserId:  uid,
+		ApplicantUserId:  uint64(userID),
 	})
 	if err != nil {
 		return nil, errorx.FromGRPC(err)

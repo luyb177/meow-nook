@@ -4,66 +4,86 @@ import (
 	"context"
 	"math"
 
+	"github.com/luyb177/meow-nook/common/logger"
+	"github.com/luyb177/meow-nook/service/cat/internal/repo/cat"
 	"github.com/luyb177/meow-nook/service/cat/internal/svc"
 	v1 "github.com/luyb177/meow-nook/service/cat/pb/cat/v1"
-	"github.com/zeromicro/go-zero/core/logx"
+	"go.uber.org/zap"
 )
 
 type PlanRouteLogic struct {
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
-	logx.Logger
 }
 
 func NewPlanRouteLogic(ctx context.Context, svcCtx *svc.ServiceContext) *PlanRouteLogic {
 	return &PlanRouteLogic{
 		ctx:    ctx,
 		svcCtx: svcCtx,
-		Logger: logx.WithContext(ctx),
 	}
 }
 
 func (l *PlanRouteLogic) PlanRoute(in *v1.PlanRouteRequest) (*v1.PlanRouteResponse, error) {
-	// 1. 获取猫咪位置
 	cats, err := l.svcCtx.Repo.Cat.GetCatsByIDs(l.ctx, in.CatIds)
 	if err != nil {
 		return nil, err
 	}
 
-	if len(cats) == 0 {
-		return &v1.PlanRouteResponse{
-			Waypoints:       []*v1.Waypoint{},
-			TotalDistanceKm: 0,
-			TotalStops:      0,
-		}, nil
+	logger.Info("规划路线请求", zap.Float64("volunteer_lat", in.VolunteerLat), zap.Float64("volunteer_lng", in.VolunteerLng), zap.Int("cat_count", len(cats)))
+	// 过滤无效坐标
+	validCats := make([]*cat.Cat, 0)
+	for _, c := range cats {
+		if c.Latitude != 0 && c.Longitude != 0 {
+			validCats = append(validCats, c)
+		}
 	}
 
-	// 2. 构建位置点
-	start := location{lat: in.VolunteerLat, lng: in.VolunteerLng, id: 0, typ: "volunteer"}
-	targets := make([]location, len(cats))
-	for i, c := range cats {
-		targets[i] = location{lat: c.Latitude, lng: c.Longitude, id: c.ID, typ: "cat"}
+	if len(validCats) == 0 {
+		return &v1.PlanRouteResponse{}, nil
 	}
 
-	// 3. 最近邻算法
-	route := l.nearestNeighbor(start, targets)
+	start := location{
+		id:  0,
+		lat: in.VolunteerLat,
+		lng: in.VolunteerLng,
+		typ: "volunteer",
+	}
 
-	// 4. 转换响应
-	waypoints := make([]*v1.Waypoint, len(route.waypoints))
-	for i, wp := range route.waypoints {
+	targets := make([]location, 0, len(validCats))
+	for _, c := range validCats {
+		targets = append(targets, location{
+			id:  c.ID,
+			lat: c.Latitude,
+			lng: c.Longitude,
+			typ: "cat",
+		})
+	}
+
+	// 最近邻生成初始路径
+	path := l.nearestNeighborPath(start, targets)
+
+	// 2-opt 优化路径
+	path = l.twoOpt(path)
+
+	// 计算总距离
+	totalDist := l.calcTotalDistance(path)
+
+	// 转换响应
+	waypoints := make([]*v1.Waypoint, len(path))
+	for i, p := range path {
 		waypoints[i] = &v1.Waypoint{
-			Id:    wp.id,
-			Type:  wp.typ,
-			Lat:   wp.lat,
-			Lng:   wp.lng,
+			Id:    p.id,
+			Type:  p.typ,
+			Lat:   p.lat,
+			Lng:   p.lng,
 			Order: int32(i),
 		}
 	}
 
 	return &v1.PlanRouteResponse{
 		Waypoints:       waypoints,
-		TotalDistanceKm: route.totalDistance,
-		TotalStops:      int32(len(route.waypoints) - 1), // 减掉起点
+		TotalDistanceKm: totalDist,
+		TotalStops:      int32(len(path) - 1),
 	}, nil
 }
 
@@ -78,46 +98,87 @@ type route struct {
 	totalDistance float64
 }
 
-func (l *PlanRouteLogic) nearestNeighbor(start location, targets []location) *route {
-	if len(targets) == 0 {
-		return &route{
-			waypoints:     []location{start},
-			totalDistance: 0,
-		}
-	}
-
+func (l *PlanRouteLogic) nearestNeighborPath(start location, targets []location) []location {
+	path := []location{start}
 	visited := make([]bool, len(targets))
-	result := &route{
-		waypoints: []location{start},
-	}
+
 	current := start
 
-	for len(result.waypoints)-1 < len(targets) {
-		nearestIdx := -1
+	for len(path)-1 < len(targets) {
 		minDist := math.MaxFloat64
+		idx := -1
 
-		for i, target := range targets {
+		for i, t := range targets {
 			if visited[i] {
 				continue
 			}
-			dist := l.haversine(current.lat, current.lng, target.lat, target.lng)
+			dist := l.haversine(current.lat, current.lng, t.lat, t.lng)
 			if dist < minDist {
 				minDist = dist
-				nearestIdx = i
+				idx = i
 			}
 		}
 
-		if nearestIdx == -1 {
+		if idx == -1 {
 			break
 		}
 
-		result.waypoints = append(result.waypoints, targets[nearestIdx])
-		result.totalDistance += minDist
-		current = targets[nearestIdx]
-		visited[nearestIdx] = true
+		path = append(path, targets[idx])
+		current = targets[idx]
+		visited[idx] = true
 	}
 
-	return result
+	return path
+}
+
+func (l *PlanRouteLogic) twoOpt(path []location) []location {
+	improved := true
+	n := len(path)
+
+	for improved {
+		improved = false
+
+		for i := 1; i < n-2; i++ {
+			for j := i + 1; j < n-1; j++ {
+
+				a, b := path[i-1], path[i]
+				c, d := path[j], path[j+1]
+
+				oldDist := l.haversine(a.lat, a.lng, b.lat, b.lng) +
+					l.haversine(c.lat, c.lng, d.lat, d.lng)
+
+				newDist := l.haversine(a.lat, a.lng, c.lat, c.lng) +
+					l.haversine(b.lat, b.lng, d.lat, d.lng)
+
+				if newDist < oldDist {
+					// 反转路径
+					l.reverse(path, i, j)
+					improved = true
+				}
+			}
+		}
+	}
+
+	return path
+}
+
+func (l *PlanRouteLogic) reverse(path []location, i, j int) {
+	for i < j {
+		path[i], path[j] = path[j], path[i]
+		i++
+		j--
+	}
+}
+
+func (l *PlanRouteLogic) calcTotalDistance(path []location) float64 {
+	total := 0.0
+	for i := 1; i < len(path); i++ {
+		total += l.haversine(
+			path[i-1].lat, path[i-1].lng,
+			path[i].lat, path[i].lng,
+		)
+	}
+	return total
 }
 
 func (l *PlanRouteLogic) haversine(lat1, lng1, lat2, lng2 float64) float64 {

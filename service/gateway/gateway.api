@@ -80,6 +80,43 @@ service gateway {
 	post /login (LoginReq) returns (LoginResp)
 }
 
+type UserInfoResp {
+	Id           int64    `json:"id"`
+	Username     string   `json:"username"`
+	Avatar       string   `json:"avatar"`
+	Phone        string   `json:"phone"`
+	Area         string   `json:"area"`
+	Gender       string   `json:"gender"`
+	Points       int32    `json:"points"`
+	Role         string   `json:"role"`
+	CreatedAt    int64    `json:"createdAt"`
+	ServiceTypes []string `json:"serviceTypes"`
+}
+
+type CreditPointsResp {
+	CreditPoints int32 `json:"creditPoints"`
+}
+
+@server (
+	prefix:     /api/v1/users
+	tags:       "用户模块"
+	group:      user
+	middleware: Auth
+)
+service gateway {
+	@doc "获取信誉积分"
+	@handler GetCreditPoints
+	get /credit_points returns (CreditPointsResp)
+
+	@doc "获取用户信息"
+	@handler GetUserInfo
+	get /me returns (UserInfoResp)
+
+	@doc "更新用户信息"
+	@handler UpdateUserInfo
+	post /me/update (UserInfoResp) returns (Response)
+}
+
 // ──────────────────────────────────────────────
 // Cats
 // ──────────────────────────────────────────────
@@ -315,10 +352,10 @@ type (
 
 // ==================== 路由定义 ====================
 @server (
-	prefix: /api/v1/cats
-	//middleware: Auth
-	tags:  "猫咪模块"
-	group: cat
+	prefix:     /api/v1/cats
+	middleware: Auth
+	tags:       "猫咪模块"
+	group:      cat
 )
 service gateway {
 	@doc "志愿者申请创建猫咪档案"
@@ -611,9 +648,10 @@ type (
 )
 
 @server (
-	prefix: /api/v1/adoption
-	tags:   "领养模块"
-	group:  adoption
+	prefix:     /api/v1/adoption
+	tags:       "领养模块"
+	group:      adoption
+	middleware: Auth
 )
 service gateway {
 	// ==================== 志愿者端 ====================
@@ -1077,9 +1115,10 @@ type TagVO {
 }
 
 @server (
-	prefix: /api/v1/task
-	tags:   "任务模块"
-	group:  task
+	prefix:     /api/v1/task
+	tags:       "任务模块"
+	group:      task
+	middleware: Auth
 )
 service gateway {
 	// ==================== 志愿者端 - 任务申请 ====================
@@ -1227,9 +1266,10 @@ type GetPriorityCatsResp {
 }
 
 @server (
-	prefix: /api/v1/algorithm
-	tags:   "路径规划算法"
-	group:  algorithm
+	prefix:     /api/v1/algorithm
+	tags:       "路径规划算法"
+	group:      algorithm
+	middleware: Auth
 )
 service gateway {
 	@doc "检测猫咪热点区域"
@@ -1269,9 +1309,10 @@ type AdminUpdateUserServiceTypesReq {
 }
 
 @server (
-	prefix: /api/v1/admin
-	tags:   "管理员相关"
-	group:  admin
+	prefix:     /api/v1/admin
+	tags:       "管理员相关"
+	group:      admin
+	middleware: Auth
 )
 service gateway {
 	@doc "AI辅助审核任务申请"

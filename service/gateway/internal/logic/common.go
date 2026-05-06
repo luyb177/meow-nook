@@ -4,6 +4,8 @@ import (
 	"context"
 	"time"
 
+	"github.com/luyb177/meow-nook/common/errorx"
+	httpmd "github.com/luyb177/meow-nook/common/middleware/http"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
@@ -31,6 +33,15 @@ func ParseTimePtr(s string) *timestamppb.Timestamp {
 }
 
 // GetUserID todo g u f t
-func GetUserID(ctx context.Context) (uint64, error) {
-	return uint64(1), nil
+func GetUserID(ctx context.Context) (int64, error) {
+	claims, ok := httpmd.ClaimsFromContext(ctx)
+	if !ok || claims == nil {
+		return 0, errorx.ErrUnauthorized
+	}
+
+	if claims.UserID == 0 {
+		return 0, errorx.ErrUnauthorized
+	}
+
+	return claims.UserID, nil
 }

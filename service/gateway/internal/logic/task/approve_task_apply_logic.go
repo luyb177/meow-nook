@@ -36,7 +36,7 @@ func (l *ApproveTaskApplyLogic) ApproveTaskApply(req *types.ApproveTaskApplyReq)
 		MaxClaimers:     req.MaxClaimers,
 		Area:            req.Area,
 		Remark:          req.Remark,
-		ReviewerId:      userID,
+		ReviewerId:      uint64(userID),
 	})
 	if err != nil {
 		return nil, errorx.FromGRPC(err)

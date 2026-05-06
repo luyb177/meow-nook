@@ -46,7 +46,7 @@ func (l *DirectCreateTaskLogic) DirectCreateTask(req *types.DirectCreateTaskReq)
 		Remark:          req.Remark,
 		ImageUrls:       req.ImageUrls,
 		TagIds:          req.TagIds,
-		CreatorId:       userID,
+		CreatorId:       uint64(userID),
 	})
 	if err != nil {
 		return nil, errorx.FromGRPC(err)

@@ -6,7 +6,7 @@ import (
 	"github.com/luyb177/meow-nook/common/errorx"
 	"github.com/luyb177/meow-nook/common/logger"
 	catpb "github.com/luyb177/meow-nook/service/cat/pb/cat/v1"
-	. "github.com/luyb177/meow-nook/service/gateway/internal/logic"
+	"github.com/luyb177/meow-nook/service/gateway/internal/logic"
 	"github.com/luyb177/meow-nook/service/gateway/internal/svc"
 	"github.com/luyb177/meow-nook/service/gateway/internal/types"
 )
@@ -25,20 +25,16 @@ func NewListPendingAdoptAppliesLogic(ctx context.Context, svcCtx *svc.ServiceCon
 
 func (l *ListPendingAdoptAppliesLogic) ListPendingAdoptApplies(req *types.ListPendingAdoptAppliesReq) (*types.ListPendingAdoptAppliesResp, error) {
 	logger.Info("ListPendingAdoptAppliesLogic called")
-	//
-	//userID, err := ctxutil.GetUserID(l.ctx)
-	//if err != nil {
-	//	return nil, errorx.Wrap(errorx.CodeUnauthorized, "未登录", err)
-	//}
-
-	// todo get userID from token
-	userID := uint64(1)
+	userID, err := logic.GetUserID(l.ctx)
+	if err != nil {
+		return nil, errorx.Wrap(errorx.CodeUnauthorized, "未登录", err)
+	}
 
 	resp, err := l.svcCtx.CatRPC.ListPendingAdoptApplies(l.ctx, &catpb.ListPendingAdoptAppliesRequest{
 		CatId:    req.CatId,
 		Page:     req.Page,
 		PageSize: req.PageSize,
-		AdminId:  userID,
+		AdminId:  uint64(userID),
 	})
 	if err != nil {
 		return nil, errorx.FromGRPC(err)
@@ -60,7 +56,7 @@ func (l *ListPendingAdoptAppliesLogic) ListPendingAdoptApplies(req *types.ListPe
 			ApplyReason:          v.ApplyReason,
 			ContactPhone:         v.ContactPhone,
 			ContactWechat:        v.ContactWechat,
-			CreatedAt:            PBTimeToString(v.CreatedAt),
+			CreatedAt:            logic.PBTimeToString(v.CreatedAt),
 		})
 	}
 

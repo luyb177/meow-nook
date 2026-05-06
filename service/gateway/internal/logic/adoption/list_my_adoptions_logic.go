@@ -6,7 +6,7 @@ import (
 	"github.com/luyb177/meow-nook/common/errorx"
 	"github.com/luyb177/meow-nook/common/logger"
 	catpb "github.com/luyb177/meow-nook/service/cat/pb/cat/v1"
-	. "github.com/luyb177/meow-nook/service/gateway/internal/logic"
+	"github.com/luyb177/meow-nook/service/gateway/internal/logic"
 	"github.com/luyb177/meow-nook/service/gateway/internal/svc"
 	"github.com/luyb177/meow-nook/service/gateway/internal/types"
 )
@@ -26,15 +26,13 @@ func NewListMyAdoptionsLogic(ctx context.Context, svcCtx *svc.ServiceContext) *L
 func (l *ListMyAdoptionsLogic) ListMyAdoptions(req *types.ListMyAdoptionsReq) (*types.ListAdoptionsResp, error) {
 	logger.Info("ListMyAdoptionsLogic called")
 
-	//userID, err := ctxutil.GetUserID(l.ctx)
-	//if err != nil {
-	//	return nil, errorx.Wrap(errorx.CodeUnauthorized, "未登录", err)
-	//}
-	// todo get userID from token
-	userID := uint64(1)
+	userID, err := logic.GetUserID(l.ctx)
+	if err != nil {
+		return nil, errorx.Wrap(errorx.CodeUnauthorized, "未登录", err)
+	}
 
 	resp, err := l.svcCtx.CatRPC.ListMyAdoptions(l.ctx, &catpb.ListMyAdoptionsRequest{
-		UserId:   userID,
+		UserId:   uint64(userID),
 		Page:     req.Page,
 		PageSize: req.PageSize,
 	})
@@ -53,7 +51,7 @@ func (l *ListMyAdoptionsLogic) ListMyAdoptions(req *types.ListMyAdoptionsReq) (*
 			AdopterName: v.AdopterName,
 			Status:      v.Status,
 			AgreementNo: v.AgreementNo,
-			AdoptedAt:   PBTimeToString(v.AdoptedAt),
+			AdoptedAt:   logic.PBTimeToString(v.AdoptedAt),
 			IsReturned:  v.IsReturned,
 		})
 	}

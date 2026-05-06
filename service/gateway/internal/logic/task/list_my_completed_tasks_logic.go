@@ -31,7 +31,7 @@ func (l *ListMyCompletedTasksLogic) ListMyCompletedTasks(req *types.ListMyComple
 	resp, err := l.svcCtx.CatRPC.ListMyCompletedTasks(l.ctx, &taskpb.ListMyCompletedTasksRequest{
 		Page:     req.Page,
 		PageSize: req.PageSize,
-		UserId:   userID,
+		UserId:   uint64(userID),
 	})
 	if err != nil {
 		return nil, errorx.FromGRPC(err)

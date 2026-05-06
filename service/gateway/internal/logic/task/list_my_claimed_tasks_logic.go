@@ -32,7 +32,7 @@ func (l *ListMyClaimedTasksLogic) ListMyClaimedTasks(req *types.ListMyClaimedTas
 		Status:   req.Status,
 		Page:     req.Page,
 		PageSize: req.PageSize,
-		UserId:   userID,
+		UserId:   uint64(userID),
 	})
 	if err != nil {
 		return nil, errorx.FromGRPC(err)

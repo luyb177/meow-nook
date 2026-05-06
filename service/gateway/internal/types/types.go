@@ -328,6 +328,10 @@ type CreateAdoptionResp struct {
 	Message    string `json:"message"`
 }
 
+type CreditPointsResp struct {
+	CreditPoints int32 `json:"creditPoints"`
+}
+
 type DetectHotspotsReq struct {
 	RadiusKm float64 `json:"radius_km"` // 半径(km)，默认0.5
 	MinCats  int     `json:"min_cats"`  // 最少猫咪数，默认3
@@ -988,6 +992,19 @@ type UserBriefVO struct {
 	Id     uint64 `json:"id"`
 	Name   string `json:"name"`
 	Avatar string `json:"avatar"`
+}
+
+type UserInfoResp struct {
+	Id           int64    `json:"id"`
+	Username     string   `json:"username"`
+	Avatar       string   `json:"avatar"`
+	Phone        string   `json:"phone"`
+	Area         string   `json:"area"`
+	Gender       string   `json:"gender"`
+	Points       int32    `json:"points"`
+	Role         string   `json:"role"`
+	CreatedAt    int64    `json:"createdAt"`
+	ServiceTypes []string `json:"serviceTypes"`
 }
 
 type VerifyCodeReq struct {

@@ -9,6 +9,7 @@ import (
 	"github.com/luyb177/meow-nook/common/errorx"
 	"github.com/luyb177/meow-nook/common/logger"
 	catpb "github.com/luyb177/meow-nook/service/cat/pb/cat/v1"
+	"github.com/luyb177/meow-nook/service/gateway/internal/logic"
 	"github.com/luyb177/meow-nook/service/gateway/internal/svc"
 	"github.com/luyb177/meow-nook/service/gateway/internal/types"
 
@@ -33,13 +34,10 @@ func NewUpdateReturnStatusLogic(ctx context.Context, svcCtx *svc.ServiceContext)
 func (l *UpdateReturnStatusLogic) UpdateReturnStatus(req *types.UpdateReturnStatusReq) (*types.UpdateReturnStatusResp, error) {
 	logger.Info("UpdateReturnStatusLogic called")
 
-	//userID, err := ctxutil.GetUserID(l.ctx)
-	//if err != nil {
-	//	return nil, errorx.Wrap(errorx.CodeUnauthorized, "未登录", err)
-	//}
-
-	// todo get userID from token
-	userID := uint64(1)
+	userID, err := logic.GetUserID(l.ctx)
+	if err != nil {
+		return nil, errorx.Wrap(errorx.CodeUnauthorized, "未登录", err)
+	}
 
 	resp, err := l.svcCtx.CatRPC.UpdateReturnStatus(l.ctx, &catpb.UpdateReturnStatusRequest{
 		AdoptionId:       req.AdoptionId,
@@ -47,7 +45,7 @@ func (l *UpdateReturnStatusLogic) UpdateReturnStatus(req *types.UpdateReturnStat
 		ReturnedToUserId: req.ReturnedToUserId,
 		ReturnReason:     req.ReturnReason,
 		Photos:           req.Photos,
-		OperatorId:       userID,
+		OperatorId:       uint64(userID),
 	})
 	if err != nil {
 		return nil, errorx.FromGRPC(err)

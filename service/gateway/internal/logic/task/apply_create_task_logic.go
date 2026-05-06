@@ -23,13 +23,10 @@ func NewApplyCreateTaskLogic(ctx context.Context, svcCtx *svc.ServiceContext) *A
 func (l *ApplyCreateTaskLogic) ApplyCreateTask(req *types.ApplyCreateTaskReq) (*types.ApplyCreateTaskResp, error) {
 	logger.Info("ApplyCreateTaskLogic called")
 
-	//userID, err := ctxutil.GetUserID(l.ctx)
-	//if err != nil {
-	//	return nil, errorx.Wrap(errorx.CodeUnauthorized, "未登录", err)
-	//}
-
-	// todo get userID from token
-	userID := uint64(1)
+	userID, err := logic.GetUserID(l.ctx)
+	if err != nil {
+		return nil, errorx.Wrap(errorx.CodeUnauthorized, "未登录", err)
+	}
 
 	resp, err := l.svcCtx.CatRPC.ApplyCreateTask(l.ctx, &taskpb.ApplyCreateTaskRequest{
 		CatId:           req.CatId,
@@ -43,7 +40,7 @@ func (l *ApplyCreateTaskLogic) ApplyCreateTask(req *types.ApplyCreateTaskReq) (*
 		DeadlineAt:      logic.ParseTimePtr(req.DeadlineAt),
 		ImageUrls:       req.ImageUrls,
 		TagIds:          req.TagIds,
-		ApplicantUserId: userID,
+		ApplicantUserId: uint64(userID),
 	})
 	if err != nil {
 		return nil, errorx.FromGRPC(err)

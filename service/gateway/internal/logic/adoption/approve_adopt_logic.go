@@ -6,7 +6,7 @@ import (
 	"github.com/luyb177/meow-nook/common/errorx"
 	"github.com/luyb177/meow-nook/common/logger"
 	catpb "github.com/luyb177/meow-nook/service/cat/pb/cat/v1"
-	. "github.com/luyb177/meow-nook/service/gateway/internal/logic"
+	"github.com/luyb177/meow-nook/service/gateway/internal/logic"
 	"github.com/luyb177/meow-nook/service/gateway/internal/svc"
 	"github.com/luyb177/meow-nook/service/gateway/internal/types"
 )
@@ -26,13 +26,10 @@ func NewApproveAdoptLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Appr
 func (l *ApproveAdoptLogic) ApproveAdopt(req *types.ApproveAdoptReq) (*types.ApproveAdoptResp, error) {
 	logger.Info("ApproveAdoptLogic called")
 
-	//userID, err := ctxutil.GetUserID(l.ctx)
-	//if err != nil {
-	//	return nil, errorx.Wrap(errorx.CodeUnauthorized, "未登录", err)
-	//}
-
-	// todo get userID from token
-	userID := uint64(1)
+	userID, err := logic.GetUserID(l.ctx)
+	if err != nil {
+		return nil, errorx.Wrap(errorx.CodeUnauthorized, "未登录", err)
+	}
 
 	if req.ApplyId == 0 {
 		return nil, errorx.Wrap(errorx.CodeBadRequest, "apply_id is required", errorx.ErrBadRequest)
@@ -41,7 +38,7 @@ func (l *ApproveAdoptLogic) ApproveAdopt(req *types.ApproveAdoptReq) (*types.App
 	resp, err := l.svcCtx.CatRPC.ApproveAdopt(l.ctx, &catpb.ApproveAdoptRequest{
 		ApplyId:    req.ApplyId,
 		Note:       req.Note,
-		ReviewerId: userID,
+		ReviewerId: uint64(userID),
 	})
 	if err != nil {
 		return nil, errorx.FromGRPC(err)
@@ -51,6 +48,6 @@ func (l *ApproveAdoptLogic) ApproveAdopt(req *types.ApproveAdoptReq) (*types.App
 		ApplyId:   resp.ApplyId,
 		Status:    resp.Status,
 		Message:   resp.Message,
-		ExpiresAt: PBTimeToString(resp.ExpiresAt),
+		ExpiresAt: logic.PBTimeToString(resp.ExpiresAt),
 	}, nil
 }
